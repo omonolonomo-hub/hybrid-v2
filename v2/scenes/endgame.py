@@ -1,0 +1,2 @@
+class EndgameScene:
+    pass

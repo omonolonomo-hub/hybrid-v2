@@ -1,0 +1,180 @@
+{
+  "phase": "2B",
+  "total_runs": 1,
+  "skipped": 0,
+  "total_elapsed_s": 30.2,
+  "success_runs": [],
+  "top_results": [
+    {
+      "run_id": "b2b_001_gold_s15p00_group_0p80_high_r1p20_power_0p80_032657",
+      "idx": 1,
+      "combo": {
+        "builder.power_weight": 0.8,
+        "builder.group_weight": 0.8,
+        "builder.gold_spend_threshold": 15.0,
+        "builder.high_rarity_bonus": 1.2
+      },
+      "fitness": 24.6943,
+      "win_rate": 2.0,
+      "avg_kill": 9.62,
+      "avg_hp": 1.02,
+      "elapsed": 29.9,
+      "promoted": true,
+      "timestamp": "2026-04-06T03:27:27.591855"
+    },
+    {
+      "run_id": "b2b_001_gold_s15p00_group_0p80_high_r1p20_power_0p80_032923",
+      "idx": 1,
+      "combo": {
+        "builder.power_weight": 0.8,
+        "builder.group_weight": 0.8,
+        "builder.gold_spend_threshold": 15.0,
+        "builder.high_rarity_bonus": 1.2
+      },
+      "fitness": 24.6943,
+      "win_rate": 2.0,
+      "avg_kill": 9.62,
+      "avg_hp": 1.02,
+      "elapsed": 31.3,
+      "promoted": false,
+      "timestamp": "2026-04-06T03:29:55.324562"
+    },
+    {
+      "run_id": "b2b_001_gold_s15p00_group_0p80_high_r1p20_power_0p80_033056",
+      "idx": 1,
+      "combo": {
+        "builder.power_weight": 0.8,
+        "builder.group_weight": 0.8,
+        "builder.gold_spend_threshold": 15.0,
+        "builder.high_rarity_bonus": 1.2
+      },
+      "fitness": 24.6943,
+      "win_rate": 2.0,
+      "avg_kill": 9.62,
+      "avg_hp": 1.02,
+      "elapsed": 29.4,
+      "promoted": false,
+      "timestamp": "2026-04-06T03:31:26.240015"
+    },
+    {
+      "run_id": "b2b_001_gold_s15p00_group_0p80_high_r1p20_power_0p80_033159",
+      "idx": 1,
+      "combo": {
+        "builder.power_weight": 0.8,
+        "builder.group_weight": 0.8,
+        "builder.gold_spend_threshold": 15.0,
+        "builder.high_rarity_bonus": 1.2
+      },
+      "fitness": 24.6943,
+      "win_rate": 2.0,
+      "avg_kill": 9.62,
+      "avg_hp": 1.02,
+      "elapsed": 30.2,
+      "promoted": false,
+      "timestamp": "2026-04-06T03:32:29.245465"
+    },
+    {
+      "run_id": "b2b_001_gold_s12p00_group_0p80_high_r1p10_power_1p00_032526",
+      "idx": 1,
+      "combo": {
+        "builder.power_weight": 1.0,
+        "builder.group_weight": 0.8,
+        "builder.gold_spend_threshold": 12.0,
+        "builder.high_rarity_bonus": 1.1
+      },
+      "fitness": 19.8398,
+      "win_rate": 1.0,
+      "avg_kill": 8.85,
+      "avg_hp": 0.07,
+      "elapsed": 32.0,
+      "promoted": true,
+      "timestamp": "2026-04-06T03:25:58.490160"
+    },
+    {
+      "run_id": "b2b_001_gold_s12p00_group_0p60_high_r1p10_power_0p40_030339",
+      "idx": 1,
+      "combo": {
+        "builder.power_weight": 0.4,
+        "builder.group_weight": 0.6,
+        "builder.gold_spend_threshold": 12.0,
+        "builder.high_rarity_bonus": 1.1
+      },
+      "fitness": 0.0,
+      "win_rate": 0.0,
+      "avg_kill": 0.0,
+      "avg_hp": 0.0,
+      "elapsed": 3.5,
+      "promoted": true,
+      "timestamp": "2026-04-06T03:03:42.861189"
+    },
+    {
+      "run_id": "b2b_002_gold_s12p00_group_0p60_high_r1p20_power_0p40_030342",
+      "idx": 2,
+      "combo": {
+        "builder.power_weight": 0.4,
+        "builder.group_weight": 0.6,
+        "builder.gold_spend_threshold": 12.0,
+        "builder.high_rarity_bonus": 1.2
+      },
+      "fitness": 0.0,
+      "win_rate": 0.0,
+      "avg_kill": 0.0,
+      "avg_hp": 0.0,
+      "elapsed": 3.5,
+      "promoted": false,
+      "timestamp": "2026-04-06T03:03:46.412471"
+    },
+    {
+      "run_id": "b2b_003_gold_s12p00_group_0p60_high_r1p35_power_0p40_030346",
+      "idx": 3,
+      "combo": {
+        "builder.power_weight": 0.4,
+        "builder.group_weight": 0.6,
+        "builder.gold_spend_threshold": 12.0,
+        "builder.high_rarity_bonus": 1.35
+      },
+      "fitness": 0.0,
+      "win_rate": 0.0,
+      "avg_kill": 0.0,
+      "avg_hp": 0.0,
+      "elapsed": 3.5,
+      "promoted": false,
+      "timestamp": "2026-04-06T03:03:49.903934"
+    },
+    {
+      "run_id": "b2b_004_gold_s12p00_group_0p60_high_r1p50_power_0p40_030349",
+      "idx": 4,
+      "combo": {
+        "builder.power_weight": 0.4,
+        "builder.group_weight": 0.6,
+        "builder.gold_spend_threshold": 12.0,
+        "builder.high_rarity_bonus": 1.5
+      },
+      "fitness": 0.0,
+      "win_rate": 0.0,
+      "avg_kill": 0.0,
+      "avg_hp": 0.0,
+      "elapsed": 3.5,
+      "promoted": false,
+      "timestamp": "2026-04-06T03:03:53.369949"
+    },
+    {
+      "run_id": "b2b_005_gold_s15p00_group_0p60_high_r1p10_power_0p40_030353",
+      "idx": 5,
+      "combo": {
+        "builder.power_weight": 0.4,
+        "builder.group_weight": 0.6,
+        "builder.gold_spend_threshold": 15.0,
+        "builder.high_rarity_bonus": 1.1
+      },
+      "fitness": 0.0,
+      "win_rate": 0.0,
+      "avg_kill": 0.0,
+      "avg_hp": 0.0,
+      "elapsed": 3.5,
+      "promoted": false,
+      "timestamp": "2026-04-06T03:03:56.895358"
+    }
+  ],
+  "timestamp": "2026-04-06T03:32:29.249529"
+}

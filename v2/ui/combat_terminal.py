@@ -1,0 +1,2 @@
+class CombatTerminal:
+    pass

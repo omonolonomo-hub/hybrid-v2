@@ -1,0 +1,26 @@
+{
+  "timestamp": "2026-03-28T22:24:35.493739",
+  "fixes_applied": [
+    {
+      "file": "scripts/simulation/run_simulation.py",
+      "type": "OUTPUT_PATHS",
+      "changes": 3
+    },
+    {
+      "file": "engine_core/autochess_sim_v06.py",
+      "type": "LOG_PATHS",
+      "changes": 2
+    },
+    {
+      "file": "scripts/simulation/analyze_all_batches.py",
+      "type": "KPI_LOG_PATHS",
+      "changes": 1
+    },
+    {
+      "file": "scripts/validation/verify_results.py",
+      "type": "RESULT_PATHS",
+      "changes": 1
+    }
+  ],
+  "total_fixes": 4
+}

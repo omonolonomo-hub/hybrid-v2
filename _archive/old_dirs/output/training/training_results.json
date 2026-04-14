@@ -1,0 +1,125 @@
+{
+  "config": {
+    "pop_size": 10,
+    "n_gens": 5,
+    "eval_games": 30,
+    "elitism": 2,
+    "mutation_rate": 0.3,
+    "mutation_strength": 0.25,
+    "tournament_k": 3,
+    "seed": 42,
+    "fitness_mode": "composite"
+  },
+  "best_params": {
+    "economist": {
+      "thresh_high": 27.012525825899594,
+      "thresh_mid": 5.887870123764179,
+      "thresh_low": 11.572130722067811,
+      "buy_2_thresh": 15.0,
+      "greed_turn_end": 6.556475060280888,
+      "spike_turn_end": 14.773731014667712,
+      "greed_gold_thresh": 15.0,
+      "spike_r4_thresh": 42.07452062733782,
+      "convert_r5_thresh": 80.0,
+      "spike_buy_count": 3.1891953600814538,
+      "convert_buy_count": 3.6086842743641023
+    }
+  },
+  "details": {
+    "economist": {
+      "fitness": 0.4075,
+      "history": [
+        {
+          "gen": 1,
+          "best": 0.3451,
+          "avg": 0.2921,
+          "best_params": {
+            "thresh_high": 27.012525825899594,
+            "thresh_mid": 7.2650694960474125,
+            "thresh_low": 11.572130722067811,
+            "buy_2_thresh": 12.088052718040922,
+            "greed_turn_end": 6.556475060280888,
+            "spike_turn_end": 14.773731014667712,
+            "greed_gold_thresh": 13.932460564432219,
+            "spike_r4_thresh": 42.07452062733782,
+            "convert_r5_thresh": 74.2138481982314,
+            "spike_buy_count": 3.1891953600814538,
+            "convert_buy_count": 3.6086842743641023
+          }
+        },
+        {
+          "gen": 2,
+          "best": 0.3666,
+          "avg": 0.3117,
+          "best_params": {
+            "thresh_high": 10.0,
+            "thresh_mid": 8.25408709555765,
+            "thresh_low": 8.043815783345998,
+            "buy_2_thresh": 12.088052718040922,
+            "greed_turn_end": 6.556475060280888,
+            "spike_turn_end": 14.773731014667712,
+            "greed_gold_thresh": 15.0,
+            "spike_r4_thresh": 42.07452062733782,
+            "convert_r5_thresh": 74.2138481982314,
+            "spike_buy_count": 3.1891953600814538,
+            "convert_buy_count": 3.6086842743641023
+          }
+        },
+        {
+          "gen": 3,
+          "best": 0.3714,
+          "avg": 0.2968,
+          "best_params": {
+            "thresh_high": 52.160629937407165,
+            "thresh_mid": 4.932269498443473,
+            "thresh_low": 8.713650534536683,
+            "buy_2_thresh": 22.08397584885534,
+            "greed_turn_end": 6.605426705116845,
+            "spike_turn_end": 18.0,
+            "greed_gold_thresh": 15.0,
+            "spike_r4_thresh": 34.190140615429755,
+            "convert_r5_thresh": 80.0,
+            "spike_buy_count": 1.2043333446524622,
+            "convert_buy_count": 3.6086842743641023
+          }
+        },
+        {
+          "gen": 4,
+          "best": 0.4075,
+          "avg": 0.3294,
+          "best_params": {
+            "thresh_high": 27.012525825899594,
+            "thresh_mid": 5.887870123764179,
+            "thresh_low": 11.572130722067811,
+            "buy_2_thresh": 15.0,
+            "greed_turn_end": 6.556475060280888,
+            "spike_turn_end": 14.773731014667712,
+            "greed_gold_thresh": 15.0,
+            "spike_r4_thresh": 42.07452062733782,
+            "convert_r5_thresh": 80.0,
+            "spike_buy_count": 3.1891953600814538,
+            "convert_buy_count": 3.6086842743641023
+          }
+        },
+        {
+          "gen": 5,
+          "best": 0.3296,
+          "avg": 0.2923,
+          "best_params": {
+            "thresh_high": 52.160629937407165,
+            "thresh_mid": 8.0,
+            "thresh_low": 8.713650534536683,
+            "buy_2_thresh": 14.929073245115994,
+            "greed_turn_end": 6.0,
+            "spike_turn_end": 17.92602873777487,
+            "greed_gold_thresh": 15.0,
+            "spike_r4_thresh": 34.190140615429755,
+            "convert_r5_thresh": 80.0,
+            "spike_buy_count": 1.2043333446524622,
+            "convert_buy_count": 3.6086842743641023
+          }
+        }
+      ]
+    }
+  }
+}

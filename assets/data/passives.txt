@@ -1,0 +1,70 @@
+
+--- SINERJIK_ALAN ---
+- Odin: While on board, spreads +1 Meaning to neighboring Mythology cards.
+- Olympus: When 3+ Mythology cards on board, +1 Prestige to all Mythology cards.
+- Medusa: Opponent cards initiating combat against this card take -1 Speed field effect that turn.
+- Kraken: While on board, neighboring enemy cards' Connection edges take -1 field effect.
+- Opera: When 2+ Art cards on board, +1 Prestige to all Art cards.
+- Baroque: When 2+ Art cards on board, +1 to Prestige edges.
+- Kabuki: When Eclipse active, spreads +1 Secret to neighboring ally cards.
+- Blue Whale: When 3+ Nature cards on board, +1 Harmony to all ally cards.
+- Coral Reef: Spreads +1 Harmony to neighboring ally Nature cards per turn.
+- Rainforest: When 4+ Nature cards on board, +1 Spread to all Nature cards.
+- Cordyceps: While on board, opponent's neighboring cards take -1 Trace per turn.
+- Milky Way: When 3+ Cosmos cards on board, +1 Gravity to all Cosmos cards.
+- Andromeda Galaxy: When 4+ Cosmos cards on board, Gravity edges +2.
+- Europa: Spreads +1 Harmony to neighboring ally Cosmos cards.
+- Black Hole: While on board, pulls -1 Gravity from opponent's center card per turn.
+- Quasar: When 3+ Cosmos cards on board, +1 Spread to all cards.
+- Gravity: Neighboring all cards (ally/enemy) take -1 Speed field effect per turn.
+- Isaac Newton: When 3+ Science cards on board, +1 Intelligence to all Science cards.
+- Nikola Tesla: Spreads +1 Intelligence to neighboring ally Science cards, electric chain.
+- Entropy: While on board, all cards' highest edge decreases by -1 every 3 turns.
+- Periodic Table: When 4+ Science cards on board, +1 Intelligence +1 Meaning to all Science cards.
+- Higgs Boson: While on board, all cards' Gravity edges +1.
+- French Revolution: When 3+ History cards on board, -1 field effect to opponent's highest stat.
+- Renaissance: When 3+ cards from different categories on board, +1 Meaning to all cards.
+- Roman Empire: When 4+ History cards on board, +1 Durability to all ally cards.
+- Black Death: While on board, all enemy cards' Spread edges take -1 per turn.
+
+--- COMBO ---
+- Athena: Produces +1 extra combo point in Mind group matches.
+- Ballet: In Connection group matches, +1 extra combat bonus.
+- Impressionism: If 2+ combo matches in same turn, +1 extra point.
+- Jazz: When combo match occurs, gain +1 gold (max 2/turn).
+- Bioluminescence: When combo match occurs, +1 Harmony to neighboring ally cards that turn.
+- Nebula: When combo formed with Cosmos cards, +2 extra points.
+- Albert Einstein: Produces +2 extra points in MIND group combo matches.
+- Golden Ratio: If golden ratio placement (center + 6 neighbors full) on board, +3 points.
+
+--- KOPYA ---
+- Yggdrasil: Neighboring ally cards' copy counters advance +1 extra per turn.
+- Fungus: When copy strengthening occurs, apply same strengthening to neighboring ally card.
+- Coelacanth: In each copy strengthening, gains +2 instead of +1.
+- Event Horizon: Copy counter advances +1 extra per turn (copies Catalyst effect).
+- Space-Time: At copy strengthening, all ally cards on board +1 to all edges that turn.
+- Marie Curie: When copy strengthening occurs, gain +2 gold.
+- Charles Darwin: In each copy strengthening, next threshold comes 1 turn early.
+- DNA: At copy strengthening, +1 Durability permanently to all copies.
+
+--- HAYATTA_KALMA ---
+- Valhalla: If this card is destroyed, gain +3 gold next turn (once).
+- Phoenix: When destroyed, all edges reset to 1 and stay on board (once).
+- Frida Kahlo: When losing combat and an edge, regain +1 to that edge next turn.
+- Gothic Architecture: Before destruction, grants +1 Durability to neighboring ally cards.
+- Axolotl: First time destroyed, stays on board with all edges reset to 2 (once).
+- Tardigrade: When about to be destroyed, reset Durability group edges to 3, stay on board (twice).
+- Baobab: Before destruction, grants +2 Durability to all neighboring ally cards.
+- Betelgeuse: When about to be destroyed, explosion: -1 to highest edge of all neighboring cards (ally/enemy).
+- Supernova: When destroyed, deals -2 to highest edge of 3 neighboring enemy cards.
+
+--- EKONOMI ---
+- Exoplanet: If ◆◆◆◆ or ◆◆◆◆◆ cards in market per turn, +1 gold.
+- Algorithm: Gain +1 gold whenever market refreshes per turn.
+- Industrial Revolution: Gain +1 extra gold income per turn (fixed bonus).
+- Age of Discovery: When new card type first seen in market, +2 gold.
+- Silk Road: If 2+ cards bought per turn, +1 extra gold.
+- Ottoman Empire: Market refresh 1 gold discounted per turn.
+- Babylon: Interest income +1 extra (added to normal interest calculation).
+- Printing Press: When buying card from market, 25% chance to refund 1 gold.
+- Moon Landing: First ◆◆◆◆◆ card bought throughout game grants +5 gold bonus.

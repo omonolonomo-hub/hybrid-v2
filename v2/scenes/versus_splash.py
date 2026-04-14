@@ -1,0 +1,2 @@
+class VersusSplashScene:
+    pass

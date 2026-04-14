@@ -1,0 +1,87 @@
+[
+  {
+    "run_id": "b2b_test_combo50_greed08_spike1_copy2_001",
+    "idx": 1,
+    "combo": {
+      "builder.combo_weight": 0.5,
+      "builder.greed_gold_thresh": 8.0,
+      "builder.spike_buy_count": 1.0,
+      "builder.convert_buy_count": 2.0
+    },
+    "fitness": 2.485,
+    "win_rate": 0.7,
+    "avg_kill": 7.07,
+    "avg_hp": 0.07,
+    "elapsed": 555.1,
+    "promoted": true,
+    "timestamp": "2026-04-06T05:33:33.496825"
+  },
+  {
+    "run_id": "b2b_test_combo50_greed08_spike1_copy3_002",
+    "idx": 2,
+    "combo": {
+      "builder.combo_weight": 0.5,
+      "builder.greed_gold_thresh": 8.0,
+      "builder.spike_buy_count": 1.0,
+      "builder.convert_buy_count": 3.0
+    },
+    "fitness": 2.485,
+    "win_rate": 0.7,
+    "avg_kill": 7.07,
+    "avg_hp": 0.07,
+    "elapsed": 493.0,
+    "promoted": false,
+    "timestamp": "2026-04-06T05:41:46.487621"
+  },
+  {
+    "run_id": "b2b_test_combo50_greed08_spike2_copy2_003",
+    "idx": 3,
+    "combo": {
+      "builder.combo_weight": 0.5,
+      "builder.greed_gold_thresh": 8.0,
+      "builder.spike_buy_count": 2.0,
+      "builder.convert_buy_count": 2.0
+    },
+    "fitness": 2.485,
+    "win_rate": 0.7,
+    "avg_kill": 7.07,
+    "avg_hp": 0.07,
+    "elapsed": 421.3,
+    "promoted": false,
+    "timestamp": "2026-04-06T05:48:47.840136"
+  },
+  {
+    "run_id": "b2b_test_combo40_gte03_spike1_copy2_001",
+    "idx": 1,
+    "combo": {
+      "builder.combo_weight": 0.4,
+      "builder.greed_turn_end": 3.0,
+      "builder.spike_buy_count": 1.0,
+      "builder.convert_buy_count": 2.0
+    },
+    "fitness": 2.729,
+    "win_rate": 1.0,
+    "avg_kill": 7.35,
+    "avg_hp": 0.12,
+    "elapsed": 592.0,
+    "promoted": true,
+    "timestamp": "2026-04-06T06:19:00.085761"
+  },
+  {
+    "run_id": "b2b_test_combo40_gte03_spike1_copy3_002",
+    "idx": 2,
+    "combo": {
+      "builder.combo_weight": 0.4,
+      "builder.greed_turn_end": 3.0,
+      "builder.spike_buy_count": 1.0,
+      "builder.convert_buy_count": 3.0
+    },
+    "fitness": 2.729,
+    "win_rate": 1.0,
+    "avg_kill": 7.35,
+    "avg_hp": 0.12,
+    "elapsed": 524.8,
+    "promoted": false,
+    "timestamp": "2026-04-06T06:27:44.897913"
+  }
+]

@@ -1,0 +1,28 @@
+================================================================================
+CARD PERFORMANCE ANALYSIS
+================================================================================
+
+TOP 20 CARDS BY WIN RATE (min 50 picks)
+
+Card                                Win Rate     Picks     
+--------------------------------------------------------------------------------
+Minotaur                            30.5         2158      
+Coelacanth                          29.3         3749      
+Tardigrade                          29.3         1576      
+Asteroid Belt                       29.2         1913      
+Sirius                              27.4         993       
+Black Death                         26.7         3494      
+Cerberus                            26.5         2782      
+World War II                        26.4         4307      
+Roman Empire                        25.4         4451      
+Venus Flytrap                       24.9         1351      
+Industrial Revolution               24.8         2859      
+Blue Whale                          24.8         3952      
+Truva Atı                           24.6         1267      
+Komodo Dragon                       24.5         3203      
+Migration                           23.7         1225      
+Space-Time                          23.6         4962      
+Mantis Karidesi                     22.8         2860      
+E = mc²                             22.5         3375      
+Narwhal                             22.4         1148      
+Kraken                              22.4         3077      

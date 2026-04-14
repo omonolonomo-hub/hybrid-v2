@@ -1,0 +1,113 @@
+{
+  "config": {
+    "games": 1000,
+    "players": 8,
+    "seed": 2024
+  },
+  "runtime": {
+    "seconds": 450.42,
+    "games_per_sec": 2.22
+  },
+  "game_length": {
+    "avg": 32.12,
+    "median": 32.0,
+    "min": 24,
+    "max": 41,
+    "turn_50_hits": 0
+  },
+  "crashes": 0,
+  "total_bugs": 0,
+  "bugs_by_severity": {
+    "CRITICAL": 0,
+    "WARNING": 0,
+    "INFO": 0
+  },
+  "strategies": {
+    "random": {
+      "games_played": 1000,
+      "wins": 11,
+      "win_rate_pct": 1.1,
+      "avg_damage": 91.24,
+      "avg_kills": 6.48,
+      "avg_final_hp": 0.39,
+      "avg_synergy": 49.99,
+      "avg_eco_eff": 2.26
+    },
+    "warrior": {
+      "games_played": 1000,
+      "wins": 189,
+      "win_rate_pct": 18.9,
+      "avg_damage": 181.65,
+      "avg_kills": 18.4,
+      "avg_final_hp": 12.5,
+      "avg_synergy": 50.47,
+      "avg_eco_eff": 1.25
+    },
+    "builder": {
+      "games_played": 1000,
+      "wins": 94,
+      "win_rate_pct": 9.4,
+      "avg_damage": 145.15,
+      "avg_kills": 4.92,
+      "avg_final_hp": 5.1,
+      "avg_synergy": 51.17,
+      "avg_eco_eff": 2.47
+    },
+    "evolver": {
+      "games_played": 1000,
+      "wins": 89,
+      "win_rate_pct": 8.9,
+      "avg_damage": 144.43,
+      "avg_kills": 16.99,
+      "avg_final_hp": 4.5,
+      "avg_synergy": 49.92,
+      "avg_eco_eff": 1.47
+    },
+    "economist": {
+      "games_played": 1000,
+      "wins": 137,
+      "win_rate_pct": 13.7,
+      "avg_damage": 156.32,
+      "avg_kills": 16.64,
+      "avg_final_hp": 4.25,
+      "avg_synergy": 48.33,
+      "avg_eco_eff": 2.88
+    },
+    "balancer": {
+      "games_played": 1000,
+      "wins": 136,
+      "win_rate_pct": 13.6,
+      "avg_damage": 159.29,
+      "avg_kills": 17.93,
+      "avg_final_hp": 6.82,
+      "avg_synergy": 50.38,
+      "avg_eco_eff": 1.25
+    },
+    "rare_hunter": {
+      "games_played": 1000,
+      "wins": 164,
+      "win_rate_pct": 16.4,
+      "avg_damage": 174.59,
+      "avg_kills": 18.29,
+      "avg_final_hp": 10.46,
+      "avg_synergy": 50.41,
+      "avg_eco_eff": 1.22
+    },
+    "tempo": {
+      "games_played": 1000,
+      "wins": 180,
+      "win_rate_pct": 18.0,
+      "avg_damage": 178.14,
+      "avg_kills": 18.49,
+      "avg_final_hp": 11.93,
+      "avg_synergy": 50.46,
+      "avg_eco_eff": 1.23
+    }
+  },
+  "balance": {
+    "expected_win_rate_pct": 12.5,
+    "max_deviation_pct": 11.4,
+    "dominant_strategy": "warrior",
+    "weakest_strategy": "random"
+  }
+}

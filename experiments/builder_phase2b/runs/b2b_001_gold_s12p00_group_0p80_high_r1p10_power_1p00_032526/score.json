@@ -1,0 +1,20 @@
+{
+  "run_id": "b2b_001_gold_s12p00_group_0p80_high_r1p10_power_1p00_032526",
+  "fitness": 19.8398,
+  "detail": {
+    "win_rate": 1.0,
+    "avg_kill": 8.85,
+    "avg_hp": 0.07,
+    "gold_efficiency": 0.8772,
+    "max_deviation": 11.5,
+    "dominant": "rare_hunter",
+    "win_term": 3.0,
+    "kill_term": 13.275,
+    "gold_term": 3.5088,
+    "hp_term": 0.056,
+    "dev_penalty": 0.0,
+    "dur_penalty": 0.0,
+    "elapsed_s": 32.02
+  },
+  "timestamp": "2026-04-06T03:25:58.474124"
+}

@@ -1,0 +1,64 @@
+{
+    "defaults": {
+        "colours": {
+            "normal_bg":   "#12141F",
+            "hovered_bg":  "#1A2030",
+            "active_bg":   "#0D1525",
+            "selected_bg": "#102030",
+            "dark_bg":     "#0A0B12",
+            "normal_text":   "#DCE1F0",
+            "hovered_text":  "#00F2FF",
+            "active_text":   "#FFFFFF",
+            "selected_text": "#00F2FF",
+            "disabled_text": "#505A70",
+            "normal_border":   "#2C3450",
+            "hovered_border":  "#00F2FF",
+            "active_border":   "#00C8D4",
+            "selected_border": "#00F2FF",
+            "disabled_border": "#202535",
+            "link_text":       "#00F2FF",
+            "link_hover":      "#FF00FF",
+            "link_selected":   "#FFC832",
+            "text_shadow":     "#000000",
+            "filled_bar":      "#00F2FF",
+            "unfilled_bar":    "#202535"
+        },
+        "font": {
+            "name":   "fira_code",
+            "size":   "14",
+            "bold":   "0",
+            "italic": "0"
+        }
+    },
+    "button": {
+        "colours": {
+            "normal_bg":   "#141828",
+            "hovered_bg":  "#1C2840",
+            "active_bg":   "#0A1020",
+            "normal_border":   "#00F2FF",
+            "hovered_border":  "#FF00FF",
+            "active_border":   "#00F2FF",
+            "normal_text":   "#00F2FF",
+            "hovered_text":  "#FFFFFF",
+            "active_text":   "#FFC832"
+        },
+        "misc": {
+            "border_width":  "1",
+            "border_radius": "6",
+            "shadow_width":  "0"
+        }
+    },
+    "drop_down_menu": {
+        "colours": {
+            "normal_bg":     "#141828",
+            "normal_border": "#00F2FF",
+            "normal_text":   "#DCE1F0"
+        }
+    },
+    "label": {
+        "colours": {
+            "normal_text": "#6469A0",
+            "dark_bg":     "#0A0B12"
+        }
+    }
+}

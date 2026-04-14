@@ -1,0 +1,14 @@
+{
+  "run_id": "b2b_test_combo40_gte03_spike1_copy2_001",
+  "fitness": 2.729,
+  "detail": {
+    "win_rate": 1.0,
+    "avg_kill": 7.35,
+    "avg_hp": 0.12,
+    "win_term": 0.5,
+    "kill_term": 2.205,
+    "hp_term": 0.024,
+    "elapsed_s": 591.96
+  },
+  "timestamp": "2026-04-06T06:19:00.059679"
+}

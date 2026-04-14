@@ -1,0 +1,1517 @@
+[
+  {
+    "name": "Odin",
+    "category": "Mythology & Gods",
+    "rarity": "◆◆◆◆",
+    "stats": {
+      "Power": 7,
+      "Durability": 6,
+      "Meaning": 9,
+      "Secret": 6,
+      "Gravity": 7,
+      "Prestige": 7
+    },
+    "passive_type": "synergy_field",
+    "passive_effect": "While on board, spreads +1 Meaning to neighboring Mythology cards."
+  },
+  {
+    "name": "Anubis",
+    "category": "Mythology & Gods",
+    "rarity": "◆◆◆",
+    "stats": {
+      "Power": 5,
+      "Durability": 7,
+      "Meaning": 7,
+      "Secret": 8,
+      "Gravity": 5,
+      "Spread": 4
+    },
+    "passive_type": "combat",
+    "passive_effect": "Accumulates +1 Secret for each destroyed card (max +2). Resets at turn end."
+  },
+  {
+    "name": "Quetzalcoatl",
+    "category": "Mythology & Gods",
+    "rarity": "◆◆◆◆",
+    "stats": {
+      "Power": 6,
+      "Speed": 8,
+      "Meaning": 8,
+      "Gravity": 6,
+      "Spread": 7,
+      "Prestige": 7
+    },
+    "passive_type": "combat",
+    "passive_effect": "If combat is won, grants +1 Speed to 1 neighboring ally card for that turn."
+  },
+  {
+    "name": "Athena",
+    "category": "Mythology & Gods",
+    "rarity": "◆◆◆",
+    "stats": {
+      "Durability": 7,
+      "Size": 5,
+      "Meaning": 8,
+      "Intelligence": 7,
+      "Harmony": 5,
+      "Prestige": 5
+    },
+    "passive_type": "combo",
+    "passive_effect": "Produces +1 extra combo point in Mind group matches."
+  },
+  {
+    "name": "Loki",
+    "category": "Mythology & Gods",
+    "rarity": "◆◆◆",
+    "stats": {
+      "Size": 5,
+      "Speed": 7,
+      "Secret": 8,
+      "Gravity": 5,
+      "Spread": 5,
+      "Trace": 7
+    },
+    "passive_type": "combat",
+    "passive_effect": "If combat is won, -1 Meaning to opponent's highest-edged card for that turn."
+  },
+  {
+    "name": "Yggdrasil",
+    "category": "Mythology & Gods",
+    "rarity": "◆◆◆◆◆",
+    "stats": {
+      "Power": 7,
+      "Durability": 9,
+      "Meaning": 9,
+      "Harmony": 8,
+      "Spread": 9,
+      "Prestige": 8
+    },
+    "passive_type": "copy",
+    "passive_effect": "Neighboring ally cards' copy counters advance +1 extra per turn."
+  },
+  {
+    "name": "Valhalla",
+    "category": "Mythology & Gods",
+    "rarity": "◆◆◆",
+    "stats": {
+      "Power": 6,
+      "Durability": 8,
+      "Meaning": 7,
+      "Secret": 5,
+      "Gravity": 6,
+      "Prestige": 7
+    },
+    "passive_type": "survival",
+    "passive_effect": "If this card is destroyed, gain +3 gold next turn (once)."
+  },
+  {
+    "name": "Olympus",
+    "category": "Mythology & Gods",
+    "rarity": "◆◆◆",
+    "stats": {
+      "Power": 5,
+      "Size": 7,
+      "Meaning": 7,
+      "Intelligence": 5,
+      "Gravity": 7,
+      "Prestige": 8
+    },
+    "passive_type": "synergy_field",
+    "passive_effect": "When 3+ Mythology cards on board, +1 Prestige to all Mythology cards."
+  },
+  {
+    "name": "Ragnarök",
+    "category": "Mythology & Gods",
+    "rarity": "◆◆◆◆",
+    "stats": {
+      "Power": 9,
+      "Durability": 7,
+      "Speed": 8,
+      "Meaning": 7,
+      "Secret": 8,
+      "Spread": 9
+    },
+    "passive_type": "combat",
+    "passive_effect": "If combat is won, -1 to opponent's random card's highest edge."
+  },
+  {
+    "name": "Pandora'nın Kutusu",
+    "category": "Mythology & Gods",
+    "rarity": "◆◆◆",
+    "stats": {
+      "Size": 6,
+      "Speed": 5,
+      "Secret": 8,
+      "Gravity": 5,
+      "Spread": 6,
+      "Trace": 7
+    },
+    "passive_type": "none",
+    "passive_effect": "—"
+  },
+  {
+    "name": "Midas Dokunuşu",
+    "category": "Mythology & Gods",
+    "rarity": "◆◆",
+    "stats": {
+      "Power": 5,
+      "Size": 5,
+      "Meaning": 5,
+      "Gravity": 5,
+      "Prestige": 6,
+      "Trace": 6
+    },
+    "passive_type": "economy",
+    "passive_effect": "If win streak 2+, gain +1 gold in income phase."
+  },
+  {
+    "name": "Truva Atı",
+    "category": "Mythology & Gods",
+    "rarity": "◆◆",
+    "stats": {
+      "Power": 5,
+      "Durability": 6,
+      "Speed": 5,
+      "Secret": 7,
+      "Spread": 4,
+      "Trace": 6
+    },
+    "passive_type": "none",
+    "passive_effect": "When Eclipse active, this card's Secret value +2."
+  },
+  {
+    "name": "Medusa",
+    "category": "Mythology & Gods",
+    "rarity": "◆◆◆",
+    "stats": {
+      "Power": 6,
+      "Speed": 6,
+      "Secret": 7,
+      "Gravity": 5,
+      "Spread": 5,
+      "Trace": 7
+    },
+    "passive_type": "synergy_field",
+    "passive_effect": "Opponent cards initiating combat against this card take -1 Speed field effect that turn."
+  },
+  {
+    "name": "Minotaur",
+    "category": "Mythology & Gods",
+    "rarity": "◆◆",
+    "stats": {
+      "Power": 7,
+      "Durability": 7,
+      "Size": 5,
+      "Speed": 4,
+      "Meaning": 3,
+      "Gravity": 5
+    },
+    "passive_type": "combat",
+    "passive_effect": "When combat lost, accumulates +1 Power per lost edge (max +2, resets at turn end)."
+  },
+  {
+    "name": "Phoenix",
+    "category": "Mythology & Gods",
+    "rarity": "◆◆◆◆",
+    "stats": {
+      "Power": 6,
+      "Speed": 8,
+      "Meaning": 7,
+      "Secret": 6,
+      "Gravity": 7,
+      "Spread": 7
+    },
+    "passive_type": "survival",
+    "passive_effect": "When destroyed, all edges reset to 1 and stay on board (once)."
+  },
+  {
+    "name": "Kraken",
+    "category": "Mythology & Gods",
+    "rarity": "◆◆◆◆",
+    "stats": {
+      "Power": 9,
+      "Durability": 8,
+      "Size": 7,
+      "Gravity": 6,
+      "Harmony": 5,
+      "Spread": 6
+    },
+    "passive_type": "synergy_field",
+    "passive_effect": "While on board, neighboring enemy cards' Connection edges take -1 field effect."
+  },
+  {
+    "name": "Cerberus",
+    "category": "Mythology & Gods",
+    "rarity": "◆◆◆",
+    "stats": {
+      "Power": 7,
+      "Durability": 8,
+      "Size": 5,
+      "Speed": 6,
+      "Gravity": 5,
+      "Trace": 5
+    },
+    "passive_type": "combat",
+    "passive_effect": "If combat won from 3 directions simultaneously, +3 extra points."
+  },
+  {
+    "name": "Guernica",
+    "category": "Art & Culture",
+    "rarity": "◆◆◆◆",
+    "stats": {
+      "Size": 7,
+      "Meaning": 9,
+      "Secret": 7,
+      "Spread": 8,
+      "Prestige": 7,
+      "Trace": 8
+    },
+    "passive_type": "combat",
+    "passive_effect": "Accumulates +1 point per combat loss (max +3/turn)."
+  },
+  {
+    "name": "The Persistence of Memory",
+    "category": "Art & Culture",
+    "rarity": "◆◆◆",
+    "stats": {
+      "Size": 6,
+      "Speed": 3,
+      "Meaning": 9,
+      "Secret": 7,
+      "Gravity": 5,
+      "Trace": 7
+    },
+    "passive_type": "none",
+    "passive_effect": "—"
+  },
+  {
+    "name": "Frida Kahlo",
+    "category": "Art & Culture",
+    "rarity": "◆◆◆",
+    "stats": {
+      "Power": 5,
+      "Durability": 6,
+      "Meaning": 8,
+      "Secret": 7,
+      "Prestige": 7,
+      "Trace": 7
+    },
+    "passive_type": "survival",
+    "passive_effect": "When losing combat and an edge, regain +1 to that edge next turn."
+  },
+  {
+    "name": "Ballet",
+    "category": "Art & Culture",
+    "rarity": "◆◆",
+    "stats": {
+      "Size": 5,
+      "Speed": 7,
+      "Meaning": 5,
+      "Intelligence": 4,
+      "Harmony": 6,
+      "Prestige": 5
+    },
+    "passive_type": "combo",
+    "passive_effect": "In Connection group matches, +1 extra combat bonus."
+  },
+  {
+    "name": "Opera",
+    "category": "Art & Culture",
+    "rarity": "◆◆",
+    "stats": {
+      "Durability": 5,
+      "Size": 5,
+      "Meaning": 6,
+      "Secret": 5,
+      "Spread": 6,
+      "Prestige": 5
+    },
+    "passive_type": "synergy_field",
+    "passive_effect": "When 2+ Art cards on board, +1 Prestige to all Art cards."
+  },
+  {
+    "name": "Graffiti",
+    "category": "Art & Culture",
+    "rarity": "◆",
+    "stats": {
+      "Power": 3,
+      "Speed": 5,
+      "Gravity": 3,
+      "Spread": 5,
+      "Prestige": 5,
+      "Trace": 4
+    },
+    "passive_type": "none",
+    "passive_effect": "—"
+  },
+  {
+    "name": "Cubism",
+    "category": "Art & Culture",
+    "rarity": "◆◆",
+    "stats": {
+      "Size": 7,
+      "Meaning": 5,
+      "Intelligence": 6,
+      "Spread": 5,
+      "Prestige": 5,
+      "Trace": 5
+    },
+    "passive_type": "combat",
+    "passive_effect": "If combat is won, opponent's Size edge -1 for that turn."
+  },
+  {
+    "name": "Surrealism",
+    "category": "Art & Culture",
+    "rarity": "◆◆◆",
+    "stats": {
+      "Size": 6,
+      "Speed": 5,
+      "Meaning": 7,
+      "Secret": 9,
+      "Gravity": 5,
+      "Trace": 7
+    },
+    "passive_type": "none",
+    "passive_effect": "When Eclipse active, Secret edge +3."
+  },
+  {
+    "name": "Impressionism",
+    "category": "Art & Culture",
+    "rarity": "◆◆",
+    "stats": {
+      "Size": 5,
+      "Speed": 5,
+      "Meaning": 6,
+      "Harmony": 6,
+      "Prestige": 5,
+      "Trace": 6
+    },
+    "passive_type": "combo",
+    "passive_effect": "If 2+ combo matches in same turn, +1 extra point."
+  },
+  {
+    "name": "Pop Art",
+    "category": "Art & Culture",
+    "rarity": "◆",
+    "stats": {
+      "Power": 3,
+      "Speed": 4,
+      "Gravity": 4,
+      "Spread": 5,
+      "Prestige": 5,
+      "Trace": 4
+    },
+    "passive_type": "none",
+    "passive_effect": "—"
+  },
+  {
+    "name": "Minimalism",
+    "category": "Art & Culture",
+    "rarity": "◆",
+    "stats": {
+      "Durability": 5,
+      "Size": 5,
+      "Meaning": 5,
+      "Intelligence": 4,
+      "Harmony": 4,
+      "Prestige": 4
+    },
+    "passive_type": "none",
+    "passive_effect": "—"
+  },
+  {
+    "name": "Gothic Architecture",
+    "category": "Art & Culture",
+    "rarity": "◆◆◆",
+    "stats": {
+      "Power": 5,
+      "Durability": 9,
+      "Size": 7,
+      "Meaning": 6,
+      "Gravity": 5,
+      "Prestige": 6
+    },
+    "passive_type": "survival",
+    "passive_effect": "Before destruction, grants +1 Durability to neighboring ally cards."
+  },
+  {
+    "name": "Baroque",
+    "category": "Art & Culture",
+    "rarity": "◆◆",
+    "stats": {
+      "Durability": 5,
+      "Size": 6,
+      "Meaning": 7,
+      "Secret": 5,
+      "Spread": 2,
+      "Prestige": 7
+    },
+    "passive_type": "synergy_field",
+    "passive_effect": "When 2+ Art cards on board, +1 to Prestige edges."
+  },
+  {
+    "name": "Jazz",
+    "category": "Art & Culture",
+    "rarity": "◆◆",
+    "stats": {
+      "Size": 4,
+      "Speed": 7,
+      "Meaning": 5,
+      "Secret": 5,
+      "Harmony": 6,
+      "Spread": 5
+    },
+    "passive_type": "combo",
+    "passive_effect": "When combo match occurs, gain +1 gold (max 2/turn)."
+  },
+  {
+    "name": "Flamenco",
+    "category": "Art & Culture",
+    "rarity": "◆◆",
+    "stats": {
+      "Power": 5,
+      "Speed": 8,
+      "Meaning": 5,
+      "Harmony": 5,
+      "Prestige": 4,
+      "Trace": 5
+    },
+    "passive_type": "combat",
+    "passive_effect": "If combat is won, +1 Speed to all ally cards that turn."
+  },
+  {
+    "name": "Kabuki",
+    "category": "Art & Culture",
+    "rarity": "◆◆◆",
+    "stats": {
+      "Durability": 6,
+      "Size": 6,
+      "Meaning": 7,
+      "Secret": 7,
+      "Prestige": 7,
+      "Trace": 7
+    },
+    "passive_type": "synergy_field",
+    "passive_effect": "When Eclipse active, spreads +1 Secret to neighboring ally cards."
+  },
+  {
+    "name": "Shadow Puppetry",
+    "category": "Art & Culture",
+    "rarity": "◆",
+    "stats": {
+      "Size": 3,
+      "Speed": 4,
+      "Secret": 4,
+      "Spread": 5,
+      "Prestige": 4,
+      "Trace": 5
+    },
+    "passive_type": "none",
+    "passive_effect": "—"
+  },
+  {
+    "name": "Blue Whale",
+    "category": "Nature & Creatures",
+    "rarity": "◆◆◆◆",
+    "stats": {
+      "Power": 8,
+      "Durability": 9,
+      "Size": 9,
+      "Speed": 4,
+      "Harmony": 6,
+      "Spread": 5
+    },
+    "passive_type": "synergy_field",
+    "passive_effect": "When 3+ Nature cards on board, +1 Harmony to all ally cards."
+  },
+  {
+    "name": "Komodo Dragon",
+    "category": "Nature & Creatures",
+    "rarity": "◆◆◆",
+    "stats": {
+      "Power": 8,
+      "Durability": 6,
+      "Size": 5,
+      "Speed": 7,
+      "Gravity": 5,
+      "Trace": 6
+    },
+    "passive_type": "combat",
+    "passive_effect": "If combat is won, opponent's lowest stat edge -2 for that turn."
+  },
+  {
+    "name": "Axolotl",
+    "category": "Nature & Creatures",
+    "rarity": "◆◆",
+    "stats": {
+      "Durability": 6,
+      "Speed": 6,
+      "Meaning": 4,
+      "Secret": 5,
+      "Harmony": 6,
+      "Spread": 6
+    },
+    "passive_type": "survival",
+    "passive_effect": "First time destroyed, stays on board with all edges reset to 2 (once)."
+  },
+  {
+    "name": "Narwhal",
+    "category": "Nature & Creatures",
+    "rarity": "◆◆",
+    "stats": {
+      "Power": 6,
+      "Size": 5,
+      "Speed": 6,
+      "Secret": 6,
+      "Gravity": 5,
+      "Spread": 5
+    },
+    "passive_type": "combat",
+    "passive_effect": "Combat kazanılırsa +1 Güç kalıcı birikir (maks +3 oyun boyunca)."
+  },
+  {
+    "name": "Platypus",
+    "category": "Nature & Creatures",
+    "rarity": "◆",
+    "stats": {
+      "Power": 4,
+      "Size": 4,
+      "Speed": 5,
+      "Secret": 5,
+      "Harmony": 5,
+      "Spread": 5
+    },
+    "passive_type": "none",
+    "passive_effect": "—"
+  },
+  {
+    "name": "Coral Reef",
+    "category": "Nature & Creatures",
+    "rarity": "◆◆◆",
+    "stats": {
+      "Durability": 6,
+      "Size": 6,
+      "Meaning": 5,
+      "Harmony": 8,
+      "Spread": 7,
+      "Prestige": 5
+    },
+    "passive_type": "synergy_field",
+    "passive_effect": "Spreads +1 Harmony to neighboring ally Nature cards per turn."
+  },
+  {
+    "name": "Rainforest",
+    "category": "Nature & Creatures",
+    "rarity": "◆◆◆",
+    "stats": {
+      "Durability": 7,
+      "Size": 6,
+      "Meaning": 5,
+      "Harmony": 7,
+      "Spread": 8,
+      "Prestige": 4
+    },
+    "passive_type": "synergy_field",
+    "passive_effect": "When 4+ Nature cards on board, +1 Spread to all Nature cards."
+  },
+  {
+    "name": "Migration",
+    "category": "Nature & Creatures",
+    "rarity": "◆◆",
+    "stats": {
+      "Power": 4,
+      "Size": 5,
+      "Speed": 8,
+      "Gravity": 4,
+      "Spread": 6,
+      "Trace": 6
+    },
+    "passive_type": "none",
+    "passive_effect": "If at least 5 cards on board per turn, +1 Speed to all ally cards."
+  },
+  {
+    "name": "Camouflage",
+    "category": "Nature & Creatures",
+    "rarity": "◆◆",
+    "stats": {
+      "Size": 5,
+      "Speed": 6,
+      "Secret": 7,
+      "Harmony": 5,
+      "Spread": 5,
+      "Trace": 6
+    },
+    "passive_type": "none",
+    "passive_effect": "When Eclipse active, opponent cannot see this card's stats."
+  },
+  {
+    "name": "Venus Flytrap",
+    "category": "Nature & Creatures",
+    "rarity": "◆◆",
+    "stats": {
+      "Power": 6,
+      "Durability": 5,
+      "Speed": 4,
+      "Secret": 5,
+      "Gravity": 6,
+      "Trace": 6
+    },
+    "passive_type": "combat",
+    "passive_effect": "If combat is won, opponent's Gravity edge permanently -1 (max -2)."
+  },
+  {
+    "name": "Bioluminescence",
+    "category": "Nature & Creatures",
+    "rarity": "◆◆◆",
+    "stats": {
+      "Size": 6,
+      "Speed": 5,
+      "Meaning": 6,
+      "Secret": 7,
+      "Harmony": 7,
+      "Spread": 7
+    },
+    "passive_type": "combo",
+    "passive_effect": "When combo match occurs, +1 Harmony to neighboring ally cards that turn."
+  },
+  {
+    "name": "Fungus",
+    "category": "Nature & Creatures",
+    "rarity": "◆◆",
+    "stats": {
+      "Durability": 5,
+      "Size": 5,
+      "Meaning": 5,
+      "Harmony": 6,
+      "Spread": 5,
+      "Trace": 7
+    },
+    "passive_type": "copy",
+    "passive_effect": "When copy strengthening occurs, apply same strengthening to neighboring ally card."
+  },
+  {
+    "name": "Tardigrade",
+    "category": "Nature & Creatures",
+    "rarity": "◆◆◆",
+    "stats": {
+      "Power": 3,
+      "Durability": 9,
+      "Size": 4,
+      "Speed": 3,
+      "Harmony": 6,
+      "Spread": 5
+    },
+    "passive_type": "survival",
+    "passive_effect": "When about to be destroyed, reset Durability group edges to 3, stay on board (twice)."
+  },
+  {
+    "name": "Mantis Karidesi",
+    "category": "Nature & Creatures",
+    "rarity": "◆◆◆◆",
+    "stats": {
+      "Power": 9,
+      "Size": 6,
+      "Speed": 8,
+      "Intelligence": 6,
+      "Gravity": 6,
+      "Trace": 6
+    },
+    "passive_type": "none",
+    "passive_effect": "—"
+  },
+  {
+    "name": "Cordyceps",
+    "category": "Nature & Creatures",
+    "rarity": "◆◆◆◆",
+    "stats": {
+      "Power": 5,
+      "Durability": 5,
+      "Secret": 8,
+      "Harmony": 7,
+      "Spread": 7,
+      "Trace": 8
+    },
+    "passive_type": "synergy_field",
+    "passive_effect": "While on board, opponent's neighboring cards take -1 Trace per turn."
+  },
+  {
+    "name": "Baobab",
+    "category": "Nature & Creatures",
+    "rarity": "◆◆◆",
+    "stats": {
+      "Power": 5,
+      "Durability": 8,
+      "Size": 7,
+      "Meaning": 6,
+      "Harmony": 6,
+      "Prestige": 5
+    },
+    "passive_type": "survival",
+    "passive_effect": "Before destruction, grants +2 Durability to all neighboring ally cards."
+  },
+  {
+    "name": "Coelacanth",
+    "category": "Nature & Creatures",
+    "rarity": "◆◆◆◆◆",
+    "stats": {
+      "Power": 7,
+      "Durability": 8,
+      "Size": 8,
+      "Speed": 6,
+      "Harmony": 8,
+      "Spread": 8
+    },
+    "passive_type": "copy",
+    "passive_effect": "In each copy strengthening, gains +2 instead of +1."
+  },
+  {
+    "name": "Milky Way",
+    "category": "Cosmos",
+    "rarity": "◆◆◆◆",
+    "stats": {
+      "Power": 7,
+      "Size": 9,
+      "Meaning": 7,
+      "Gravity": 8,
+      "Spread": 9,
+      "Prestige": 6
+    },
+    "passive_type": "synergy_field",
+    "passive_effect": "When 3+ Cosmos cards on board, +1 Gravity to all Cosmos cards."
+  },
+  {
+    "name": "Andromeda Galaxy",
+    "category": "Cosmos",
+    "rarity": "◆◆◆◆",
+    "stats": {
+      "Power": 6,
+      "Size": 9,
+      "Meaning": 7,
+      "Gravity": 9,
+      "Spread": 8,
+      "Prestige": 7
+    },
+    "passive_type": "synergy_field",
+    "passive_effect": "When 4+ Cosmos cards on board, Gravity edges +2."
+  },
+  {
+    "name": "Sirius",
+    "category": "Cosmos",
+    "rarity": "◆◆",
+    "stats": {
+      "Power": 6,
+      "Size": 5,
+      "Speed": 7,
+      "Meaning": 5,
+      "Gravity": 5,
+      "Spread": 4
+    },
+    "passive_type": "combat",
+    "passive_effect": "If combat is won, accumulates +1 Speed permanently (max +2)."
+  },
+  {
+    "name": "Betelgeuse",
+    "category": "Cosmos",
+    "rarity": "◆◆◆",
+    "stats": {
+      "Power": 8,
+      "Durability": 5,
+      "Size": 8,
+      "Speed": 5,
+      "Gravity": 7,
+      "Spread": 6
+    },
+    "passive_type": "survival",
+    "passive_effect": "When about to be destroyed, explosion: -1 to highest edge of all neighboring cards (ally/enemy)."
+  },
+  {
+    "name": "Europa",
+    "category": "Cosmos",
+    "rarity": "◆◆",
+    "stats": {
+      "Durability": 6,
+      "Size": 6,
+      "Meaning": 5,
+      "Secret": 6,
+      "Harmony": 5,
+      "Spread": 5
+    },
+    "passive_type": "synergy_field",
+    "passive_effect": "Spreads +1 Harmony to neighboring ally Cosmos cards."
+  },
+  {
+    "name": "Black Hole",
+    "category": "Cosmos",
+    "rarity": "◆◆◆◆◆",
+    "stats": {
+      "Power": 9,
+      "Size": 9,
+      "Meaning": 8,
+      "Gravity": 10,
+      "Spread": 6,
+      "Prestige": 8
+    },
+    "passive_type": "synergy_field",
+    "passive_effect": "While on board, pulls -1 Gravity from opponent's center card per turn."
+  },
+  {
+    "name": "Supernova",
+    "category": "Cosmos",
+    "rarity": "◆◆◆◆",
+    "stats": {
+      "Power": 9,
+      "Size": 7,
+      "Speed": 8,
+      "Meaning": 7,
+      "Gravity": 6,
+      "Spread": 6
+    },
+    "passive_type": "survival",
+    "passive_effect": "When destroyed, deals -2 to highest edge of 3 neighboring enemy cards."
+  },
+  {
+    "name": "Nebula",
+    "category": "Cosmos",
+    "rarity": "◆◆◆",
+    "stats": {
+      "Durability": 6,
+      "Size": 7,
+      "Meaning": 6,
+      "Secret": 6,
+      "Harmony": 7,
+      "Spread": 7
+    },
+    "passive_type": "combo",
+    "passive_effect": "Kozmos kartlarıyla combo kurulduğunda +2 ekstra puan."
+  },
+  {
+    "name": "Dark Matter",
+    "category": "Cosmos",
+    "rarity": "◆◆◆◆",
+    "stats": {
+      "Power": 7,
+      "Size": 8,
+      "Meaning": 8,
+      "Secret": 8,
+      "Gravity": 8,
+      "Trace": 8
+    },
+    "passive_type": "none",
+    "passive_effect": "When Eclipse active, all edges are invisible to opponent."
+  },
+  {
+    "name": "Event Horizon",
+    "category": "Cosmos",
+    "rarity": "◆◆◆◆",
+    "stats": {
+      "Power": 8,
+      "Size": 8,
+      "Meaning": 7,
+      "Gravity": 9,
+      "Prestige": 7,
+      "Trace": 7
+    },
+    "passive_type": "copy",
+    "passive_effect": "Copy counter advances +1 extra per turn (copies Catalyst effect)."
+  },
+  {
+    "name": "Asteroid Belt",
+    "category": "Cosmos",
+    "rarity": "◆◆",
+    "stats": {
+      "Power": 5,
+      "Durability": 6,
+      "Size": 6,
+      "Speed": 5,
+      "Gravity": 5,
+      "Spread": 5
+    },
+    "passive_type": "combat",
+    "passive_effect": "If combat is won, spreads -1 Size field effect to opponent's board (to neighbors)."
+  },
+  {
+    "name": "Pulsar",
+    "category": "Cosmos",
+    "rarity": "◆◆◆",
+    "stats": {
+      "Power": 6,
+      "Size": 7,
+      "Speed": 9,
+      "Meaning": 5,
+      "Gravity": 6,
+      "Spread": 6
+    },
+    "passive_type": "combat",
+    "passive_effect": "First combat win per turn grants +2 extra points."
+  },
+  {
+    "name": "Quasar",
+    "category": "Cosmos",
+    "rarity": "◆◆◆◆",
+    "stats": {
+      "Power": 8,
+      "Size": 8,
+      "Meaning": 7,
+      "Gravity": 7,
+      "Spread": 8,
+      "Prestige": 8
+    },
+    "passive_type": "synergy_field",
+    "passive_effect": "When 3+ Cosmos cards on board, +1 Spread to all cards."
+  },
+  {
+    "name": "Cosmic Microwave Background",
+    "category": "Cosmos",
+    "rarity": "◆◆◆◆",
+    "stats": {
+      "Power": 6,
+      "Size": 9,
+      "Meaning": 9,
+      "Secret": 8,
+      "Spread": 9,
+      "Prestige": 7
+    },
+    "passive_type": "none",
+    "passive_effect": "—"
+  },
+  {
+    "name": "Gravity",
+    "category": "Cosmos",
+    "rarity": "◆◆◆",
+    "stats": {
+      "Power": 6,
+      "Durability": 6,
+      "Size": 7,
+      "Meaning": 5,
+      "Gravity": 9,
+      "Spread": 5
+    },
+    "passive_type": "synergy_field",
+    "passive_effect": "Neighboring all cards (ally/enemy) take -1 Speed field effect per turn."
+  },
+  {
+    "name": "Exoplanet",
+    "category": "Cosmos",
+    "rarity": "◆◆",
+    "stats": {
+      "Durability": 5,
+      "Size": 6,
+      "Meaning": 5,
+      "Secret": 5,
+      "Gravity": 6,
+      "Spread": 5
+    },
+    "passive_type": "economy",
+    "passive_effect": "If ◆◆◆◆ or ◆◆◆◆◆ cards in market per turn, +1 gold."
+  },
+  {
+    "name": "Space-Time",
+    "category": "Cosmos",
+    "rarity": "◆◆◆◆",
+    "stats": {
+      "Power": 7,
+      "Size": 9,
+      "Speed": 8,
+      "Meaning": 8,
+      "Gravity": 8,
+      "Trace": 8
+    },
+    "passive_type": "copy",
+    "passive_effect": "At copy strengthening, all ally cards on board +1 to all edges that turn."
+  },
+  {
+    "name": "Albert Einstein",
+    "category": "Science",
+    "rarity": "◆◆◆◆◆",
+    "stats": {
+      "Power": 5,
+      "Size": 9,
+      "Meaning": 10,
+      "Intelligence": 10,
+      "Prestige": 9,
+      "Trace": 9
+    },
+    "passive_type": "combo",
+    "passive_effect": "Produces +2 extra points in MIND group combo matches."
+  },
+  {
+    "name": "Isaac Newton",
+    "category": "Science",
+    "rarity": "◆◆◆◆",
+    "stats": {
+      "Power": 6,
+      "Size": 7,
+      "Meaning": 8,
+      "Intelligence": 9,
+      "Prestige": 8,
+      "Trace": 8
+    },
+    "passive_type": "synergy_field",
+    "passive_effect": "When 3+ Science cards on board, +1 Intelligence to all Science cards."
+  },
+  {
+    "name": "Marie Curie",
+    "category": "Science",
+    "rarity": "◆◆◆◆",
+    "stats": {
+      "Power": 4,
+      "Durability": 6,
+      "Meaning": 9,
+      "Intelligence": 9,
+      "Prestige": 8,
+      "Trace": 8
+    },
+    "passive_type": "copy",
+    "passive_effect": "Kopya güçlenme gerçekleştiğinde +2 altın kazanılır."
+  },
+  {
+    "name": "Charles Darwin",
+    "category": "Science",
+    "rarity": "◆◆◆",
+    "stats": {
+      "Power": 4,
+      "Durability": 5,
+      "Meaning": 8,
+      "Intelligence": 7,
+      "Spread": 7,
+      "Trace": 7
+    },
+    "passive_type": "copy",
+    "passive_effect": "In each copy strengthening, next threshold comes 1 turn early."
+  },
+  {
+    "name": "Nikola Tesla",
+    "category": "Science",
+    "rarity": "◆◆◆◆",
+    "stats": {
+      "Power": 7,
+      "Speed": 7,
+      "Meaning": 8,
+      "Intelligence": 8,
+      "Prestige": 7,
+      "Trace": 7
+    },
+    "passive_type": "synergy_field",
+    "passive_effect": "Spreads +1 Intelligence to neighboring ally Science cards, electric chain."
+  },
+  {
+    "name": "E = mc²",
+    "category": "Science",
+    "rarity": "◆◆◆◆◆",
+    "stats": {
+      "Power": 9,
+      "Size": 8,
+      "Meaning": 9,
+      "Intelligence": 9,
+      "Prestige": 8,
+      "Trace": 8
+    },
+    "passive_type": "none",
+    "passive_effect": "—"
+  },
+  {
+    "name": "π (Pi)",
+    "category": "Science",
+    "rarity": "◆◆◆",
+    "stats": {
+      "Size": 7,
+      "Speed": 5,
+      "Meaning": 7,
+      "Intelligence": 8,
+      "Spread": 6,
+      "Trace": 6
+    },
+    "passive_type": "none",
+    "passive_effect": "—"
+  },
+  {
+    "name": "Golden Ratio",
+    "category": "Science",
+    "rarity": "◆◆◆",
+    "stats": {
+      "Durability": 5,
+      "Size": 7,
+      "Meaning": 7,
+      "Intelligence": 7,
+      "Harmony": 7,
+      "Prestige": 7
+    },
+    "passive_type": "combo",
+    "passive_effect": "If golden ratio placement (center + 6 neighbors full) on board, +3 points."
+  },
+  {
+    "name": "Schrödinger's Cat",
+    "category": "Science",
+    "rarity": "◆◆◆",
+    "stats": {
+      "Size": 6,
+      "Speed": 5,
+      "Meaning": 7,
+      "Secret": 8,
+      "Intelligence": 7,
+      "Trace": 6
+    },
+    "passive_type": "none",
+    "passive_effect": "—"
+  },
+  {
+    "name": "Quantum Mechanics",
+    "category": "Science",
+    "rarity": "◆◆◆◆",
+    "stats": {
+      "Power": 5,
+      "Size": 8,
+      "Meaning": 8,
+      "Secret": 8,
+      "Intelligence": 8,
+      "Trace": 7
+    },
+    "passive_type": "combat",
+    "passive_effect": "When combat won, opponent's random 2 edges swap."
+  },
+  {
+    "name": "Entropy",
+    "category": "Science",
+    "rarity": "◆◆◆",
+    "stats": {
+      "Power": 5,
+      "Durability": 4,
+      "Size": 7,
+      "Meaning": 7,
+      "Secret": 7,
+      "Spread": 8
+    },
+    "passive_type": "synergy_field",
+    "passive_effect": "While on board, all cards' highest edge decreases by -1 every 3 turns."
+  },
+  {
+    "name": "DNA",
+    "category": "Science",
+    "rarity": "◆◆◆",
+    "stats": {
+      "Durability": 6,
+      "Size": 6,
+      "Meaning": 7,
+      "Intelligence": 6,
+      "Harmony": 7,
+      "Spread": 7
+    },
+    "passive_type": "copy",
+    "passive_effect": "At copy strengthening, +1 Durability permanently to all copies."
+  },
+  {
+    "name": "Periodic Table",
+    "category": "Science",
+    "rarity": "◆◆◆",
+    "stats": {
+      "Power": 5,
+      "Durability": 6,
+      "Size": 6,
+      "Meaning": 7,
+      "Intelligence": 8,
+      "Prestige": 6
+    },
+    "passive_type": "synergy_field",
+    "passive_effect": "When 4+ Science cards on board, +1 Intelligence +1 Meaning to all Science cards."
+  },
+  {
+    "name": "Algorithm",
+    "category": "Science",
+    "rarity": "◆◆",
+    "stats": {
+      "Size": 6,
+      "Speed": 6,
+      "Meaning": 5,
+      "Intelligence": 7,
+      "Spread": 3,
+      "Trace": 5
+    },
+    "passive_type": "economy",
+    "passive_effect": "Gain +1 gold whenever market refreshes per turn."
+  },
+  {
+    "name": "Turing Machine",
+    "category": "Science",
+    "rarity": "◆◆◆◆",
+    "stats": {
+      "Power": 5,
+      "Size": 8,
+      "Meaning": 8,
+      "Intelligence": 9,
+      "Prestige": 7,
+      "Trace": 8
+    },
+    "passive_type": "none",
+    "passive_effect": "When Eclipse active, predicts opponent's market preferences 1 turn ahead (+1 info)."
+  },
+  {
+    "name": "Higgs Boson",
+    "category": "Science",
+    "rarity": "◆◆◆◆",
+    "stats": {
+      "Power": 6,
+      "Size": 8,
+      "Meaning": 8,
+      "Secret": 7,
+      "Intelligence": 8,
+      "Gravity": 8
+    },
+    "passive_type": "synergy_field",
+    "passive_effect": "While on board, all cards' Gravity edges +1."
+  },
+  {
+    "name": "Fibonacci Sequence",
+    "category": "Science",
+    "rarity": "◆◆",
+    "stats": {
+      "Durability": 5,
+      "Size": 5,
+      "Meaning": 6,
+      "Intelligence": 6,
+      "Harmony": 5,
+      "Spread": 5
+    },
+    "passive_type": "combat",
+    "passive_effect": "Combat kazanıldığında kazanma serisine göre bonus puan (Fibonacci dizisi: 1,1,2,3,5...)."
+  },
+  {
+    "name": "French Revolution",
+    "category": "History & Civilizations",
+    "rarity": "◆◆◆",
+    "stats": {
+      "Power": 7,
+      "Speed": 6,
+      "Meaning": 8,
+      "Spread": 7,
+      "Prestige": 4,
+      "Trace": 7
+    },
+    "passive_type": "synergy_field",
+    "passive_effect": "When 3+ History cards on board, -1 field effect to opponent's highest stat."
+  },
+  {
+    "name": "Industrial Revolution",
+    "category": "History & Civilizations",
+    "rarity": "◆◆◆",
+    "stats": {
+      "Power": 6,
+      "Durability": 6,
+      "Size": 7,
+      "Speed": 7,
+      "Intelligence": 6,
+      "Spread": 5
+    },
+    "passive_type": "economy",
+    "passive_effect": "Gain +1 extra gold income per turn (fixed bonus)."
+  },
+  {
+    "name": "Renaissance",
+    "category": "History & Civilizations",
+    "rarity": "◆◆◆◆",
+    "stats": {
+      "Durability": 5,
+      "Size": 7,
+      "Meaning": 8,
+      "Intelligence": 7,
+      "Prestige": 9,
+      "Trace": 8
+    },
+    "passive_type": "synergy_field",
+    "passive_effect": "When 3+ cards from different categories on board, +1 Meaning to all cards."
+  },
+  {
+    "name": "Age of Discovery",
+    "category": "History & Civilizations",
+    "rarity": "◆◆◆",
+    "stats": {
+      "Power": 5,
+      "Size": 7,
+      "Speed": 7,
+      "Meaning": 6,
+      "Spread": 7,
+      "Trace": 7
+    },
+    "passive_type": "economy",
+    "passive_effect": "When new card type first seen in market, +2 gold."
+  },
+  {
+    "name": "World War II",
+    "category": "History & Civilizations",
+    "rarity": "◆◆◆◆",
+    "stats": {
+      "Power": 9,
+      "Durability": 7,
+      "Size": 6,
+      "Speed": 7,
+      "Spread": 6,
+      "Trace": 9
+    },
+    "passive_type": "combat",
+    "passive_effect": "Combat kazanılırsa rakibin boardundaki tüm kartlara -1 en yüksek kenar."
+  },
+  {
+    "name": "Silk Road",
+    "category": "History & Civilizations",
+    "rarity": "◆◆◆",
+    "stats": {
+      "Size": 6,
+      "Speed": 6,
+      "Meaning": 6,
+      "Harmony": 7,
+      "Prestige": 7,
+      "Trace": 6
+    },
+    "passive_type": "economy",
+    "passive_effect": "If 2+ cards bought per turn, +1 extra gold."
+  },
+  {
+    "name": "Roman Empire",
+    "category": "History & Civilizations",
+    "rarity": "◆◆◆◆",
+    "stats": {
+      "Power": 8,
+      "Durability": 8,
+      "Size": 7,
+      "Speed": 6,
+      "Gravity": 7,
+      "Prestige": 8
+    },
+    "passive_type": "synergy_field",
+    "passive_effect": "When 4+ History cards on board, +1 Durability to all ally cards."
+  },
+  {
+    "name": "Mongol Empire",
+    "category": "History & Civilizations",
+    "rarity": "◆◆◆",
+    "stats": {
+      "Power": 8,
+      "Durability": 5,
+      "Size": 5,
+      "Speed": 9,
+      "Spread": 6,
+      "Trace": 6
+    },
+    "passive_type": "combat",
+    "passive_effect": "If combat is won, -1 Speed to 2 neighboring cards on opponent's board."
+  },
+  {
+    "name": "Ottoman Empire",
+    "category": "History & Civilizations",
+    "rarity": "◆◆◆",
+    "stats": {
+      "Power": 7,
+      "Durability": 7,
+      "Size": 6,
+      "Meaning": 6,
+      "Gravity": 6,
+      "Prestige": 8
+    },
+    "passive_type": "economy",
+    "passive_effect": "Market refresh 1 gold discounted per turn."
+  },
+  {
+    "name": "Sparta",
+    "category": "History & Civilizations",
+    "rarity": "◆◆◆",
+    "stats": {
+      "Power": 9,
+      "Durability": 8,
+      "Size": 5,
+      "Speed": 7,
+      "Gravity": 5,
+      "Trace": 5
+    },
+    "passive_type": "combat",
+    "passive_effect": "If combat is won, accumulates +2 Power permanently (max +4 throughout game)."
+  },
+  {
+    "name": "Babylon",
+    "category": "History & Civilizations",
+    "rarity": "◆◆",
+    "stats": {
+      "Power": 5,
+      "Durability": 6,
+      "Size": 6,
+      "Meaning": 6,
+      "Gravity": 5,
+      "Prestige": 6
+    },
+    "passive_type": "economy",
+    "passive_effect": "Interest income +1 extra (added to normal interest calculation)."
+  },
+  {
+    "name": "Code of Hammurabi",
+    "category": "History & Civilizations",
+    "rarity": "◆◆",
+    "stats": {
+      "Durability": 6,
+      "Size": 5,
+      "Meaning": 7,
+      "Intelligence": 6,
+      "Prestige": 7,
+      "Trace": 5
+    },
+    "passive_type": "combat",
+    "passive_effect": "If combat lost, that direction's edge +2 next turn."
+  },
+  {
+    "name": "Cold War",
+    "category": "History & Civilizations",
+    "rarity": "◆◆◆",
+    "stats": {
+      "Power": 6,
+      "Durability": 6,
+      "Size": 6,
+      "Secret": 8,
+      "Gravity": 5,
+      "Trace": 7
+    },
+    "passive_type": "none",
+    "passive_effect": "When Eclipse active, opponent cannot see this card's passive and field effect extends 2 hexes."
+  },
+  {
+    "name": "Printing Press",
+    "category": "History & Civilizations",
+    "rarity": "◆◆",
+    "stats": {
+      "Size": 5,
+      "Speed": 5,
+      "Meaning": 6,
+      "Intelligence": 6,
+      "Spread": 8,
+      "Trace": 6
+    },
+    "passive_type": "economy",
+    "passive_effect": "When buying card from market, 25% chance to refund 1 gold."
+  },
+  {
+    "name": "Moon Landing",
+    "category": "History & Civilizations",
+    "rarity": "◆◆◆",
+    "stats": {
+      "Power": 5,
+      "Size": 6,
+      "Meaning": 7,
+      "Intelligence": 7,
+      "Prestige": 8,
+      "Trace": 8
+    },
+    "passive_type": "economy",
+    "passive_effect": "First ◆◆◆◆◆ card bought throughout game grants +5 gold bonus."
+  },
+  {
+    "name": "Black Death",
+    "category": "History & Civilizations",
+    "rarity": "◆◆◆◆◆",
+    "stats": {
+      "Power": 8,
+      "Size": 7,
+      "Speed": 7,
+      "Secret": 8,
+      "Spread": 9,
+      "Trace": 9
+    },
+    "passive_type": "synergy_field",
+    "passive_effect": "While on board, all enemy cards' Spread edges take -1 per turn."
+  }
+]

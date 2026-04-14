@@ -1,0 +1,17 @@
+================================================================================
+META ANALYSIS
+================================================================================
+
+STRATEGY RANKINGS BY WIN RATE
+
+1. tempo: 45.40%
+2. builder: 33.95%
+3. rare_hunter: 6.55%
+4. warrior: 4.40%
+5. evolver: 3.50%
+6. economist: 2.90%
+7. balancer: 2.85%
+8. random: 0.45%
+
+Dominant strategy: tempo (45.40%)
+Weakest strategy: random (0.45%)

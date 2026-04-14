@@ -1,0 +1,5 @@
+{
+  "builder.power_weight": 0.4,
+  "builder.group_weight": 0.6,
+  "builder.gold_spend_threshold": 12.0
+}

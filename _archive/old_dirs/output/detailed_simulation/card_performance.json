@@ -1,0 +1,1610 @@
+{
+  "Shadow Puppetry": {
+    "times_purchased": 5887,
+    "times_on_winning_board": 1730,
+    "times_on_losing_board": 4157,
+    "win_rate": 29.39,
+    "avg_survival_turns": 22.7,
+    "avg_power_contributed": 26.0
+  },
+  "Age of Discovery": {
+    "times_purchased": 4988,
+    "times_on_winning_board": 1449,
+    "times_on_losing_board": 3539,
+    "win_rate": 29.05,
+    "avg_survival_turns": 23.5,
+    "avg_power_contributed": 30.5
+  },
+  "Cold War": {
+    "times_purchased": 3336,
+    "times_on_winning_board": 1091,
+    "times_on_losing_board": 2245,
+    "win_rate": 32.7,
+    "avg_survival_turns": 23.3,
+    "avg_power_contributed": 30.7
+  },
+  "Minotaur": {
+    "times_purchased": 2683,
+    "times_on_winning_board": 1672,
+    "times_on_losing_board": 1011,
+    "win_rate": 62.32,
+    "avg_survival_turns": 23.3,
+    "avg_power_contributed": 19.8
+  },
+  "Ottoman Empire": {
+    "times_purchased": 6381,
+    "times_on_winning_board": 1824,
+    "times_on_losing_board": 4557,
+    "win_rate": 28.58,
+    "avg_survival_turns": 23.4,
+    "avg_power_contributed": 35.3
+  },
+  "Gothic Architecture": {
+    "times_purchased": 3286,
+    "times_on_winning_board": 1018,
+    "times_on_losing_board": 2268,
+    "win_rate": 30.98,
+    "avg_survival_turns": 23.3,
+    "avg_power_contributed": 29.3
+  },
+  "Space-Time": {
+    "times_purchased": 6207,
+    "times_on_winning_board": 2292,
+    "times_on_losing_board": 3915,
+    "win_rate": 36.93,
+    "avg_survival_turns": 24.2,
+    "avg_power_contributed": 44.5
+  },
+  "World War II": {
+    "times_purchased": 5103,
+    "times_on_winning_board": 2517,
+    "times_on_losing_board": 2586,
+    "win_rate": 49.32,
+    "avg_survival_turns": 23.7,
+    "avg_power_contributed": 36.4
+  },
+  "Yggdrasil": {
+    "times_purchased": 2188,
+    "times_on_winning_board": 568,
+    "times_on_losing_board": 1620,
+    "win_rate": 25.96,
+    "avg_survival_turns": 24.6,
+    "avg_power_contributed": 46.1
+  },
+  "Mongol Empire": {
+    "times_purchased": 6025,
+    "times_on_winning_board": 2126,
+    "times_on_losing_board": 3899,
+    "win_rate": 35.29,
+    "avg_survival_turns": 23.3,
+    "avg_power_contributed": 28.3
+  },
+  "Sparta": {
+    "times_purchased": 5264,
+    "times_on_winning_board": 1919,
+    "times_on_losing_board": 3345,
+    "win_rate": 36.46,
+    "avg_survival_turns": 23.2,
+    "avg_power_contributed": 30.8
+  },
+  "Nebula": {
+    "times_purchased": 3885,
+    "times_on_winning_board": 784,
+    "times_on_losing_board": 3101,
+    "win_rate": 20.18,
+    "avg_survival_turns": 23.4,
+    "avg_power_contributed": 35.4
+  },
+  "Komodo Dragon": {
+    "times_purchased": 3477,
+    "times_on_winning_board": 1669,
+    "times_on_losing_board": 1808,
+    "win_rate": 48.0,
+    "avg_survival_turns": 23.2,
+    "avg_power_contributed": 27.2
+  },
+  "π (Pi)": {
+    "times_purchased": 3633,
+    "times_on_winning_board": 655,
+    "times_on_losing_board": 2978,
+    "win_rate": 18.03,
+    "avg_survival_turns": 23.4,
+    "avg_power_contributed": 34.9
+  },
+  "Isaac Newton": {
+    "times_purchased": 4355,
+    "times_on_winning_board": 1189,
+    "times_on_losing_board": 3166,
+    "win_rate": 27.3,
+    "avg_survival_turns": 24.5,
+    "avg_power_contributed": 46.3
+  },
+  "Betelgeuse": {
+    "times_purchased": 5581,
+    "times_on_winning_board": 1964,
+    "times_on_losing_board": 3617,
+    "win_rate": 35.19,
+    "avg_survival_turns": 23.2,
+    "avg_power_contributed": 31.7
+  },
+  "Silk Road": {
+    "times_purchased": 2092,
+    "times_on_winning_board": 499,
+    "times_on_losing_board": 1593,
+    "win_rate": 23.85,
+    "avg_survival_turns": 23.3,
+    "avg_power_contributed": 35.4
+  },
+  "Pulsar": {
+    "times_purchased": 4587,
+    "times_on_winning_board": 1444,
+    "times_on_losing_board": 3143,
+    "win_rate": 31.48,
+    "avg_survival_turns": 23.4,
+    "avg_power_contributed": 33.9
+  },
+  "Ragnarök": {
+    "times_purchased": 5963,
+    "times_on_winning_board": 1928,
+    "times_on_losing_board": 4035,
+    "win_rate": 32.33,
+    "avg_survival_turns": 24.3,
+    "avg_power_contributed": 42.6
+  },
+  "Odin": {
+    "times_purchased": 2531,
+    "times_on_winning_board": 690,
+    "times_on_losing_board": 1841,
+    "win_rate": 27.26,
+    "avg_survival_turns": 24.4,
+    "avg_power_contributed": 38.4
+  },
+  "Albert Einstein": {
+    "times_purchased": 1950,
+    "times_on_winning_board": 543,
+    "times_on_losing_board": 1407,
+    "win_rate": 27.85,
+    "avg_survival_turns": 24.7,
+    "avg_power_contributed": 49.3
+  },
+  "Quasar": {
+    "times_purchased": 4562,
+    "times_on_winning_board": 938,
+    "times_on_losing_board": 3624,
+    "win_rate": 20.56,
+    "avg_survival_turns": 24.3,
+    "avg_power_contributed": 43.6
+  },
+  "Golden Ratio": {
+    "times_purchased": 5519,
+    "times_on_winning_board": 1172,
+    "times_on_losing_board": 4347,
+    "win_rate": 21.24,
+    "avg_survival_turns": 23.5,
+    "avg_power_contributed": 37.8
+  },
+  "Event Horizon": {
+    "times_purchased": 4225,
+    "times_on_winning_board": 1081,
+    "times_on_losing_board": 3144,
+    "win_rate": 25.59,
+    "avg_survival_turns": 24.3,
+    "avg_power_contributed": 43.3
+  },
+  "Blue Whale": {
+    "times_purchased": 3997,
+    "times_on_winning_board": 1854,
+    "times_on_losing_board": 2143,
+    "win_rate": 46.38,
+    "avg_survival_turns": 23.8,
+    "avg_power_contributed": 33.1
+  },
+  "Evolved Kabuki": {
+    "times_purchased": 95,
+    "times_on_winning_board": 18,
+    "times_on_losing_board": 77,
+    "win_rate": 18.95,
+    "avg_survival_turns": 24.5,
+    "avg_power_contributed": 49.7
+  },
+  "Minimalism": {
+    "times_purchased": 4213,
+    "times_on_winning_board": 1015,
+    "times_on_losing_board": 3198,
+    "win_rate": 24.09,
+    "avg_survival_turns": 22.8,
+    "avg_power_contributed": 25.8
+  },
+  "Pop Art": {
+    "times_purchased": 6042,
+    "times_on_winning_board": 1291,
+    "times_on_losing_board": 4751,
+    "win_rate": 21.37,
+    "avg_survival_turns": 22.9,
+    "avg_power_contributed": 26.1
+  },
+  "Cubism": {
+    "times_purchased": 756,
+    "times_on_winning_board": 120,
+    "times_on_losing_board": 636,
+    "win_rate": 15.87,
+    "avg_survival_turns": 24.0,
+    "avg_power_contributed": 28.4
+  },
+  "Olympus": {
+    "times_purchased": 4510,
+    "times_on_winning_board": 949,
+    "times_on_losing_board": 3561,
+    "win_rate": 21.04,
+    "avg_survival_turns": 23.6,
+    "avg_power_contributed": 35.8
+  },
+  "Valhalla": {
+    "times_purchased": 4130,
+    "times_on_winning_board": 846,
+    "times_on_losing_board": 3284,
+    "win_rate": 20.48,
+    "avg_survival_turns": 23.6,
+    "avg_power_contributed": 34.4
+  },
+  "Cerberus": {
+    "times_purchased": 2819,
+    "times_on_winning_board": 1463,
+    "times_on_losing_board": 1356,
+    "win_rate": 51.9,
+    "avg_survival_turns": 23.2,
+    "avg_power_contributed": 27.2
+  },
+  "Schrödinger's Cat": {
+    "times_purchased": 3998,
+    "times_on_winning_board": 609,
+    "times_on_losing_board": 3389,
+    "win_rate": 15.23,
+    "avg_survival_turns": 23.5,
+    "avg_power_contributed": 35.1
+  },
+  "Andromeda Galaxy": {
+    "times_purchased": 5048,
+    "times_on_winning_board": 1069,
+    "times_on_losing_board": 3979,
+    "win_rate": 21.18,
+    "avg_survival_turns": 24.4,
+    "avg_power_contributed": 41.1
+  },
+  "Moon Landing": {
+    "times_purchased": 6552,
+    "times_on_winning_board": 1332,
+    "times_on_losing_board": 5220,
+    "win_rate": 20.33,
+    "avg_survival_turns": 23.5,
+    "avg_power_contributed": 37.1
+  },
+  "Periodic Table": {
+    "times_purchased": 2517,
+    "times_on_winning_board": 858,
+    "times_on_losing_board": 1659,
+    "win_rate": 34.09,
+    "avg_survival_turns": 23.3,
+    "avg_power_contributed": 35.3
+  },
+  "Dark Matter": {
+    "times_purchased": 4783,
+    "times_on_winning_board": 1184,
+    "times_on_losing_board": 3599,
+    "win_rate": 24.75,
+    "avg_survival_turns": 24.3,
+    "avg_power_contributed": 44.5
+  },
+  "Turing Machine": {
+    "times_purchased": 3658,
+    "times_on_winning_board": 961,
+    "times_on_losing_board": 2697,
+    "win_rate": 26.27,
+    "avg_survival_turns": 24.4,
+    "avg_power_contributed": 42.6
+  },
+  "Higgs Boson": {
+    "times_purchased": 4132,
+    "times_on_winning_board": 860,
+    "times_on_losing_board": 3272,
+    "win_rate": 20.81,
+    "avg_survival_turns": 24.4,
+    "avg_power_contributed": 41.7
+  },
+  "Marie Curie": {
+    "times_purchased": 2817,
+    "times_on_winning_board": 785,
+    "times_on_losing_board": 2032,
+    "win_rate": 27.87,
+    "avg_survival_turns": 24.4,
+    "avg_power_contributed": 42.4
+  },
+  "Quantum Mechanics": {
+    "times_purchased": 3516,
+    "times_on_winning_board": 737,
+    "times_on_losing_board": 2779,
+    "win_rate": 20.96,
+    "avg_survival_turns": 24.4,
+    "avg_power_contributed": 40.7
+  },
+  "E = mc²": {
+    "times_purchased": 1801,
+    "times_on_winning_board": 509,
+    "times_on_losing_board": 1292,
+    "win_rate": 28.26,
+    "avg_survival_turns": 24.8,
+    "avg_power_contributed": 48.7
+  },
+  "Graffiti": {
+    "times_purchased": 6017,
+    "times_on_winning_board": 1193,
+    "times_on_losing_board": 4824,
+    "win_rate": 19.83,
+    "avg_survival_turns": 22.9,
+    "avg_power_contributed": 26.1
+  },
+  "Coral Reef": {
+    "times_purchased": 3045,
+    "times_on_winning_board": 599,
+    "times_on_losing_board": 2446,
+    "win_rate": 19.67,
+    "avg_survival_turns": 23.6,
+    "avg_power_contributed": 30.9
+  },
+  "Gravity": {
+    "times_purchased": 3401,
+    "times_on_winning_board": 1110,
+    "times_on_losing_board": 2291,
+    "win_rate": 32.64,
+    "avg_survival_turns": 23.5,
+    "avg_power_contributed": 32.2
+  },
+  "Loki": {
+    "times_purchased": 1511,
+    "times_on_winning_board": 360,
+    "times_on_losing_board": 1151,
+    "win_rate": 23.83,
+    "avg_survival_turns": 23.4,
+    "avg_power_contributed": 29.8
+  },
+  "Bioluminescence": {
+    "times_purchased": 2326,
+    "times_on_winning_board": 552,
+    "times_on_losing_board": 1774,
+    "win_rate": 23.73,
+    "avg_survival_turns": 23.5,
+    "avg_power_contributed": 33.2
+  },
+  "Kabuki": {
+    "times_purchased": 4891,
+    "times_on_winning_board": 915,
+    "times_on_losing_board": 3976,
+    "win_rate": 18.71,
+    "avg_survival_turns": 23.3,
+    "avg_power_contributed": 38.1
+  },
+  "Mantis Karidesi": {
+    "times_purchased": 2477,
+    "times_on_winning_board": 961,
+    "times_on_losing_board": 1516,
+    "win_rate": 38.8,
+    "avg_survival_turns": 23.9,
+    "avg_power_contributed": 35.2
+  },
+  "Tardigrade": {
+    "times_purchased": 1805,
+    "times_on_winning_board": 1081,
+    "times_on_losing_board": 724,
+    "win_rate": 59.89,
+    "avg_survival_turns": 22.9,
+    "avg_power_contributed": 23.1
+  },
+  "Renaissance": {
+    "times_purchased": 3176,
+    "times_on_winning_board": 848,
+    "times_on_losing_board": 2328,
+    "win_rate": 26.7,
+    "avg_survival_turns": 24.4,
+    "avg_power_contributed": 40.0
+  },
+  "Babylon": {
+    "times_purchased": 1891,
+    "times_on_winning_board": 875,
+    "times_on_losing_board": 1016,
+    "win_rate": 46.27,
+    "avg_survival_turns": 23.1,
+    "avg_power_contributed": 26.2
+  },
+  "Platypus": {
+    "times_purchased": 6998,
+    "times_on_winning_board": 2085,
+    "times_on_losing_board": 4913,
+    "win_rate": 29.79,
+    "avg_survival_turns": 22.9,
+    "avg_power_contributed": 20.9
+  },
+  "Milky Way": {
+    "times_purchased": 4979,
+    "times_on_winning_board": 1090,
+    "times_on_losing_board": 3889,
+    "win_rate": 21.89,
+    "avg_survival_turns": 24.3,
+    "avg_power_contributed": 42.2
+  },
+  "Cosmic Microwave Background": {
+    "times_purchased": 5315,
+    "times_on_winning_board": 1294,
+    "times_on_losing_board": 4021,
+    "win_rate": 24.35,
+    "avg_survival_turns": 24.4,
+    "avg_power_contributed": 44.1
+  },
+  "Guernica": {
+    "times_purchased": 4907,
+    "times_on_winning_board": 1058,
+    "times_on_losing_board": 3849,
+    "win_rate": 21.56,
+    "avg_survival_turns": 24.5,
+    "avg_power_contributed": 42.4
+  },
+  "Black Hole": {
+    "times_purchased": 2104,
+    "times_on_winning_board": 503,
+    "times_on_losing_board": 1601,
+    "win_rate": 23.91,
+    "avg_survival_turns": 24.8,
+    "avg_power_contributed": 46.3
+  },
+  "Black Death": {
+    "times_purchased": 2430,
+    "times_on_winning_board": 1042,
+    "times_on_losing_board": 1388,
+    "win_rate": 42.88,
+    "avg_survival_turns": 24.6,
+    "avg_power_contributed": 42.6
+  },
+  "Impressionism": {
+    "times_purchased": 581,
+    "times_on_winning_board": 248,
+    "times_on_losing_board": 333,
+    "win_rate": 42.69,
+    "avg_survival_turns": 22.9,
+    "avg_power_contributed": 24.0
+  },
+  "Code of Hammurabi": {
+    "times_purchased": 762,
+    "times_on_winning_board": 179,
+    "times_on_losing_board": 583,
+    "win_rate": 23.49,
+    "avg_survival_turns": 23.0,
+    "avg_power_contributed": 33.6
+  },
+  "Printing Press": {
+    "times_purchased": 745,
+    "times_on_winning_board": 171,
+    "times_on_losing_board": 574,
+    "win_rate": 22.95,
+    "avg_survival_turns": 23.0,
+    "avg_power_contributed": 30.7
+  },
+  "Anubis": {
+    "times_purchased": 969,
+    "times_on_winning_board": 258,
+    "times_on_losing_board": 711,
+    "win_rate": 26.63,
+    "avg_survival_turns": 23.2,
+    "avg_power_contributed": 30.8
+  },
+  "Rainforest": {
+    "times_purchased": 3201,
+    "times_on_winning_board": 628,
+    "times_on_losing_board": 2573,
+    "win_rate": 19.62,
+    "avg_survival_turns": 23.7,
+    "avg_power_contributed": 31.5
+  },
+  "Baobab": {
+    "times_purchased": 2504,
+    "times_on_winning_board": 943,
+    "times_on_losing_board": 1561,
+    "win_rate": 37.66,
+    "avg_survival_turns": 23.4,
+    "avg_power_contributed": 28.1
+  },
+  "Industrial Revolution": {
+    "times_purchased": 3215,
+    "times_on_winning_board": 1561,
+    "times_on_losing_board": 1654,
+    "win_rate": 48.55,
+    "avg_survival_turns": 23.1,
+    "avg_power_contributed": 28.8
+  },
+  "Roman Empire": {
+    "times_purchased": 5050,
+    "times_on_winning_board": 2064,
+    "times_on_losing_board": 2986,
+    "win_rate": 40.87,
+    "avg_survival_turns": 24.0,
+    "avg_power_contributed": 38.0
+  },
+  "Supernova": {
+    "times_purchased": 3234,
+    "times_on_winning_board": 1160,
+    "times_on_losing_board": 2074,
+    "win_rate": 35.87,
+    "avg_survival_turns": 24.0,
+    "avg_power_contributed": 37.6
+  },
+  "French Revolution": {
+    "times_purchased": 4575,
+    "times_on_winning_board": 989,
+    "times_on_losing_board": 3586,
+    "win_rate": 21.62,
+    "avg_survival_turns": 23.7,
+    "avg_power_contributed": 33.9
+  },
+  "Entropy": {
+    "times_purchased": 3257,
+    "times_on_winning_board": 799,
+    "times_on_losing_board": 2458,
+    "win_rate": 24.53,
+    "avg_survival_turns": 23.7,
+    "avg_power_contributed": 32.5
+  },
+  "Surrealism": {
+    "times_purchased": 3206,
+    "times_on_winning_board": 556,
+    "times_on_losing_board": 2650,
+    "win_rate": 17.34,
+    "avg_survival_turns": 23.4,
+    "avg_power_contributed": 35.8
+  },
+  "Phoenix": {
+    "times_purchased": 1976,
+    "times_on_winning_board": 531,
+    "times_on_losing_board": 1445,
+    "win_rate": 26.87,
+    "avg_survival_turns": 24.2,
+    "avg_power_contributed": 35.9
+  },
+  "Nikola Tesla": {
+    "times_purchased": 2925,
+    "times_on_winning_board": 799,
+    "times_on_losing_board": 2126,
+    "win_rate": 27.32,
+    "avg_survival_turns": 24.5,
+    "avg_power_contributed": 42.2
+  },
+  "Quetzalcoatl": {
+    "times_purchased": 3258,
+    "times_on_winning_board": 725,
+    "times_on_losing_board": 2533,
+    "win_rate": 22.25,
+    "avg_survival_turns": 24.5,
+    "avg_power_contributed": 36.6
+  },
+  "Frida Kahlo": {
+    "times_purchased": 6677,
+    "times_on_winning_board": 1225,
+    "times_on_losing_board": 5452,
+    "win_rate": 18.35,
+    "avg_survival_turns": 23.8,
+    "avg_power_contributed": 31.2
+  },
+  "Asteroid Belt": {
+    "times_purchased": 2408,
+    "times_on_winning_board": 1444,
+    "times_on_losing_board": 964,
+    "win_rate": 59.97,
+    "avg_survival_turns": 23.0,
+    "avg_power_contributed": 25.0
+  },
+  "Kraken": {
+    "times_purchased": 2668,
+    "times_on_winning_board": 1040,
+    "times_on_losing_board": 1628,
+    "win_rate": 38.98,
+    "avg_survival_turns": 23.9,
+    "avg_power_contributed": 36.1
+  },
+  "Charles Darwin": {
+    "times_purchased": 2017,
+    "times_on_winning_board": 417,
+    "times_on_losing_board": 1600,
+    "win_rate": 20.67,
+    "avg_survival_turns": 23.4,
+    "avg_power_contributed": 35.9
+  },
+  "The Persistence of Memory": {
+    "times_purchased": 1159,
+    "times_on_winning_board": 235,
+    "times_on_losing_board": 924,
+    "win_rate": 20.28,
+    "avg_survival_turns": 23.3,
+    "avg_power_contributed": 33.9
+  },
+  "Venus Flytrap": {
+    "times_purchased": 1340,
+    "times_on_winning_board": 732,
+    "times_on_losing_board": 608,
+    "win_rate": 54.63,
+    "avg_survival_turns": 23.3,
+    "avg_power_contributed": 23.8
+  },
+  "Sirius": {
+    "times_purchased": 1169,
+    "times_on_winning_board": 614,
+    "times_on_losing_board": 555,
+    "win_rate": 52.52,
+    "avg_survival_turns": 23.1,
+    "avg_power_contributed": 26.6
+  },
+  "Pandora'nın Kutusu": {
+    "times_purchased": 1574,
+    "times_on_winning_board": 369,
+    "times_on_losing_board": 1205,
+    "win_rate": 23.44,
+    "avg_survival_turns": 23.4,
+    "avg_power_contributed": 29.0
+  },
+  "Migration": {
+    "times_purchased": 1439,
+    "times_on_winning_board": 795,
+    "times_on_losing_board": 644,
+    "win_rate": 55.25,
+    "avg_survival_turns": 23.1,
+    "avg_power_contributed": 22.8
+  },
+  "Evolved Golden Ratio": {
+    "times_purchased": 99,
+    "times_on_winning_board": 23,
+    "times_on_losing_board": 76,
+    "win_rate": 23.23,
+    "avg_survival_turns": 24.3,
+    "avg_power_contributed": 50.9
+  },
+  "Evolved Cosmic Microwave Background": {
+    "times_purchased": 49,
+    "times_on_winning_board": 12,
+    "times_on_losing_board": 37,
+    "win_rate": 24.49,
+    "avg_survival_turns": 24.5,
+    "avg_power_contributed": 57.9
+  },
+  "Fungus": {
+    "times_purchased": 518,
+    "times_on_winning_board": 222,
+    "times_on_losing_board": 296,
+    "win_rate": 42.86,
+    "avg_survival_turns": 22.9,
+    "avg_power_contributed": 26.4
+  },
+  "Evolved Pop Art": {
+    "times_purchased": 46,
+    "times_on_winning_board": 9,
+    "times_on_losing_board": 37,
+    "win_rate": 19.57,
+    "avg_survival_turns": 23.0,
+    "avg_power_contributed": 34.2
+  },
+  "Camouflage": {
+    "times_purchased": 844,
+    "times_on_winning_board": 238,
+    "times_on_losing_board": 606,
+    "win_rate": 28.2,
+    "avg_survival_turns": 23.3,
+    "avg_power_contributed": 26.7
+  },
+  "Athena": {
+    "times_purchased": 1400,
+    "times_on_winning_board": 333,
+    "times_on_losing_board": 1067,
+    "win_rate": 23.79,
+    "avg_survival_turns": 23.0,
+    "avg_power_contributed": 32.7
+  },
+  "DNA": {
+    "times_purchased": 3687,
+    "times_on_winning_board": 791,
+    "times_on_losing_board": 2896,
+    "win_rate": 21.45,
+    "avg_survival_turns": 23.5,
+    "avg_power_contributed": 35.9
+  },
+  "Truva Atı": {
+    "times_purchased": 1338,
+    "times_on_winning_board": 734,
+    "times_on_losing_board": 604,
+    "win_rate": 54.86,
+    "avg_survival_turns": 23.1,
+    "avg_power_contributed": 22.9
+  },
+  "Narwhal": {
+    "times_purchased": 1331,
+    "times_on_winning_board": 706,
+    "times_on_losing_board": 625,
+    "win_rate": 53.04,
+    "avg_survival_turns": 23.0,
+    "avg_power_contributed": 25.2
+  },
+  "Opera": {
+    "times_purchased": 528,
+    "times_on_winning_board": 180,
+    "times_on_losing_board": 348,
+    "win_rate": 34.09,
+    "avg_survival_turns": 23.1,
+    "avg_power_contributed": 26.8
+  },
+  "Medusa": {
+    "times_purchased": 1221,
+    "times_on_winning_board": 449,
+    "times_on_losing_board": 772,
+    "win_rate": 36.77,
+    "avg_survival_turns": 23.6,
+    "avg_power_contributed": 31.1
+  },
+  "Evolved Frida Kahlo": {
+    "times_purchased": 114,
+    "times_on_winning_board": 24,
+    "times_on_losing_board": 90,
+    "win_rate": 21.05,
+    "avg_survival_turns": 24.8,
+    "avg_power_contributed": 50.9
+  },
+  "Evolved Cold War": {
+    "times_purchased": 63,
+    "times_on_winning_board": 17,
+    "times_on_losing_board": 46,
+    "win_rate": 26.98,
+    "avg_survival_turns": 24.9,
+    "avg_power_contributed": 50.2
+  },
+  "Coelacanth": {
+    "times_purchased": 3206,
+    "times_on_winning_board": 1528,
+    "times_on_losing_board": 1678,
+    "win_rate": 47.66,
+    "avg_survival_turns": 24.3,
+    "avg_power_contributed": 39.4
+  },
+  "Europa": {
+    "times_purchased": 408,
+    "times_on_winning_board": 143,
+    "times_on_losing_board": 265,
+    "win_rate": 35.05,
+    "avg_survival_turns": 22.8,
+    "avg_power_contributed": 29.4
+  },
+  "Fibonacci Sequence": {
+    "times_purchased": 467,
+    "times_on_winning_board": 156,
+    "times_on_losing_board": 311,
+    "win_rate": 33.4,
+    "avg_survival_turns": 23.0,
+    "avg_power_contributed": 28.5
+  },
+  "Evolved Bioluminescence": {
+    "times_purchased": 86,
+    "times_on_winning_board": 16,
+    "times_on_losing_board": 70,
+    "win_rate": 18.6,
+    "avg_survival_turns": 24.0,
+    "avg_power_contributed": 51.3
+  },
+  "Evolved Athena": {
+    "times_purchased": 47,
+    "times_on_winning_board": 6,
+    "times_on_losing_board": 41,
+    "win_rate": 12.77,
+    "avg_survival_turns": 25.3,
+    "avg_power_contributed": 49.8
+  },
+  "Axolotl": {
+    "times_purchased": 418,
+    "times_on_winning_board": 148,
+    "times_on_losing_board": 270,
+    "win_rate": 35.41,
+    "avg_survival_turns": 22.7,
+    "avg_power_contributed": 29.3
+  },
+  "Evolved DNA": {
+    "times_purchased": 92,
+    "times_on_winning_board": 23,
+    "times_on_losing_board": 69,
+    "win_rate": 25.0,
+    "avg_survival_turns": 24.6,
+    "avg_power_contributed": 50.5
+  },
+  "Evolved Milky Way": {
+    "times_purchased": 37,
+    "times_on_winning_board": 9,
+    "times_on_losing_board": 28,
+    "win_rate": 24.32,
+    "avg_survival_turns": 25.7,
+    "avg_power_contributed": 59.1
+  },
+  "Cordyceps": {
+    "times_purchased": 1586,
+    "times_on_winning_board": 444,
+    "times_on_losing_board": 1142,
+    "win_rate": 27.99,
+    "avg_survival_turns": 24.4,
+    "avg_power_contributed": 34.6
+  },
+  "Flamenco": {
+    "times_purchased": 395,
+    "times_on_winning_board": 154,
+    "times_on_losing_board": 241,
+    "win_rate": 38.99,
+    "avg_survival_turns": 22.6,
+    "avg_power_contributed": 29.3
+  },
+  "Evolved Periodic Table": {
+    "times_purchased": 72,
+    "times_on_winning_board": 19,
+    "times_on_losing_board": 53,
+    "win_rate": 26.39,
+    "avg_survival_turns": 23.8,
+    "avg_power_contributed": 52.1
+  },
+  "Midas Dokunuşu": {
+    "times_purchased": 492,
+    "times_on_winning_board": 162,
+    "times_on_losing_board": 330,
+    "win_rate": 32.93,
+    "avg_survival_turns": 23.4,
+    "avg_power_contributed": 27.6
+  },
+  "Exoplanet": {
+    "times_purchased": 422,
+    "times_on_winning_board": 139,
+    "times_on_losing_board": 283,
+    "win_rate": 32.94,
+    "avg_survival_turns": 23.4,
+    "avg_power_contributed": 29.6
+  },
+  "Evolved Midas Dokunuşu": {
+    "times_purchased": 12,
+    "times_on_winning_board": 1,
+    "times_on_losing_board": 11,
+    "win_rate": 8.33,
+    "avg_survival_turns": 24.5,
+    "avg_power_contributed": 38.8
+  },
+  "Ballet": {
+    "times_purchased": 485,
+    "times_on_winning_board": 155,
+    "times_on_losing_board": 330,
+    "win_rate": 31.96,
+    "avg_survival_turns": 23.2,
+    "avg_power_contributed": 27.9
+  },
+  "Evolved π (Pi)": {
+    "times_purchased": 88,
+    "times_on_winning_board": 16,
+    "times_on_losing_board": 72,
+    "win_rate": 18.18,
+    "avg_survival_turns": 24.8,
+    "avg_power_contributed": 51.1
+  },
+  "Evolved Charles Darwin": {
+    "times_purchased": 74,
+    "times_on_winning_board": 18,
+    "times_on_losing_board": 56,
+    "win_rate": 24.32,
+    "avg_survival_turns": 24.5,
+    "avg_power_contributed": 51.1
+  },
+  "Baroque": {
+    "times_purchased": 543,
+    "times_on_winning_board": 238,
+    "times_on_losing_board": 305,
+    "win_rate": 43.83,
+    "avg_survival_turns": 23.2,
+    "avg_power_contributed": 26.1
+  },
+  "Algorithm": {
+    "times_purchased": 322,
+    "times_on_winning_board": 125,
+    "times_on_losing_board": 197,
+    "win_rate": 38.82,
+    "avg_survival_turns": 23.3,
+    "avg_power_contributed": 28.2
+  },
+  "Evolved Olympus": {
+    "times_purchased": 113,
+    "times_on_winning_board": 26,
+    "times_on_losing_board": 87,
+    "win_rate": 23.01,
+    "avg_survival_turns": 24.8,
+    "avg_power_contributed": 51.5
+  },
+  "Evolved Shadow Puppetry": {
+    "times_purchased": 63,
+    "times_on_winning_board": 16,
+    "times_on_losing_board": 47,
+    "win_rate": 25.4,
+    "avg_survival_turns": 23.3,
+    "avg_power_contributed": 35.4
+  },
+  "Evolved Space-Time": {
+    "times_purchased": 48,
+    "times_on_winning_board": 13,
+    "times_on_losing_board": 35,
+    "win_rate": 27.08,
+    "avg_survival_turns": 24.7,
+    "avg_power_contributed": 57.7
+  },
+  "Evolved Schrödinger's Cat": {
+    "times_purchased": 83,
+    "times_on_winning_board": 12,
+    "times_on_losing_board": 71,
+    "win_rate": 14.46,
+    "avg_survival_turns": 25.1,
+    "avg_power_contributed": 52.9
+  },
+  "Evolved Entropy": {
+    "times_purchased": 66,
+    "times_on_winning_board": 9,
+    "times_on_losing_board": 57,
+    "win_rate": 13.64,
+    "avg_survival_turns": 24.7,
+    "avg_power_contributed": 51.4
+  },
+  "Evolved Surrealism": {
+    "times_purchased": 102,
+    "times_on_winning_board": 14,
+    "times_on_losing_board": 88,
+    "win_rate": 13.73,
+    "avg_survival_turns": 24.4,
+    "avg_power_contributed": 50.7
+  },
+  "Evolved Moon Landing": {
+    "times_purchased": 120,
+    "times_on_winning_board": 26,
+    "times_on_losing_board": 94,
+    "win_rate": 21.67,
+    "avg_survival_turns": 23.5,
+    "avg_power_contributed": 52.3
+  },
+  "Evolved Quantum Mechanics": {
+    "times_purchased": 26,
+    "times_on_winning_board": 8,
+    "times_on_losing_board": 18,
+    "win_rate": 30.77,
+    "avg_survival_turns": 25.9,
+    "avg_power_contributed": 58.6
+  },
+  "Evolved Ottoman Empire": {
+    "times_purchased": 95,
+    "times_on_winning_board": 29,
+    "times_on_losing_board": 66,
+    "win_rate": 30.53,
+    "avg_survival_turns": 24.5,
+    "avg_power_contributed": 50.9
+  },
+  "Jazz": {
+    "times_purchased": 473,
+    "times_on_winning_board": 184,
+    "times_on_losing_board": 289,
+    "win_rate": 38.9,
+    "avg_survival_turns": 23.2,
+    "avg_power_contributed": 27.2
+  },
+  "Evolved Nebula": {
+    "times_purchased": 100,
+    "times_on_winning_board": 26,
+    "times_on_losing_board": 74,
+    "win_rate": 26.0,
+    "avg_survival_turns": 24.7,
+    "avg_power_contributed": 49.8
+  },
+  "Evolved Turing Machine": {
+    "times_purchased": 42,
+    "times_on_winning_board": 13,
+    "times_on_losing_board": 29,
+    "win_rate": 30.95,
+    "avg_survival_turns": 26.3,
+    "avg_power_contributed": 58.7
+  },
+  "Evolved Graffiti": {
+    "times_purchased": 57,
+    "times_on_winning_board": 11,
+    "times_on_losing_board": 46,
+    "win_rate": 19.3,
+    "avg_survival_turns": 23.3,
+    "avg_power_contributed": 33.8
+  },
+  "Evolved Anubis": {
+    "times_purchased": 41,
+    "times_on_winning_board": 11,
+    "times_on_losing_board": 30,
+    "win_rate": 26.83,
+    "avg_survival_turns": 24.8,
+    "avg_power_contributed": 52.1
+  },
+  "Evolved Kraken": {
+    "times_purchased": 22,
+    "times_on_winning_board": 6,
+    "times_on_losing_board": 16,
+    "win_rate": 27.27,
+    "avg_survival_turns": 25.0,
+    "avg_power_contributed": 57.4
+  },
+  "Evolved Gravity": {
+    "times_purchased": 60,
+    "times_on_winning_board": 13,
+    "times_on_losing_board": 47,
+    "win_rate": 21.67,
+    "avg_survival_turns": 24.7,
+    "avg_power_contributed": 50.1
+  },
+  "Evolved French Revolution": {
+    "times_purchased": 102,
+    "times_on_winning_board": 15,
+    "times_on_losing_board": 87,
+    "win_rate": 14.71,
+    "avg_survival_turns": 24.4,
+    "avg_power_contributed": 50.0
+  },
+  "Evolved Age of Discovery": {
+    "times_purchased": 105,
+    "times_on_winning_board": 22,
+    "times_on_losing_board": 83,
+    "win_rate": 20.95,
+    "avg_survival_turns": 24.8,
+    "avg_power_contributed": 50.9
+  },
+  "Evolved Jazz": {
+    "times_purchased": 11,
+    "times_on_winning_board": 2,
+    "times_on_losing_board": 9,
+    "win_rate": 18.18,
+    "avg_survival_turns": 25.3,
+    "avg_power_contributed": 41.4
+  },
+  "Evolved Pulsar": {
+    "times_purchased": 79,
+    "times_on_winning_board": 19,
+    "times_on_losing_board": 60,
+    "win_rate": 24.05,
+    "avg_survival_turns": 25.3,
+    "avg_power_contributed": 48.2
+  },
+  "Evolved Opera": {
+    "times_purchased": 9,
+    "times_on_winning_board": 2,
+    "times_on_losing_board": 7,
+    "win_rate": 22.22,
+    "avg_survival_turns": 23.7,
+    "avg_power_contributed": 46.0
+  },
+  "Evolved Andromeda Galaxy": {
+    "times_purchased": 31,
+    "times_on_winning_board": 9,
+    "times_on_losing_board": 22,
+    "win_rate": 29.03,
+    "avg_survival_turns": 25.5,
+    "avg_power_contributed": 57.6
+  },
+  "Evolved Gothic Architecture": {
+    "times_purchased": 59,
+    "times_on_winning_board": 12,
+    "times_on_losing_board": 47,
+    "win_rate": 20.34,
+    "avg_survival_turns": 24.9,
+    "avg_power_contributed": 50.2
+  },
+  "Evolved Betelgeuse": {
+    "times_purchased": 78,
+    "times_on_winning_board": 12,
+    "times_on_losing_board": 66,
+    "win_rate": 15.38,
+    "avg_survival_turns": 24.1,
+    "avg_power_contributed": 48.6
+  },
+  "Evolved Mantis Karidesi": {
+    "times_purchased": 20,
+    "times_on_winning_board": 6,
+    "times_on_losing_board": 14,
+    "win_rate": 30.0,
+    "avg_survival_turns": 24.9,
+    "avg_power_contributed": 57.5
+  },
+  "Evolved Supernova": {
+    "times_purchased": 36,
+    "times_on_winning_board": 10,
+    "times_on_losing_board": 26,
+    "win_rate": 27.78,
+    "avg_survival_turns": 25.3,
+    "avg_power_contributed": 58.7
+  },
+  "Evolved Marie Curie": {
+    "times_purchased": 35,
+    "times_on_winning_board": 12,
+    "times_on_losing_board": 23,
+    "win_rate": 34.29,
+    "avg_survival_turns": 25.4,
+    "avg_power_contributed": 61.5
+  },
+  "Evolved Minimalism": {
+    "times_purchased": 45,
+    "times_on_winning_board": 13,
+    "times_on_losing_board": 32,
+    "win_rate": 28.89,
+    "avg_survival_turns": 24.1,
+    "avg_power_contributed": 37.0
+  },
+  "Evolved Exoplanet": {
+    "times_purchased": 10,
+    "times_on_winning_board": 3,
+    "times_on_losing_board": 7,
+    "win_rate": 30.0,
+    "avg_survival_turns": 23.6,
+    "avg_power_contributed": 48.0
+  },
+  "Evolved Coelacanth": {
+    "times_purchased": 17,
+    "times_on_winning_board": 4,
+    "times_on_losing_board": 13,
+    "win_rate": 23.53,
+    "avg_survival_turns": 24.6,
+    "avg_power_contributed": 66.1
+  },
+  "Evolved Platypus": {
+    "times_purchased": 44,
+    "times_on_winning_board": 12,
+    "times_on_losing_board": 32,
+    "win_rate": 27.27,
+    "avg_survival_turns": 23.3,
+    "avg_power_contributed": 35.5
+  },
+  "Evolved Higgs Boson": {
+    "times_purchased": 34,
+    "times_on_winning_board": 6,
+    "times_on_losing_board": 28,
+    "win_rate": 17.65,
+    "avg_survival_turns": 24.6,
+    "avg_power_contributed": 60.2
+  },
+  "Evolved Mongol Empire": {
+    "times_purchased": 59,
+    "times_on_winning_board": 11,
+    "times_on_losing_board": 48,
+    "win_rate": 18.64,
+    "avg_survival_turns": 24.6,
+    "avg_power_contributed": 48.2
+  },
+  "Evolved Industrial Revolution": {
+    "times_purchased": 27,
+    "times_on_winning_board": 11,
+    "times_on_losing_board": 16,
+    "win_rate": 40.74,
+    "avg_survival_turns": 25.9,
+    "avg_power_contributed": 49.5
+  },
+  "Evolved Pandora'nın Kutusu": {
+    "times_purchased": 66,
+    "times_on_winning_board": 13,
+    "times_on_losing_board": 53,
+    "win_rate": 19.7,
+    "avg_survival_turns": 25.7,
+    "avg_power_contributed": 49.0
+  },
+  "Evolved Rainforest": {
+    "times_purchased": 47,
+    "times_on_winning_board": 5,
+    "times_on_losing_board": 42,
+    "win_rate": 10.64,
+    "avg_survival_turns": 24.2,
+    "avg_power_contributed": 49.0
+  },
+  "Evolved Baobab": {
+    "times_purchased": 40,
+    "times_on_winning_board": 9,
+    "times_on_losing_board": 31,
+    "win_rate": 22.5,
+    "avg_survival_turns": 25.4,
+    "avg_power_contributed": 51.5
+  },
+  "Evolved Silk Road": {
+    "times_purchased": 60,
+    "times_on_winning_board": 8,
+    "times_on_losing_board": 52,
+    "win_rate": 13.33,
+    "avg_survival_turns": 25.0,
+    "avg_power_contributed": 51.4
+  },
+  "Evolved Roman Empire": {
+    "times_purchased": 22,
+    "times_on_winning_board": 5,
+    "times_on_losing_board": 17,
+    "win_rate": 22.73,
+    "avg_survival_turns": 26.1,
+    "avg_power_contributed": 56.0
+  },
+  "Evolved Cordyceps": {
+    "times_purchased": 21,
+    "times_on_winning_board": 4,
+    "times_on_losing_board": 17,
+    "win_rate": 19.05,
+    "avg_survival_turns": 24.3,
+    "avg_power_contributed": 57.5
+  },
+  "Evolved Valhalla": {
+    "times_purchased": 111,
+    "times_on_winning_board": 28,
+    "times_on_losing_board": 83,
+    "win_rate": 25.23,
+    "avg_survival_turns": 24.4,
+    "avg_power_contributed": 51.5
+  },
+  "Evolved Quetzalcoatl": {
+    "times_purchased": 21,
+    "times_on_winning_board": 3,
+    "times_on_losing_board": 18,
+    "win_rate": 14.29,
+    "avg_survival_turns": 23.9,
+    "avg_power_contributed": 59.4
+  },
+  "Evolved Asteroid Belt": {
+    "times_purchased": 6,
+    "times_on_winning_board": 1,
+    "times_on_losing_board": 5,
+    "win_rate": 16.67,
+    "avg_survival_turns": 25.2,
+    "avg_power_contributed": 44.3
+  },
+  "Evolved Black Death": {
+    "times_purchased": 25,
+    "times_on_winning_board": 8,
+    "times_on_losing_board": 17,
+    "win_rate": 32.0,
+    "avg_survival_turns": 26.2,
+    "avg_power_contributed": 66.7
+  },
+  "Evolved Ragnarök": {
+    "times_purchased": 43,
+    "times_on_winning_board": 11,
+    "times_on_losing_board": 32,
+    "win_rate": 25.58,
+    "avg_survival_turns": 25.0,
+    "avg_power_contributed": 60.6
+  },
+  "Evolved Printing Press": {
+    "times_purchased": 36,
+    "times_on_winning_board": 10,
+    "times_on_losing_board": 26,
+    "win_rate": 27.78,
+    "avg_survival_turns": 25.4,
+    "avg_power_contributed": 45.4
+  },
+  "Evolved World War II": {
+    "times_purchased": 25,
+    "times_on_winning_board": 8,
+    "times_on_losing_board": 17,
+    "win_rate": 32.0,
+    "avg_survival_turns": 25.4,
+    "avg_power_contributed": 54.7
+  },
+  "Evolved Tardigrade": {
+    "times_purchased": 26,
+    "times_on_winning_board": 6,
+    "times_on_losing_board": 20,
+    "win_rate": 23.08,
+    "avg_survival_turns": 24.5,
+    "avg_power_contributed": 46.0
+  },
+  "Evolved Sparta": {
+    "times_purchased": 66,
+    "times_on_winning_board": 12,
+    "times_on_losing_board": 54,
+    "win_rate": 18.18,
+    "avg_survival_turns": 23.8,
+    "avg_power_contributed": 50.5
+  },
+  "Evolved Loki": {
+    "times_purchased": 50,
+    "times_on_winning_board": 7,
+    "times_on_losing_board": 43,
+    "win_rate": 14.0,
+    "avg_survival_turns": 23.9,
+    "avg_power_contributed": 50.1
+  },
+  "Evolved Event Horizon": {
+    "times_purchased": 49,
+    "times_on_winning_board": 12,
+    "times_on_losing_board": 37,
+    "win_rate": 24.49,
+    "avg_survival_turns": 25.2,
+    "avg_power_contributed": 59.6
+  },
+  "Evolved Dark Matter": {
+    "times_purchased": 55,
+    "times_on_winning_board": 21,
+    "times_on_losing_board": 34,
+    "win_rate": 38.18,
+    "avg_survival_turns": 24.4,
+    "avg_power_contributed": 58.6
+  },
+  "Evolved Yggdrasil": {
+    "times_purchased": 25,
+    "times_on_winning_board": 6,
+    "times_on_losing_board": 19,
+    "win_rate": 24.0,
+    "avg_survival_turns": 26.0,
+    "avg_power_contributed": 65.4
+  },
+  "Evolved The Persistence of Memory": {
+    "times_purchased": 40,
+    "times_on_winning_board": 8,
+    "times_on_losing_board": 32,
+    "win_rate": 20.0,
+    "avg_survival_turns": 25.6,
+    "avg_power_contributed": 49.4
+  },
+  "Evolved Babylon": {
+    "times_purchased": 21,
+    "times_on_winning_board": 8,
+    "times_on_losing_board": 13,
+    "win_rate": 38.1,
+    "avg_survival_turns": 25.6,
+    "avg_power_contributed": 42.3
+  },
+  "Evolved Renaissance": {
+    "times_purchased": 41,
+    "times_on_winning_board": 9,
+    "times_on_losing_board": 32,
+    "win_rate": 21.95,
+    "avg_survival_turns": 25.7,
+    "avg_power_contributed": 57.9
+  },
+  "Evolved Camouflage": {
+    "times_purchased": 22,
+    "times_on_winning_board": 4,
+    "times_on_losing_board": 18,
+    "win_rate": 18.18,
+    "avg_survival_turns": 24.5,
+    "avg_power_contributed": 41.3
+  },
+  "Evolved Medusa": {
+    "times_purchased": 34,
+    "times_on_winning_board": 12,
+    "times_on_losing_board": 22,
+    "win_rate": 35.29,
+    "avg_survival_turns": 24.4,
+    "avg_power_contributed": 51.6
+  },
+  "Evolved Isaac Newton": {
+    "times_purchased": 47,
+    "times_on_winning_board": 11,
+    "times_on_losing_board": 36,
+    "win_rate": 23.4,
+    "avg_survival_turns": 25.2,
+    "avg_power_contributed": 58.2
+  },
+  "Evolved E = mc²": {
+    "times_purchased": 31,
+    "times_on_winning_board": 7,
+    "times_on_losing_board": 24,
+    "win_rate": 22.58,
+    "avg_survival_turns": 26.8,
+    "avg_power_contributed": 64.4
+  },
+  "Evolved Impressionism": {
+    "times_purchased": 20,
+    "times_on_winning_board": 6,
+    "times_on_losing_board": 14,
+    "win_rate": 30.0,
+    "avg_survival_turns": 25.1,
+    "avg_power_contributed": 44.0
+  },
+  "Evolved Guernica": {
+    "times_purchased": 45,
+    "times_on_winning_board": 10,
+    "times_on_losing_board": 35,
+    "win_rate": 22.22,
+    "avg_survival_turns": 25.0,
+    "avg_power_contributed": 59.0
+  },
+  "Evolved Nikola Tesla": {
+    "times_purchased": 37,
+    "times_on_winning_board": 11,
+    "times_on_losing_board": 26,
+    "win_rate": 29.73,
+    "avg_survival_turns": 25.9,
+    "avg_power_contributed": 58.8
+  },
+  "Evolved Phoenix": {
+    "times_purchased": 21,
+    "times_on_winning_board": 5,
+    "times_on_losing_board": 16,
+    "win_rate": 23.81,
+    "avg_survival_turns": 25.5,
+    "avg_power_contributed": 58.6
+  },
+  "Evolved Sirius": {
+    "times_purchased": 7,
+    "times_on_winning_board": 2,
+    "times_on_losing_board": 5,
+    "win_rate": 28.57,
+    "avg_survival_turns": 23.1,
+    "avg_power_contributed": 40.0
+  },
+  "Evolved Algorithm": {
+    "times_purchased": 13,
+    "times_on_winning_board": 5,
+    "times_on_losing_board": 8,
+    "win_rate": 38.46,
+    "avg_survival_turns": 24.4,
+    "avg_power_contributed": 41.5
+  },
+  "Evolved Albert Einstein": {
+    "times_purchased": 39,
+    "times_on_winning_board": 10,
+    "times_on_losing_board": 29,
+    "win_rate": 25.64,
+    "avg_survival_turns": 25.7,
+    "avg_power_contributed": 62.9
+  },
+  "Evolved Black Hole": {
+    "times_purchased": 32,
+    "times_on_winning_board": 7,
+    "times_on_losing_board": 25,
+    "win_rate": 21.88,
+    "avg_survival_turns": 25.8,
+    "avg_power_contributed": 66.6
+  },
+  "Evolved Quasar": {
+    "times_purchased": 37,
+    "times_on_winning_board": 7,
+    "times_on_losing_board": 30,
+    "win_rate": 18.92,
+    "avg_survival_turns": 24.6,
+    "avg_power_contributed": 57.1
+  },
+  "Evolved Coral Reef": {
+    "times_purchased": 26,
+    "times_on_winning_board": 3,
+    "times_on_losing_board": 23,
+    "win_rate": 11.54,
+    "avg_survival_turns": 24.6,
+    "avg_power_contributed": 50.0
+  },
+  "Evolved Truva Atı": {
+    "times_purchased": 8,
+    "times_on_winning_board": 3,
+    "times_on_losing_board": 5,
+    "win_rate": 37.5,
+    "avg_survival_turns": 25.4,
+    "avg_power_contributed": 42.4
+  },
+  "Evolved Venus Flytrap": {
+    "times_purchased": 10,
+    "times_on_winning_board": 1,
+    "times_on_losing_board": 9,
+    "win_rate": 10.0,
+    "avg_survival_turns": 26.0,
+    "avg_power_contributed": 44.7
+  },
+  "Evolved Code of Hammurabi": {
+    "times_purchased": 20,
+    "times_on_winning_board": 6,
+    "times_on_losing_board": 14,
+    "win_rate": 30.0,
+    "avg_survival_turns": 24.5,
+    "avg_power_contributed": 44.4
+  },
+  "Evolved Narwhal": {
+    "times_purchased": 4,
+    "times_on_winning_board": 0,
+    "times_on_losing_board": 4,
+    "win_rate": 0.0,
+    "avg_survival_turns": 23.5,
+    "avg_power_contributed": 44.8
+  },
+  "Evolved Cubism": {
+    "times_purchased": 14,
+    "times_on_winning_board": 5,
+    "times_on_losing_board": 9,
+    "win_rate": 35.71,
+    "avg_survival_turns": 25.1,
+    "avg_power_contributed": 43.2
+  },
+  "Evolved Komodo Dragon": {
+    "times_purchased": 44,
+    "times_on_winning_board": 6,
+    "times_on_losing_board": 38,
+    "win_rate": 13.64,
+    "avg_survival_turns": 25.2,
+    "avg_power_contributed": 51.5
+  },
+  "Evolved Flamenco": {
+    "times_purchased": 7,
+    "times_on_winning_board": 3,
+    "times_on_losing_board": 4,
+    "win_rate": 42.86,
+    "avg_survival_turns": 24.7,
+    "avg_power_contributed": 43.0
+  },
+  "Evolved Baroque": {
+    "times_purchased": 10,
+    "times_on_winning_board": 2,
+    "times_on_losing_board": 8,
+    "win_rate": 20.0,
+    "avg_survival_turns": 23.8,
+    "avg_power_contributed": 43.4
+  },
+  "Evolved Odin": {
+    "times_purchased": 37,
+    "times_on_winning_board": 8,
+    "times_on_losing_board": 29,
+    "win_rate": 21.62,
+    "avg_survival_turns": 24.8,
+    "avg_power_contributed": 60.4
+  },
+  "Evolved Blue Whale": {
+    "times_purchased": 17,
+    "times_on_winning_board": 8,
+    "times_on_losing_board": 9,
+    "win_rate": 47.06,
+    "avg_survival_turns": 25.9,
+    "avg_power_contributed": 55.7
+  },
+  "Evolved Ballet": {
+    "times_purchased": 16,
+    "times_on_winning_board": 4,
+    "times_on_losing_board": 12,
+    "win_rate": 25.0,
+    "avg_survival_turns": 24.5,
+    "avg_power_contributed": 44.9
+  },
+  "Evolved Fungus": {
+    "times_purchased": 11,
+    "times_on_winning_board": 3,
+    "times_on_losing_board": 8,
+    "win_rate": 27.27,
+    "avg_survival_turns": 25.3,
+    "avg_power_contributed": 45.0
+  },
+  "Evolved Migration": {
+    "times_purchased": 4,
+    "times_on_winning_board": 0,
+    "times_on_losing_board": 4,
+    "win_rate": 0.0,
+    "avg_survival_turns": 20.5,
+    "avg_power_contributed": 43.0
+  },
+  "Evolved Cerberus": {
+    "times_purchased": 27,
+    "times_on_winning_board": 4,
+    "times_on_losing_board": 23,
+    "win_rate": 14.81,
+    "avg_survival_turns": 24.3,
+    "avg_power_contributed": 47.1
+  },
+  "Evolved Europa": {
+    "times_purchased": 9,
+    "times_on_winning_board": 3,
+    "times_on_losing_board": 6,
+    "win_rate": 33.33,
+    "avg_survival_turns": 24.8,
+    "avg_power_contributed": 47.4
+  },
+  "Evolved Axolotl": {
+    "times_purchased": 5,
+    "times_on_winning_board": 1,
+    "times_on_losing_board": 4,
+    "win_rate": 20.0,
+    "avg_survival_turns": 25.6,
+    "avg_power_contributed": 36.4
+  },
+  "Evolved Fibonacci Sequence": {
+    "times_purchased": 11,
+    "times_on_winning_board": 1,
+    "times_on_losing_board": 10,
+    "win_rate": 9.09,
+    "avg_survival_turns": 25.9,
+    "avg_power_contributed": 44.2
+  }
+}

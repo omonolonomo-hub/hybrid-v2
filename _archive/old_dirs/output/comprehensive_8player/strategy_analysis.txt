@@ -1,0 +1,76 @@
+================================================================================
+STRATEGY PERFORMANCE ANALYSIS
+================================================================================
+
+RANDOM
+--------------------------------------------------------------------------------
+  Games played: 2000
+  Win rate: 0.45%
+  Top 4 rate: 43.05%
+  Avg placement: 4.94
+  Avg survival turns: 25.2
+  Avg damage dealt: 100.5
+
+WARRIOR
+--------------------------------------------------------------------------------
+  Games played: 2000
+  Win rate: 4.40%
+  Top 4 rate: 48.50%
+  Avg placement: 4.83
+  Avg survival turns: 25.2
+  Avg damage dealt: 126.9
+
+BUILDER
+--------------------------------------------------------------------------------
+  Games played: 2000
+  Win rate: 33.95%
+  Top 4 rate: 67.30%
+  Avg placement: 3.48
+  Avg survival turns: 25.2
+  Avg damage dealt: 255.7
+
+EVOLVER
+--------------------------------------------------------------------------------
+  Games played: 2000
+  Win rate: 3.50%
+  Top 4 rate: 44.15%
+  Avg placement: 4.76
+  Avg survival turns: 25.2
+  Avg damage dealt: 125.8
+
+ECONOMIST
+--------------------------------------------------------------------------------
+  Games played: 2000
+  Win rate: 2.90%
+  Top 4 rate: 43.50%
+  Avg placement: 4.90
+  Avg survival turns: 25.2
+  Avg damage dealt: 111.2
+
+BALANCER
+--------------------------------------------------------------------------------
+  Games played: 2000
+  Win rate: 2.85%
+  Top 4 rate: 44.40%
+  Avg placement: 4.97
+  Avg survival turns: 25.2
+  Avg damage dealt: 118.8
+
+RARE_HUNTER
+--------------------------------------------------------------------------------
+  Games played: 2000
+  Win rate: 6.55%
+  Top 4 rate: 43.15%
+  Avg placement: 4.87
+  Avg survival turns: 25.2
+  Avg damage dealt: 135.9
+
+TEMPO
+--------------------------------------------------------------------------------
+  Games played: 2000
+  Win rate: 45.40%
+  Top 4 rate: 65.95%
+  Avg placement: 3.26
+  Avg survival turns: 25.2
+  Avg damage dealt: 273.9
+
