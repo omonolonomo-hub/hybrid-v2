@@ -38,7 +38,8 @@ HAND_SIZE = 6
 
 
 class MockPlayer:
-    def __init__(self, name="Player", hp=150, gold=10):
+    def __init__(self, name="Player", hp=150, gold=10, pid=0):
+        self.pid   = pid
         self.name  = name
         self.hp    = hp
         self.gold  = gold
@@ -70,7 +71,7 @@ class MockGame:
     def initialize_deterministic_fixture(self) -> None:
         """Tekrarlanabilir seed ile 8 oyuncu ve dolu bir dükkan + el oluştur."""
         self.players = [
-            MockPlayer(name=f"Player {i}", hp=max(150 - i * 15, 30), gold=10)
+            MockPlayer(name=f"Player {i}", hp=max(150 - i * 15, 30), gold=10, pid=i)
             for i in range(8)
         ]
         # Human (index 0) eline ilk 2 kartı ver
@@ -131,3 +132,41 @@ class MockGame:
 
     def get_gold(self, player_index: int) -> int:
         return self.players[player_index].gold
+
+    # ------------------------------------------------------------------ #
+    # Phase 4 — Savaş ve Eşleşme                                           #
+    # ------------------------------------------------------------------ #
+    def swiss_pairs(self) -> list:
+        """Deterministik eşleşme: 0-1, 2-3, 4-5, 6-7."""
+        alive = [p for p in self.players if p.alive]
+        pairs = []
+        for i in range(0, len(alive) - 1, 2):
+            pairs.append((alive[i], alive[i + 1]))
+        return pairs
+
+    def combat_phase(self) -> None:
+        """
+        Stub combat: her eşleşmede kaybedene 1 HP hasar ver.
+        last_combat_results'ı doldurur (Phase 4 CombatOverlay için).
+        """
+        self.last_combat_results = []
+        for a, b in self.swiss_pairs():
+            winner = a if a.hp >= b.hp else b
+            loser  = b if winner is a else a
+            dmg = 1
+            hp_before_a, hp_before_b = a.hp, b.hp
+            loser.hp = max(0, loser.hp - dmg)
+            if loser.hp <= 0:
+                loser.alive = False
+            self.last_combat_results.append({
+                "pid_a": a.pid, "pid_b": b.pid,
+                "pts_a": a.total_pts, "pts_b": b.total_pts,
+                "kill_a": 0, "kill_b": 0,
+                "combo_a": 0, "combo_b": 0,
+                "synergy_a": 0, "synergy_b": 0,
+                "draws": 0,
+                "winner_pid": winner.pid,
+                "dmg": dmg,
+                "hp_before_a": hp_before_a, "hp_before_b": hp_before_b,
+                "hp_after_a": a.hp, "hp_after_b": b.hp,
+            })

@@ -8,7 +8,6 @@ import pygame
 from v2.constants import Screen
 from v2.core.game_state import GameState
 from v2.core.scene_manager import SceneManager
-from v2.mock.engine_mock import MockGame
 from v2.scenes.shop import ShopScene
 
 
@@ -16,16 +15,26 @@ def _bootstrap() -> None:
     """Engine, asset ve veritabanı başlatma — main() öncesinde bir kez çalışır."""
     from v2.assets.loader import AssetLoader
     from v2.core.card_database import CardDatabase
-
-    mock_game = MockGame()
-    mock_game.initialize_deterministic_fixture()
-    GameState.get().hook_engine(mock_game)
+    from engine_core.game_factory import build_game
 
     v2_base = os.path.dirname(__file__)
+    
+    # Önce UI Database ve Assetleri yüklenir
     AssetLoader.initialize(os.path.join(v2_base, "assets"))
     CardDatabase.initialize(
         os.path.join(v2_base, "..", "assets", "data", "cards.json")
     )
+
+    # Motoru İnşa Et (Human ve 7 AI stratejisi)
+    strategies = ["human", "random", "warrior", "builder",
+                  "defender", "economist", "synergist", "aggressive"]
+    game = build_game(strategies=strategies)
+    
+    # Ignition: Oyuna başlamadan pazarın ve gelirlerin dağıtılması için (Turn 0 -> Turn 1)
+    game.start_turn()
+
+    # Motoru UI Köprüsüne (GameState) bağla
+    GameState.get().hook_engine(game)
 
 
 def main():

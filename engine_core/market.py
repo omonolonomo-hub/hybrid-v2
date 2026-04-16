@@ -128,6 +128,8 @@ class Market:
     def _return_window(self, pid):
         """Return player's open window cards to the pool."""
         for card in self._player_windows.pop(pid, []):
+            if card is None:   # satın alınmış slot — havuza iade etme
+                continue
             self.pool_copies[card.name] = self.pool_copies.get(card.name, 0) + 1
 
     def return_unsold(self, player, bought: List[Card] = None):
@@ -144,6 +146,8 @@ class Market:
 
         window = self._player_windows.pop(pid, [])
         for card in window:
+            if card is None:
+                continue
             if bought_counts.get(card.name, 0) > 0:
                 bought_counts[card.name] -= 1
                 continue

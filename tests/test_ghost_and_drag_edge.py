@@ -185,13 +185,22 @@ def test_cardflip_render_at_progress_one():
 # ASSETLOADER — Özel Karakterli Kart İsimleri
 # ==========================================================================
 
-def test_assetloader_loads_special_char_cards():
+def test_assetloader_loads_special_char_cards(monkeypatch):
     """
     'π (Pi)', 'E = mc²', "Pandora'nın Kutusu" gibi özel karakterli
-    kart isimleri AssetLoader tarafından başarıyla yüklenebilmeli.
+    kart isimleri AssetLoader tarafından başarıyla işlenebilmeli.
+    Fiziksel png'ler olmadığı için load süreci mock ile test edilir.
     """
     import os
     from v2.assets.loader import AssetLoader
+    
+    # Mock os.path.exists to always return True
+    monkeypatch.setattr(os.path, "exists", lambda path: True)
+    
+    # Mock pygame.image.load to return a dummy surface
+    dummy_surf = pygame.Surface((10, 10))
+    monkeypatch.setattr(pygame.image, "load", lambda path: dummy_surf)
+
     AssetLoader._instance = None
     base = os.path.join(os.path.dirname(__file__), "..", "v2", "assets")
     AssetLoader.initialize(base)

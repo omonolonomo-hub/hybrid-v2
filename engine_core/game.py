@@ -160,7 +160,157 @@ class Game:
                     break
         return pairs
 
-    # -- Preparation phase --
+    # ================================================================
+    # UI BRIDGE METHODS — The "Manual Orchestrator" interface.
+    # These methods replace preparation_phase() for human games.
+    # start_turn()  → called when the shop screen opens (income + market)
+    # finish_turn() → called when human clicks "Ready" (AI acts + hooks)
+    # ================================================================
+
+    def start_turn(self) -> None:
+        """Phase 1 of 2: Advance turn counter, deal income + market windows.
+        Does NOT run AI buy/place logic — that waits until finish_turn().
+        This allows the human player to browse the shop before any AI acts.
+        """
+        self.turn += 1
+        _turn = self.turn
+        _log  = self._log
+        _verbose = self.verbose
+        _trigger_passive = self.trigger_passive_fn
+        _market = self.market
+
+        _log(f"\n{'-'*50}\n  TURN {_turn} — PREPARATION START\n{'-'*50}")
+
+        alive = self.alive_players()
+
+        # Open market windows, respecting shop_locked
+        self._current_player_markets = {}
+        for player in alive:
+            if not getattr(player, "shop_locked", False):
+                self._current_player_markets[player.pid] = _market.deal_market_window(player, 5)
+            else:
+                self._current_player_markets[player.pid] = _market._player_windows.get(player.pid, [])
+                # Auto-unlock for next turn so it refreshes unless locked again
+                player.shop_locked = False
+
+        # Give income to everyone (including human)
+        for player in alive:
+            player.income()
+            if _trigger_passive:
+                for card in tuple(player.board.grid.values()):
+                    _trigger_passive(card, "income", player, None,
+                                     {"turn": _turn}, verbose=_verbose)
+            if _trigger_passive:
+                for card in tuple(player.board.grid.values()):
+                    _trigger_passive(card, "market_refresh", player, None,
+                                     {"turn": _turn}, verbose=_verbose)
+
+    def finish_turn(self) -> None:
+        """Phase 2 of 2: Run AI for every NON-human player, then apply
+        apply_interest, check_evolution, check_copy_strengthening for all.
+        Called when human clicks "Ready".
+        """
+        _turn = self.turn
+        _log  = self._log
+        _verbose = self.verbose
+        _trigger_passive = self.trigger_passive_fn
+        _market = self.market
+        _rng = self.rng
+        _ai = self._ai
+
+        alive = self.alive_players()
+        player_markets = getattr(self, "_current_player_markets", {})
+
+        for player in alive:
+            player_market = player_markets.get(player.pid, [])
+
+            # HUMAN IMMUNITY: skip AI logic for human-controlled player
+            if player.strategy == "human":
+                # Human already committed their buys via GameState.buy_card_from_slot
+                # Pass None so return_unsold reads player._window_bought (set by player.buy_card)
+                newly_bought = None
+            else:
+                hand_before = len(player.hand)
+                _ai.buy_cards(player, player_market, market_obj=_market,
+                              rng=_rng, trigger_passive_fn=_trigger_passive)
+                newly_bought = player.hand[hand_before:]
+
+            if not getattr(player, "shop_locked", False):
+                _market.return_unsold(player, bought=newly_bought)
+            else:
+                if hasattr(player, "_window_bought"):
+                    player._window_bought = []
+            player.apply_interest()
+            evos = player.check_evolution(market=_market, card_by_name=self.card_by_name)
+            if evos and _verbose:
+                for base_name in evos:
+                    _log(f"  *** EVOLUTION: P{player.pid} evolved "
+                         f"{base_name} -> Evolved {base_name}! ***")
+
+            if player.strategy != "human":
+                _ai.place_cards(player, rng=_rng)
+
+            if _trigger_passive:
+                player.check_copy_strengthening(_turn, trigger_passive_fn=_trigger_passive)
+
+            # Per-turn board snapshot
+            for _c in player.board.grid.values():
+                player.card_turns_alive[_c.name] = \
+                    player.card_turns_alive.get(_c.name, 0) + 1
+                player.stats["board_power"] += _c.total_power()
+                player.stats["unit_count"]  += 1
+            player.stats["gold_per_turn"] += player.gold
+
+    def toggle_lock_shop(self, player_index: int = 0) -> None:
+        """Lock or unlock the market window for the player."""
+        if player_index >= len(self.players):
+            return
+        player = self.players[player_index]
+        current_lock = getattr(player, "shop_locked", False)
+        player.shop_locked = not current_lock
+
+    def get_shop_window(self, player_index: int = 0) -> list:
+        """Return the 5-slot market window for the given player as a list of
+        card name strings (or None for empty slots). Safe to call any time."""
+        if player_index >= len(self.players):
+            return [None] * 5
+        pid = self.players[player_index].pid
+        window = self.market._player_windows.get(pid, [])
+        names = [c.name if c is not None else None for c in window]
+        return names + [None] * (5 - len(names))
+
+    def get_hand(self, player_index: int = 0) -> list:
+        """Return the 6-slot hand for the given player as card name strings
+        (or None for empty slots). Safe even when hand has < 6 cards."""
+        if player_index >= len(self.players):
+            return [None] * 6
+        hand = self.players[player_index].hand
+        names = [c.name for c in hand if c is not None]
+        return names + [None] * (6 - len(names))
+
+    def reroll_market(self, player_index: int = 0, cost: int = 2) -> bool:
+        """Spend `cost` gold to refresh the market window for the player.
+        Returns True on success, False if the player cannot afford it."""
+        if player_index >= len(self.players):
+            return False
+        player = self.players[player_index]
+        if player.gold < cost:
+            return False
+        player.gold -= cost
+        # deal_market_window içinde _return_window çağrılır — eski window'u iade eder
+        # Burada ekstra iade yapmayın (double-return pool-inflation bug)
+        self.market.deal_market_window(player, 5)
+        return True
+
+    def get_display_name(self, pid: int) -> str:
+        """Return the UI-friendly name for a player. Avoids AttributeError on
+        players that only have .pid (not .name)."""
+        for p in self.players:
+            if p.pid == pid:
+                return getattr(p, "name", f"P{pid}")
+        return f"P{pid}"
+
+    # -- Preparation phase (legacy — used by run() for full AI simulations) --
 
     def preparation_phase(self):
         self.turn += 1
@@ -219,8 +369,19 @@ class Game:
 
     # -- Combat + damage phase --
 
-    def combat_phase(self):
-        pairs = self.swiss_pairs()
+    def combat_phase(self, pairs=None):
+        """Resolve combat for all alive player pairs this turn.
+        
+        Args:
+            pairs: Optional pre-computed list of (Player, Player) tuples.
+                   If provided (e.g. frozen by the UI's Versus overlay),
+                   those exact matchups are used — swiss_pairs() is NOT 
+                   called again, preventing RNG drift (Bait-and-Switch bug).
+                   If None, swiss_pairs() is called normally.
+        """
+        if pairs is None:
+            pairs = self.swiss_pairs()
+
 
         if not pairs:
             return

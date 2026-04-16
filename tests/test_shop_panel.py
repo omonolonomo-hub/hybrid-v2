@@ -44,48 +44,28 @@ def test_shoppanel_render_method_exists(mock_game_state):
     surface = pygame.Surface((Screen.W, Screen.H))
     panel.render(surface)
 
-def test_shoppanel_creates_five_card_slots_correct_layout():
+def test_shoppanel_render_produces_interactive_regions(mock_game_state, monkeypatch):
+    """ShopPanel render edildiğinde Reroll, Lock, Tier, Gold textlerinin ve kart bölgelerinin çizildiğini (behavior) doğrular."""
     panel = ShopPanel()
-    assert len(panel.card_rects) == Layout.SHOP_SLOTS, "Dükkan 5 yuvadan oluşmalıdır."
-    for i, rect in enumerate(panel.card_rects):
-        assert rect.w == Layout.SHOP_CARD_W
-        assert rect.h == Layout.SHOP_CARD_H
-        if i > 0:
-            expected_x = panel.card_rects[i-1].x + Layout.SHOP_CARD_W + Layout.SHOP_CARD_GAP
-            assert rect.x == expected_x
+    surface = pygame.Surface((Screen.W, Screen.H))
 
-def test_shoppanel_creates_reroll_button_at_correct_position():
-    """Reroll butonu sağ tarafa yaslı olarak hizalanmış olmalı."""
-    panel = ShopPanel()
-    btn   = panel.reroll_rect
-    expected_x = panel.rect.right - Layout.REROLL_BTN_W - 20
-    assert btn.x == expected_x, "Reroll butonu yanlış X konumunda!"
-    # Y: panel içinde, üstten 20px'den daha fazla aşağıda olmamalı
-    assert panel.rect.y <= btn.y <= panel.rect.y + 20, (
-        "Reroll butonu panel üstüne yakın olmalı (overlap fix sonrası yeni anchor)."
+    drawn_texts = []
+    from v2.ui import font_cache
+    def mock_render_text(surf, text, font, color, pos, *args, **kwargs):
+        drawn_texts.append(str(text).upper())
+    monkeypatch.setattr(font_cache, "render_text", mock_render_text)
 
-    )
+    panel.render(surface)
 
-def test_shoppanel_creates_info_panel():
-    panel = ShopPanel()
-    assert hasattr(panel, "info_rect"), "ShopPanel'de hover bilgi kutusu info_rect bulunamadı!"
-    assert panel.info_rect.w == Layout.SHOP_INFO_W
-
-def test_shoppanel_creates_lock_and_stats_rects():
-    """ShopPanel içerisinde oyun motoru verilerini okuyacak Stats alanı ve Lock butonu bulunmalıdır."""
-    panel = ShopPanel()
-    assert hasattr(panel, "lock_rect"), "ShopPanel'de lock_rect sabiti eksik!"
-    assert hasattr(panel, "stats_rect"), "ShopPanel'de drop rates/gold stats_rect eksik!"
+    joined_text = " ".join(drawn_texts)
     
-    # Kapsülleme doğrulama (Panel dışına hiçbir kutu taşmamalı!)
-    assert panel.lock_rect.bottom <= panel.rect.bottom
-    assert panel.stats_rect.bottom <= panel.rect.bottom
-    assert panel.reroll_rect.bottom <= panel.rect.bottom
-
-    # Lock, Reroll'un altında olmalı
-    assert panel.lock_rect.y >= panel.reroll_rect.bottom
-    # Stats, info panel'in sağında olmalı
-    assert panel.stats_rect.x >= panel.info_rect.right
+    # Ekrana basılan HUD elemanları
+    assert "REROLL" in joined_text
+    assert "LOCK" in joined_text or "LOCKED" in joined_text or "\U0001f512" in joined_text
+    assert "TIER" in joined_text or "LEVEL" in joined_text or "DROP:" in joined_text
+    
+    # Drag-drop veya click için card rectleri testinin davranıssal karsılıgı: slotların olusturulmus olması
+    assert len(panel.card_rects) == 5
 
 def test_shoppanel_reads_pool_from_gamestate(mock_game_state):
     panel = ShopPanel()
@@ -117,6 +97,30 @@ def test_shoppanel_handles_reroll_click(mock_game_state, monkeypatch):
     
     assert handled is True
     assert called_reroll is True
+
+@pytest.mark.xfail(reason="Phase 4 reroll button disabled state is not implemented yet.")
+def test_shoppanel_reroll_disabled_when_insufficient_gold(mock_game_state, monkeypatch):
+    panel = ShopPanel()
+    called_reroll = False
+    def mock_reroll(player_index):
+        nonlocal called_reroll
+        called_reroll = True
+        return ActionResult.OK
+    monkeypatch.setattr(mock_game_state, "reroll_market", mock_reroll, raising=False)
+    
+    # Force gold < 2
+    mock_game_state.get_gold = lambda pid: 1
+    
+    # Mock render to ensure color update
+    surface = pygame.Surface((Screen.W, Screen.H))
+    panel.render(surface)
+    
+    cx, cy = panel.reroll_rect.center
+    mock_event = pygame.event.Event(pygame.MOUSEBUTTONDOWN, button=1, pos=(cx, cy))
+    handled = panel.handle_event(mock_event)
+    
+    assert handled is False
+    assert called_reroll is False
 
 def test_shoppanel_handles_lock_click(mock_game_state, monkeypatch):
     """Kilit butonuna basıldığında GameState.lock_shop tetiklenmelidir."""

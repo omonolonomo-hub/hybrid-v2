@@ -1,6 +1,6 @@
 import pygame
 import math
-from v2.constants import Layout
+from v2.constants import Layout, Colors
 from v2.ui.card_flip import CardFlip
 
 # Fallback back surface (AssetLoader yoksa kullanalım)
@@ -105,6 +105,18 @@ class HandPanel:
         self._flips: list[CardFlip] = []
         self._build_flips()    # _card_names hazır olduğunda çağır
 
+    def _is_evolved_card(self, card_name: str | None) -> bool:
+        if not card_name:
+            return False
+        try:
+            from v2.core.card_database import CardDatabase
+            data = CardDatabase.get().lookup(card_name)
+            if not data:
+                return False
+            return getattr(data, "rarity", None) == "E" or getattr(data, "rarity_level", None) == "E"
+        except Exception:
+            return False
+
     # ------------------------------------------------------------------ #
     # İç Yardımcılar                                                       #
     # ------------------------------------------------------------------ #
@@ -121,6 +133,7 @@ class HandPanel:
         for i, slot_rect in enumerate(self.card_rects):
             w, h = slot_rect.width, slot_rect.height
             card_name = self._card_names[i] if hasattr(self, "_card_names") else None
+            evolved = self._is_evolved_card(card_name)
 
             if _loader_available and card_name:
                 try:
@@ -135,7 +148,8 @@ class HandPanel:
                 back  = _make_fallback_surface(_FALLBACK_BACK_COLOR,  w, h)
                 front = _make_fallback_surface(_FALLBACK_FRONT_COLOR, w, h)
 
-            self._flips.append(CardFlip(back, front, slot_rect))
+            self._flips.append(CardFlip(back, front, slot_rect, evolved=evolved,
+                                        evolved_color=Colors.PLATINUM))
 
     def assign_card(self, slot_idx: int, card_name: str | None) -> None:
         """Bir slota kart ata (veya None ile boşalt) ve animatörü yenile."""
@@ -150,7 +164,7 @@ class HandPanel:
         """
         try:
             from v2.core.game_state import GameState
-            new_hand = GameState.get().get_hand(player_index=0)
+            new_hand = GameState.get().get_hand() # Defaults to view_index
         except Exception:
             return
         for i, new_name in enumerate(new_hand[:len(self._card_names)]):
@@ -162,6 +176,7 @@ class HandPanel:
         slot_rect  = self.card_rects[idx]
         card_name  = self._card_names[idx]
         w, h = slot_rect.width, slot_rect.height
+        evolved = self._is_evolved_card(card_name)
         try:
             from v2.assets.loader import AssetLoader
             loader = AssetLoader.get()
@@ -173,7 +188,8 @@ class HandPanel:
         except Exception:
             back  = _make_fallback_surface(_FALLBACK_BACK_COLOR,  w, h)
             front = _make_fallback_surface(_FALLBACK_FRONT_COLOR, w, h)
-        self._flips[idx] = CardFlip(back, front, slot_rect)
+        self._flips[idx] = CardFlip(back, front, slot_rect, evolved=evolved,
+                                    evolved_color=Colors.PLATINUM)
 
     # ------------------------------------------------------------------ #
     # Güncelleme                                                           #

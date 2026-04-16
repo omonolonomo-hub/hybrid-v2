@@ -107,7 +107,10 @@ class ShopPanel:
         try:
             from v2.core.game_state import GameState
             shop_data = GameState.get().get_shop(player_index=0)
-        except Exception:
+        except Exception as e:
+            print(f"[ShopPanel] sync hatası: {e}")
+            import traceback
+            traceback.print_exc()
             shop_data = [None] * Layout.SHOP_SLOTS
 
         self._card_names: list[str | None] = list(shop_data[:Layout.SHOP_SLOTS])
@@ -116,6 +119,18 @@ class ShopPanel:
 
         self._flips: list[CardFlip] = []
         self._build_flips()
+
+    def _is_evolved_card(self, card_name: str | None) -> bool:
+        if not card_name:
+            return False
+        try:
+            from v2.core.card_database import CardDatabase
+            data = CardDatabase.get().lookup(card_name)
+            if not data:
+                return False
+            return getattr(data, "rarity", None) == "E" or getattr(data, "rarity_level", None) == "E"
+        except Exception:
+            return False
 
     # ------------------------------------------------------------------ #
     def _build_flips(self) -> None:
@@ -130,6 +145,7 @@ class ShopPanel:
         for i, slot_rect in enumerate(self.card_rects):
             w, h = slot_rect.width, slot_rect.height
             name = self._card_names[i] if hasattr(self, "_card_names") else None
+            evolved = self._is_evolved_card(name)
 
             if loader_ok and name:
                 try:
@@ -144,10 +160,11 @@ class ShopPanel:
                 front = _make_fallback_surface(_FALLBACK_FRONT_COLOR, w, h)
                 back  = _make_fallback_surface(_FALLBACK_BACK_COLOR,  w, h)
 
-            flip = CardFlip(back, front, slot_rect)
+            flip = CardFlip(back, front, slot_rect, evolved=evolved,
+                            evolved_color=Colors.PLATINUM)
             # Shop kartların başlangıç durumu front göster (flip_progress=1.0)
             flip.flip_progress = 1.0
-            flip._target = 1.0
+            flip._flip_target = 1.0
             self._flips.append(flip)
 
     def assign_shop(self, card_names: list[str | None]) -> None:
@@ -159,16 +176,35 @@ class ShopPanel:
     def sync(self) -> None:
         """
         GameState'ten güncel dükkan verisini çek.
-        Veri değiştiyse CardFlip'leri yeniden oluştur — her frame çağrılmamalı,
-        sadece reroll/buy gibi değişim olayları sonrasında çağrılır.
+        Veri değiştiyse CardFlip'leri akıllıca güncelle.
         """
         try:
             from v2.core.game_state import GameState
-            new_names = GameState.get().get_shop(player_index=0)
+            new_names = GameState.get().get_shop() # Defaults to view_index
         except Exception:
             return
+            
         if new_names != self._card_names:
-            self.assign_shop(new_names)
+            # Sadece satın alınmış (None) kartların CardFlip nesnelerini MockCardBox ile değiştir
+            # Eğer gerçek bir reroll ise (yani isimler tamamen farklıysa) tam yenileme yap
+            is_just_purchase = True
+            for i in range(Layout.SHOP_SLOTS):
+                if new_names[i] != self._card_names[i]:
+                    if new_names[i] is not None:
+                        is_just_purchase = False
+                        break
+                        
+            if is_just_purchase:
+                # Sadece satın alım olmuş (isim eskisiyle aynı veya None)
+                for i in range(Layout.SHOP_SLOTS):
+                    self._card_names[i] = new_names[i]
+                    if new_names[i] is None and i < len(self._flips):
+                        from v2.ui.card_flip import MockCardBox
+                        if not isinstance(self._flips[i], MockCardBox):
+                            self._flips[i] = MockCardBox(self.card_rects[i], (30, 30, 30))
+            else:
+                # Gerçekten kartlar değişmiş, tam yenile (Reroll, Turn Start)
+                self.assign_shop(new_names)
 
     # ------------------------------------------------------------------ #
     # Güncelleme                                                           #
@@ -193,26 +229,53 @@ class ShopPanel:
     # ------------------------------------------------------------------ #
     def handle_event(self, event: pygame.event.Event) -> bool:
         if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+            import traceback
             from v2.core.game_state import GameState
             state = GameState.get()
 
+            # -- REROLL --
             if self.reroll_rect.collidepoint(event.pos):
-                if hasattr(state, "reroll_market"):
-                    state.reroll_market(player_index=0)
+                print("[DEBUG] >>> REROLL tiklandi")
+                try:
+                    result = state.reroll_market(player_index=0)
+                    print(f"[DEBUG]     reroll_market -> {result}")
+                except Exception as e:
+                    print(f"[DEBUG] !!! REROLL HATASI: {e}")
+                    traceback.print_exc()
                 return True
 
+            # -- LOCK --
             if self.lock_rect.collidepoint(event.pos):
-                if hasattr(state, "toggle_lock_shop"):
+                print("[DEBUG] >>> LOCK tiklandi")
+                try:
                     state.toggle_lock_shop(player_index=0)
+                    from v2.core.game_state import GameState as _GS
+                    locked = getattr(_GS.get()._engine.players[0], "shop_locked", "?")
+                    print(f"[DEBUG]     shop_locked -> {locked}")
+                except Exception as e:
+                    print(f"[DEBUG] !!! LOCK HATASI: {e}")
+                    traceback.print_exc()
                 return True
 
+            # -- BUY --
             for idx, card_rect in enumerate(self.card_rects):
                 if card_rect.collidepoint(event.pos):
-                    if hasattr(state, "buy_card_from_slot"):
-                        state.buy_card_from_slot(player_index=0, slot_index=idx)
+                    card_name = self._card_names[idx] if idx < len(self._card_names) else None
+                    safe_name = str(card_name).encode('ascii', 'ignore').decode('ascii')
+                    print(f"[DEBUG] >>> SATIN AL: slot={idx}  kart='{safe_name}'")
+                    try:
+                        result = state.buy_card_from_slot(player_index=0, slot_index=idx)
+                        gold = state.get_gold(0)
+                        hand_count = sum(1 for n in state.get_hand(0) if n is not None)
+                        print(f"[DEBUG]     buy_card_from_slot -> {result}  | altin={gold}  el={hand_count} kart")
+                    except Exception as e:
+                        print(f"[DEBUG] !!! SATIN ALMA HATASI: {e}")
+                        traceback.print_exc()
                     return True
 
         return False
+
+
 
     # ------------------------------------------------------------------ #
     # Render                                                               #

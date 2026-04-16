@@ -81,8 +81,9 @@ class UIUtils:
         # En dışarıdan merkeze doğru iç içe daireler çizerek glow yarat
         for i in range(radius, 0, -1):
             ratio = i / radius
-            # Dışarıya doğru erime formülü (quadratic falloff)
             alpha = int(max_alpha * ((1.0 - ratio) ** 1.5))
-            pygame.draw.circle(surf, (r, g, b, alpha), center, i)
-            
+            circle = pygame.Surface((size, size), pygame.SRCALPHA)
+            pygame.draw.circle(circle, (r, g, b, alpha), center, i)
+            surf.blit(circle, (0, 0), special_flags=pygame.BLEND_ADD)
+
         return surf

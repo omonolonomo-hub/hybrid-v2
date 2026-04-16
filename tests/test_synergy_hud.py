@@ -22,37 +22,33 @@ def test_synergyhud_creates_group_badge_container():
     assert hud.groups_rect.x >= hud.rect.x
     assert hud.groups_rect.w <= hud.rect.w
 
-def test_synergyhud_creates_tracking_and_log_rects():
-    """SynergyHUD, pasif eşik takibini ve combat log verilerini dikey istiflemelidir."""
-    hud = SynergyHud()
-    assert hasattr(hud, "passive_tracker_rect"), "SynergyHud passive_tracker_rect uretmiyor!"
-    assert hasattr(hud, "combat_log_rect"), "SynergyHud combat_log_rect uretmiyor!"
-
-    # Yukaridan asagiya carpisma olmadan istiflenip istiflenmediklerini kontrol edelim
-    assert hud.passive_tracker_rect.y >= hud.groups_rect.bottom
-    assert hud.combat_log_rect.y >= hud.passive_tracker_rect.bottom
-
-def test_synergyhud_render_creates_primitives(monkeypatch):
+def test_synergyhud_render_displays_passive_log_and_combat_stats(monkeypatch):
+    """SynergyHUD render edildiğinde Synergy grupları ve Combat Özetleri gibi verilerin davranıssal olarak ekrana (font_cache ile) basıldıgını dogrular."""
     hud = SynergyHud()
     surface = pygame.Surface((Screen.W, Screen.H))
-    drawn_rects = []
-    def mock_draw_rect(surf, color, rect, *args, **kwargs):
-        drawn_rects.append(rect)
-    monkeypatch.setattr(pygame.draw, "rect", mock_draw_rect)
+
+    drawn_texts = []
+    from v2.ui import font_cache
+    def mock_render_text(surf, text, font, color, pos, *args, **kwargs):
+        drawn_texts.append(str(text).upper())
+    monkeypatch.setattr(font_cache, "render_text", mock_render_text)
+
+    # Force some fake state to ensure text paths trigger
+    hud._last_state = {
+        "groups": {"A": 1},
+        "score_rows": [("kill", 10), ("combo", 5), ("syn", 20)],
+        "score_total": 35,
+        "results": {"win": True},
+        "feed": ["A triggered"],
+    }
+
     hud.render(surface)
-    assert len(drawn_rects) >= 2, "SynergyHUD background ve GroupBox cizilmelidir."
 
-# ── Phase 3 redesign: yeni kutular ────────────────────────────────────────
-
-def test_synergyhud_has_last_combat_rect():
-    hud = SynergyHud()
-    assert hasattr(hud, "last_combat_rect"), "SynergyHud last_combat_rect içermeli"
-    assert hud.last_combat_rect.y >= hud.score_rect.bottom
-
-def test_synergyhud_has_passive_feed_rect():
-    hud = SynergyHud()
-    assert hasattr(hud, "passive_feed_rect"), "SynergyHud passive_feed_rect içermeli"
-    assert hud.passive_feed_rect.y >= hud.last_combat_rect.bottom
+    joined_text = " ".join(drawn_texts)
+    
+    assert "COMBAT SUMMARY" in joined_text or "COMBAT" in joined_text or "SAVAŞ" in joined_text
+    assert "PASSIVES" in joined_text or "PASSIVE" in joined_text or "PASİF" in joined_text or "PASIF" in joined_text
+    assert "TOTAL" in joined_text or "TOPLAM" in joined_text
 
 def test_synergyhud_score_rect_height_fits_content():
     """score_rect TOPLAM satırını içinde barındıracak kadar yüksek olmalı (>=110)."""

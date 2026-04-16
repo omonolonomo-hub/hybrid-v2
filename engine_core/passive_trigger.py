@@ -54,6 +54,7 @@ def trigger_passive(card: "Card", trigger: str, owner, opponent, ctx: dict, verb
     Returns:
         Bonus combat points or 0 for side-effect-only passives
     """
+    pt = getattr(card, "passive_type", "none")
     safe_name = card.name.encode('ascii', 'ignore').decode('ascii')
     if verbose:
         print(f"[PASSIVE] {safe_name} | {trigger}")
@@ -62,18 +63,30 @@ def trigger_passive(card: "Card", trigger: str, owner, opponent, ctx: dict, verb
     delta = card.total_power() - power_before
     if verbose:
         print(f"[EFFECT] {safe_name} -> {res}")
-    # Log passive trigger into the current log instance
-    _passive_trigger_log[safe_name][trigger] += 1
-    # Güçlendirme varsa owner'ın log'una yaz
-    if delta > 0 and owner is not None and hasattr(owner, 'passive_buff_log'):
-        owner.passive_buff_log.append({
+    # Log passive trigger if it had a visual/gameplay effect
+    # (Power increase, points result, or it's a phase-start trigger like 'income')
+    should_log = (delta > 0) or (res > 0) or (trigger in ("income", "market_refresh"))
+    
+    if should_log and owner is not None and hasattr(owner, 'passive_buff_log'):
+        entry = {
             "turn":    ctx.get("turn", 0),
             "card":    card.name,
-            "passive": card.passive_type,
+            "passive": pt,
             "trigger": trigger,
             "delta":   delta,
-        })
-    # ── Strategy Logger hook ─────────────────────────────────────────────────
+            "res":     res
+        }
+        owner.passive_buff_log.append(entry)
+        
+        # Terminal debugging for Human (pid=0)
+        if getattr(owner, "pid", -1) == 0:
+            msg = f"[PASSIVE] {safe_name} | {trigger} -> "
+            if delta > 0: msg += f"Power +{delta} "
+            if res > 0:   msg += f"Result +{res} "
+            if delta == 0 and res == 0: msg += "Activated"
+            print(msg)
+
+    # -- Strategy Logger hook --
     _slogger = get_strategy_logger()
     if _slogger is not None:
         owner_strat = getattr(owner, "strategy", "unknown") if owner else "unknown"

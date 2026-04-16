@@ -51,8 +51,10 @@ class CardData:
     synergy_group:  str = field(default="")      # CATEGORY_TO_SYNERGY'den türetilir
 
     @property
-    def rarity_level(self) -> int:
-        """Handles both '◆◆◆' (cards.json) and '3' (engine_core runtime)."""
+    def rarity_level(self) -> int | str:
+        """Handles 'E' evolved rarity, '◆◆◆' card rarities and numeric engine values."""
+        if self.rarity.upper() == "E":
+            return "E"
         if self.rarity.isdigit():
             return int(self.rarity)
         return self.rarity.count("◆")
@@ -124,9 +126,41 @@ class CardDatabase:
     # ------------------------------------------------------------------ #
     # Sorgular                                                              #
     # ------------------------------------------------------------------ #
-    def lookup(self, card_name: str) -> CardData | None:
-        """Kart adına göre veri döndür. Bulunamazsa None."""
-        return self._cards.get(card_name)
+    def lookup(self, card_name: str) -> 'CardData | None':
+        """Kart adına göre veri döndür.
+        
+        Evolved Card Blackout Fix (Phase 5e):
+        Eğer kart adı 'Evolved ' ile başlıyorsa ve JSON'da bulunamazsa,
+        base kartı bulup statlarını motor ölçeğine göre artırıp
+        sentetik bir CardData döndürürüz. Böylece Pygame gri polygon çizmez.
+        """
+        # Direct lookup first (base cards and any pre-registered evolved)
+        result = self._cards.get(card_name)
+        if result is not None:
+            return result
+
+        # Evolved proxy — synthesize on the fly
+        if card_name.startswith("Evolved "):
+            base_name = card_name[8:]  # strip "Evolved "
+            base = self._cards.get(base_name)
+            if base is not None:
+                import copy
+                # Engine evolution applies power scaling; we mirror it here for UI
+                evolved_stats = {}
+                for stat_key, val in base.stats.items():
+                    # Add ~40% to each stat, cap at 72 (engine's max edge value)
+                    evolved_stats[stat_key] = min(72, int(val * 1.4))
+                return CardData(
+                    name=card_name,
+                    category=base.category,
+                    rarity="E",
+                    stats=evolved_stats,
+                    passive_type=base.passive_type,
+                    passive_effect=base.passive_effect,
+                    synergy_group=base.synergy_group,
+                )
+
+        return None
 
     def all_names(self) -> list[str]:
         return list(self._cards.keys())

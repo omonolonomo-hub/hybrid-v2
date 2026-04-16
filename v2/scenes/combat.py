@@ -1,2 +1,0 @@
-class CombatScene:
-    pass

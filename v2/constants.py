@@ -143,6 +143,19 @@ class Paths:
     SFX: str         = "v2/assets/sfx"
     MUSIC: str       = "v2/assets/music"
 
+    # Audio asset keys
+    SFX_BUY: str         = "card_buy.wav"
+    SFX_SELL: str        = "card_flip.wav"
+    SFX_PLACE: str       = "card_place.wav"
+    SFX_REROLL: str      = "reroll.wav"
+    SFX_COMBAT_HIT: str  = "damage.wav"
+    SFX_COMBAT_WIN: str  = "milestone.wav"
+    SFX_COMBAT_LOSE: str = "eliminated.wav"
+
+    MUSIC_LOBBY: str = "victory.ogg"
+    MUSIC_SHOP: str  = "shop_loop.ogg"
+    MUSIC_COMBAT: str = "combat_loop.ogg"
+
 class AudioConfig:
     MASTER: float = 0.8
     SFX: float    = 0.5

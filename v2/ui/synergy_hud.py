@@ -150,7 +150,8 @@ class SynergyHud:
             return self._empty_state()
 
         group_counts: dict[str, int] = {g: 0 for g, *_ in self._GROUPS}
-        for card_name in board.values():
+        for item in board.values():
+            card_name = item.get("name") if isinstance(item, dict) else item
             data = db.lookup(card_name)
             if not data:
                 continue
@@ -213,7 +214,8 @@ class SynergyHud:
 
         # Her koordinat için dominant_group hesapla
         dominant: dict = {}
-        for coord, card_name in board.items():
+        for coord, item in board.items():
+            card_name = item.get("name") if isinstance(item, dict) else item
             data = db.lookup(card_name)
             if not data:
                 continue

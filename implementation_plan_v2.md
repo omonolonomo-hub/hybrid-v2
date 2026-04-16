@@ -28,15 +28,15 @@ This document is the official technical specification for implementing the `v2` 
   v2/
   ├── core/
   │   ├── game_state.py        # GameState singleton
-  │   ├── scene_manager.py     # SceneManager + Scene base class
+  │   ├── scene_manager.py     # SceneManager (Lobby only; ShopScene is permanent root)
 + │   ├── event_bus.py         # Internal UI event system
   │   └── clock.py             # DeltaClock wrapper
   ├── scenes/
-  │   ├── lobby.py
-  │   ├── shop.py
-  │   ├── versus_splash.py
-  │   ├── combat.py
-  │   └── endgame.py
+  │   ├── lobby.py             # Entry strategy-select screen
+  │   └── shop.py              # ROOT SCENE — permanent canvas; owns Phase State Machine
+- │   ├── versus_splash.py     # DELETED — replaced by VersusOverlay
+- │   ├── combat.py            # DELETED — replaced by CombatOverlay
+- │   └── endgame.py           # DELETED — replaced by EndgameOverlay
   ├── ui/
 + │   ├── hex_grid.py          # HexGrid math + rendering
   │   ├── hand_panel.py
@@ -45,6 +45,11 @@ This document is the official technical specification for implementing the `v2` 
   │   ├── synergy_hud.py
   │   ├── combat_terminal.py
   │   ├── income_preview.py
+  │   ├── lobby_panel.py
++ │   ├── overlays/            # Pop-up containers drawn ON TOP of ShopScene
++ │   │   ├── versus_overlay.py   # STATE_VERSUS — matchup banner + HP bars
++ │   │   ├── combat_overlay.py   # STATE_COMBAT — streaming combat terminal
++ │   │   └── endgame_overlay.py  # STATE_ENDGAME — scoreboard + restart
   │   └── widgets.py           # Button, Bar, FloatingText, Icon primitives
 + ├── assets/
 + │   ├── loader.py            # AssetLoader singleton
@@ -100,7 +105,9 @@ SHOP_SLOTS      = 5
 HEX_ORIGIN_Y    = 520          # board center y (vertical midpoint of center zone)
 
 # --- Player Hub (right panel) ---
-HUB_ROW_H       = SCREEN_H // 8   # 135 px per player row
+PLAYER_HUB_H    = 150             # compact current-player summary panel
+LOBBY_ROW_H     = 70              # right sidebar scoreboard row height
+HUB_ROW_H       = SCREEN_H // 8   # legacy scoreboard approximation; prefer LOBBY_ROW_H
 HUB_HP_BAR_W    = 160
 HUB_HP_BAR_H    = 14
 HUB_GOLD_FONT_SIZE = 16
@@ -127,6 +134,7 @@ SPLASH_HP_BAR_W     = 400
 SPLASH_HP_BAR_H     = 36
 
 # --- Timing ---
+TIMER_BAR_H    = 8
 AI_TURN_MAX_MS  = 2000    # hard timeout for all 7 AI turns combined
 
 # --- Colors (R, G, B) ---
@@ -150,6 +158,7 @@ FONT_SIZE_BODY   = 15
 FONT_SIZE_LABEL  = 13
 FONT_SIZE_HEADER = 20
 FONT_SIZE_LARGE  = 28
+```
 
 ### 0.4 Hex Grid Math & Unified Camera Specification
 
@@ -199,6 +208,8 @@ def pixel_to_axial(px: float, py: float) -> tuple[int, int]:
     r_f = (2 / 3 * py) / GridMath.HEX_SIZE
     return _hex_round(q_f, r_f)   # cube rounding, convert back to axial
 ```
+
+```python
 def _hex_round(q_f, r_f):
     s_f = -q_f - r_f
     q, r, s = round(q_f), round(r_f), round(s_f)
@@ -210,16 +221,16 @@ def _hex_round(q_f, r_f):
 
 **Direction → Edge index mapping (Pointy-Top, 6 edges):**
 
-| Direction index | Angle (degrees) | Edge label | Axial neighbor delta |
-|---|---|---|---|
-| 0 | 30° (Top-Right) | NE | (+1, -1) |
-| 1 | 90° (Right) | E | (+1, 0) |
-| 2 | 150° (Bottom-Right) | SE | (0, +1) |
-| 3 | 210° (Bottom-Left) | SW | (-1, +1) |
-| 4 | 270° (Left) | W | (-1, 0) |
-| 5 | 330° (Top-Left) | NW | (0, -1) |
+| Direction index | Engine label | Axial neighbor delta |
+|---|---|---|
+| 0 | N | (0, -1) |
+| 1 | NE | (+1, -1) |
+| 2 | SE | (+1, 0) |
+| 3 | S | (0, +1) |
+| 4 | SW | (-1, +1) |
+| 5 | NW | (-1, 0) |
 
-`pending_rotation = N` means direction 0 (NE edge) is rotated by `N * 60°` clockwise. Edge index for the rotated direction 0 becomes `(0 + N) % 6`.
+`pending_rotation = N` means direction 0 (North edge) is rotated by `N * 60°` clockwise. UI rotation math MUST stay compatible with the engine's `HEX_DIRS` ordering.
 
 **Valid hex set** — precompute at startup:
 ```python
@@ -241,14 +252,14 @@ Execution order is deterministic and sequential within a single thread. Steps 1-
 2. **Human Prep (Shop Scene):** Human player interacts with Shop/Hand. Pool depletes in real time as cards are bought — after each `buy_card()` success, the Shop panel re-renders the affected slot as empty without waiting for a full `sync_state()` cycle.
 3. **Commitment (Ready Button):** Human clicks "Ready", OR the optional prep timer expires. Either event triggers `GameState.commit_human_turn()`.
 4. **AI Execution:** `GameState.run_ai_turns()` is called. This method loops over the 7 bot players and calls `player.run_ai_turn()` for each sequentially. Total wall time is capped at `AI_TURN_MAX_MS = 2000 ms`. If any bot exceeds its share, it is skipped and logged as a warning. This runs **synchronously on the main thread** — the UI displays a non-interactive "Opponents deciding..." overlay (see Section 3.2) during this window. No pygame event processing occurs during AI execution.
-5. **Pairing:** Call `engine.swiss_pairings()`. Store result in `GameState.current_pairings: list[tuple[int, int]]`.
-6. **Transition:** `SceneManager.transition_to(VersusScene)`.
+5. **Pairing:** Call `engine.swiss_pairs()` exactly once for the turn. Store the resulting PID pairs in `GameState.current_pairings: list[tuple[int, int]]`.
+6. **Transition:** `ShopScene.set_phase(STATE_VERSUS)`.
 
 ### 1.2 Handshake Logistics
 
 - **Combat → Prep:** After `engine.combat_phase()` resolves and damage is applied, call `engine.clear_boards()`. Then increment `GameState.turn_counter`. Call `player.synergy_matrix.decay()` for ALL active (non-eliminated) players. Then loop to Step 1.
 - **Elimination check:** After damage application, evaluate `player.hp <= 0` for all players. Eliminated players are flagged `GameState.eliminated: set[int]`. They are excluded from subsequent `run_ai_turn()` calls and `synergy_matrix.decay()` calls.
-- **Game-end check:** If `len(alive_players) <= 1` OR `GameState.turn_counter == 50`, call `SceneManager.transition_to(EndgameScene)` instead of looping.
+- **Game-end check:** If `len(alive_players) <= 1` OR `GameState.turn_counter == 50`, call `ShopScene.set_phase(STATE_ENDGAME)` instead of looping.
 
 ---
 
@@ -316,15 +327,22 @@ class GameState:
         # See Section 1.1 Step 4. Time-bounded. Does NOT return until all bots done or timeout.
 
     # --- Read-only accessors (never mutate engine) ---
-    def get_board(self, pid: int) -> dict:         # engine.get_player(pid).board
+    def get_board(self, pid: int) -> dict:         # UI-facing {(q,r): card_name} board snapshot
     def get_hand(self, pid: int) -> list:          # engine.get_player(pid).hand
     def get_shop(self) -> list:                    # engine.market.get_window(human_pid)
+    def get_turn(self) -> int:
+    def get_alive_pids(self) -> list[int]:
     def get_hp(self, pid: int) -> int:
     def get_gold(self, pid: int) -> int:
     def get_streak(self, pid: int) -> int:         # positive = win streak, negative = loss streak
+    def get_strategy(self, pid: int) -> str:
+    def get_display_name(self, pid: int) -> str:   # name if present, else synthetic "P{pid}"
     def get_stats(self, pid: int) -> dict:         # total_pts, evolutions, market_rolls, win_streak_max
+    def get_last_combat_results(self) -> list[dict]:
+    def get_current_pairings(self) -> list[tuple[int, int]]:  # stored snapshot; MUST NOT reroll swiss pairs
+    def get_elimination_order(self) -> list[int]:  # newest elimination appended last
     def get_rarity_weights(self) -> dict:          # engine.market.RARITY_WEIGHT for current turn
-    def get_combat_log(self) -> list[str]:         # passive_buff_log filtered for combat triggers
+    def get_combat_log(self) -> list[str]:         # optional formatter helper; MUST use combat-relevant trigger set
     def get_prefix_bonus(self, pid: int) -> int:  # (sum of _prefix stats of player pid) // 6
 
     # --- Internal state fields ---
@@ -332,9 +350,12 @@ class GameState:
     place_locked:    bool = False
     in_prep_phase:   bool = False
     eliminated:      set[int]
+    elimination_order: list[int]
     current_pairings: list[tuple[int, int]]
     human_pid:       int  = 0       # always 0
 ```
+
+`turn_counter` is a mirror/cache of `engine.turn`. Scenes and widgets should read `get_turn()` instead of touching `turn_counter` directly.
 
 **`_prefix` stats definition:** A `_prefix` stat is any stat key on a card whose name begins with the string `"_"` (underscore). These are hidden bonus stats not displayed on card edges. The engine accumulates them internally. `get_prefix_bonus(pid)` sums all `_prefix` stat values across all cards on `pid`'s board and returns `total // 6`. This value is added to the displayed combat damage formula.
 
@@ -374,7 +395,7 @@ The current architecture is **single-threaded.** All engine calls, UI rendering,
 | `.turn` | `int` | `get_turn() → int` |
 | `.last_combat_results` | `List[dict]` | `get_last_combat_results() → List[dict]` |
 | `.alive_players()` | `List[Player]` | `get_alive_pids() → List[int]` |
-| `.swiss_pairs()` | `List[Tuple]` | `get_current_pairings() → List[Tuple[int,int]]` |
+| `.swiss_pairs()` | `List[Tuple]` | `get_current_pairings() → List[Tuple[int,int]]` (stored snapshot, no reroll) |
 | `.market.pool_copies` | `Dict[str,int]` | `get_pool_copies() → Dict[str,int]` |
 | `.card_by_name` | `Dict[str,Card]` | CardDatabase singleton köprüler — ayrı accessor gerekmez |
 
@@ -386,8 +407,8 @@ The current architecture is **single-threaded.** All engine calls, UI rendering,
 | `.hp` | `int` | `get_hp(pid)` | ✅ |
 | `.gold` | `int` | `get_gold(pid)` | ✅ |
 | `.hand` | `List[Card]` | `get_hand(pid) → List[str\|None]` | ✅ (sadece isim string'i) |
-| `.strategy` | `str` | `get_strategy(pid) → str` | ✅ |
-| `.board.grid` | `Dict[(q,r), Card]` | `get_board_cards(pid) → Dict[(q,r), str]` | ❌ **EKSİK** |
+| `.strategy` | `str` | `get_strategy(pid) → str` | ❌ **EKSİK / BRIDGE GEREKLI** |
+| `.board.grid` | `Dict[(q,r), Card]` | `get_board(pid) → Dict[(q,r), str]` | ❌ **EKSİK** |
 | `.copies` | `Dict[str,int]` | `get_copies(card_name, pid) → int` | ❌ **EKSİK** |
 | `.win_streak` | `int` | `get_win_streak(pid) → int` | ❌ **EKSİK** |
 | `.alive` | `bool` | `is_alive(pid) → bool` | ❌ **EKSİK** |
@@ -401,6 +422,8 @@ The current architecture is **single-threaded.** All engine calls, UI rendering,
 | `.interest_multiplier` | `float` | `get_interest_multiplier(pid) → float` | ❌ **EKSİK** |
 | `.turns_played` | `int` | `get_turns_played(pid) → int` | ❌ **EKSİK** |
 
+**Kimlik köprüsü notu:** Mock ve gerçek engine aynı anda hem `.name` hem `.strategy` sunmaz. UI katmanı doğrudan bu alanlara güvenmez; `get_display_name(pid)` ve `get_strategy(pid)` üzerinden tekil sözleşme kullanır.
+
 #### `last_combat_results` — savaş sonucu kayıt formatı
 
 `engine.combat_phase()` her çağrısında `engine.last_combat_results` listesi sıfırlanır ve yeniden doldurulur. Her eleman şu sözleşmeye uyar:
@@ -409,7 +432,7 @@ The current architecture is **single-threaded.** All engine calls, UI rendering,
 {
     "pid_a":       int,   "pid_b":       int,   # dövüşen oyuncu PID'leri
     "pts_a":       int,   "pts_b":       int,   # toplam maç puanı (kill + combo + synergy)
-    "kill_a":      int,   "kill_b":      int,   # kill puanları (KILL_PTS=8 katı)
+    "kill_a":      int,   "kill_b":      int,   # combat point bucket; Phase 4 UI'da saf kill gibi etiketlenmez
     "combo_a":     int,   "combo_b":     int,   # combo puanları
     "synergy_a":   int,   "synergy_b":   int,   # SynergyHud çapraz-doğrulama için
     "draws":       int,                          # beraberlik sayısı
@@ -421,6 +444,8 @@ The current architecture is **single-threaded.** All engine calls, UI rendering,
 ```
 
 `GameState.get_last_combat_results() → List[dict]` — `engine.last_combat_results`'ı doğrudan döndürür; kopyalamaz.
+
+**Pairing snapshot rule:** `get_current_pairings()` render anında `engine.swiss_pairs()` çağırmaz. VersusOverlay ve CombatOverlay, aynı tur için Phase 1.1 Step 5’te dondurulmuş eşleşme snapshot’ını okur.
 
 #### Rarity normalizasyon sözleşmesi
 
@@ -489,13 +514,13 @@ class SceneManager:
     def draw(self, surface: pygame.Surface) -> None: ...
 ```
 
-All scenes inherit `Scene`. `SceneManager` owns the active scene instance. Scenes do NOT hold references to each other — they communicate only through `GameState` and `EventBus`.
+The root game loop owns `ShopScene` as the permanent active canvas. Overlay states (`VersusOverlay`, `CombatOverlay`, `EndgameOverlay`) are managed by `ShopScene`’s internal Phase State Machine (`STATE_PREPARATION → STATE_VERSUS → STATE_COMBAT → STATE_ENDGAME`). Overlays do NOT hold references to each other — they communicate only through `GameState` and `EventBus`.
 
 ### 3.2 Lobby Scene
 
 - **Strategy grid:** 8 strategy cards arranged in 2 rows × 4 columns. Each card: 180×220 px, 24px gap. Centered in screen.
 - **Card content:** Strategy name (FONT_BOLD, 18px), flavor description (FONT_REGULAR, 13px, max 3 lines), starting stat preview.
-- **Selection:** Left-click calls `GameState.initialize(strategy_idx)`. Then `SceneManager.transition_to(ShopScene)`.
+- **Selection:** Left-click calls `GameState.initialize(strategy_idx)`. Then `ShopScene` is launched directly as the permanent root scene in `main.py`.
 - **No back button.** This is the entry scene.
 
 ### 3.3 Shop Scene
@@ -526,14 +551,16 @@ All scenes inherit `Scene`. `SceneManager` owns the active scene instance. Scene
 - Updates once per turn at turn start. Does NOT update mid-turn.
 
 **Income Breakdown preview:**
-- Displayed as a single line of text under the gold counter:
+- Displayed as a compact 2-line panel under the gold counter.
+- Line 1: title, e.g. `"Next Income"`.
+- Line 2: monospace formula line:
   `Base: {b} + Interest: {i} + Streak: {s} + Bailout: {bail} = {total}`
 - Values computed client-side from engine-readable fields:
   - `b` = engine base income (constant per GDD)
   - `i` = `min(floor(player.gold / 10), 5)` (interest, capped at 5)
   - `s` = `floor(abs(win_streak) / 3)` (applies only to win streak, not loss)
   - `bail` = `1 if player.hp < 75 else 0` + `2 if player.hp < 45 else 0`
-- Font: FONT_MONO, FONT_SIZE_LABEL. Color: COLOR_GOLD_TEXT.
+- Typography: title uses UI bold font; formula line uses `FONT_MONO`, `FONT_SIZE_LABEL`, `COLOR_GOLD_TEXT`.
 
 **"Opponents deciding..." overlay:**
 - Triggered when `GameState.run_ai_turns()` is executing.
@@ -542,32 +569,33 @@ All scenes inherit `Scene`. `SceneManager` owns the active scene instance. Scene
 - No input is forwarded to any widget during this state.
 - Dismissed automatically when `run_ai_turns()` returns.
 
-### 3.4 Versus Splash Scene
+### 3.4 Versus Overlay (Popup)
 
-- **Trigger:** `SceneManager.transition_to(VersusScene)` after pairings are resolved.
+- **Trigger:** `ShopScene.set_phase(STATE_VERSUS)` after pairings are resolved.
 - **Duration:** Dismissed after `SPLASH_DURATION_MS = 3000 ms` OR on any mouse click / SPACE key.
 - **Layout:**
   - Background: full-screen dark overlay rendered over a blurred snapshot of the shop scene.
-  - Center: Matchup string `"{P_name} vs {Opp_name} ({Opp_strategy})"`, FONT_BOLD, FONT_SIZE_LARGE.
+  - Center: Matchup string `"{P_label} vs {Opp_label} ({Opp_strategy})"`, FONT_BOLD, FONT_SIZE_LARGE.
   - Below: two horizontal HP bars (SPLASH_HP_BAR_W × SPLASH_HP_BAR_H) for each combatant with integer HP labels.
   - Top-right corner: `"Turn {N}"`, FONT_REGULAR, FONT_SIZE_HEADER.
-- **On dismiss:** `SceneManager.transition_to(CombatScene)`.
+  - Labels are read via `GameState.get_display_name(pid)`, not by directly assuming a `.name` field exists on the engine object.
+- **On dismiss:** `ShopScene.set_phase(STATE_COMBAT)`.
 
-### 3.5 Combat Scene
+### 3.5 Combat Overlay (Popup)
 
 **Layout mirrors Shop scene panels (left / center / right), hex board visible, hand panel hidden.**
 
 **Combat resolution — step sequence:**
 
-Combat is NOT animated frame-by-frame. `engine.combat_phase()` resolves atomically. The Combat Scene reads the resulting `passive_buff_log` and **replays** it as a timed terminal stream.
+Combat is NOT animated frame-by-frame. `engine.combat_phase()` resolves atomically. The Combat Overlay reads the resulting `passive_buff_log` and **replays** it as a timed terminal stream.
 
-1. On `on_enter()`: call `engine.combat_phase()`. Store full result snapshot.
-2. Parse `GameState.get_combat_log()` into an ordered list of terminal lines.
+1. On Phase switch (`STATE_COMBAT`): call `engine.combat_phase()`. Store full result snapshot.
+2. Normalize `GameState.get_last_combat_results()` + `GameState.get_passive_buff_log(pid)` (or an internal helper built from the same inputs) into an ordered list of terminal lines.
 3. Stream lines to Combat Terminal at a rate of one line per 80 ms (configurable). Terminal scrolls automatically. No user input pauses this.
 4. After all log lines are streamed, display the final damage equation prominently:
    `[Base] + [Alive/2] + [Rarity/2] + [Prefix bonus] = Final_Damage`
    where `Prefix bonus = GameState.get_prefix_bonus(human_pid)`.
-5. After 1500 ms additional wait, transition: `SceneManager.transition_to(ShopScene)` (or EndgameScene if game-end condition is met).
+5. After 1500 ms additional wait, transition: `ShopScene.set_phase(STATE_PREPARATION)` (or `STATE_ENDGAME` if game-end condition is met).
 
 **`_prefix` visual rule:** If `get_prefix_bonus(pid) > 0`, the damage equation line MUST include the `[Prefix bonus]` term. If it is 0, the term is omitted from the display string. Omitting this term when the bonus is non-zero causes visible math desync and is a critical rendering bug.
 
@@ -576,7 +604,7 @@ Combat is NOT animated frame-by-frame. `engine.combat_phase()` resolves atomical
 - Terminal area: left panel lower zone, y from `SYNERGY_HUD_H` to `SCREEN_H`. Width: `LEFT_PANEL_W`.
 - Lines are appended bottom-up (newest at bottom). Max visible lines: `floor(COMBAT_TERM_H / (FONT_SIZE_BODY + 4))`.
 - Older lines scroll up. No scrollbar — terminal is non-interactive.
-- Filter: Only log entries from `passive_buff_log` where `entry.trigger == "combat"` are shown.
+- Filter: terminal formatting uses the combat-relevant trigger set (`pre_combat`, `combat_win`, `combat_lose`, `card_killed`, `copy_2`, `copy_3`). It MUST NOT rely on a literal `entry.trigger == "combat"` check.
 
 ---
 
@@ -669,7 +697,7 @@ Combat is NOT animated frame-by-frame. `engine.combat_phase()` resolves atomical
 
 **Copy Strengthening Milestones:**
 - Milestone turn thresholds per GDD (default): Turn 4 → `+2` boost, Turn 7 → `+3` limit offset.
-- Catalyst/Eclipse state: if `player.stats["catalyst_active"]` is True, reduce thresholds by 1. If `player.stats["eclipse_active"]` is True, increase by 1.
+- Threshold source is explicit: use `COPY_THRESH = [4, 7]` normally, or `COPY_THRESH_C = [3, 6]` when `has_catalyst(pid)` is active. Eclipse does not modify copy-strengthening thresholds unless a later rule is added explicitly to this document.
 - When the human player's board crosses a threshold at turn start, for each affected card on the board, spawn a `FloatingText("+{N} STATS (MILESTONE)", card_board_pos, color=COLOR_GOLD_TEXT)`.
 
 **FloatingText animation:**
@@ -683,22 +711,28 @@ Combat is NOT animated frame-by-frame. `engine.combat_phase()` resolves atomical
 - Cards with rarity `"E"` render with a `COLOR_PLATINUM` border (4px wide) replacing the standard rarity border.
 - The rarity badge renders the single character `"E"` in FONT_BOLD, 14px, on a COLOR_PLATINUM background.
 
-### 5.3 Player Hub (Right Panel)
+### 5.3 Player Hub & Lobby Panel
 
-- **Position:** x=SCREEN_W-RIGHT_PANEL_W, y=0, w=RIGHT_PANEL_W, h=SCREEN_H.
-- **Rows:** 8 rows, each HUB_ROW_H px tall. Row order: sorted by PID (0–7). Human player (PID 0) is always row 0.
-- **Row content (left to right, all within the row rect):**
-  - PID badge (24×24, left edge + 8px margin)
-  - Strategy logo (24×24 sprite, 4px gap)
-  - HP bar (HUB_HP_BAR_W × HUB_HP_BAR_H). Color: interpolate COLOR_HP_FULL → COLOR_HP_LOW as `hp / max_hp` decreases from 1.0 to 0.0. Integer HP drawn centered on bar.
-  - Gold value (FONT_BOLD, HUB_GOLD_FONT_SIZE, COLOR_GOLD_TEXT, right-aligned)
-  - Streak icon (24×24, right edge - 8px margin)
-- **Streak icon rules:**
-  - `win_streak >= 2`: "flame" sprite (`sfx/icon_flame.png`)
-  - `loss_streak >= 2` (i.e. `streak <= -2`): "ice" sprite (`sfx/icon_ice.png`)
-  - Otherwise: no icon rendered
-- **Click:** Left-click on any row → `GameState.active_board_pid = pid`. Board re-renders immediately using `GameState.get_board(pid)`. Currently active row has a 2px left-edge highlight in COLOR_GOLD_TEXT.
-- **Eliminated player row:** Background set to grayscale (desaturate all colors). HP bar renders black. HP text reads `"DEAD"`. Gold renders `"—"`. Streak icon hidden.
+`PlayerHub` ile `LobbyPanel` aynı şey değildir. `PlayerHub`, mevcut oyuncunun kompakt özet panelidir. `LobbyPanel` ise sağ kenardaki 8 oyunculuk skor/listing panelidir.
+
+**PlayerHub (compact current-player summary):**
+- **Height:** `PLAYER_HUB_H = 150`.
+- **Layout:** 5 satırlı kompakt düzen.
+- Row 1: başlık + `"Turn: N"`.
+- Row 2: segmentli HP bar.
+- Row 3: Gold kutusu + streak kutusu.
+- Row 4: `★ Pts` + `Board N/37`.
+- Row 5: gelecek tur gelir özeti.
+- **Data source:** `get_hp(pid)`, `get_gold(pid)`, `get_win_streak(pid)`, `get_total_pts(pid)`, `get_turn()`, `get_board(pid)`, `get_interest_multiplier(pid)`.
+
+**LobbyPanel (right sidebar scoreboard):**
+- **Position:** x=`SCREEN_W-RIGHT_PANEL_W`, y=0, w=`RIGHT_PANEL_W`, h=`SCREEN_H`.
+- **Rows:** 8 rows, each `LOBBY_ROW_H` px tall, centered vertically.
+- **Row content:** rank badge, player label, HP number, segmented HP bar, optional highlight styling.
+- **Click:** Left-click on any row → `GameState.active_board_pid = pid`. Board re-renders immediately using `GameState.get_board(pid)`.
+- **Eliminated row:** darkened overlay + `"ELIMINATED"` label.
+- **Identity source:** labels come from `GameState.get_display_name(pid)` and strategy visuals come from `get_strategy(pid)` or a strategy-to-icon bridge.
+- **Icon assets:** UI icons are sprites, e.g. `sprites/icon_flame.png`, not SFX files.
 
 ### 5.4 Rarity Color Mapping
 
@@ -723,20 +757,20 @@ All audio is loaded at scene entry via `AssetLoader`. Do not stream; preload all
 | Milestone reached | `sfx/milestone.wav` | SFX |
 | Combat damage dealt | `sfx/damage.wav` | SFX |
 | Player eliminated | `sfx/eliminated.wav` | SFX |
-| Shop scene BGM | `music/shop_loop.ogg` | Music (loop) |
-| Combat scene BGM | `music/combat_loop.ogg` | Music (loop) |
+| Shop BGM (Preparation Phase) | `music/shop_loop.ogg` | Music (loop) |
+| Combat BGM (Combat Phase) | `music/combat_loop.ogg` | Music (loop) |
 | Victory | `music/victory.ogg` | Music (one-shot) |
 
 Audio channels: 1 music channel (via `pygame.mixer.music`), 8 SFX channels (via `pygame.mixer.Sound`).
 
-### 5.6 EndGame Scene
+### 5.6 EndGame Overlay (Popup)
 
 - **Trigger:** `alive_players <= 1` OR `turn_counter == 50`.
-- **Sort order:** `engine.players` sorted descending by `player.hp` (surviving HP). Eliminated players sorted by elimination turn descending (last eliminated = higher rank).
+- **Sort order:** surviving players are sorted by `player.hp` descending. Eliminated players are ordered using `GameState.get_elimination_order()` (latest eliminated ranks higher).
 - **Table columns:** `Rank | Player | Strategy | Final HP | Total Pts | Evolutions | Rerolls | Win Streak Max`
-- **Data source:** `GameState.get_stats(pid)` for `total_pts`, `evolutions`, `market_rolls`, `win_streak_max`. `get_hp(pid)` for Final HP.
-- **Winner banner:** If exactly 1 alive player, render `"{name} WINS"` above the table in FONT_BOLD, 48px.
-- **Restart button:** Bottom center. Calls `SceneManager.transition_to(LobbyScene)` and resets `GameState`.
+- **Data source:** `GameState.get_stats(pid)` for `total_pts`, `evolutions`, `market_rolls`, `win_streak_max`; `get_hp(pid)` for Final HP; `get_display_name(pid)` for player label; `get_strategy(pid)` for strategy label.
+- **Winner banner:** If exactly 1 alive player, render `"{GameState.get_display_name(pid)} WINS"` above the table in FONT_BOLD, 48px.
+- **Restart button:** Bottom center. Calls `GameState.reset()` and re-initializes `ShopScene` in `STATE_PREPARATION`.
 
 ---
 
@@ -806,21 +840,22 @@ All tests in `v2/tests/` instantiate `GameState` with `MockGame` injected. No te
 
 ### 8.1 `MockGame` & `MockPlayer` — Eksiksizlik Sözleşmesi
 
-Mevcut `MockGame`, gerçek engine API'sinin yaklaşık **%30'unu** modelliyor. Aşağıdaki tablolar hangi alanların eksik olduğunu ve hangi Phase'de gerekli olduklarını belirtir. İlgili Phase başlamadan önce bu alanlar eklenmiş olmalıdır — aksi hâlde UI feature tamamlanamaz.
+Bu bölümün amacı tarihsel eksik listesi değil, bugünkü sözleşme durumunu göstermektir. Phase 3c ile kapanan alanlar burada `✅ Var` olarak işaretlenir; hâlâ açık kalanlar ise sonraki Phase'ler için blocking gap sayılır.
 
 #### `MockPlayer` — Mevcut vs. Gerekli
 
 | Alan | Şu An | Gerekli Phase | Bloke Ettiği UI Feature |
 |---|---|---|---|
 | `name`, `hp`, `gold`, `hand` | ✅ Var | — | — |
-| `win_streak: int = 0` | ❌ **EKSİK** | Phase 3 (item 15) | `IncomePreview` streak terimi; `PlayerHub` streak göstergesi |
-| `alive: bool = True` | ❌ **EKSİK** | Phase 3 (item 17) | `LobbyPanel` ELIMINATED overlay; `get_alive_pids()` filtresi |
-| `copies: Dict[str, int] = {}` | ❌ **EKSİK** | Phase 3 (item 16) | Shop/Hand kart üzerindeki `"Copies: X/3"` etiketi |
-| `total_pts: int = 0` | ❌ **EKSİK** | Phase 4 (item 22) | `CombatTerminal` birikimli puan satırı |
-| `turn_pts: int = 0` | ❌ **EKSİK** | Phase 4 (item 22) | `CombatTerminal` anlık tur puanı |
-| `passive_buff_log: list = []` | ❌ **EKSİK** | Phase 3b (item 18) | `FloatingText` `"+N STATS"` kaynağı |
-| `evolved_card_names: list = []` | ❌ **EKSİK** | Phase 3b (item 20) | Evolved kart Platinum border tetikleyici |
-| `stats: dict` | ❌ **EKSİK** | Phase 4 (item 25) | `EndgameScene` tablo sütunları |
+| `strategy: str` | ❌ **EKSİK** | Phase 4 (item 23) | `VersusOverlay` matchup etiketi; strategy icon bridge |
+| `win_streak: int = 0` | ✅ Var | Phase 3 (item 15) | `IncomePreview` streak terimi; `PlayerHub` streak göstergesi |
+| `alive: bool = True` | ✅ Var | Phase 3 (item 17) | `LobbyPanel` ELIMINATED overlay; `get_alive_pids()` filtresi |
+| `copies: Dict[str, int] = {}` | ✅ Var | Phase 3 (item 16) | Shop/Hand kart üzerindeki `"Copies: X/3"` etiketi |
+| `total_pts: int = 0` | ✅ Var | Phase 4 (item 22) | `CombatTerminal` birikimli puan satırı |
+| `turn_pts: int = 0` | ✅ Var | Phase 4 (item 22) | `CombatTerminal` anlık tur puanı |
+| `passive_buff_log: list = []` | ✅ Var | Phase 3b (item 18) | `FloatingText` `"+N STATS"` kaynağı |
+| `evolved_card_names: list = []` | ✅ Var | Phase 3b (item 20) | Evolved kart Platinum border tetikleyici |
+| `stats: dict` | ✅ Var | Phase 4 (item 25) | `EndgameOverlay` tablo sütunları |
 
 `stats` dict alanları ve başlangıç değerleri: `wins=0, losses=0, draws=0, market_rolls=0, evolutions=0, win_streak_max=0`.
 
@@ -828,9 +863,10 @@ Mevcut `MockGame`, gerçek engine API'sinin yaklaşık **%30'unu** modelliyor. A
 
 | Alan / Metod | Şu An | Gerekli Phase | Bloke Ettiği UI Feature |
 |---|---|---|---|
-| `turn: int = 1` | ✅ Var (ama `GameState.get_turn()` yok) | Phase 3c (item 30) | `TimerBar` gerçek ratio; rarity ağırlığı display |
+| `turn: int = 1` | ✅ Var | Phase 3c (item 30) | `TimerBar` gerçek ratio; rarity ağırlığı display |
 | `state: str = "SHOP"` | ✅ Var | — | — |
-| `last_combat_results: list = []` | ❌ **EKSİK** | Phase 4 (item 22) | `CombatTerminal` savaş log kaynağı |
+| `last_combat_results: list = []` | ✅ Var | Phase 4 (item 22) | `CombatTerminal` savaş log kaynağı |
+| `swiss_pairs()` | ❌ **EKSİK** | Phase 4 (item 23) | `VersusOverlay` pairing snapshot |
 
 `buy_card_from_slot()` içinde alım yapıldığında `player.copies[card_name] = player.copies.get(card_name, 0) + 1` güncellemesi de yapılmalıdır.
 
@@ -844,6 +880,8 @@ Bu fark `GameState.get_hand()` tarafından şeffaf biçimde köprülenir (her za
 ---
 
 ## 9. EXECUTION PLAN
+
+**Yürütme sırası notu:** Aşağıdaki Phase blokları tarihsel olarak büyümüş durumda. Otoritatif uygulama sırası `Phase 0 -> Phase 1 -> Phase 2 -> Phase 3 -> Phase 3c -> Phase 3b -> Phase 3d -> Phase 4 -> Phase 4a guardrail'leri -> Phase 5` şeklindedir. Bir alt Phase, kendisine referans veren prerequisite kapanmadan başlatılmaz.
 
 ### Phase 0 — Foundations (PREREQUISITE FOR ALL PHASES)
 
@@ -861,7 +899,7 @@ Complete these in order before writing any scene or UI code.
 
 *Aşağıdaki maddeler v2.0 Sandbox fazında Rect limitleri çekilerek doğrulanmış ve çalıştırılmıştır:*
 8. <span style="color:#4ade80">🟩 Rewrite `v2/core/game_state.py` per Section 2.1. Full `ActionResult` enum. Full method contracts. `sync_state()` wired to engine.</span>
-9. <span style="color:#4ade80">🟩 Implement the 5-step phase pipeline in `GameState`: `commit_human_turn()`, `run_ai_turns()` with timeout, `swiss_pairings()` call.</span>
+9. <span style="color:#4ade80">🟩 Implement the 5-step phase pipeline in `GameState`: `commit_human_turn()`, `run_ai_turns()` with timeout, `swiss_pairs()` snapshot wiring.</span>
 10. <span style="color:#4ade80">🟩 Inject `PLACE_PER_TURN = 1` lock: `place_locked` flag, reset on turn start.</span>
 11. <span style="color:#4ade80">🟩 **[NEW] UI Kapsülleri TDD Sınırları test edildi (ShopPanel, HandPanel Encapsulation)**</span>
 12. <span style="color:#4ade80">🟩 **[NEW] Sol HUD Segmentasyonu (Passive Tracker & Combat Log eklentisi yapılandırıldı)**</span>
@@ -878,20 +916,20 @@ Complete these in order before writing any scene or UI code.
 15. <span style="color:#4ade80">🟩 **Ghost Preview & Edge Stats:** %60 alpha preview + synergy-coded edge stats with shadow labels fixed.</span>
 16. <span style="color:#4ade80">🟩 **Keyboard Controls:** `W, A, S, D` (pan), `Q, E` (zoom), `R` (reset) added.</span>
 
-### Phase 3 — Interaction & Feedback (IN PROGRESS)
+### <span style="color:#4ade80">Phase 3 — Interaction & Feedback (🟩 TAMAMLANDI)</span>
 
 14. <span style="color:#4ade80">🟩 **SynergyHUD** tamamen yeniden yazıldı: `_group_bonus(n) = min(18, floor(3*(n-1)^1.25))` formülü (GDD §8 birebir), 6-daire pip bar, tier milestone çizgileri (2/3/4/5/6 eşiğinde), 600 ms flash animasyonu, diversity bonus kutucuğu, combat log placeholder. `shop.py.update()` içinde `synergy_hud.update(dt_ms)` çağrısı mevcuttur. Bkz. `v2/ui/synergy_hud.py`.</span>
 15. <span style="color:#4ade80">🟩 **IncomePreview** (`v2/ui/income_preview.py`) tam olarak implementedir: GDD §13.1 dört terim formülü (`base=3`, `interest`, `streak`, `bailout`). 2 satırlı panel tasarımı: Inter-Bold başlık + JetBrainsMono formül. Her terim ayrı renk (yeşil/altın/turuncu), sıfır değerler soluk gri. `_compute()` statik metod 14 unit test ile doğrulanmış. TimerBar altında tam opak dark navy backdrop üzerinde render edilir. Ekonomist faiz ölçeklemesi desteklenir.</span>
 16. <span style="color:#4ade80">🟩 **Copy count tracking** uygulandı: `ShopScene._render_copy_labels()` her kart slotunun altına `"Copies: N/3"` etiketi çizer. Shop ve Hand panellerinin her ikisi kapsanır. `n < 3` → beyaz, `n == 3` → COLOR_GOLD_TEXT. `GameState.get_copies(card_name, 0)` üzerinden canlı okuma. MockPlayer.copies alım anında güncellenir.</span>
 17. <span style="color:#4ade80">🟩 **PlayerHub** yeniden tasarlandı (`v2/ui/player_hub.py`): 5-satır compact layout (PLAYER_HUB_H=150 içinde). Satır 1: başlık + `"Tur: N"` sağda. Satır 2: segmentli HP bar. Satır 3: Gold kutusu + Streak kutusu (🔥 ≥3W turuncu / ▲ yeşil / nötr gri / ▼ kırmızı). Satır 4: `★ Pts: N` + `Board: N/37` kapasite barıyla. Satır 5: `→ +Ng gelecek tur` income özet. `sync()` artık `win_streak`, `total_pts`, `turn`, `board_used`, `next_gold` çeker.</span>
 
-### Phase 3c — MockGame & GameState Adapter Patch (<span style="color:#f59e0b">⚠️ PHASE 3b VE PHASE 4 İÇİN ZORUNLU ÖN KOŞUL</span>)
+### <span style="color:#4ade80">Phase 3c — MockGame & GameState Adapter Patch (🟩 TAMAMLANDI)</span>
 
 Bu phase'deki maddeler tamamlanmadan Phase 3b ve Phase 4 başlanamaz. Section 2.4 ve Section 8.1'deki tüm boşlukları kapatır. Maddeler sırayla uygulanır.
 
 28. <span style="color:#4ade80">🟩 **`MockPlayer` genişletme:** `win_streak=0`, `alive=True`, `copies={}`, `total_pts=0`, `turn_pts=0`, `passive_buff_log=[]`, `evolved_card_names=[]`, `stats={wins,losses,draws,market_rolls,evolutions,win_streak_max}` — tümü `__init__()` içinde başlatıldı. 5 yeni unit test ile doğrulandı.</span>
 29. <span style="color:#4ade80">🟩 **`MockGame` genişletme:** `last_combat_results: list = []` eklendi. `buy_card_from_slot()` içinde `copies` sayacı güncelleniyor. `reroll_market()` içinde `market_rolls` artırılıyor. 3 yeni unit test ile doğrulandı.</span>
-30. <span style="color:#4ade80">🟩 **`GameState` 16 yeni accessor:** `get_turn()`, `get_alive_pids()`, `get_win_streak()`, `get_copies()`, `is_alive()`, `get_total_pts()`, `get_turn_pts()`, `get_last_combat_results()`, `get_passive_buff_log()`, `get_stats()`, `has_catalyst()`, `has_eclipse()`, `get_interest_multiplier()`, `get_turns_played()`, `get_current_pairings()`, `get_pool_copies()` — tümü `try/except` guard ile, tip-uyumlu varsayılan döner.</span>
+30. <span style="color:#4ade80">🟩 **`GameState` 16 yeni accessor:** `get_turn()`, `get_alive_pids()`, `get_win_streak()`, `get_copies()`, `is_alive()`, `get_total_pts()`, `get_turn_pts()`, `get_last_combat_results()`, `get_passive_buff_log()`, `get_stats()`, `has_catalyst()`, `has_eclipse()`, `get_interest_multiplier()`, `get_turns_played()`, `get_current_pairings()`, `get_pool_copies()` — tümü `try/except` guard ile, tip-uyumlu varsayılan döner. Not: Phase 4 kimlik/combat-bridge accessors (`get_strategy()`, `get_display_name()`, `get_prefix_bonus()`, `get_elimination_order()`) bu batch'in dışında bırakılmıştır; Phase 4 başlamadan netleştirilmelidir.</span>
 31. <span style="color:#4ade80">🟩 **`GameState.place_card()` çift-yazma patch:** `hasattr(raw, 'rotation')` guard eklendi. MockGame'de string hand → engine sync bloğu atlanır; gerçek Card nesnesiyle `player.board.place()` + `card.rotation` sync çalışır.</span>
 32. <span style="color:#4ade80">🟩 **`CardData.rarity_level` normalizasyon patch:** `if self.rarity.isdigit(): return int(self.rarity)` — `"3"` ve `"◆◆◆"` her iki format destekleniyor. 3 regresyon + 1 engine-format unit testi eklendi.</span>
 33. <span style="color:#4ade80">🟩 **`SynergyHud` çapraz-doğrulama:** `_compute_state()` içinde `DEBUG_MODE=true` ortamında `last_combat_results[-1]["synergy_a"]` ile karşılaştırma aktif. Production'da atlanır.</span>
@@ -906,39 +944,395 @@ Bu phase'deki maddeler tamamlanmadan Phase 3b ve Phase 4 başlanamaz. Section 2.
 - <span style="color:#4ade80">🟩 **HUD tasarım analizi simülasyonu:** `scripts/sim_hud_analysis.py` — 8 oyunculu 32-tur tam maç. Bulgular: Synergy %76 baskın (avg 50/66 pts), Combo %17 fark yaratan, Kill %7 sporadik. Tüm veriler `output/logs/hud_analysis.txt`'e yazıldı.</span>
 - <span style="color:#4ade80">🟩 **Yeni test kapsamı:** 131 → 145 test (+14). `test_player_hub.py` +7, `test_synergy_hud.py` +7 yeni test. Tüm rect sınır kontrolleri, istifleme sırası, score_rect yükseklik doğrulaması dahil.</span>
 
-### Phase 3b — Visual Feedback & Animation
+### <span style="color:#4ade80">Phase 3b — Visual Feedback & Animation (🟩 TAMAMLANDI)</span>
 
-18. Implement `FloatingText` system: rise + fade, stacking. `FLOAT_TEXT_RISE_PX_PER_SEC`, `FLOAT_TEXT_LIFETIME_MS`, `FLOAT_TEXT_FADE_START_MS` sabitleri `constants.py`'den okunur. Origin: hedef kartın board koordinatının center-top'u. Birden fazla FloatingText aynı koordinatta yığılırken 4 px dikey boşluk bırakılır. Kaynak: `GameState.get_passive_buff_log(pid)` entry'leri — `{"trigger": "copy_2"|"copy_3", "delta": N}` → `FloatingText(f"+{N} STATS (MILESTONE)", board_coord, COLOR_GOLD_TEXT)`. **Prerequisite:** Phase 3c item 30 (`get_passive_buff_log` accessor'ı mevcut olmalı).
-19. Implement milestone detection at turn start: `GameState.get_turns_played(0)` okunur. `has_catalyst(0)` durumuna göre eşik dizisi `COPY_THRESH_C = [3, 6]` (Catalyst aktif) veya `COPY_THRESH = [4, 7]` (normal) seçilir. Eşik aşımı tespit edildiğinde board'daki etkilenen kartlar için FloatingText spawn edilir. **Prerequisite:** Phase 3c item 30.
-20. Implement evolved card (`"E"` rarity) Platinum border rendering: `card.rarity == "E"` string kontrolü kullanılır (`rarity_level` değil). Border rengi `COLOR_PLATINUM = (220, 220, 240)`, genişlik 4 px. Rarity badge: `"E"` karakteri, FONT_BOLD, 14 px, COLOR_PLATINUM arka plan.
-21. Wire audio events to `AssetLoader.get_sfx()` calls at correct trigger points (bkz. Section 5.5 ses tablosu). Ön yükleme `ShopScene.on_enter()` içinde `AssetLoader.preload_scene("shop")` çağrısıyla yapılır.
+18. <span style="color:#4ade80">🟩 **FloatingText system:** rise + fade, stacking. `FLOAT_TEXT_RISE_PX_PER_SEC`, `FLOAT_TEXT_LIFETIME_MS`, `FLOAT_TEXT_FADE_START_MS` sabitleri `constants.py`'den okunur. Origin: hedef kartın board koordinatının center-top'u. Birden fazla FloatingText aynı koordinatta yığılırken 4 px dikey boşluk bırakılır. Kaynak: `GameState.get_passive_buff_log(pid)` entry'leri — `{"trigger": "copy_2"|"copy_3", "delta": N}` → `FloatingText(f"+{N} STATS (MILESTONE)", board_coord, COLOR_GOLD_TEXT)`. MultiManager wagon-queue ile uygulandı. `v2/ui/widgets.py`'de `FloatingTextManager` sınıfı.</span>
+19. <span style="color:#4ade80">🟩 **Milestone detection at turn start:** `GameState.get_turns_played(0)` okunur. `has_catalyst(0)` durumuna göre eşik dizisi `COPY_THRESH_C = [3, 6]` (Catalyst aktif) veya `COPY_THRESH = [4, 7]` (normal) seçilir. Eşik aşımı tespit edildiğinde board'daki etkilenen kartlar için FloatingText spawn edilir. ShopScene `_check_tier_milestones()` içinde uygulandı.</span>
+20. <span style="color:#4ade80">🟩 **Evolved card (`"E"` rarity) Platinum border rendering:** `card.rarity == "E"` string kontrolü kullanılır. Border rengi `COLOR_PLATINUM = (220, 220, 240)`, genişlik 4 px. Rarity badge: `"E"` karakteri, FONT_BOLD, 14 px, COLOR_PLATINUM arka plan. CardFlip `evolved=True, evolved_color` parametreleri ile uygulandı. UI/shop_panel.py ve ui/hand_panel.py'de CardFlip instantiation'ı güncellendi.</span>
+21. <span style="color:#4ade80">🟩 **Audio events wired:** `AssetLoader.get_sfx()` çağrıları trigger noktalarında. Ön yükleme `ShopScene.__init__()` içinde `AssetLoader.preload_scene()` çağrısıyla. SFX (buy/place/reroll) ve music (shop/combat/lobby) preload edildi. ShopScene `_play_sfx()` helper metot ile çağrılar merkezi. `v2/assets/loader.py` SFX/music caching ve volume scaling uygulandı.</span>
 
-### Phase 4 — Output Rendering
+### Phase 3d — Adapter / Contract Test Expansion (<span style="color:#f59e0b">⚠️ PHASE 4 ÖNCESİ ZORUNLU TEST HARDENING</span>)
 
-22. Implement `CombatTerminal`: `GameState.get_last_combat_results()` + `get_passive_buff_log(pid)` kaynaklarından beslenir. 80 ms/satır streaming, en yeni satır alta eklenir. Terminal non-interactive. Hasar denklemi son satırı: `"[Base] + [Alive/2] + [Rarity/2] + [Prefix] = {Final}"`. `_prefix` terimi yalnızca `get_prefix_bonus(pid) > 0` olduğunda gösterilir (bkz. Section 3.5 `_prefix` visual rule — sıfır olmayan değeri gizlemek kritik math desync hatasıdır). **Prerequisite:** Phase 3c item 29 (`MockGame.last_combat_results` mevcut olmalı).
-23. Implement `VersusScene`: `GameState.get_current_pairings()` ile eşleşme çifti okunur. Matchup string `"{P_name} vs {Opp_name} ({Opp_strategy})"`, FONT_BOLD, FONT_SIZE_LARGE. İki HP bar `SPLASH_HP_BAR_W × SPLASH_HP_BAR_H` ve integer HP etiketleri. Üst sağ: `"Turn {N}"`. `SPLASH_DURATION_MS = 3000 ms` veya ilk click/SPACE ile dismiss → `SceneManager.transition_to(CombatScene)`. **Prerequisite:** Phase 3c item 30 (`get_current_pairings` accessor'ı).
-24. Implement Reroll button disabled state: `get_gold(0) < 2` → background `COLOR_DISABLED`, cursor default, click hiçbir şey yapmaz, no-op. Mevcut kısmi implementasyon tamamlanır (renk + no-op eklenir).
-25. Implement `EndgameScene`: `GameState.get_stats(pid)` okunur. Sıralama: HP azalan; elime edilmişler elime turuna göre azalan. Tablo sütunları: `Rank | Player | Strategy | Final HP | Total Pts | Evolutions | Rerolls | Win Streak Max`. Winner banner: `"{name} WINS"`, FONT_BOLD, 48 px (yalnızca 1 hayatta kalan varsa). Restart butonu bottom-center: `SceneManager.transition_to(LobbyScene)` + `GameState` sıfırlama. **Prerequisite:** Phase 3c item 30 (`get_stats` accessor'ı).
-26. Implement `"Opponents deciding..."` overlay: `GameState.run_ai_turns()` çalışırken tam ekran yarı saydam siyah overlay (alpha 160) + ortalanmış metin, FONT_BOLD, FONT_SIZE_LARGE. Bu pencerede hiçbir input event iletilmez. `run_ai_turns()` döndüğünde overlay otomatik kalkar.
-27. End-to-end integration test (MockGame): 3-tur tam oyun döngüsü. Doğrulama: hiçbir `ActionResult` sessizce yutulmuyor; DebugOverlay `turn_counter` ve board durumu her adımda doğru; `SynergyHud.total` ↔ `last_combat_results["synergy_a"]` eşleşiyor; PlayerHub tüm satırlar canlı veriyi yansıtıyor.
+Bu phase'in amacı mevcut `MockGame` tabanlı UI testlerini kaldırmak değil, onların üstüne iki yeni güvenlik katmanı eklemektir:
 
-### Phase 5 — Gerçek Engine Hookup (SON ENTEGRASYON)
+1. **Adapter / Contract tests:** `v2/core/game_state.py` ile gerçek `engine_core` arasındaki veri sözleşmesini doğrular.
+2. **Real-engine smoke tests:** küçük ama yüksek değerli akışları gerçek engine ile sınar; tam UI entegrasyonu değildir.
 
-**Ön koşul:** Phase 3c tamamen kapalı. Tüm UI testleri MockGame ile geçiyor. Tüm `ActionResult` kodları erişilebilir durumda. `python v2/main.py` MockGame ile hatasız açılıyor.
+**Test matrisi (otoritatif):**
 
-34. **`game_factory.build_game()` → `main.py`:** `main.py._bootstrap()` içinde `MockGame()` yerine `engine_core.game_factory.build_game(strategies=list(constants.STRATEGIES))` çağrısı yap. Gerçek `Game` instance'ı `GameState.hook_engine()` ile enjekte edilir. `CardDatabase.initialize()` zaten mevcut; `game_factory` ayrı bir `build_card_pool()` çağrısı yapar — iki çağrı aynı JSON dosyasını okur, çakışma yoktur.
-35. **`GameState.sync_state()` canlı bağlantı:** `ShopScene.update()` her frame `sync_state()` çağırır. Gerçek engine `players[*]` verisi PlayerHub 8 satırına yansır. Doğrulama: tüm HP / Gold / streak değerleri engine ile UI arasında eşleşmeli.
-36. **`preparation_phase()` → Ready button hattı:** `GameState.commit_human_turn()` → `engine.preparation_phase()` → `GameState.sync_state()` → `SceneManager.transition_to(VersusScene)`.
-37. **`combat_phase()` → `CombatScene.on_enter()`:** `engine.combat_phase()` çağrılır; dönen `engine.last_combat_results` `CombatTerminal`'e beslenir; `passive_buff_log` kayıtları terminal satırlarına dönüştürülür.
-38. **FloatingText spawn pipeline:** Her `combat_phase()` sonrası `get_passive_buff_log(0)` taranır. `"copy_2"` veya `"copy_3"` trigger'lı kayıtlar için `FloatingText(f"+{delta} STATS (MILESTONE)", board_coord, COLOR_GOLD_TEXT)` spawn edilir. Birden fazla aynı koordinata denk gelirse 4 px dikey offset uygulanır.
-39. **Eleme pipeline'ı:** Her `combat_phase()` sonrası tüm `engine.players[*].alive` kontrol edilir. Yeni ölen oyuncu için `UIEvent.PLAYER_ELIMINATED` publish edilir; LobbyPanel satırı grayscale + "ELIMINATED" görünümüne geçer. `engine._return_cards_to_pool(player)` engine tarafından zaten çağrılmaktadır — UI tarafında ekstra pool güncellemesi gerekmez.
-40. **Hasar denklemi doğrulaması:** `CombatTerminal` son satırı `board.calculate_damage()` formülü ile birebir eşleşmeli: `|W_pts − L_pts| + floor(alive/2) + rarity_bonus//2 + _prefix_bonus = Final`. `get_prefix_bonus(pid) > 0` ise `_prefix` terimi mutlaka görünmeli (Section 3.5 visual rule).
-41. **Bitiş koşulu entegrasyonu:** Her `combat_phase()` sonrası `len(get_alive_pids()) <= 1` VEYA `get_turn() >= 50` kontrolü. Doğruysa `SceneManager.transition_to(EndgameScene)`.
-42. **Uçtan uca entegrasyon testi (gerçek engine):** 3-tur tam oyun döngüsü. Doğrulama kontrol listesi:
-    - Hiçbir `ActionResult` sessizce yutulmuyor.
-    - DebugOverlay `turn_counter` ve board durumu her adımda doğru.
-    - `SynergyHud.total` ↔ `last_combat_results["synergy_a"]` eşleşiyor.
-    - PlayerHub 8 satırın tümü canlı engine verisini yansıtıyor.
-    - `calculate_damage()` denklemi CombatTerminal son satırıyla birebir.
-    - Elime edilen oyuncu satırı doğru görünüme geçiyor.
-    - `python v2/main.py` çalıştırıldığında ekran açılır, konsola hiçbir hata düşmez.
+| Katman | Amaç | Engine | Örnek dosyalar |
+|---|---|---|---|
+| UI unit / widget | Render ve etkileşim davranışı | `MockGame` | `tests/test_player_hub.py`, `tests/test_synergy_hud.py`, `tests/test_shop_panel.py` |
+| Adapter / contract | `GameState` accessors ve bridge semantiği | gerçek `engine_core` | `tests/test_game_state_engine_contract.py` |
+| Smoke / flow | turn, pairing, combat snapshot, elimination zinciri | gerçek `engine_core` | `tests/test_engine_turn_flow_smoke.py`, `tests/test_engine_combat_contract.py` |
+
+**Kurallar:**
+
+- `MockGame` testleri korunur; bunlar presentation/TDD hızı için hâlâ birinci sınıf katmandır.
+- Phase 4 öncesi yeni işlerde yalnızca Mock test eklemek yeterli sayılmaz; ilgili contract veya smoke testi de eklenmelidir.
+- Gerçek engine testleri sahne çizimi değil, veri sözleşmesi ve akış doğruluğu odaklı olmalıdır.
+- Testler deterministik seed veya fixture ile çalışmalıdır; rastgelelik test oracle'ını bulanıklaştırmamalıdır.
+
+31a. Add contract test coverage for pairing snapshot semantics. `GameState.get_current_pairings()` aynı tur içinde yeni eşleşme üretmez; `engine.swiss_pairs()` sonucu bir kez dondurulup okunur. Beklenen dosya: `tests/test_game_state_engine_contract.py`.
+31b. Add contract tests for identity bridge. `get_display_name(pid)` ve `get_strategy(pid)` Mock ve gerçek engine şema farkını UI için tek sözleşmeye indirir. Beklenen dosya: `tests/test_game_state_engine_contract.py`.
+31c. Add contract tests for combat snapshot shape. `get_last_combat_results()` beklenen key set'ini, `winner_pid`, `dmg`, `hp_before_*`, `hp_after_*` alanlarını taşır ve Phase 4 formatter için yeterlidir. Beklenen dosya: `tests/test_engine_combat_contract.py`.
+31d. Add contract tests for combat semantics guardrails. `kill_a` / `kill_b` alanları saf kill diye etiketlenmez; test adı ve assertion'lar bu bucket'ları "combat score bucket" olarak ele alır. Beklenen dosya: `tests/test_engine_combat_contract.py`.
+31e. Add contract tests for `_prefix` bridge math. `get_prefix_bonus(pid)` UI summary terimi olarak hesaplanır ve sıfır / sıfır-dışı koşulları ayrı doğrulanır. Beklenen dosya: `tests/test_game_state_engine_contract.py`.
+31f. Add smoke tests for turn flow. `preparation_phase()` -> pairing snapshot -> `combat_phase()` -> turn progression -> alive player filtering zinciri küçük fixture ile doğrulanır. Beklenen dosya: `tests/test_engine_turn_flow_smoke.py`.
+31g. Add smoke tests for elimination ordering. Yeni ölen oyuncu sırası `get_elimination_order()` veya eşdeğer cache üzerinden kararlı biçimde tutulur; Endgame sıralaması canlı HP ile birlikte doğrulanır. Beklenen dosya: `tests/test_engine_turn_flow_smoke.py`.
+31h. Add smoke tests for copy / milestone compatibility. Gerçek engine üzerinde `passive_buff_log`, `copy_2`, `copy_3`, `has_catalyst()` ve `get_turns_played()` birlikte çalışır mı doğrulanır. Beklenen dosya: `tests/test_game_state_engine_contract.py`.
+31i. Add smoke tests for rarity bridge stability. `CardData.rarity_level`, gerçek engine rarity formatı ve UI rarity badge aklındaki sözleşmeyi sessizce bozmaz. Mevcut `tests/test_card_database.py` genişletilir.
+31j. Add pre-Phase-4 regression gate. Phase 4 feature diffinden önce minimum paket: `test_game_state.py` + ilgili widget testi + ilgili contract/smoke testi birlikte güncellenir.
+
+### Phase 4 — Overlay Architecture & Combat Execution
+
+**Otoritatif uygulama sırası:** (YENİ MİMARİ): Bu aşamada artık bağımsız Sahneler (Scenes) yaratmak yerine, `ShopScene` oyunun ana ve ölümsüz tahtası olarak kalacaktır. Dövüş ve eşleşme ekranları, `ShopScene`'in durumuna (Preparation -> Matchmaking -> Combat) bağlı olarak ekrana çizilen devasa Overlay (Pop-up) Container'larına dönüştürülmüştür. Bu sayede sahne geçişi sırasındaki veri/scroll kaybı ve state bozulması tamamen ortadan kaldırılmıştır.
+
+22. Implement `ShopScene` Phase State Machine: `PREPARATION` ve `COMBAT` fazları kurulur. TimerBar 0'a ulaştığında shop inputları kilitlenir ve tahta karararak olay akışı Overlay'lere devredilir. (Klasik AutoChess mantığı).
+23. Implement `VersusOverlay`: Bağımsız sahne yerine ShopScene üzerinde çalışan bir Popup Overlay olarak tasarlandı. `ShopScene`'in ortasında belirir. `GameState.get_current_pairings()` ile eşleşme çifti okunur. Matchup string `"{P_label} vs {Opp_label}"`. Belirli bir animasyon süresi (örn. 2s) bittiğinde yerini CombatOverlay'e bırakır.
+24. Implement `CombatOverlay` & `CombatTerminal`: Bağımsız sahne yerine ShopScene üzerinde çalışan Pop-up olarak tasarlandı. `VersusOverlay` bitince ekrana bu gelir. `output/logs/hud_analysis.txt` şablonuna sadık kalarak motorun verbose dökümünü yukarıdan aşağı streaming (kayan metin) şeklinde akıtır. Hasar denklemi ve kimin hasar aldığı gösterilir. Bittiğinde ShopScene tekrar `PREPARATION` fazına uyanır.
+25. Implement `EndgameOverlay`: Bağımsız sahne yerine ShopScene üzerinde çalışan Pop-up olarak tasarlandı. Eğer oyuncu elenirse veya maçı kazanırsa `ShopScene` üzerinde belirir. `GameState.get_stats(pid)` ve `get_elimination_order()` okuyarak skor tablosu (Rank | Player | Strategy | Final HP | Total Pts) basar. Restart butonu ile ana menüye dönülür.
+26. Reroll button disabled state: `get_gold(0) < 2` → background `COLOR_DISABLED`, cursor default, click no-op.
+27. End-to-end integration test (Overlay Flow): ShopScene'in bir fazdan (Hazırlık) Versus'a, oradan Combat'a, oradan tekrar yeni tura başarıyla döndüğü AAA testlerle doğrulanır.
+
+### Phase 4a — Delivery Strategy & QA Sandbox (ANALYSIS-DRIVEN ADDITION)
+
+**Amaç:** Bu bölüm, Phase 4 için yapılan analizden çıkan veri akışı, riskler ve teslim stratejisini bağlayıcı hale getirir. Bu bölüm planlama amaçlıdır; tek başına implementasyon onayı vermez. Aynı içeriğin ayrı doküman sürümü: `docs/phase4_delivery_strategy.md`.
+
+**Bağlayıcı guardrail'ler:**
+
+1. Her görev tek deliverable ile sınırlıdır. `VersusOverlay` ile başlanırsa aynı onay döngüsünde otomatik olarak `CombatTerminal` veya `CombatOverlay`’a geçilmez.
+2. QA Sandbox zorunludur. Her görev, ilgili `test_*.py` dosyaları oluşturulmadan veya güncellenmeden tamamlanmış sayılmaz.
+3. `"Görmediğim koda onay vermem"` kuralı bağlayıcıdır. Her görev, production diff ve ilgili test diff'i gösterildikten sonra durur.
+4. `v2/` dosyaları `engine_core`'a doğrudan bağımlı hale getirilmez. Phase 4 erişimi `GameState` veya açık bir bridge/adapter katmanı üzerinden akar.
+5. `passive_buff_log`, savaş anlatısına yardımcı veridir; tek başına tam combat truth olarak kabul edilmez.
+6. Scene ve widget'lar normalize UI payload'u tüketmelidir. Raw engine object'leri, canlı board okuması ve score bucket'ları bir kez `GameState` veya formatter/bridge katmanında adapte edilmeli; alta display-ready veri inmelidir.
+
+**Hedef veri akışı:**
+
+```text
+ShopScene Ready / prep commit
+  -> GameState phase wrapper
+  -> engine.preparation_phase()
+  -> GameState stores pairings / turn snapshot
+  -> ShopScene.set_phase(STATE_VERSUS)
+
+VersusOverlay (Popup)
+  -> reads pairing, hp, labels, turn from GameState only
+  -> no combat resolution
+  -> dismiss on timeout or input
+  -> ShopScene.set_phase(STATE_COMBAT)
+
+CombatOverlay (Popup)
+  -> GameState combat wrapper
+  -> engine.combat_phase()
+  -> engine.last_combat_results populated
+  -> player.passive_buff_log populated
+  -> GameState accessors expose raw combat snapshot
+  -> Combat formatter converts raw data into terminal lines + footer
+  -> CombatOverlay streams lines at 80 ms/line
+  -> post-combat transition logic decides STATE_PREPARATION vs STATE_ENDGAME
+```
+
+**Mevcut blocking gap'ler:**
+
+Bu liste, canlı repo taramasının sonucudur. Erken Phase başlıklarındaki tarihsel "tamamlandı" işaretleri ile çelişirse, implementation öncesi source of truth olarak bu gap listesi kabul edilir.
+
+1. `v2/ui/combat_terminal.py` hâlâ stub; terminal yüzeyi henüz yok.
+2. `v2/ui/overlays/combat_overlay.py` hâlâ stub; combat snapshot, formatter, streaming ve çıkış geçişi için bir orchestration noktası yok.
+3. `v2/ui/overlays/versus_overlay.py` yalnızca kısmi durumda; planlanan overlay sözleşmesini henüz uygulamıyor.
+4. `v2/core/game_state.py` içinde hâlâ eksik orchestration metotları var: `sync_state()`, `commit_human_turn()`, `run_ai_turns()`, `get_combat_log()`, `get_prefix_bonus()`.
+5. `v2/mock/engine_mock.py`, Phase 4 için gereken pairing ve kimlik verisini henüz sağlamıyor. Bugün `swiss_pairs()`, oyuncu `strategy` alanı ve terminal replay'e uygun combat fixture eksik.
+6. Mock ve gerçek engine kimlik şeması ayrışıyor: Mock tarafta `name` var ama `strategy` yok; gerçek engine tarafında `strategy` ve `pid` var ama ayrı bir `name` alanı yok.
+7. Shop tarafında hâlâ hardcoded sağ panel oyuncu verisi var; bu temizlenmeden yapılan Phase 4 geçişleri canlı veriyi sessizce bypass edebilir.
+8. `v2/scenes/shop.py` Phase makinesi fade gecişlerini sunmuyor. Testle pin'lenmezse `PREP -> VERSUS -> COMBAT -> PREP/ENDGAME` faz akışı sessizce drift edebilir.
+9. `v2/ui/synergy_hud.py`, `kill_a` / `kill_b` alanlarını saf kill puanıymış gibi okuyor; oysa canlı engine combat çözümünde bazı combat passive puanları da bu bucket'lara karışıyor. Bu alanların anlamı henüz dondurulmuş değil.
+
+**Analiz nedeniyle zorunlu spec açıklamaları:**
+
+1. Mevcut plan metni CombatTerminal için `entry.trigger == "combat"` filtresi diyor. Gerçek engine trigger'ları ise `pre_combat`, `combat_win`, `combat_lose`, `card_killed`, `copy_2`, `copy_3`. Bir normalizasyon katmanı eklenene kadar formatter, literal `"combat"` yerine "combat-relevant trigger set" yaklaşımı kullanmalıdır.
+2. `passive_buff_log`, yalnızca pasif gerçekten stat gücü değiştirdiğinde kayıt düşer. Bazı combat pasifleri puan üretir ama stat artırmaz; bu olaylar logda görünmeyebilir.
+3. Mevcut footer hasar denklemi, exact engine math gibi gösterilecekse eksiktir. Gerçek engine, turn-based scaling ve early-game cap de uygular. Bu nedenle footer ya tam hesaplamayı göstermeli ya da partial breakdown + final damage olarak açıkça etiketlenmelidir.
+4. `_prefix` uygulaması da yanıltıcı olabilir. Combat çözümünde hidden `_prefix` bonusları kart bazında iç combat hesabına dağılır; plandaki board-geneli footer terimi ise UI summary olarak görülmelidir, exact internal application order olarak değil.
+
+**Önerilen görev parçalama sırası:**
+
+### `Pre-Task A - Phase State Machine Foundation` <span style="color:green">(🟩 TAMAMLANDI)</span>
+
+Kapsam:
+- `MockPlayer.pid` eklendi, `get_alive_pids()` düzeltildi.
+- `GameState.freeze_pairings()` eklendi (eşleşmelerin her karede değişmesi engellendi).
+- `get_prefix_bonus()` ve `MockGame.combat_phase/swiss_pairs` stub'ları eklendi.
+- 4 adet kırık entegrasyon testi onarıldı (`mocker` kaldırıldı).
+- `test_shop_scene_phase_machine.py` ile 12 AAA TDD sözleşme testi yazıldı (RED fazda).
+
+### `Task A.1 - ShopScene Phase State Machine Core` <span style="color:green">(🟩 TAMAMLANDI)</span>
+
+Kapsam:
+- ShopScene içine `phase` property'si ve `set_phase()` eklenecek.
+- `STATE_PREPARATION` dışındaki fazlarda inputlar (lock, reroll, buy vb.) yutulacak (ignore edilecek).
+- `test_shop_scene_phase_machine.py` içindeki temel state ve input bloklama testleri yeşile dönecek.
+- `STATE_VERSUS` bittiğinde → `STATE_COMBAT` fazına geçişini tetikle.
+- `STATE_COMBAT` başladığında savaş matematiğini *sadece bir kez* çalıştır (Single-fire).
+- `STATE_COMBAT` bittiğinde, hayatta 1'den fazla oyuncu varsa → `STATE_PREPARATION`. Tek oyuncu kaldıysa → `STATE_ENDGAME`.
+
+### `Task A.2 - VersusOverlay Entegrasyonu` <span style="color:green">(🟩 TAMAMLANDI)</span>
+
+Kapsam:
+Sadece matchup splash sahnesi yapılır. Sadece pairing, hp, turn ve player label verisi okunur. Combat çözülmez, terminal streaming eklenmez.
+
+Çıkış kriterleri:
+Timeout dismiss çalışır. Click/SPACE dismiss çalışır. Sahne tek bir pairing'i combat verisine bağımlı olmadan gösterebilir.
+
+QA Sandbox:
+İlgili sahne testleri birinci sınıf deliverable olarak güncellenir.
+Beklenen testler: `tests/test_versus_overlay.py` ve gerekirse `tests/test_game_state.py`.
+
+### `Task B - CombatTerminal only` <span style="color:green">(🟩 TAMAMLANDI)</span>
+
+Kapsam:
+`CombatTerminal`, saf presentation widget olarak inşa edilir. Girdi sözleşmesi deterministic olmalıdır: preformatted `lines` + final `footer` string veya yapılandırılmış footer payload. Widget engine çağırmaz.
+
+Çıkış kriterleri:
+80 ms/satır streaming çalışır. Auto-scroll çalışır. En yeni satır altta görünür. Footer yalnızca satır akışı tamamlandıktan sonra görünür.
+
+QA Sandbox:
+Widget odaklı terminal testleri eklenir/güncellenir.
+Beklenen testler: `tests/test_combat_terminal.py`.
+
+### `Task C - CombatOverlay only` <span style="color:green">(🟩 TAMAMLANDI)</span>
+
+Kapsam:
+Combat çözümü scene entry point'ine bağlanır. `get_last_combat_results()` ve `get_passive_buff_log(pid)` okunur. Bunlar terminal payload'ına normalize edilir. Stream sonrası bekleme ve transition-out zamanı burada yönetilir.
+
+Çıkış kriterleri:
+Combat sahne girişinde tam bir kez çözülür. Terminal girdisi tek formatter yolundan gelir. Sahne replay sonrası doğru next state'i seçer.
+
+QA Sandbox:
+Combat scene entegrasyon testleri eklenir/güncellenir.
+Beklenen testler: `tests/test_combat_overlay.py`.
+
+### `Task D - Endgame and elimination separately` <span style="color:green">(🟩 TAMAMLANDI)</span>
+
+Kapsam:
+Elimination görünümü ve Endgame screen, terminal göreviyle paketlenmez. Combat replay akışı stabil olduktan sonra ayrı görev olarak ele alınır.
+
+Çıkış kriterleri:
+Yeni elenen oyuncular doğru görünür. Endgame tetikleyicisi combat çözümünden sonra doğrulanır.
+
+QA Sandbox:
+Endgame/elimination davranışı için ayrı testler eklenir/güncellenir.
+Beklenen testler: `tests/test_endgame_overlay.py` ve ilgili lobby testleri.
+
+**Risk kaydı:**
+
+`Risk 1 - Silent math desync in footer`
+
+Neden:
+Combat sonrası kart silinmiş veya stat değişmiş canlı board üzerinden hasarı yeniden hesaplamak.
+
+Azaltım:
+`engine.combat_phase()` hemen sonrasında combat snapshot dondurulmalı; footer bu snapshot'tan türetilmelidir.
+
+`Risk 2 - Incomplete combat narrative`
+
+Neden:
+`passive_buff_log`'u tek anlatı kaynağı olarak kullanmak.
+
+Azaltım:
+`last_combat_results` authoritative scoreboard truth olarak kalmalı, `passive_buff_log` ise flavor/context katmanı olarak kullanılmalıdır.
+
+`Risk 3 - Mock and real engine drift`
+
+Neden:
+Mock şeması, Versus ve Combat sahnelerinin ihtiyaç duyduğu pairing ve kimlik sözleşmesini henüz karşılamıyor.
+
+Azaltım:
+Scene implementasyonundan önce minimal Phase 4 fixture sözleşmesi eklenmeli veya net biçimde belgelenmelidir.
+
+`Risk 4 - Scope creep across tasks`
+
+Neden:
+"Madem girdik, tüm combat stack'i bitirelim" yaklaşımı.
+
+Azaltım:
+Her görev sonunda sert duruş. Diff, test diff ve risk notları görüldükten sonra bir sonraki deliverable açılır.
+
+`Risk 5 - Hidden spec mismatch`
+
+Neden:
+Plan metni ile gerçek engine davranışı, trigger naming ve damage presentation konularında şimdiden ayrışmış durumda.
+
+Azaltım:
+Yukarıdaki açıklamalar, production code başlamadan önce bu ana plan dosyasına kilitlenmiştir ve bağlayıcı yorum olarak ele alınmalıdır.
+
+**Her future task için agent checklist:**
+
+1. Edit öncesi tam sahip olunan dosyaları açıkça yaz.
+2. Görev sınırını dar tut ve istenen deliverable tamamlanınca dur.
+3. Aynı görev içinde ilgili `test_*.py` dosyalarını güncelle.
+4. Production diff ile test diff'ini birlikte göster.
+5. Sonraki deliverable için yeni onay almadan otomatik ilerleme yapma.
+6. Görev scene flow veya score presentation'a dokunuyorsa, transition ve score-semantics testleri aynı review döngüsünde güncellenmelidir.
+
+**Phase 4a - İkinci Tarama Ekleri**
+
+**Ek spec netleştirmeleri:**
+
+1. `kill_a` / `kill_b`, bugün için güvenilir "saf kill" alanları değildir. Canlı engine'de bazı `combat_win` passive puanları da `last_combat_results` yazılmadan önce bu alanlara karışıyor. Bu nedenle UI katmanı bu alanları ya normalize etmeli ya da net etiketlemelidir.
+2. Phase 4 için açık bir faz makinesi kontratı gerekiyor. Normal akış `STATE_PREPARATION -> STATE_VERSUS -> STATE_COMBAT -> STATE_PREPARATION` olmalıdır; `STATE_ENDGAME` yalnızca post-combat elimination/game-over kontrolünden sonra devreye girmelidir.
+3. `CombatOverlay` ve `CombatTerminal`, raw engine object’leri değil normalize edilmiş formatter payload’larını tüketmelidir. Bridge/adapter katmanı dışında canlı board veya ham score bucket okuması yayılmamalıdır.
+
+**Ek QA kapsamı:**
+
+1. Phase transition validation: hedef akış testle pin'lenmeli; geçersiz doğrudan sıçrama, duplicate transition ve accidental skip durumları deterministik davranışla engellenmelidir.
+2. Combat trigger single-fire coverage: `STATE_COMBAT` fazına girildiğinde combat tam bir kez çözülmeli; sonraki frame'lerde `update()` tekrar çalışsa bile ikinci kez tetiklenmemelidir.
+3. Replay state capture: `last_combat_results`, UI replay formatter çalışmadan önce dondurulmuş olmalı; daha sonra canlı board'dan yeniden türetilmemelidir.
+4. Timer/stream lifecycle: terminal stream zamanı, post-stream bekleme süresi ve varsa replay/popup timer başlangıç/decrement davranışı testle sabitlenmelidir.
+5. Turn cleanup contract: turn increment, locked coordinate cleanup ve post-combat cleanup sırası replay verisi capture edildikten sonra doğrulanmalıdır.
+6. Score semantics coverage: passive combat points ile gerçek kill points ayrımı için açık test yazılmalı; `CombatTerminal` ve `SynergyHud` bu iki kaynağı karıştırmamalıdır.
+
+**Ek riskler:**
+
+1. `kill_a` / `kill_b` bucket'ları saf kill gibi okunursa UI yanıltıcı skor anlatımı üretir.
+2. Scene flow testle pin'lenmezse `Shop -> Versus -> Combat -> Shop/Endgame` dışına kayan veya double-combat üreten geçişler sessizce yerleşebilir.
+
+### Phase 5a — Interface Bridge Fixes (CRITICAL DISCONNECTS)
+
+> [!WARNING]
+> While preparing to switch from `MockGame` to the real engine (`engine_core`), we identified massive architectural disconnects deep within the integration layer (`GameState`). If the switch is made without fixing these, the game will crash instantly upon the first card component interaction.
+
+**1. The Hand Array Discrepancy (`player.hand`)**
+*   **Engine Core Logic:** `player.hand` is a dynamically resizing list of `Card` objects (Length goes 0 -> 1 -> 2 ... up to `HAND_LIMIT`). When a card is placed, it is physically `.pop()`'ed out.
+*   **UI Frontend Expectation:** The drag-and-drop systems (`HandPanel`) strictly rely on a fixed 6-element list containing `[str | None]` to preserve physical slot locations.
+*   **The Danger:** The UI's `place_card` bridge directly executes `player.hand[i] = None`. This injects `None` into the engine's dynamic list. At the end of the combat phase, the engine loops over `list(player.hand)` to return unplaced cards to the pool. When it hits the UI-injected `None`, **a terminal crash occurs.**
+*   **The Fix:** Rewrite `GameState.get_hand()` to translate the engine's dynamic array into a fixed 6-slot dictionary representation, and remap `GameState.place_card()` to `.pop()` the specific index intelligently without breaking UI slot layouts.
+
+**2. Physical Shop Index Discrepancy**
+*   **Engine Core Logic:** The real market simply delivers an array of options to the AI/player via `deal_market_window`. AI executes `player.buy_card(card)` directly.
+*   **UI Frontend Expectation:** The user clicks a physical slot on screen (e.g. Slot `#2`). The UI calls `GameState.buy_card_from_slot(pid, slot=2)`.
+*   **The Danger:** The `buy_card_from_slot()` method does not exist in the real engine! The Mock Engine had it, but the integration will raise `AttributeError`.
+*   **The Fix:** Implement `buy_card_from_slot()` inside `GameState` mapping it to `engine.market._player_windows[pid][slot_idx]`, replacing the selection with `None` so the UI knows the slot is now empty, and manually running the backend's `player.buy_card(card)` taking gold into account.
+
+**3. Shop Lock Stub**
+*   **The Danger:** Locking the shop (`GameState.toggle_lock_shop`) was stubbed in MockGame. The real `engine_core` has no concept of it yet. Pressing the lock button in the real engine will crash.
+*   **The Fix:** Safely intercept and ignore this action in the adapter.
+
+### Phase 5b — The Time-Dilation Disconnect (CRITICAL ARCHITECTURE FLAW)
+
+> [!CAUTION]
+> The deepest and most destructive disconnect lies in how `engine_core` simulates time versus how a human plays the game. `engine_core` is a *simulator*.
+
+**The Autochess Simulator Problem:**
+*   **Engine Core Logic:** The `engine.preparation_phase()` function increments the turn, calculates income, deals market windows, runs AI buying, and runs AI placement **all in a single non-yielding microsecond method.**
+*   **UI Frontend Expectation:** The human expects the turn to start, to receive their income, and to see a refreshed shop. Then they spend 30 seconds dragging cards, looking at the UI, rerolling the shop, and finally pressing the "READY" button.
+*   **The Danger:** If `commit_human_turn()` blind-calls `engine.preparation_phase()`, the human starts Turn 1 with 0 gold and an empty shop. They have nothing to do, so they click "Ready". *Instantly*, the engine gives them gold, completely overrides any board placement, buys random cards with the AI fallback (`AI._buy_random` since strategy `"human"` isn't registered), and slams them straight into Combat.
+*   **The Fix:** 
+    1. **Split the Engine Execution:** We cannot use `engine.preparation_phase()` for interactive UI hookups. Instead, when the game boots (and after every combat), we must run a new `engine.start_turn()` logic that increments `turn`, gives `income`, applies passive triggers, and deals `deal_market_window` for all players.
+    2. **Human Immunity:** We must register `"human"` as an explicit strategy in `engine_core/ai.py` that immediately `return`s gracefully, preventing the AI from stealing the human's gold or hand during automated steps.
+    3. **AI Execution:** When the human presses "READY", the game must invoke `run_ai_turns()` which runs `_ai.buy` and `_ai.place` strictly for the bot players. After that, we proceed safely to Combat.
+
+### Phase 5c — The Turn-Lifecycle Orchestrator (HIDDEN MECHANICS)
+
+> [!CAUTION]
+> If a human bypasses the `engine.preparation_phase()` by taking a manual turn, they accidentally bypass 4 critical sub-systems of the engine loop. We MUST manually execute these for the human upon clicking the "READY" button.
+
+**1. The Interest System (apply_interest)**
+*   The engine calculates interest *after* cards are bought (based on leftover gold). We must explicitly call `human.apply_interest()` when they click "Ready", otherwise the human will never earn interest!
+
+**2. The Progression Systems (Evolutions & Copy-strengthening)**
+*   The AI calculates `check_evolution` and `check_copy_strengthening` automatically at the end of its turn. If the human drags and drops cards manually, these functions are never triggered! We must explicitly call them during `commit_human_turn`.
+
+**3. Market Pool Bleeding (return_unsold)**
+*   Every turn, the engine deals 5 cards into the Shop. The AI buys 1, and crucially calls `market.return_unsold()` to put the other 4 back into the global pool. If the human's turn doesn't fire this, **the human permanently removes 5 cards from the pool every single turn without buying them!** 
+*   **The Fix:** We must manually trigger `return_unsold(human)` inside `commit_human_turn`.
+
+### Phase 5d — The Hidden 3 Catastrophes (FINAL ANALYSIS)
+
+> [!CAUTION]
+> A final sweep revealed 3 more hidden traps. `engine_core` never expected a human to die and stay connected, nor did it expect a human to reroll the shop.
+
+**1. Spectator Drift (The Zombie Player)**
+*   If the human's HP drops to 0, they are eliminated from the engine (`p.alive = False`). Their cards are returned to the pool, and they are skipped in future AI loops.
+*   However, the `ShopScene` Phase Machine blindly loops everyone back to `STATE_PREPARATION` as long as there are >1 remaining players overall!
+*   **The Danger:** A dead human gets sent back to the Shop, with 0 new income, no board, and active UI controls, allowing them to click Reroll/Buy on a broken state.
+*   **The Fix:** When returning to `STATE_PREPARATION`, if `gs.is_alive(0) == False`, the UI must enter a locked "Spectating Mode", disabling drags, buying, and locking, until `STATE_ENDGAME` is triggered.
+
+**2. The Missing "Reroll" Engine Method**
+*   **The Danger:** The UI's Reroll button bridges to `GameState.reroll_market()`. This function tries to execute `self._engine.reroll_market(pid)`. But the actual real engine **doesn't even have this method!** AI bots don't reroll, so the method was never written. Clicking Reroll will crash the game with an `AttributeError`.
+*   **The Fix:** We must manually implement reroll logic purely inside `GameState.reroll_market()`. It must verify gold, subtract `market.refresh_cost()`, call `market.return_unsold(human)`, and then run `market.deal_market_window(human)`.
+
+**3. Test Determinism Leakage (RNG Drift)**
+*   The phase rules strictly demand deterministic tests. However, `trigger_passive_fn` in `engine_core` uses the global `import random` rather than the `engine.rng`. Because passives like `rare_hunter` trigger chance-based effects, this global RNG call will subtly drift and break snapshot tests if not intercepted.
+
+**4. Ghost Stats (Stat Kayması)**
+*   **The Danger:** The UI (`ShopScene` and `HandPanel`) completely ignores dynamic engine stats! When it draws a card, it just asks the engine for the `card_name` string, then looks up the static base template directly from `CardDatabase.json`. If a card is strengthened via `copy_2` or a passive ability (e.g. its Power goes from 30 to 35), the engine fights with `35`, but the human will always see it rendered as `30`!
+*   **The Fix:** We must modify `GameState.get_board_cards()` and `get_hand()` to return a bundle: `(card_name, dynamic_stats_dict)`. `ShopScene` and `CardDatabase.render_card_surface` must be updated to accept dynamic override values, ensuring the Pygame surface reflects the exact engine state, not the static JSON template.
+
+### Phase 5e — The Ultimate Disconnects (DEEP ENGINE)
+
+> [!CAUTION]
+> The final sweep into how the engine executes mathematics and randomizations vs what the UI expects.
+
+**5. The "Bait and Switch" Matchup (Kör Dövüşü)**
+*   **The Danger:** To draw the "Versus Overlay" smoothly before combat, `GameState.freeze_pairings()` calls `engine.swiss_pairs()` and caches who the human fights (e.g., "YOU vs P2"). Then we proceed to `STATE_COMBAT` and call `engine.combat_phase()`. BUT `engine.combat_phase()` internally ignores the cache and manually calls `swiss_pairs()` **again**! Because pairings are randomly jittered by HP bands, the engine generates a *different* pairing. The UI shows you are fighting P2, but the engine secretly fights you against P7!
+*   **The Fix:** We must modify `engine_core.game.py`'s `combat_phase(pairs=None)` to accept the UI's frozen pairs, bypassing the internal regeneration loop.
+
+**6. Damage Cap Math Mystery (Bozuk Hasar Özeti)**
+*   **The Danger:** The UI Terminal expects a pure mathematical string to explain the combat: `|W - L| + bonuses = Final`. But the real `engine_core.board.calculate_damage()` heavily scales damage over time: turns 1-5 have a 50% penalty, and turns 1-10 have a hard limit of `15` damage. This logic is hidden. The UI terminal will output mathematically impossible equations like `(24 + 5 + 3 = 15)`, leading the player to think the code is entirely broken.
+*   **The Fix:** The `GameState.format_combat_logs` must be enhanced to manually recalculate and append warning strings like `(Early Game Limit: 15)` or `(Turn Penalty: 50%)` exactly when the engine applies them.
+
+**7. The Zombie Board (Ölü Kartların Dirilişi)**
+*   **The Danger:** The UI adapter `GameState` maintains its own local dictionary `self._board = {}`. When the human places a card, it writes to `self._board` AND the engine grid. BUT it never reads back! In AutoChess, combat damage permanently destroys weak cards and removes them from the grid. Because `GameState` never clears or re-syncs `self._board` from the engine after combat, the UI will eternally draw "Ghost Cards" that the engine has already deleted! The human will watch combat, see an empty hex, and think they are still fighting with a full board. (Furthermore, `ShopScene._board_flips` never garbage-collects deleted hexes!).
+*   **The Fix:** `GameState` must completely abandon `self._board` caching when connected to the real engine. `get_board_cards()` and `get_board_rotations()` must dynamically read directly from `self._engine.players[0].board.grid` every frame. `ShopScene._update_board_cards` must garbage-collect stale `CardFlip` instances.
+
+**8. Blackout of Evolved Cards (Evrim Silinmesi)**
+*   **The Danger:** When an AI evolves a card, the engine dynamically instantiates a new Card object with the name `"Evolved <Base Name>"`. However, the UI relies on `CardDatabase.json` to draw images and stats. The JSON file *only* contains base cards! When the UI tries to lookup `"Evolved Narwhal"` to render an enemy's board or the combat logs, the database will return `None`. The entire Pygame rendering pipeline will instantly fallback to drawing **blank, empty grey polygons** for all evolved cards across the entire game, completely shattering visual feedback in the late-game.
+*   **The Fix:** `CardDatabase.lookup()` must act as a smart proxy. If a card name starts with `"Evolved "`, it must dynamically lookup the base card, apply the engine's 72-point math scaling, and synthesize a mock `CardData` object in real-time so Pygame can draw the platinum borders.
+
+**9. The "get_hand" Crash (Eksik Metod Çöküşü)**
+*   **The Danger:** `GameState` features safe `try-except AttributeError` blocks for functions like `get_shop` and `get_hp` because the real engine doesn't exactly match the Mock framework. However, `GameState.get_hand` completely lacks this safety block! Since `engine_core.game.Game` does not have a `get_hand()` method at all, the moment the Pygame screen boots and tries to draw the hand panel, it will instantly throw an `AttributeError` and crash the window.
+*   **The Fix:** We must wrap `GameState.get_hand` with a try-except block. Upon catching the `AttributeError`, it must directly access `self._engine.players[pid].hand`, extract the card names, and pad the list with `None` to satisfy exactly the 6 slots expected by the UI.
+
+### Phase 5f — TDD Architecture Blueprint (Test Stratejisi)
+
+Testleri yazmadan önce, çözümlerimizin "Ne"yi başaracağını ve TDD testlerinin bunu "Nasıl" kanıtlayacağını aşağıdaki vizyonla kuracağız:
+
+1. **Player name vs pid (Identity)**
+   *   *Test:* P0'ın `.name` verisine erişim yerine `get_endgame_stats` çağrısını test et. Beklenti: İstisna atmadan `P0` veya özel bir string dönmesi.
+2. **Missing `buy_card_from_slot`**
+   *   *Test:* `GameState.buy_card_from_slot` çağrıldığında motor pazarındaki sıradaki slotun çıkarılıp ele eklenmesini test et. Beklenti: Pazar havuzundan isim düşmesi ve elin büyümesi.
+3. **Time Dilation (Split Phase)**
+   *   *Test:* `start_turn()` çalıştırıldığında (hazırlık aşaması başladığında) insan board'unun kitlenmediğini, ancak AI sıralarının dönmek için `finish_turn()` beklediğini test et.
+4. **Human Strategy Immunity**
+   *   *Test:* AI motoru insan için döndüğünde insanın altınının eksilmediğini (`gold` sabit) ve pazardaki slotların değişmediğini doğrula.
+5. **Interest & Strengthening Bypasses**
+   *   *Test:* UI üzerinden `commit_human_turn()` atıldığında, faiz fonksiyonlarının sadece 1 tur çalıştığını ve faiz limitine sadık kalındığını kanıtla.
+6. **Spectator Zombie Loop**
+   *   *Test:* İnsan oyuncunun canı 0 olduğunda `GameState`'in herhangi bir tur aksiyonunu doğrudan reddetmesini ve zorla `Endgame`'e geçmesini test et.
+7. **Reroll Interface Exception**
+   *   *Test:* Motorun kendi içinde reroll olmamasına rağmen, `GameState.reroll_market` çağrımının altını 2 düşürüp havuzdan yeni 5 kart çekimini tetiklediğini onayla.
+8. **Bait-and-Switch Matchup (Kör Dövüşü)**
+   *   *Test:* UI'da `freeze_pairings` ile eşleştirme yapıp, ardından `combat_phase(pairs=frozen)` verdiğimizde RNG oynama payının eski listeyi ezmemesini sağla.
+9. **Ghost Stats (Stat Kayması)**
+   *   *Test:* Oyun içi kazanılan güçleri test etmek için `get_board_cards()`'ın `{coord: {name, power, hp}}` formatında paket dönmesini sağla.
+10. **Damage Math Cap (Bozuk Hasar Özeti)**
+    *   *Test:* Erken turlarda Combat Log formatının, motorun hasar formülündeki 15 barajını ve tur limitlerini string olarak okuduğunu doğrula.
+11. **Ghost Board (Zombi Tahta)**
+    *   *Test:* Savaşta bir kart silindikten sonra `GameState._board` üzerinden okumanın da o kartı sildiğini (veya direkt motordan veri geldiğini) doğrula.
+12. **Evolved Card Blackout ve get_hand Crash**
+    *   *Test:* `get_hand()` hatasını sarmalayıp 6'lık boş liste dönüp dönmediğini test et. `Lookup`'ın "Evolved" öneki için Base objenin klonunu yarattığını assert et.
+
+### Phase 5g — Execution Plan (TDD DRIVEN BRIDGE)
+
+> [!IMPORTANT]
+> Handoff / Devir-Teslim: Bu aşamada test kodlaması başlayacaktır. Asla düzeltmeleri (fix) hemen koda dökmeyin. Önce `tests/test_engine_bridge_contracts.py` dosyasına girerek Phase 5f'te belirlenen 12 adet felaketi sistematik olarak çökeltecek KIRMIZI (Failed) testleri yazın. Ancak test tablosu kızardığında, hataları çözmek için `v2/core/game_state.py`, `v2/scenes/shop.py` ve `engine_core/game.py` dosyalarına müdahale edin.
+
+**Engine Core Modifikasyonları Beklentisi:**
+12 sorunun büyük çoğunluğu `GameState` adaptörü kullanılarak (motor ellenmeden) çözülecek. Ancak **3 kritik problem** için doğrudan `engine_core` içerisine müdahale sözleşmemiz var:
+1. `engine_core/game.py`: Zaman paradoksundan kaçınmak için devasa `preparation_phase` fonksiyonunu `start_turn()` ve `finish_turn()` olarak iki parçaya bölmek ZORUNDAYIZ.
+2. `engine_core/game.py`: Kör Dövüşü bug'ını önlemek için `combat_phase()` metoduna `pairs=None` şeklinde dışarıdan eşleşme alan bir parametre enjekte edeceğiz.
+3. `engine_core/ai.py`: Botların insanın altınıyla ve kartlarıyla oynamasını önlemek için `ParameterizedAI` sınıfına `"human"` stratejisini (early-return yapan boş bir strateji olarak) tanıtacağız.
+
+**The "Main Switch" (Final Entegrasyon ve Doğrulama):**
+Tüm TDD testleri yeşile döndükten ve köprüler sağlamlaştırıldıktan sonra, en son adım olarak `v2/main.py` içerisindeki `MockGame()` başlatmasını silip yerine `engine_core.game_factory.build_game(policies=["human", "ai", ...])` koyarak gerçek motoru UI'a bağlayın. Ekran açıldığında ve loglara hata düşmediğinde **Oyun Resmen Entegre Edilmiş** demektir.

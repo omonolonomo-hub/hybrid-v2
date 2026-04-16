@@ -1,5 +1,6 @@
 import os
 import pygame
+from v2.constants import AudioConfig
 
 class AssetLoader:
     _instance = None
@@ -8,6 +9,8 @@ class AssetLoader:
         self.base_dir = ""
         self._sprites: dict[str, pygame.Surface] = {}
         self._fonts: dict[tuple, pygame.font.Font] = {}
+        self._sfx: dict[str, pygame.mixer.Sound] = {}
+        self._music: dict[str, str] = {}
 
     @classmethod
     def get(cls) -> "AssetLoader":
@@ -82,6 +85,52 @@ class AssetLoader:
     def get_default_font(self, size: int) -> pygame.font.Font:
         """Fallback font: sistem monospace."""
         return self.get_font("monospace", size)
+
+    def get_sfx(self, name: str) -> pygame.mixer.Sound:
+        """Returns a cached pygame Sound for the given SFX filename."""
+        if name in self._sfx:
+            return self._sfx[name]
+
+        full_path = os.path.join(self.base_dir, "sfx", name)
+        if not os.path.exists(full_path):
+            raise FileNotFoundError(f"[AssetLoader] Eksik SFX: {full_path}")
+
+        sound = pygame.mixer.Sound(full_path)
+        sound.set_volume(AudioConfig.MASTER * AudioConfig.SFX)
+        self._sfx[name] = sound
+        return sound
+
+    def get_music(self, name: str) -> str:
+        """Returns the filesystem path for a music track and applies music volume."""
+        if name in self._music:
+            return self._music[name]
+
+        full_path = os.path.join(self.base_dir, "music", name)
+        if not os.path.exists(full_path):
+            raise FileNotFoundError(f"[AssetLoader] Eksik music track: {full_path}")
+
+        if pygame.mixer.get_init() is not None:
+            pygame.mixer.music.set_volume(AudioConfig.MASTER * AudioConfig.MUSIC)
+
+        self._music[name] = full_path
+        return full_path
+
+    def preload_scene(self, *asset_names: str) -> None:
+        """Preloads the specified audio files for a scene.
+
+        Supports both SFX and music assets by file extension.
+        """
+        for asset_name in asset_names:
+            if asset_name.lower().endswith((".wav", ".mp3", ".flac")):
+                try:
+                    self.get_sfx(asset_name)
+                except Exception:
+                    pass
+            elif asset_name.lower().endswith((".ogg", ".wav", ".mp3", ".flac")):
+                try:
+                    self.get_music(asset_name)
+                except Exception:
+                    pass
 
     # ------------------------------------------------------------------ #
     # Cache kontrolü                                                        #

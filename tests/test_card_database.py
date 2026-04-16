@@ -3,6 +3,7 @@ TDD — CardDatabase
 """
 import os
 import pytest
+from engine_core.card import get_card_pool
 from v2.core.card_database import CardDatabase, CardData
 
 JSON_PATH = os.path.join(
@@ -112,6 +113,39 @@ def test_rarity_level_diamond_format_still_works():
         stats={}, passive_type="none", passive_effect="", synergy_group="MIND"
     )
     assert fake.rarity_level == 3
+
+def test_engine_pool_rarity_ids_are_supported_by_card_database_bridge():
+    """Real engine pool rarity ids should map cleanly to DB rarity levels."""
+    CardDatabase.initialize(JSON_PATH)
+    db = CardDatabase.get()
+
+    for engine_card in get_card_pool():
+        data = db.lookup(engine_card.name)
+        assert data is not None, f"DB lookup missing: {engine_card.name}"
+        assert engine_card.rarity in {"1", "2", "3", "4", "5"}
+        assert data.rarity_level == int(engine_card.rarity), (
+            f"{engine_card.name}: engine rarity={engine_card.rarity}, "
+            f"db rarity={data.rarity}, rarity_level={data.rarity_level}"
+        )
+
+
+def test_evolved_rarity_preserves_ui_badge_contract():
+    """UI evolved badge detection relies on rarity='E' and rarity_level='E'."""
+    fake = CardData(
+        name="Evolved Fake",
+        category="Science",
+        rarity="E",
+        stats={},
+        passive_type="none",
+        passive_effect="",
+        synergy_group="MIND",
+    )
+
+    assert fake.rarity == "E"
+    assert fake.rarity_level == "E"
+    assert isinstance(fake.rarity_color, tuple)
+    assert len(fake.rarity_color) == 3
+
 
 def test_double_initialize_is_safe():
     """İki kez initialize() çağrısı ikinci kez yükleme yapmaz, hata atmaz."""

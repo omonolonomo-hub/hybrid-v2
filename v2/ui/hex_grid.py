@@ -190,7 +190,9 @@ def render_synergy_preview(
         nb = (q + dq, r + dr)
         if nb not in board_cards:
             continue
-        nb_data = db.lookup(board_cards[nb])
+        item = board_cards[nb]
+        nb_card_name = item.get("name") if isinstance(item, dict) else item
+        nb_data = db.lookup(nb_card_name)
         if not nb_data:
             continue
         nb_edges = list(nb_data.stats.items())

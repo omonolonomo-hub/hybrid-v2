@@ -1,5 +1,5 @@
 import pygame
-from v2.constants import Layout, Colors
+from v2.constants import Layout, Colors, Paths
 from v2.ui.shop_panel import ShopPanel
 from v2.ui.hand_panel import HandPanel
 from v2.ui.player_hub import PlayerHub
@@ -8,6 +8,7 @@ from v2.ui.lobby_panel import LobbyPanel
 from v2.ui.timer_bar import TimerBar
 from v2.ui.info_box import InfoBox
 from v2.ui.widgets import FloatingTextManager
+from v2.assets.loader import AssetLoader
 
 class ShopScene:
     _HOVER_DELAY_MS = 150   # 0.15 saniye - çok daha hızlı tepki
@@ -22,12 +23,31 @@ class ShopScene:
         from v2.ui.income_preview import IncomePreview
         self.income_preview = IncomePreview()
         self.ft_manager     = FloatingTextManager()
+        self._audio_loader   = None
+
+        try:
+            self._audio_loader = AssetLoader.get()
+            self._audio_loader.preload_scene(
+                Paths.SFX_BUY,
+                Paths.SFX_SELL,
+                Paths.SFX_PLACE,
+                Paths.SFX_REROLL,
+                Paths.SFX_COMBAT_HIT,
+                Paths.SFX_COMBAT_WIN,
+                Paths.SFX_COMBAT_LOSE,
+                Paths.MUSIC_SHOP,
+                Paths.MUSIC_COMBAT,
+                Paths.MUSIC_LOBBY,
+            )
+        except Exception:
+            self._audio_loader = None
 
         # ── FloatingText önceki durum takibi ──────────────────────
         self._prev_synergy_total: int            = 0
         self._prev_group_counts: dict[str, int]  = {
             "MIND": 0, "CONNECTION": 0, "EXISTENCE": 0
         }
+        self._seen_copy_milestones: set[tuple[str, str]] = set()
 
         # ── World Drag State ──────────────────────────────────
         self.world_drag = {
@@ -60,11 +80,96 @@ class ShopScene:
         # Board Kart Animatorleri: (q,r) -> CardFlip, dest_rect her frame guncellenir
         self._board_flips: dict = {}
 
+        # ── Phase State Machine (Task A) ──────────────────────────
+        self._phase: str = "STATE_PREPARATION"
+        self.versus_overlay = None
+        self.combat_overlay = None
+        self.endgame_overlay = None
+
+        # ── Ready Button (Phase 5) ────────────────────────────────
+        from v2.constants import Layout
+        self.ready_btn_rect = pygame.Rect(
+            Layout.REROLL_BTN_X,
+            Layout.HAND_PANEL_Y - 60,
+            Layout.REROLL_BTN_W,
+            Layout.REROLL_BTN_H,
+        )
+
+    @property
+    def phase(self) -> str:
+        return self._phase
+
+    def set_phase(self, new_phase: str) -> None:
+        """Faz geçişini başlatır ve ilgili Overlay'i tetikler."""
+        if self._phase == new_phase:
+            return
+        
+        self._phase = new_phase
+        
+        from v2.core.game_state import GameState
+        gs = GameState.get()
+
+        if new_phase == "STATE_PREPARATION":
+            if gs._engine:
+                gs._engine.start_turn()
+            gs.reset_turn()
+            # Yeni tür dağıtımını UI'ya hemen yansıt (lazily bekleme)
+            try:
+                self.shop_panel.assign_shop(gs.get_shop(player_index=0))
+            except Exception:
+                pass
+
+        if new_phase == "STATE_VERSUS":
+            from v2.ui.overlays.versus_overlay import VersusOverlay
+            self.versus_overlay = VersusOverlay("Player", "Opponent", 2000)
+            # self.versus_overlay.reset() # Task A.2'de yazılacak
+        
+        elif new_phase == "STATE_COMBAT":
+            # ── Single-fire Combat Çözümü ──
+            if gs._engine:
+                gs._engine.combat_phase()
+
+            from v2.ui.overlays.combat_overlay import CombatOverlay
+            logs = gs.format_combat_logs(0)
+            self.combat_overlay = CombatOverlay(logs, 80)
+            # self.combat_overlay.reset()
+            
+        elif new_phase == "STATE_ENDGAME":
+            from v2.ui.overlays.endgame_overlay import EndgameOverlay
+            stats = gs.get_endgame_stats()
+            self.endgame_overlay = EndgameOverlay(stats)
+            # self.endgame_overlay.reset()
+
     def handle_event(self, event: pygame.event.Event):
+        from v2.core.game_state import GameState, ActionResult
+
+        # Sadece PREPARATION fazındayken normal dükkan/board etkileşimine izin ver
+        if self._phase != "STATE_PREPARATION":
+            # Gerekirse overlay'lere input iletebiliriz
+            if self._phase == "STATE_VERSUS" and self.versus_overlay:
+                self.versus_overlay.handle_event(event)
+            elif self._phase == "STATE_COMBAT" and self.combat_overlay:
+                self.combat_overlay.handle_event(event)
+            elif self._phase == "STATE_ENDGAME" and self.endgame_overlay:
+                self.endgame_overlay.handle_event(event)
+            return
+
         from v2.constants import GridMath
 
-        # 0. Keyboard Controls (Camera & Zoom)
+        # 0a. Ready Button
+        if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+            if self.ready_btn_rect.collidepoint(event.pos):
+                GameState.get().commit_human_turn()
+                self.set_phase("STATE_VERSUS")
+                return
+
+        # 0b. Keyboard Controls (Camera & Zoom)
         if event.type == pygame.KEYDOWN:
+            # DEBUG: V tuşuna basılınca Versus ekranını tetikle
+            if event.key == pygame.K_v:
+                self.set_phase("STATE_VERSUS")
+                return
+            
             cam_speed = 40 / GridMath.camera.zoom
             zoom_step = 0.1
 
@@ -184,7 +289,6 @@ class ShopScene:
 
                 if self.drag_state["source_panel"] == "hand":
                     from v2.ui.hex_grid import pixel_to_axial, VALID_HEX_COORDS
-                    from v2.core.game_state import GameState, ActionResult
                     q, r = pixel_to_axial(*drop_pos)
                     coord = (q, r)
 
@@ -195,6 +299,7 @@ class ShopScene:
                             placed_card = GameState.get().get_board_cards().get(coord)
                             if placed_card:
                                 self._spawn_placement_float(coord, placed_card)
+                            self._play_sfx(Paths.SFX_PLACE)
                             self.hand_panel.sync()
                             self.player_hub.sync()
                             self._add_board_flip(coord)
@@ -211,10 +316,26 @@ class ShopScene:
             # Önce Drag (Sürükle) hedefini HandPanel üzerinden kontrol et
             if not self.drag_state["is_dragging"]:
                 # UI elemanlarına tıklandı mı kontrol et (Panel geçişleri için)
+                try:
+                    on_lobby = hasattr(self, "lobby_panel") and self.lobby_panel.rect.collidepoint(event.pos)
+                except Exception:
+                    on_lobby = False
+
                 on_ui = (self.shop_panel.rect.collidepoint(event.pos) or
                          self.hand_panel.rect.collidepoint(event.pos) or
                          self.player_hub.rect.collidepoint(event.pos) or
-                         self.synergy_hud.rect.collidepoint(event.pos))
+                         self.synergy_hud.rect.collidepoint(event.pos) or
+                         on_lobby)
+
+                # Lobby etkileşimi (Spectate Geçişi)
+                if on_lobby:
+                    target_idx = self.lobby_panel.handle_event(event, getattr(self, "_last_lobby_players", []))
+                    if target_idx is not None:
+                        gs = GameState.get()
+                        if gs.view_index != target_idx:
+                            gs.view_index = target_idx
+                            self.sync_view() # Rebuild board/hand for spectated player
+                        return # Input yutuldu
 
                 if not on_ui:
                     # Boş alana tıklandı -> World Drag Başlat
@@ -263,9 +384,11 @@ class ShopScene:
                         (210, 70, 55), font_size=13,
                         coord_key=("reroll",),
                     )
+                    self._play_sfx(Paths.SFX_REROLL)
 
                 # Trigger 2 / 3: Kopya milestone
                 elif _buy_slot >= 0 and _buy_card:
+                    self._play_sfx(Paths.SFX_BUY)
                     try:
                         from v2.core.game_state import GameState as _GS
                         copies = _GS.get().get_copies(_buy_card, 0)
@@ -293,6 +416,31 @@ class ShopScene:
 
     def update(self, dt_ms: float):
         """dt_ms: milisaniye cinsinden delta time (SceneManager spec). """
+        # --- Phase Machine Transitions (Task A) ---
+        if self._phase == "STATE_VERSUS" and self.versus_overlay:
+            self.versus_overlay.update(dt_ms)
+            if getattr(self.versus_overlay, "is_finished", False):
+                self.set_phase("STATE_COMBAT")
+                
+        elif self._phase == "STATE_COMBAT" and self.combat_overlay:
+            self.combat_overlay.update(dt_ms)
+            if getattr(self.combat_overlay, "is_finished", False):
+                from v2.core.game_state import GameState
+                gs = GameState.get()
+                if len(gs.get_alive_pids()) <= 1:
+                    self.set_phase("STATE_ENDGAME")
+                else:
+                    self.set_phase("STATE_PREPARATION")
+                    
+        elif self._phase == "STATE_ENDGAME" and self.endgame_overlay:
+            self.endgame_overlay.update(dt_ms)
+            if getattr(self.endgame_overlay, "restart_clicked", False):
+                print("Yeniden Başla tıklandı! (Test için Preparation fazına dönülüyor)")
+                self.set_phase("STATE_PREPARATION")
+
+        # PREPARATION dışındayken Shop animasyon vs dondurulmak isteniyorsa buraya early-return eklenebilir. 
+        # Mevcut halinde board ve UI animasyonları arkaplanda akmaya devam eder.
+
         # dt_ms zaten ms cinsinden gelir (clock.tick(60) → SceneManager → buraya)
         self.shop_panel.update(dt_ms)
         self.hand_panel.update(dt_ms)
@@ -343,6 +491,23 @@ class ShopScene:
                     flip.hover_end()
                 flip.update(dt_ms)
 
+    def sync_view(self) -> None:
+        """İzlenen oyuncu değiştiğinde tüm UI bileşenlerini ve board animatörlerini yeniler."""
+        from v2.core.game_state import GameState
+        gs = GameState.get()
+        print(f"[DEBUG] sync_view: PlayerIndex={gs.view_index}")
+        
+        # 1. Panelleri yenile
+        self.shop_panel.sync()
+        self.hand_panel.sync()
+        self.player_hub.sync()
+        
+        # 2. Board animatörlerini temizle ve yeniden oluştur
+        self._board_flips.clear()
+        board_data = gs.get_board_cards() 
+        for coord in board_data.keys():
+            self._add_board_flip(coord)
+
     def _add_board_flip(self, coord: tuple) -> None:
         """Basarili place_card sonrasi o hex icin CardFlip animatoru olusturur."""
         from v2.ui.hex_grid import axial_to_pixel
@@ -351,9 +516,10 @@ class ShopScene:
         from v2.constants import GridMath
         import math
 
-        card_name = GameState.get().get_board_cards().get(coord)
-        if not card_name:
+        item = GameState.get().get_board_cards().get(coord)
+        if not item:
             return
+        card_name = item.get("name") if isinstance(item, dict) else item
 
         q, r = coord
         cx, cy = axial_to_pixel(q, r)
@@ -362,11 +528,15 @@ class ShopScene:
         h = int(GridMath.HEX_SIZE * zoom * 1.85)
         rect = pygame.Rect(int(cx - w // 2), int(cy - h // 2), w, h)
 
+        evolved = False
         try:
             from v2.assets.loader import AssetLoader
+            from v2.core.card_database import CardDatabase
             loader = AssetLoader.get()
             back  = loader.get_card_back(card_name)
             front = loader.get_card_front(card_name)
+            data = CardDatabase.get().lookup(card_name)
+            evolved = bool(data and (getattr(data, "rarity", None) == "E" or getattr(data, "rarity_level", None) == "E"))
         except Exception:
             # Fallback: dolu renk + isim
             def _fb(color):
@@ -379,7 +549,17 @@ class ShopScene:
             back  = _fb((38, 42, 62))
             front = _fb((20, 60, 100))
 
-        self._board_flips[coord] = CardFlip(back, front, rect)
+        self._board_flips[coord] = CardFlip(back, front, rect, evolved=evolved,
+                                              evolved_color=Colors.PLATINUM)
+
+    def _play_sfx(self, sfx_name: str) -> None:
+        try:
+            if self._audio_loader is None:
+                self._audio_loader = AssetLoader.get()
+            sound = self._audio_loader.get_sfx(sfx_name)
+            sound.play()
+        except Exception:
+            pass
 
     def render(self, surface: pygame.Surface):
         # 1. Siberpunk Hacimli Arka Plan (Dinamik Unified Grid)
@@ -453,17 +633,41 @@ class ShopScene:
         self.synergy_hud.render(surface)
 
         # 3. Sağ Sidebar (Lobby / Scoreboard) Çizimi (Dependency Injection üzerinden)
-        mock_players = [
-            {"name": "YOU",       "hp": 150, "max_hp": 150, "gold": 10, "rank": 1},
-            {"name": "Player 2",  "hp": 120, "max_hp": 150, "gold":  8, "rank": 2},
-            {"name": "Player 3",  "hp": 105, "max_hp": 150, "gold":  6, "rank": 3},
-            {"name": "Player 4",  "hp":  90, "max_hp": 150, "gold":  7, "rank": 4},
-            {"name": "Player 5",  "hp":  75, "max_hp": 150, "gold":  5, "rank": 5},
-            {"name": "Player 6",  "hp":  60, "max_hp": 150, "gold":  4, "rank": 6},
-            {"name": "Player 7",  "hp":  30, "max_hp": 150, "gold":  3, "rank": 7},
-            {"name": "Player 8",  "hp":  15, "max_hp": 150, "gold":  2, "rank": 8},
-        ]
-        self.lobby_panel.render(surface, mock_players)
+        try:
+            from v2.core.game_state import GameState
+            gs = GameState.get()
+            lobby_players = []
+            
+            pids = gs.get_alive_pids()
+            for pid in pids:
+                # Find engine index for this PID
+                idx = pid  # In our current engine, PID usually equals index, but let's be safe later
+                lobby_players.append({
+                    "name": gs.get_display_name(pid),
+                    "hp": gs.get_hp(pid),
+                    "max_hp": 150,
+                    "gold": gs.get_gold(pid),
+                    "rank": 1,
+                    "index": idx
+                })
+            lobby_players.sort(key=lambda x: x["hp"], reverse=True)
+            for i, p in enumerate(lobby_players):
+                p["rank"] = i + 1
+
+            if not lobby_players:
+                # Motor takılmazsa dev-mock
+                lobby_players = [
+                    {"name": "YOU",       "hp": 150, "max_hp": 150, "gold": 10, "rank": 1},
+                    {"name": "Player 2",  "hp": 120, "max_hp": 150, "gold":  8, "rank": 2},
+                ]
+        except Exception:
+            lobby_players = [
+                {"name": "YOU",       "hp": 150, "max_hp": 150, "gold": 10, "rank": 1},
+                {"name": "Player 2",  "hp": 120, "max_hp": 150, "gold":  8, "rank": 2},
+            ]
+
+        self.lobby_panel.render(surface, lobby_players)
+        self._last_lobby_players = lobby_players # Event handler için sakla
 
         # 5. Timer Bar (Eriyen Çubuk)
         self.timer_bar.render(surface, ratio=0.65) # Mock %65 dolu atesli bar gorunumu
@@ -494,6 +698,26 @@ class ShopScene:
                 flip.dest_rect.center = old_center
                 # Not: PNG'lerin kendi neon kenarlıkları var,
                 # dikdörtgen çerçeve eklenmez (altıgen şeffaflığını bozar).
+
+        # 7. READY BUTTON (Phase 5) ────────────────────────────────
+        if self._phase == "STATE_PREPARATION":
+            from v2.ui import font_cache
+            btn_color = (40, 200, 120)    # Parlak yeşil
+            pygame.draw.rect(surface, btn_color, self.ready_btn_rect, border_radius=8)
+            pygame.draw.rect(surface, (80, 255, 160), self.ready_btn_rect, 2, border_radius=8)  # parlak kenar
+            font_cache.render_text(
+                surface, "HAZIR  ►",
+                font_cache.bold(18), (10, 20, 10),
+                self.ready_btn_rect, align="center", v_align="center"
+            )
+
+        # 8. PHASE OVERLAYS (Task A) ────────────────────────────────
+        if self._phase == "STATE_VERSUS" and self.versus_overlay:
+            self.versus_overlay.render(surface)
+        elif self._phase == "STATE_COMBAT" and self.combat_overlay:
+            self.combat_overlay.render(surface)
+        elif self._phase == "STATE_ENDGAME" and self.endgame_overlay:
+            self.endgame_overlay.render(surface)
 
     # ── FloatingText yardımcı metodları ──────────────────────────────────
 
@@ -577,6 +801,32 @@ class ShopScene:
                     font_size=13, coord_key=("board_center",),
                 )
             self._prev_group_counts[grp] = count
+
+        try:
+            from v2.core.game_state import GameState
+            milestones = GameState.get().get_copy_strengthening_milestones()
+        except Exception:
+            milestones = []
+
+        for milestone in milestones:
+            key = (milestone.get("trigger", ""), milestone.get("card", ""))
+            if key in self._seen_copy_milestones:
+                continue
+            self._seen_copy_milestones.add(key)
+            title = "Copy Strengthened"
+            if milestone.get("trigger") == "copy_3":
+                title = "3-COPY POWER UP"
+            elif milestone.get("trigger") == "copy_2":
+                title = "2-COPY POWER UP"
+            x = GridMath.ORIGIN_X + GridMath.camera.offset_x
+            y = GridMath.ORIGIN_Y + GridMath.camera.offset_y - 90
+            self.ft_manager.spawn(
+                title,
+                x, y,
+                Colors.PLATINUM,
+                font_size=15,
+                coord_key=("copy_strengthen", milestone.get("card")),
+            )
 
     def _render_copy_labels(self, surface: "pygame.Surface") -> None:
         """Her kart slotu üzerinde 'Copies: N/3' etiketi çizer (Phase 3 item 16)."""

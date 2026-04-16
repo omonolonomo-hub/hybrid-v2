@@ -203,3 +203,17 @@ class LobbyPanel:
                             self.capacity_rect.w - 10, 14)
         font_cache.render_text(surface, lbl_text, font_cache.mono(10),
                                cap_color, lbl_r, align="right", v_align="center")
+
+    def handle_event(self, event: pygame.event.Event, players: list = None) -> int | None:
+        """Kullanıcının bir oyuncu satırına tıklayıp tıklamadığını kontrol eder.
+        Tıklanan oyuncunun engine index'ini döner (veya None).
+        """
+        if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+            if players is None: return None
+            for i, p_rect in enumerate(self.player_rects):
+                if p_rect.collidepoint(event.pos):
+                    if i < len(players):
+                        target_index = players[i].get("index", i)
+                        print(f"[DEBUG] Lobby tıklandı: Row={i} Player={players[i].get('name')} Index={target_index}")
+                        return target_index
+        return None
