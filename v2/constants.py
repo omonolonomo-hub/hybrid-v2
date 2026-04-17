@@ -25,7 +25,7 @@ class Screen:
     H: int = 1080
 
 class Layout:
-    LEFT_PANEL_W: int    = 280
+    LEFT_PANEL_W: int    = 340
     RIGHT_PANEL_W: int   = 280
     SIDEBAR_LEFT_W: int  = LEFT_PANEL_W
     SIDEBAR_RIGHT_W: int = RIGHT_PANEL_W
@@ -34,22 +34,22 @@ class Layout:
     SYNERGY_HUD_Y: int   = 150
     LOBBY_ROW_H: int     = 70
     CENTER_W: int        = Screen.W - LEFT_PANEL_W - RIGHT_PANEL_W - 30
-    CENTER_ORIGIN_X: int = LEFT_PANEL_W + 15
+    CENTER_ORIGIN_X: int = LEFT_PANEL_W + 30
     CENTER_ORIGIN_Y: int = 15
     SYNERGY_HUD_H: int   = 320
     COMBAT_TERM_H: int   = Screen.H - SYNERGY_HUD_H
-    HAND_PANEL_H: int    = 180
-    HAND_PANEL_Y: int    = Screen.H - HAND_PANEL_H - 15
-    HAND_CARD_W: int     = 140
-    HAND_CARD_H: int     = 160
-    HAND_CARD_GAP: int   = 16
+    HAND_PANEL_H: int    = 210
+    HAND_PANEL_Y: int    = Screen.H - HAND_PANEL_H
+    HAND_CARD_W: int     = 160
+    HAND_CARD_H: int     = 186
+    HAND_CARD_GAP: int   = 20
     HAND_MAX_CARDS: int  = 6
     HAND_INFO_W: int     = 340
-    SHOP_PANEL_H: int    = 180
-    SHOP_PANEL_Y: int    = 15
-    SHOP_CARD_W: int     = 140
-    SHOP_CARD_H: int     = 160
-    SHOP_CARD_GAP: int   = 16
+    SHOP_PANEL_H: int    = 210
+    SHOP_PANEL_Y: int    = 0
+    SHOP_CARD_W: int     = 160
+    SHOP_CARD_H: int     = 186
+    SHOP_CARD_GAP: int   = 20
     SHOP_SLOTS: int      = 5
     SHOP_INFO_W: int     = 340
     REROLL_BTN_X: int    = CENTER_ORIGIN_X + CENTER_W - 160
@@ -77,6 +77,7 @@ class Typography:
     FONT_UI_REGULAR: str = "Inter-Regular.ttf"
     FONT_UI_BOLD: str    = "Inter-Bold.ttf"
     FONT_MONO: str       = "JetBrainsMono-Regular.ttf"
+    FONT_ICONS: str      = "fa-solid.otf"
     SIZE_BODY: int       = 15
     SIZE_LABEL: int      = 13
     SIZE_HEADER: int     = 20

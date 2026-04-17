@@ -30,9 +30,6 @@ def _bootstrap() -> None:
                   "defender", "economist", "synergist", "aggressive"]
     game = build_game(strategies=strategies)
     
-    # Ignition: Oyuna başlamadan pazarın ve gelirlerin dağıtılması için (Turn 0 -> Turn 1)
-    game.start_turn()
-
     # Motoru UI Köprüsüne (GameState) bağla
     GameState.get().hook_engine(game)
 

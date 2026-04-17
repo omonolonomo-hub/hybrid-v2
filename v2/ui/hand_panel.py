@@ -1,6 +1,6 @@
 import pygame
 import math
-from v2.constants import Layout, Colors
+from v2.constants import Layout, Colors, Screen
 from v2.ui.card_flip import CardFlip
 
 # Fallback back surface (AssetLoader yoksa kullanalım)
@@ -23,49 +23,40 @@ def _make_fallback_surface(color: tuple, w: int, h: int) -> pygame.Surface:
 
 class HandPanel:
     def __init__(self):
-        # ── Ana Panel Rect ──────────────────────────────────────────────
-        # Sağda Lobby panelinin altındaki boşluğu doldurmak için width genişletildi
-        self.rect = pygame.Rect(
-            Layout.CENTER_ORIGIN_X,
-            Layout.HAND_PANEL_Y,
-            Layout.CENTER_W,
-            Layout.HAND_PANEL_H,
-        )
+        # ── Ana Panel Rect (Full Width Bar) ───────────────────────────
+        self.rect = pygame.Rect(0, Layout.HAND_PANEL_Y, 1920, Layout.HAND_PANEL_H)
 
-
-        # ── Kart Slotları (Sol Hizalı) ──────────────────────────────────
+        # ── 6 Kart Slotu (Merkezi alana hizalı) ───────────────────────
         self.card_rects: list[pygame.Rect] = []
-        start_x = self.rect.x + 30
-        start_y = self.rect.y + 10
+        # Daha orantılı bir başlangıç: Sidebar'dan biraz daha uzaklaşalım
+        start_x = Layout.CENTER_ORIGIN_X + 40 
+        # Kartların dikeyde ortalanması: (210 - 186) / 2 = 12px padding
+        start_y = self.rect.y + 12
 
         for i in range(Layout.HAND_MAX_CARDS):
             cx = start_x + (Layout.HAND_CARD_W + Layout.HAND_CARD_GAP) * i
             self.card_rects.append(pygame.Rect(cx, start_y, Layout.HAND_CARD_W, Layout.HAND_CARD_H))
 
-        # ── Info / Hover Paneli ────────────────────────────────────────
-        info_w = Layout.HAND_INFO_W
-        info_x = self.rect.right - info_w - 20  # Sağ alt köşeye tam oturacak (test hizasında 20px sağ margini var)
+        # ── Info / Hover Paneli (Üst panel ile senkron) ──────────────
+        info_w = 340
+        self.info_rect = pygame.Rect(1570, self.rect.y + 12, info_w, self.rect.h - 24)
 
-        self.info_rect = pygame.Rect(
-            info_x,
-            self.rect.y + 10,
-            info_w,
-            self.rect.h - 20,
-        )
-
-        #  AAA Cyberpunk Gradient Arkaplan (LobbyPanel Kalitesi)
+        # ── DCI Tactical Shelf (Bottom-Attached) ──────────────────────
         from v2.ui.ui_utils import UIUtils
         self.bg_surface = UIUtils.create_gradient_panel(
-            self.rect.w, self.rect.h,
-            color_top=(20, 24, 34, 252),
-            color_bottom=(10, 12, 18, 255),
-            border_radius=8,
-            border_color=(42, 58, 92, 255) # Unified soft stroke
+            1920, Layout.HAND_PANEL_H,
+            color_top=(10, 12, 18, 255),
+            color_bottom=(15, 18, 26, 255),
+            border_radius=0,
+            border_color=(42, 58, 92, 255)
         )
-
-        # ── Üst Dekoratif Çizgi (panel sınırı içinde) ─────────────────────
-        decal_color = (55, 70, 96, 180)
-        pygame.draw.line(self.bg_surface, decal_color, (12, 5), (self.rect.w - 12, 5), 1)
+        
+        # ── Üst Parlama Hattı (DCI Rim Light) ──────────────────────────
+        pygame.draw.line(self.bg_surface, (80, 140, 255, 180), (0, 0), (1920, 0), 2)
+        
+        # ── Dekoratif Elementler (Üst kenara yakın) ─────────────────────
+        decal_color = (55, 70, 96, 120)
+        pygame.draw.line(self.bg_surface, decal_color, (12, 12), (self.rect.w - 12, 12), 1)
 
         # Sci-fi Decal Yazısı (subtitle, sag hizalı)
         from v2.ui.font_cache import mono, render_text as _rt
@@ -76,7 +67,7 @@ class HandPanel:
             decal_fnt = pygame.font.SysFont("Courier", 9)
         _rt(self.bg_surface, "HAND_TERMINAL // ONLINE", decal_fnt,
             (80, 100, 130, 120),
-            pygame.Rect(self.rect.w - 220, 8, 200, 14), align="right")
+            pygame.Rect(self.rect.w - 220, 15, 200, 14), align="right")
 
         # Kart Yuvaları (Sadece içeriye doğru göçük/karanlık insets, sade tasarım)
         for s_rect in self.card_rects:

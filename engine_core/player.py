@@ -215,13 +215,6 @@ class Player:
                 for card in grid_vals:
                     if card.name == name:
                         card.strengthen(2)
-                        self.passive_buff_log.append({
-                            "turn":    turn,
-                            "card":    name,
-                            "passive": "copy_strengthen",
-                            "trigger": "copy_2",
-                            "delta":   2,
-                        })
                         if trigger_passive_fn is not None:
                             trigger_passive_fn(card, "copy_2", self, None, _ctx, verbose=False)
                 applied["2"] = True
@@ -231,13 +224,6 @@ class Player:
                 for card in grid_vals:
                     if card.name == name:
                         card.strengthen(3)
-                        self.passive_buff_log.append({
-                            "turn":    turn,
-                            "card":    name,
-                            "passive": "copy_strengthen",
-                            "trigger": "copy_3",
-                            "delta":   3,
-                        })
                         if trigger_passive_fn is not None:
                             trigger_passive_fn(card, "copy_3", self, None, _ctx, verbose=False)
                 applied["3"] = True

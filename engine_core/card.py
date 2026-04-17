@@ -147,9 +147,13 @@ class Card:
     def is_eliminated(self) -> bool:
         """
         Card is eliminated if every stat in some group on this card is 0.
-        BUG FIX: single-stat-group cards (66 cards!) were dying on first loss.
-        Fix: a group only counts as wiped if at least 2 stats in that group are 0.
+        OR if all primary stats are 0 (Total Power check).
         """
+        # 1. Total Power Check (Eğer tüm kenarlar 0 ise kart yok olmuştur)
+        if all(v <= 0 for k, v in self.stats.items() if not str(k).startswith("_")):
+            return True
+
+        # 2. Group Wipe Check (Grup bazlı yok oluş kuralı)
         group_vals: Dict[str, List[int]] = {}
         for s, v in self.stats.items():
             g = STAT_TO_GROUP.get(s)

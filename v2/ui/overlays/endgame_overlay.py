@@ -40,25 +40,43 @@ class EndgameOverlay:
         
         # Panel
         pygame.draw.rect(surface, (20, 25, 30), self.bg_rect)
-        pygame.draw.rect(surface, Colors.GOLD_TEXT, self.bg_rect, 2)
+        pygame.draw.rect(surface, (42, 58, 92), self.bg_rect, width=2)
 
-        font_title = font_cache.bold(36)
-        font_header = font_cache.bold(20)
-        font_row = font_cache.mono(16)
-        font_btn = font_cache.bold(24)
+        font_title = font_cache.bold(32)
+        font_header = font_cache.bold(18)
+        font_row = font_cache.mono(15)
+        font_btn = font_cache.bold(22)
 
-        # Başlık
-        title_rect = pygame.Rect(self.bg_rect.x, self.bg_rect.y + 20, self.bg_rect.w, 50)
-        font_cache.render_text(surface, "OYUN BİTTİ - KAZANDIN!", font_title, Colors.GOLD_TEXT, title_rect, align="center", v_align="center")
+        # 1. Başlık
+        title_rect = pygame.Rect(self.bg_rect.x, self.bg_rect.y + 25, self.bg_rect.w, 50)
+        font_cache.render_text(surface, "OPERASYON SONU - RAPOR", font_title, Colors.GOLD_TEXT, title_rect, align="center")
 
-        # Tablo Başlıkları
+        # 2. Tablo Başlıkları (Mutlak Hizalama)
         y_cursor = self.bg_rect.y + 100
-        headers = "Sıra       Oyuncu                 Strateji        Puan     Durum"
-        h_rect = pygame.Rect(self.bg_rect.x + 40, y_cursor, self.bg_rect.w - 80, 30)
-        font_cache.render_text(surface, headers, font_header, Colors.PLATINUM, h_rect, align="left", v_align="center")
-        y_cursor += 40
+        COLS = {
+            "RANK": 40,
+            "NAME": 110,
+            "STRAT": 360,
+            "SCORE": 520,
+            "STATE": 680
+        }
+        
+        headers = [
+            ("SIRA", COLS["RANK"], 60),
+            ("OYUNCU", COLS["NAME"], 240),
+            ("STRATEJİ", COLS["STRAT"], 150),
+            ("STR. SKORU", COLS["SCORE"], 140),
+            ("DURUM", COLS["STATE"], 80)
+        ]
 
-        # Oyuncular
+        for text, x_off, w in headers:
+            h_rect = pygame.Rect(self.bg_rect.x + x_off, y_cursor, w, 30)
+            font_cache.render_text(surface, text, font_header, (100, 140, 220), h_rect, align="left")
+        
+        y_cursor += 40
+        pygame.draw.line(surface, (42, 58, 92, 100), (self.bg_rect.x + 40, y_cursor - 5), (self.bg_rect.right - 40, y_cursor - 5), 1)
+
+        # 3. Oyuncu Verileri
         for stat in self.player_stats:
             rank = stat.get("rank", "-")
             name = str(stat.get("name", "Unknown"))[:20]
@@ -66,19 +84,29 @@ class EndgameOverlay:
             pts  = stat.get("total_pts", 0)
             hp   = stat.get("hp", 0)
             
-            durum = "KEMİK" if hp <= 0 else f"{hp} HP"
-            
-            # Formatlı satır
-            line = f"#{rank:<8} {name:<22} {strt:<15} {pts:<8} {durum}"
+            durum = "ELENDİ" if hp <= 0 else f"{hp} HP"
             
             c = Colors.GOLD_TEXT if rank == 1 else Colors.PLATINUM
-            if hp <= 0:
-                c = Colors.DISABLED
+            if hp <= 0: c = Colors.DISABLED
 
-            r_rect = pygame.Rect(self.bg_rect.x + 40, y_cursor, self.bg_rect.w - 80, 24)
-            font_cache.render_text(surface, line, font_row, c, r_rect, align="left", v_align="center")
-            y_cursor += 30
+            # Render Columns
+            row_data = [
+                (f"#{rank}", COLS["RANK"], 60),
+                (name, COLS["NAME"], 240),
+                (strt, COLS["STRAT"], 150),
+                (str(pts), COLS["SCORE"], 140),
+                (durum, COLS["STATE"], 80)
+            ]
 
-        # Restart Butonu
-        pygame.draw.rect(surface, Colors.MIND, self.restart_rect)
-        font_cache.render_text(surface, "YENİDEN BAŞLA", font_btn, (0,0,0), self.restart_rect, align="center", v_align="center")
+            for text, x_off, w in row_data:
+                r_rect = pygame.Rect(self.bg_rect.x + x_off, y_cursor, w, 28)
+                font_cache.render_text(surface, text, font_row, c, r_rect, align="left")
+            
+            y_cursor += 32
+
+        # 4. Yeniden Başlat Butonu
+        is_hover = self.restart_rect.collidepoint(pygame.mouse.get_pos())
+        btn_col = (42, 58, 92) if not is_hover else (60, 80, 140)
+        pygame.draw.rect(surface, btn_col, self.restart_rect, border_radius=4)
+        pygame.draw.rect(surface, (100, 150, 255), self.restart_rect, width=1, border_radius=4)
+        font_cache.render_text(surface, "YENİDEN BAŞLAT", font_btn, (255, 255, 255), self.restart_rect, align="center")

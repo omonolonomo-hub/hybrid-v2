@@ -92,27 +92,35 @@ def _passive_venus_flytrap(card: "Card", trigger: str, owner: "Player", opponent
 
 @passive("Narwhal")
 def _passive_narwhal(card: "Card", trigger: str, owner: "Player", opponent: "Player", ctx: dict) -> int:
-    """Narwhal: On combat win, gain +1 Power (max 3 times)."""
+    """Narwhal: On combat win, gain +1 Power (max 3 times, once per turn)."""
     if trigger == "combat_win":
-        buff = card.stats.get("_narwhal_buff", 0)
-        if buff < 3:
-            card.stats["_narwhal_buff"] = buff + 1
-            if "Power" in card.stats:
-                card.stats["Power"] += 1
-                card.edges = [(s, v+1 if s == "Power" else v) for s, v in card.edges]
+        turn = ctx.get("turn", 1)
+        last_t = card.stats.get("_narwhal_last_turn", -1)
+        if last_t != turn:
+            buff = card.stats.get("_narwhal_buff", 0)
+            if buff < 3:
+                card.stats["_narwhal_last_turn"] = turn
+                card.stats["_narwhal_buff"] = buff + 1
+                if "Power" in card.stats:
+                    card.stats["Power"] += 1
+                    card.edges = [(s, v+1 if s == "Power" else v) for s, v in card.edges]
     return 0
 
 
 @passive("Sirius")
 def _passive_sirius(card: "Card", trigger: str, owner: "Player", opponent: "Player", ctx: dict) -> int:
-    """Sirius: On combat win, gain +1 Speed (max 2 times)."""
+    """Sirius: On combat win, gain +1 Speed (max 2 times, once per turn)."""
     if trigger == "combat_win":
-        buff = card.stats.get("_sirius_buff", 0)
-        if buff < 2:
-            card.stats["_sirius_buff"] = buff + 1
-            if "Speed" in card.stats:
-                card.stats["Speed"] += 1
-                card.edges = [(s, v+1 if s == "Speed" else v) for s, v in card.edges]
+        turn = ctx.get("turn", 1)
+        last_t = card.stats.get("_sirius_last_turn", -1)
+        if last_t != turn:
+            buff = card.stats.get("_sirius_buff", 0)
+            if buff < 2:
+                card.stats["_sirius_last_turn"] = turn
+                card.stats["_sirius_buff"] = buff + 1
+                if "Speed" in card.stats:
+                    card.stats["Speed"] += 1
+                    card.edges = [(s, v+1 if s == "Speed" else v) for s, v in card.edges]
     return 0
 
 
@@ -151,10 +159,14 @@ def _passive_fibonacci_sequence(card: "Card", trigger: str, owner: "Player", opp
     Returns: min(3, max(1, streak + 1)) - capped between 1 and 3 points.
     """
     if trigger == "combat_win":
-        streak = getattr(owner, "win_streak", 0) if owner else 0
-        # Add 1 because this win hasn't been counted in win_streak yet
-        current_streak = streak + 1
-        return min(3, max(1, current_streak))
+        turn = ctx.get("turn", 1)
+        last = card.stats.get("_fib_last_turn", -1)
+        if last != turn:
+            card.stats["_fib_last_turn"] = turn
+            streak = getattr(owner, "win_streak", 0) if owner else 0
+            # Add 1 because this win hasn't been counted in win_streak yet
+            current_streak = streak + 1
+            return min(3, max(1, current_streak))
     return 0
 
 

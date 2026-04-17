@@ -42,6 +42,52 @@ def clear_cache() -> None:
 def bold(size: int)   -> pygame.font.Font: return get(Typography.FONT_UI_BOLD,    size)
 def regular(size: int)-> pygame.font.Font: return get(Typography.FONT_UI_REGULAR, size)
 def mono(size: int)   -> pygame.font.Font: return get(Typography.FONT_MONO,       size)
+def icons(size: int)  -> pygame.font.Font: return get(Typography.FONT_ICONS,      size)
+
+# Sık kullanacağımız ikonların Unicode kodları (Font Awesome 7 Free için)
+ICONS = {
+    "HEART":  "\uf004", # Can (HP)
+    "GOLD":   "\uf51e", # Para / Altın
+    "SKULL":  "\uf54c", # Ölüm / Leş
+    "BOLT":   "\uf0e7", # Enerji / Aksiyon
+    "GEAR":   "\uf013", # Ayar / Sistem
+    "SWORD":  "\uf71c", # Saldırı
+    "SHIELD": "\uf3ed", # Savunma
+    "USER":   "\uf007", # Oyuncu
+    "FIRE":   "\uf06d", # Sıcaklık / Win-streak
+    "LOCK":   "\uf023", # Kilit
+    "READY":  "\uf04b", # Hazır / Başlat
+    "SYNC":   "\uf01e", # Yenileme
+    "SHOP":   "\uf07a", # Alışveriş Sepeti
+    "PALETTE":"\uf53f", # Sanat / Palet
+    "LEAF":   "\uf06c", # Doğa / Yaprak
+    "ATOM":   "\uf5d2", # Bilim / Atom
+    "BOOK":   "\uf02d", # Tarih / Kitap
+    "STAR":   "\uf005", # Kozmos / Yıldız
+    "ANKH":   "\uf669", # Mitoloji / Ankh
+    "SEEDLING":"\uf4d8",# Doğa / Filiz
+    "PLANET": "\ue0e8", # Kozmos / Satürn
+    "LANDMARK":"\uf66f",# Tarih / Anıt
+}
+
+def render_icon(
+    surface: pygame.Surface,
+    icon_name: str,
+    size: int,
+    color: tuple[int, int, int],
+    pos: tuple[int, int],
+    shadow: bool = False
+) -> None:
+    """Belirtilen ikonu istenen boyutta ve renkte çizer."""
+    font = icons(size)
+    char = ICONS.get(icon_name, "?")
+    
+    if shadow:
+        shadow_surf = font.render(char, True, (0, 0, 0))
+        surface.blit(shadow_surf, (pos[0] + 1, pos[1] + 1))
+        
+    icon_surf = font.render(char, True, color)
+    surface.blit(icon_surf, pos)
 
 
 def render_text(

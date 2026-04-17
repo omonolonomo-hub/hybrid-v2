@@ -22,6 +22,7 @@ class GameState:
         self.place_locked: bool = False
         self._pairings_cache: list[tuple[int, int]] = []
         self.view_index: int = 0                           # Current player index being viewed
+        self._phase: str = "STATE_PREPARATION"             # Global game phase
 
     @classmethod
     def get(cls):
@@ -101,6 +102,13 @@ class GameState:
             return ActionResult.OK
         return ActionResult.ERR_INSUFFICIENT_GOLD
 
+    # ── Phase Management ────────────────────────────────────────────────
+    def get_phase(self) -> str:
+        return self._phase
+        
+    def set_phase(self, phase: str):
+        self._phase = phase
+
     def buy_card_from_slot(self, player_index: int, slot_index: int) -> ActionResult:
         if player_index != 0:
             return ActionResult.ERR_NOT_OWNER
@@ -178,6 +186,8 @@ class GameState:
         if player_index is None: player_index = self.view_index
         if self._engine and hasattr(self._engine, 'players'):
             try:
+                if player_index < 0 or player_index >= len(self._engine.players):
+                    return {}
                 grid = self._engine.players[player_index].board.grid
                 result = {}
                 for coord, card in grid.items():
@@ -187,13 +197,48 @@ class GameState:
                         "stats": {k: v for k, v in card.stats.items()},
                         "rotation": getattr(card, 'rotation', 0),
                     }
-                # Keep _board in sync for legacy callers expecting plain strings
-                self._board = {c: v["name"] for c, v in result.items()}
-                self._board_rotations = {c: v["rotation"] for c, v in result.items()}
+                if player_index == 0:
+                    # Keep _board in sync for legacy callers expecting plain strings (Player 0 only)
+                    self._board = {c: v["name"] for c, v in result.items()}
+                    self._board_rotations = {c: v["rotation"] for c, v in result.items()}
                 return result
             except Exception:
                 pass
-        return self._board
+        return self._board if player_index == 0 else {}
+
+    def get_player_composition(self, player_index: int = 0) -> dict[str, int]:
+        """İlgili oyuncunun tahtasındaki kategori dağılımını döner."""
+        from v2.core.card_database import CardDatabase
+        db = CardDatabase.get()
+        
+        # SynergyHud/MinimapHud ile uyumlu olan kategori anahtarları
+        inventory = {}
+        board_cards = self.get_board_cards(player_index)
+        
+        # Normalleştirme sözlüğü (SynergyHud._CAT_MAPPING ile senkron)
+        mapper = {
+            "Mythology & Gods":     "MYTHOLOGY",
+            "Art & Culture":        "ART",
+            "Nature & Biology":     "NATURE",
+            "Nature & Creatures":   "NATURE",
+            "Cosmos & Space":       "COSMOS",
+            "Cosmos":               "COSMOS",
+            "Science":              "SCIENCE",
+            "Science & Technology": "SCIENCE",
+            "History":              "HISTORY",
+            "History & Civilizations": "HISTORY",
+        }
+
+        for info in board_cards.values():
+            name = info.get("name") if isinstance(info, dict) else info
+            card = db.lookup(name)
+            if card:
+                raw_cat = card.category
+                # Normalize et: "Science" -> "SCIENCE"
+                cat = mapper.get(raw_cat, raw_cat.upper().split(" & ")[0])
+                inventory[cat] = inventory.get(cat, 0) + 1
+        
+        return inventory
 
     def get_board_rotations(self) -> dict[tuple[int, int], int]:
         """Board üzerindeki kartların rotasyonları: {(q, r): rotation (0-5)}"""
@@ -237,8 +282,14 @@ class GameState:
         return ActionResult.OK
 
     def reset_turn(self) -> None:
-        """Tur başında place_locked sıfırlanır."""
+        """Tur başında state'i temizler."""
         self.place_locked = False
+        # [FIX] Pasif loglarını her tur başında temizle ki UI'ya 'hayalet' veya 'mükerrer' log sızmasın.
+        if self._engine and hasattr(self._engine, 'players'):
+            try:
+                self._engine.players[0].passive_buff_log.clear()
+            except (AttributeError, IndexError):
+                pass
 
     def get_adjacency_pairs(self) -> list[tuple]:
         """
@@ -563,7 +614,27 @@ class GameState:
 
         return lines
 
-    def get_endgame_stats(self) -> list[dict]:
+    def get_rarity_probabilities(self) -> dict[str, float]:
+        """Dükkanda kart çıkma olasılıklarını (şu anki tura göre) hesapla."""
+        if not self._engine or not self._engine.market:
+            return {"1": 100.0, "2": 0.0, "3": 0.0, "4": 0.0, "5": 0.0}
+        
+        from engine_core.market import _rarity_weight
+        turn = self._engine.turn
+        
+        weights = {}
+        total_w = 0.0
+        for r in ["1", "2", "3", "4", "5"]:
+            w = _rarity_weight(r, turn)
+            weights[r] = w
+            total_w += w
+            
+        if total_w <= 0: return {"1": 100.0}
+        
+        # Normalize to %
+        return {r: (w / total_w) * 100.0 for r, w in weights.items()}
+
+    def get_player_stats(self) -> list[dict]:
         """Phase 4: Sona eren oyunun skor tablosunu hazırlayıp HP/Puan durumuna göre sıralar."""
         try:
             players = self._engine.players
@@ -607,3 +678,66 @@ class GameState:
             return self._engine.players[player_index].passive_buff_log
         except (AttributeError, IndexError):
             return []
+
+    # ── Phase 7: Live Tactical Info ───────────────────────────────────
+    def get_card_info(self, player_index: int, source: str, key: any):
+        """
+        Motor üzerindeki gerçek Card nesnesini bulur ve UI için CardData'ya dönüştürür.
+        Bu sayede Prestige, Power gibi canlı stat değişimleri InfoBox'ta görünür.
+        """
+        if not self._engine or player_index >= len(self._engine.players):
+            return None
+
+        from v2.core.card_database import CardDatabase, CardData
+        player = self._engine.players[player_index]
+        card_obj = None
+
+        try:
+            if source == "shop":
+                # Market windows PID bazlı tutulur
+                pid = player.pid
+                market = self._engine.market
+                if pid in market._player_windows:
+                    window = market._player_windows[pid]
+                    if isinstance(key, int) and 0 <= key < len(window):
+                        card_obj = window[key]
+
+            elif source == "hand":
+                if isinstance(key, int) and 0 <= key < len(player.hand):
+                    card_obj = player.hand[key]
+
+            elif source == "board":
+                # key = (q, r) axial coordinate
+                card_obj = player.board.grid.get(key)
+        except Exception as e:
+            print(f"[GameState] get_card_info error locating card: {e}")
+            return None
+
+        if not card_obj:
+            # print(f"[DEBUG] get_card_info: Card NOT FOUND at {source}/{key}")
+            return None
+
+        # MetadataLookup (Evolved önekini temizle)
+        raw_name = card_obj.name
+        lookup_name = raw_name
+        if raw_name.startswith("Evolved "):
+            lookup_name = raw_name.replace("Evolved ", "", 1)
+        
+        base_data = CardDatabase.get().lookup(lookup_name)
+        if not base_data:
+            print(f"[DEBUG] get_card_info: Metadata NOT FOUND for {lookup_name}")
+            return None
+
+        # print(f"[DEBUG] get_card_info: Loading {raw_name} from {source} (Stats: {card_obj.stats.get('Prestige', 0)}P)")
+
+        # Engine'den güncel statları alarak yeni bir CardData snapshot'ı oluştur
+        live_data = CardData(
+            name=raw_name, # "Evolved ..." ismini koru
+            category=base_data.category,
+            rarity=str(card_obj.rarity),
+            stats=dict(card_obj.stats), # CANLI STATLAR
+            passive_type=base_data.passive_type,
+            passive_effect=base_data.passive_effect,
+            synergy_group=base_data.synergy_group
+        )
+        return live_data

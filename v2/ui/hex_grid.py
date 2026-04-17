@@ -325,52 +325,91 @@ def render_ghost_preview(surface: pygame.Surface, card_name: str, mouse_pos: tup
 
 def render_hex_grid(surface: pygame.Surface):
     """
-    Board üzerindeki aktif (board) hücreleri "A2 Premium" stiliyle çizer.
+    Board üzerindeki aktif (board) hücreleri "DCI Premium" stiliyle çizer.
+    Glow, Depth ve Breathing efektleri içerir.
     """
-    from v2.ui.ui_utils import UIUtils
-
-    # UI panelleri için clip rect (Board panellerin altına girmesin)
-    # Shop panel altı ile Hand panel üstü arasını temiz bir alan olarak tanımlıyoruz
+    from v2.core.game_state import GameState
+    from v2.constants import Colors
+    
+    gs = GameState.get()
+    board_cards = gs.get_board_cards()
+    
+    # ── 1. Render Alanı Sınırlama ────────────────────────────────────
     center_rect = pygame.Rect(
         Layout.CENTER_ORIGIN_X,
         Layout.SHOP_PANEL_Y + Layout.SHOP_PANEL_H + 5,
         Layout.CENTER_W,
         Layout.HAND_PANEL_Y - (Layout.SHOP_PANEL_Y + Layout.SHOP_PANEL_H) - 10
     )
-    
-    # Board render alanı sınırlama
     old_clip = surface.get_clip()
     surface.set_clip(center_rect)
 
-    zoom = GridMath.camera.zoom
-    radius = GridMath.HEX_SIZE * zoom
+    # ── 2. Global Animasyon & Mouse State ─────────────────────────────
+    t = pygame.time.get_ticks() / 1000.0
+    mouse_pos = pygame.mouse.get_pos()
+    mouse_q, mouse_r = pixel_to_axial(*mouse_pos)
     
-    # Sadece aktif (board) hücreleri "A2 Premium" stiliyle çiz
+    zoom = GridMath.camera.zoom
+    base_radius = GridMath.HEX_SIZE * zoom
+    
+    # ── 3. Hex Grid Çizimi ───────────────────────────────────────────
     for q, r in VALID_HEX_COORDS:
         cx, cy = axial_to_pixel(q, r)
         
-        # Görünürlük kontrolü (Merkez nokta veya köşelerden biri clip içindeyse çiz)
-        if (center_rect.collidepoint(cx, cy) or 
-            center_rect.collidepoint(cx + radius, cy) or 
-            center_rect.collidepoint(cx - radius, cy) or
-            center_rect.collidepoint(cx, cy + radius) or
-            center_rect.collidepoint(cx, cy - radius)):
+        # Görünürlük kontrolü
+        if not (center_rect.collidepoint(cx, cy) or 
+                center_rect.collidepoint(cx + base_radius, cy) or 
+                center_rect.collidepoint(cx - base_radius, cy)):
+            continue
             
-            # 1. Hücre Geometrisi
-            points = []
-            for i in range(6):
-                angle = math.radians(60 * i - 30)
-                px = cx + (radius - 1) * math.cos(angle)
-                py = cy + (radius - 1) * math.sin(angle)
-                points.append((int(px), int(py)))
+        is_hover  = (q, r) == (mouse_q, mouse_r)
+        is_filled = (q, r) in board_cards
+        
+        # Mikro-Animasyon: Breathing (Nefes Alma)
+        # Sadece boş hücreler veya hover olanlar hafifçe nefes alır
+        breath_val = 0.97 + 0.03 * math.sin(t * 1.5 + q*0.4 + r*0.4)
+        radius = base_radius * breath_val if not is_filled else base_radius
+        
+        # 4. Geometri Hazırlığı
+        points = []
+        inner_points = []
+        for i in range(6):
+            angle = math.radians(60 * i - 30)
+            # Dış Sınır
+            px = cx + radius * math.cos(angle)
+            py = cy + radius * math.sin(angle)
+            points.append((int(px), int(py)))
+            # İç Sınır (Highlight için)
+            ix = cx + (radius * 0.85) * math.cos(angle)
+            iy = cy + (radius * 0.85) * math.sin(angle)
+            inner_points.append((int(ix), int(iy)))
+
+        # 5. [LAYER 1] Outer Glow (KALDIRILDI)
+        
+        # 6. [LAYER 2] Glass Body (Gövde Derinliği)
+        # Dolu hücreler daha opak ve derin, boşlar daha "saydam cam"
+        if is_filled:
+            base_alpha = 140
+            body_col = (20, 30, 50, base_alpha)
+        else:
+            base_alpha = 60
+            body_col = (15, 18, 28, base_alpha)
             
-            # 2. Glass Inset (Hafif şeffaf dolgu)
-            # Katmanlı bir derinlik hissi için iki kademeli dolgu
-            pygame.draw.polygon(surface, (20, 25, 40, 80), points)
-            
-            # 3. Premium Neon Kenarlık (Zoom'a göre kalınlık ayarı)
-            border_w = max(1, int(2 * zoom))
-            pygame.draw.polygon(surface, (42, 58, 92, 180), points, border_w)
+        pygame.draw.polygon(surface, body_col, points)
+        # Inner Gradient/Highlight Simülasyonu
+        pygame.draw.polygon(surface, (120, 160, 220, 20), inner_points)
+
+        # 7. [LAYER 3] Tactical Borders (Kenarlıklar)
+        border_col = (60, 100, 180, 180) if is_hover else (42, 58, 92, 140)
+        border_w = max(1, int(2 * zoom))
+        
+        # Dış Neon
+        pygame.draw.polygon(surface, border_col, points, border_w)
+        # İç Highlight (Rim Light)
+        if is_hover or is_filled:
+            pygame.draw.polygon(surface, (140, 200, 255, 100), inner_points, 1)
+
+    surface.set_clip(old_clip)
 
     surface.set_clip(old_clip)
 

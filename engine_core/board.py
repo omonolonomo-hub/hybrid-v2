@@ -190,98 +190,153 @@ def resolve_single_combat(card_a: Card, card_b: Card,
 # COMBO RESOLVER
 # ===================================================================
 
+# ===================================================================
+# SYNERGY & CLUSTER CALCULATOR
+# ===================================================================
+
+def calculate_group_synergy_bonus(board: Board) -> int:
+    """
+    v0.8 CONNECTED CLUSTER SYNERGY:
+    Rewrites the synergy system to be purely based on physical connections (lines).
+    
+    1. For each group (MIND, CONNECTION, EXISTENCE):
+       - Find all connected clusters of cards via edge matches of that group.
+       - Each cluster of size N gives a tiered bonus.
+       - Each internal match (line) gives a linear bonus.
+    2. A card can parttake in multiple clusters of DIFFERENT groups.
+    
+    Scoring Tiers (N = Cards in Cluster):
+      - N=2: 3 Puan
+      - N=3: 9 Puan
+      - N=4-5: 16 Puan
+      - N=6+: 25 Puan (+ 3 per additional card)
+    
+    Connection Bonus (L = Active Lines):
+      - +2 Puan per matching edge pair.
+    """
+    total_bonus = 0
+    groups = ["MIND", "CONNECTION", "EXISTENCE"]
+    grid   = board.grid
+    
+    # Track which cards are already in a cluster for EACH group independently
+    # group -> set of coords
+    global_visited = {g: set() for g in groups}
+    
+    for g in groups:
+        for coord in grid:
+            if coord in global_visited[g]:
+                continue
+            
+            # Start BFS to find cluster of group 'g'
+            cluster_coords, edge_matches = _find_cluster_for_group(board, coord, g)
+            
+            # Must have at least a connection to count as a cluster (N >= 2)
+            n = len(cluster_coords)
+            if n >= 2:
+                # 1. Tiered Card Bonus
+                if n == 2:   tier_pts = 3
+                elif n == 3: tier_pts = 9
+                elif n <= 5: tier_pts = 16
+                else:        tier_pts = 25 + (n - 6) * 3
+                
+                # 2. Linear Connection Bonus (each line = 2 pts)
+                # find_cluster returns total edge matches (L), each pair counted once
+                conn_pts = edge_matches * 2
+                
+                total_bonus += (tier_pts + conn_pts)
+                global_visited[g].update(cluster_coords)
+                
+    return total_bonus
+
+
+def _find_cluster_for_group(board: Board, start_coord: Tuple[int, int], group_name: str) -> Tuple[set, int]:
+    """
+    Finds a group-specific cluster starting from start_coord using BFS.
+    Returns: (set of coords in cluster, total internal edge matches)
+    """
+    cluster = {start_coord}
+    queue   = [start_coord]
+    visited = {start_coord}
+    internal_matches = 0
+    match_pairs = set() # To avoid double counting (A,B) vs (B,A)
+    
+    grid = board.grid
+    
+    # Get initial card info
+    card_start = grid[start_coord]
+    
+    while queue:
+        curr_coord = queue.pop(0)
+        curr_card  = grid[curr_coord]
+        curr_edges = curr_card.rotated_edges()
+        
+        for neighbor_coord, direction in board.neighbors(curr_coord):
+            neighbor_card = grid[neighbor_coord]
+            nb_edges      = neighbor_card.rotated_edges()
+            
+            # Check edge match of group_name
+            # dir_idx for current card matches opp_dir for neighbor
+            opp_dir = OPP_DIR[direction]
+            
+            stat_a, _ = curr_edges[direction]
+            stat_b, _ = nb_edges[opp_dir]
+            
+            group_a = STAT_TO_GROUP.get(stat_a)
+            group_b = STAT_TO_GROUP.get(stat_b)
+            
+            if group_a == group_name and group_b == group_name:
+                # It's a group match!
+                pair = tuple(sorted((curr_coord, neighbor_coord)))
+                if pair not in match_pairs:
+                    internal_matches += 1
+                    match_pairs.add(pair)
+                
+                if neighbor_coord not in visited:
+                    visited.add(neighbor_coord)
+                    cluster.add(neighbor_coord)
+                    queue.append(neighbor_coord)
+                    
+    return cluster, internal_matches
+
+
+# ===================================================================
+# COMBO RESOLVER (Legacy compatibility & micro-bonuses)
+# ===================================================================
+
 def find_combos(board: Board) -> Tuple[int, Dict[Tuple[int, int], Dict[int, int]]]:
     """
-    Find combo matches between neighboring card pairs on the board.
-    v0.4: group-based matching instead of edge-based.
-    If two neighbors share the same dominant group, a combo fires.
-    This makes the builder strategy viable.
-
-    Returns:
-        combo_points: total combo points (+1 per pair, each pair counted once)
-        combat_bonus: {coord: {direction: +1}} edge bonus for combat phase
+    Find combo matches for micro-combat bonuses (+1 per edge).
+    This logic now aligns with the 'lines' seen in the UI.
     """
-    combo_points = 0
+    combo_count = 0
     combat_bonus: Dict[Tuple[int, int], Dict[int, int]] = {}
     counted: set = set()
 
     grid = board.grid
     for coord, card in grid.items():
-        card_group = card.dominant_group()
+        edges = card.rotated_edges()
         for neighbor_coord, direction in board.neighbors(coord):
-            pair = (min(coord, neighbor_coord), max(coord, neighbor_coord))
+            pair = tuple(sorted((coord, neighbor_coord)))
             if pair in counted:
                 continue
+            
             neighbor_card = grid[neighbor_coord]
-            neighbor_group = neighbor_card.dominant_group()
-
-            if card_group == neighbor_group:
-                combo_points += 1
-                opp = OPP_DIR[direction]
-                if coord not in combat_bonus:
-                    combat_bonus[coord] = {}
-                if neighbor_coord not in combat_bonus:
-                    combat_bonus[neighbor_coord] = {}
+            nb_edges      = neighbor_card.rotated_edges()
+            opp_dir       = OPP_DIR[direction]
+            
+            stat_a, _ = edges[direction]
+            stat_b, _ = nb_edges[opp_dir]
+            
+            if STAT_TO_GROUP.get(stat_a) == STAT_TO_GROUP.get(stat_b):
+                combo_count += 1
+                if coord not in combat_bonus: combat_bonus[coord] = {}
+                if neighbor_coord not in combat_bonus: combat_bonus[neighbor_coord] = {}
                 combat_bonus[coord][direction] = combat_bonus[coord].get(direction, 0) + 1
-                combat_bonus[neighbor_coord][opp] = combat_bonus[neighbor_coord].get(opp, 0) + 1
+                combat_bonus[neighbor_coord][opp_dir] = combat_bonus[neighbor_coord].get(opp_dir, 0) + 1
             counted.add(pair)
 
-    return combo_points, combat_bonus
+    return combo_count, combat_bonus
 
-
-# ===================================================================
-# SYNERGY CALCULATOR
-# ===================================================================
-
-def calculate_group_synergy_bonus(board: Board) -> int:
-    """
-    v0.7 SYNERGY REBALANCE: Moderated scaling with diversity bonus
-    
-    OLD SYSTEM (v0.4):
-      • Flat bonus: 3 cards -> +1, 5 -> +2, 8+ -> +3
-      • Per-group max: +3, total max: +4
-      • Problems: No reward for deep investment, no diversity incentive
-    
-    NEW SYSTEM (v0.7):
-      • Group bonus: 3 * (n-1)^1.25 per group (capped at 18)
-      • Diversity bonus: +1 per unique group (max +5)
-      • Total synergy capped at 30% of base power (enforced in combat)
-    
-    Scaling examples:
-      • 2 cards: +3 group + diversity
-      • 3 cards: +7 group + diversity
-      • 5 cards: +16 group + diversity
-      • 10+ cards: +18 group (capped) + diversity
-    
-    Strategic implications:
-      • Mono-group: High group bonus (18), low diversity (1) = 19 total
-      • Diverse: Moderate group bonus (10-15), high diversity (5) = 15-20 total
-      • Balanced: Best of both (13-16 group, 3-4 diversity) = 16-20 total
-    
-    Returns:
-      Total synergy bonus (group + diversity)
-    """
-    # Count cards per group
-    group_count: Dict[str, int] = {}
-    for card in board.grid.values():
-        comp = card.get_group_composition()
-        for group_name in comp:
-            group_count[group_name] = group_count.get(group_name, 0) + 1
-    
-    # Group bonus: 3 * (n-1)^1.25, capped at 18 per group
-    group_bonus = 0
-    for count in group_count.values():
-        if count >= 2:  # Need at least 2 cards for synergy
-            # Moderated scaling: rewards investment without exponential growth
-            bonus = 3 * math.pow(count - 1, 1.25)
-            group_bonus += min(18, int(bonus))
-    
-    # Diversity bonus: +1 per unique group (max +5)
-    # Encourages varied compositions, prevents mono-group dominance
-    unique_groups = len([c for c in group_count.values() if c > 0])
-    diversity_bonus = min(5, unique_groups)
-    
-    total_bonus = group_bonus + diversity_bonus
     
     # Note: 30% power cap enforced in combat_phase (not here)
     # This allows flexibility while preventing synergy from dominating

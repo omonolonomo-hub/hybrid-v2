@@ -410,7 +410,7 @@ class Game:
                 for card in tuple(board_b.grid.values()):
                     _trigger_passive(card, "pre_combat", p_b, p_a, _ctx, verbose=_verbose)
 
-            # Combo bonuses
+            # Combo bonuses (Baseline 1pt per line, doubled by Catalyst)
             combo_pts_a, bonus_a = find_combos(board_a)
             combo_pts_b, bonus_b = find_combos(board_b)
             if board_a.has_catalyst:
@@ -418,7 +418,7 @@ class Game:
             if board_b.has_catalyst:
                 combo_pts_b *= 2
 
-            # Group synergy bonus
+            # Group synergy bonus (Clusters & Connection Quality)
             synergy_pts_a = calculate_group_synergy_bonus(board_a)
             synergy_pts_b = calculate_group_synergy_bonus(board_b)
 
@@ -428,6 +428,7 @@ class Game:
             else:
                 kill_a, kill_b, draws = 0, 0, 0
 
+            # TOTAL SCORE: Kills (8) + Baseline Lines (1) + Cluster/Quality (New System)
             pts_a = kill_a + combo_pts_a + synergy_pts_a
             pts_b = kill_b + combo_pts_b + synergy_pts_b
 
@@ -435,6 +436,7 @@ class Game:
             p_b.turn_pts  = pts_b
             p_a.total_pts += pts_a
             p_b.total_pts += pts_b
+
 
             stats_a = p_a.stats
             stats_b = p_b.stats

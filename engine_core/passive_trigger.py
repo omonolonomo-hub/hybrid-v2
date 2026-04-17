@@ -64,8 +64,16 @@ def trigger_passive(card: "Card", trigger: str, owner, opponent, ctx: dict, verb
     if verbose:
         print(f"[EFFECT] {safe_name} -> {res}")
     # Log passive trigger if it had a visual/gameplay effect
-    # (Power increase, points result, or it's a phase-start trigger like 'income')
-    should_log = (delta > 0) or (res > 0) or (trigger in ("income", "market_refresh"))
+    # (Power change, points result, or it's a specific system trigger like income)
+    # [FIX] Only log if a handler exists OR it's a system 'combo' trigger.
+    # This prevents "ghost logs" for cards that have a passive name but no code implementation.
+    has_handler = (PASSIVE_HANDLERS.get(card.name) is not None or 
+                   PASSIVE_HANDLERS.get(card.name.lower().replace(" ", "_")) is not None)
+    
+    is_impactful = (delta != 0) or (res != 0)
+    is_system_event = (trigger in ("income", "market_refresh", "combo"))
+    
+    should_log = (is_impactful or is_system_event) and (has_handler or trigger == "combo")
     
     if should_log and owner is not None and hasattr(owner, 'passive_buff_log'):
         entry = {

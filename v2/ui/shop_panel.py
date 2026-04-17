@@ -1,8 +1,9 @@
 import pygame
 import math
-from v2.constants import Layout, Colors
+from v2.constants import Layout, Colors, Screen
 from v2.ui.card_flip import CardFlip
 from v2.ui import font_cache
+from v2.core.game_state import GameState
 
 _FALLBACK_BACK_COLOR  = (12, 14, 20)
 _FALLBACK_FRONT_COLOR = (20, 60, 100)
@@ -20,57 +21,57 @@ def _make_fallback_surface(color: tuple, w: int, h: int) -> pygame.Surface:
 
 class ShopPanel:
     def __init__(self):
-        # ── Ana Panel Rect ──────────────────────────────────────────────
-        self.rect = pygame.Rect(
-            Layout.CENTER_ORIGIN_X,
-            Layout.SHOP_PANEL_Y,
-            Layout.CENTER_W + Layout.SIDEBAR_RIGHT_W,
-            Layout.SHOP_PANEL_H,
-        )
+        # ── Ana Panel Rect (Full Width Bar) ───────────────────────────
+        self.rect = pygame.Rect(0, Layout.SHOP_PANEL_Y, 1920, Layout.SHOP_PANEL_H)
 
-        # ── 5 Kart Slotu ───────────────────────────────────────────────
+        # ── 5 Kart Slotu (Merkezi alana hizalı) ───────────────────────
         self.card_rects: list[pygame.Rect] = []
-        start_x = self.rect.x + 20
-        start_y = self.rect.y + 10
+        # Kartların dikeyde ortalanması: (210 - 186) / 2 = 12px padding
+        start_x = Layout.CENTER_ORIGIN_X + 20 
+        start_y = self.rect.y + 12
         for i in range(Layout.SHOP_SLOTS):
             cx = start_x + (Layout.SHOP_CARD_W + Layout.SHOP_CARD_GAP) * i
             self.card_rects.append(pygame.Rect(cx, start_y, Layout.SHOP_CARD_W, Layout.SHOP_CARD_H))
 
-        # ── Sağ Kenar: Reroll + Lock dikey yığın — panelin sağına yaslanır
-        btn_x  = self.rect.right - Layout.REROLL_BTN_W - 20
-        btn_top = self.rect.y + 12
-        self.reroll_rect = pygame.Rect(btn_x, btn_top, Layout.REROLL_BTN_W, Layout.REROLL_BTN_H)
-        self.lock_rect   = pygame.Rect(
-            btn_x,
-            self.reroll_rect.bottom + 8,
-            Layout.REROLL_BTN_W,
-            Layout.LOCK_BTN_H,
-        )
+        # ── Info / Hover Paneli (Aksiyona yakın, orantılı) ────────────
+        info_w = 340
+        self.info_rect = pygame.Rect(1570, self.rect.y + 12, info_w, self.rect.h - 24)
+        
+        # ── Butonlar (Dikey ortalı) ──────────────────────────────────
+        btn_w, btn_h = 140, 42
+        btn_x = 1415 
+        # Buton bloğu: 3*42 + 2*15(gap) = 156. Padding: (210 - 156)/2 = 27
+        btn_y_start = self.rect.y + 27 
+        
+        self.reroll_rect = pygame.Rect(btn_x, btn_y_start, btn_w, btn_h)
+        self.lock_rect   = pygame.Rect(btn_x, btn_y_start + 42 + 15, btn_w, btn_h)
+        self.ready_rect  = pygame.Rect(btn_x, btn_y_start + 84 + 30, btn_w, btn_h)
 
-        # ── Info / Hover Paneli ────────────────────────────────────────
-        info_w = Layout.SHOP_INFO_W
-        info_x = self.reroll_rect.x - info_w - 14
+        # ── Stats (Butonların solunda) ───────────────────────────────
+        self.stats_rect = pygame.Rect(1290, self.rect.y + 27, 130, 156)
+        self._probabilities = {}
 
-        self.info_rect = pygame.Rect(
-            info_x,
-            self.rect.y + 10,
-            info_w,
-            self.rect.h - 20
-        )
-
-        # ── AAA Cyberpunk Gradient Arkaplan (LobbyPanel Kalitesi) ──
+        # ── DCI Tactical Shelf (Top-Attached) ──────────────────────────
         from v2.ui.ui_utils import UIUtils
         self.bg_surface = UIUtils.create_gradient_panel(
-            self.rect.w, self.rect.h,
-            color_top=(20, 24, 34, 252),
+            1920, Layout.SHOP_PANEL_H,
+            color_top=(15, 18, 26, 255),
             color_bottom=(10, 12, 18, 255),
-            border_radius=8,
-            border_color=(42, 58, 92, 255) # Unified soft stroke
+            border_radius=0,
+            border_color=(42, 58, 92, 255)
         )
-
-        # ── Üst Dekoratif Çizgi (panel sınırı içinde) ─────────────────────
-        decal_color = (55, 70, 96, 180)
-        pygame.draw.line(self.bg_surface, decal_color, (12, 5), (self.rect.w - 12, 5), 1)
+        
+        # ── Alt Parlama Hattı (DCI Rim Light) ──────────────────────────
+        pygame.draw.line(self.bg_surface, (80, 140, 255, 180), (0, Layout.SHOP_PANEL_H - 1), (1920, Layout.SHOP_PANEL_H - 1), 2)
+        
+        # ── Animasyon & State ───────────────────────────────────────────
+        self._time = 0.0
+        self._last_tick = pygame.time.get_ticks()
+        self._locked_state = False # Sync'i render içinde çekelim
+        
+        # ── Dekoratif Elementler (Alt kenara yakın) ─────────────────────
+        decal_color = (55, 70, 96, 120)
+        pygame.draw.line(self.bg_surface, decal_color, (12, self.rect.h - 15), (self.rect.w - 12, self.rect.h - 15), 1)
 
         # Sci-fi Decal Yazısı (sol, subtle)
         from v2.ui.font_cache import mono, render_text as _rt
@@ -95,17 +96,8 @@ class ShopPanel:
             # İnset derinlik hissi için çerçeve (Optional shading)
             pygame.draw.rect(self.bg_surface, (0, 0, 0, 200), (lx, ly, lw, lh), width=1, border_radius=4)
 
-        # ── Orta: Stats (Info ile Reroll arası) — kalan genisligin tamamı
-        stats_x = self.info_rect.right + 8
-        stats_w = self.reroll_rect.x - stats_x - 8
-        # Stats'i dikey ortala: sadece reroll+lock yığının yuksekligi kadar
-        stack_h  = self.lock_rect.bottom - self.rect.y
-        self.stats_rect = pygame.Rect(stats_x, self.rect.y + 10, stats_w,
-                                      min(stack_h - 12, Layout.SHOP_PANEL_H - 20))
-
         # ── Kart isimleri: GameState'ten oku (varsa), yoksa boş ─────────
         try:
-            from v2.core.game_state import GameState
             shop_data = GameState.get().get_shop(player_index=0)
         except Exception as e:
             print(f"[ShopPanel] sync hatası: {e}")
@@ -179,7 +171,6 @@ class ShopPanel:
         Veri değiştiyse CardFlip'leri akıllıca güncelle.
         """
         try:
-            from v2.core.game_state import GameState
             new_names = GameState.get().get_shop() # Defaults to view_index
         except Exception:
             return
@@ -227,11 +218,17 @@ class ShopPanel:
     # ------------------------------------------------------------------ #
     # Events                                                               #
     # ------------------------------------------------------------------ #
-    def handle_event(self, event: pygame.event.Event) -> bool:
+    def handle_event(self, event: pygame.event.Event) -> str | bool:
+        """Olayı işler ve gerekirse bir sinyal döner."""
         if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
             import traceback
-            from v2.core.game_state import GameState
             state = GameState.get()
+
+            # -- READY --
+            if self.ready_rect.collidepoint(event.pos):
+                if state.get_phase() == "STATE_PREPARATION":
+                    print("[DEBUG] >>> READY tiklandi (via ShopPanel)")
+                    return "READY"
 
             # -- REROLL --
             if self.reroll_rect.collidepoint(event.pos):
@@ -281,49 +278,117 @@ class ShopPanel:
     # Render                                                               #
     # ------------------------------------------------------------------ #
     def render(self, surface: pygame.Surface) -> None:
-        # 1. AAA Cam Zemini ve Soketleri Tek Seferde Çiz
+        # ShopScene'den dt verilmiyor olabilir, o yüzden iç saatle update tetikle
+        now = pygame.time.get_ticks()
+        dt = (now - self._last_tick) / 1000.0
+        self._last_tick = now
+        self._time += dt
+        
+        # 1. Background
         surface.blit(self.bg_surface, self.rect)
 
         # 2. Kart Slotları (CardFlip renderer)
         for flip in self._flips:
             flip.render(surface)
 
-        # 3. Reroll Butonu
+        # ── DCI Buton Grubu ────────────────────────────────────────────
+        state = GameState.get()
+        gold  = state.get_gold(0)
+        phase = state.get_phase()
         try:
-            from v2.core.game_state import GameState
-            gold = GameState.get().get_gold(0)
+            is_locked = state._engine.players[0].shop_locked
+        except: is_locked = False
+
+        # 3. Reroll Butonu (DCI Refit)
+        can_reroll = gold >= 2
+        r_col = (255, 180, 50) if can_reroll else (100, 100, 100)
+        self._render_dci_button(surface, self.reroll_rect, f"REROLL [2G]", r_col, can_reroll, icon_name="SYNC")
+
+        # 4. Lock Butonu (DCI Refit)
+        l_col = (255, 50, 50) if is_locked else (180, 140, 60)
+        l_lbl = "LOCKED" if is_locked else "LOCK SHOP"
+        self._render_dci_button(surface, self.lock_rect, l_lbl, l_col, True, icon_name="LOCK")
+
+        # 5. Hazır Butonu (DCI Refit)
+        if phase == "STATE_PREPARATION":
+            self._render_dci_button(surface, self.ready_rect, "READY PHASE", (80, 255, 160), True, icon_name="READY")
+
+        # 6. Stats (Minimal Rarity Matrix)
+        # Sadece silik beyaz yazılar
+        try:
+            probs = state.get_rarity_probabilities()
         except Exception:
-            gold = 0
-        can_reroll  = gold >= 2
-        reroll_bg   = (80, 60, 20) if can_reroll else (40, 40, 40)
-        reroll_bd   = Colors.GOLD_TEXT if can_reroll else (70, 70, 70)
-        pygame.draw.rect(surface, reroll_bg, self.reroll_rect, border_radius=8)
-        pygame.draw.rect(surface, reroll_bd, self.reroll_rect, width=1, border_radius=8)
-        font_cache.render_text(
-            surface, "REROLL  [2G]",
-            font_cache.bold(12), reroll_bd,
-            self.reroll_rect, align="center", v_align="center",
-        )
+            probs = {"1": 100.0}
 
-        # 4. Info Paneli (Artık InfoBox renderlıyor, ShopPanel sadece statik arkaplan çizmeyebilir)
-        # Sadece zemin bırakabiliriz veya ShopScene halletiği için tamamen silebiliriz.
-        # InfoBox kendi zeminini çizdiği için buradan tamamen kaldırıldı.
+        row_h = 24
+        sy = self.stats_rect.y + 10
+        for i, r in enumerate(["1", "2", "3", "4", "5"]):
+            p = probs.get(r, 0.0)
+            if p <= 0 and r not in ["1", "2"]: continue
+            
+            txt = f"Tier {r}: %{p:.1f}"
+            color = (160, 160, 180) if p > 0 else (60, 65, 80)
+            font_cache.render_text(surface, txt, font_cache.mono(9), color, 
+                                    pygame.Rect(self.stats_rect.x, sy + i * row_h, 150, 20), v_align="center")
 
-        # 5. Stats (Gold / Turn)
-        pygame.draw.rect(surface, (30, 35, 50), self.stats_rect, border_radius=8)
-        pygame.draw.rect(surface, (70, 80, 100), self.stats_rect, width=1, border_radius=8)
-        s_lbl1 = pygame.Rect(self.stats_rect.x + 6, self.stats_rect.y + 6, self.stats_rect.w - 12, 16)
-        s_lbl2 = pygame.Rect(self.stats_rect.x + 6, self.stats_rect.y + 26, self.stats_rect.w - 12, 16)
-        font_cache.render_text(surface, f"Gold: {gold}G", font_cache.bold(11),
-                               Colors.GOLD_TEXT, s_lbl1)
-        font_cache.render_text(surface, "Drop: R1 70%", font_cache.mono(10),
-                               (160, 170, 190), s_lbl2)
+    def _render_dci_button(self, surface: pygame.Surface, rect: pygame.Rect, label: str, color: tuple, enabled: bool, icon_name: str = None):
+        """DCI-REFIT: Digital Combat Interface Buton Standartı (Premium Upgrade)."""
+        mouse_pos = pygame.mouse.get_pos()
+        is_hover = rect.collidepoint(mouse_pos) and enabled
+        
+        # 1. Geometri Hazırlığı (Octagon)
+        w, h = rect.size
+        cut = 8
+        points = [
+            (rect.x+cut, rect.y), (rect.right-cut, rect.y), (rect.right, rect.y+cut),
+            (rect.right, rect.bottom-cut), (rect.right-cut, rect.bottom), (rect.left+cut, rect.bottom),
+            (rect.left, rect.bottom-cut), (rect.left, rect.y+cut)
+        ]
+        
+        # 2. [LAYER 1] Outer Glow (KALDIRILDI)
+        
+        # 3. [LAYER 2] Glass Body (Gövde)
+        bg_col = (10, 15, 25, 235) if enabled else (20, 22, 28, 180)
+        pygame.draw.polygon(surface, bg_col, points)
+        
+        # İç Yüzey Parlaması (Glass Inset)
+        if enabled:
+            inner_col = (*color, 20) if not is_hover else (*color, 45)
+            pygame.draw.polygon(surface, inner_col, points)
 
-        # 6. Lock Butonu
-        pygame.draw.rect(surface, (120, 90, 40), self.lock_rect, border_radius=4)
-        pygame.draw.rect(surface, (180, 140, 60), self.lock_rect, width=1, border_radius=4)
-        font_cache.render_text(
-            surface, "🔒 LOCK",
-            font_cache.bold(11), (220, 180, 80),
-            self.lock_rect, align="center", v_align="center",
-        )
+        # 4. [LAYER 3] Borders & Rim Light (Okunabilirlik İçin Ton Kaydırma)
+        # Kenarlığı sadece karartmak yerine, sistem lacivertine (25, 35, 55) doğru kaydırıyoruz (Hue Shift)
+        # Bu, butonun rengini bir "vurgu" olarak bırakıp okumayı kolaylaştırır
+        bd_col = (
+            int(color[0] * 0.2 + 25 * 0.8),
+            int(color[1] * 0.2 + 35 * 0.8),
+            int(color[2] * 0.2 + 55 * 0.8),
+            180
+        ) if enabled else (50, 55, 70, 120)
+        pygame.draw.polygon(surface, bd_col, points, width=1)
+        
+        if enabled:
+            # Üst Keskin Kenar (Rim Light)
+            pygame.draw.line(surface, (255, 255, 255, 60), (rect.x+cut, rect.y+1), (rect.right-cut, rect.y+1), 1)
+            
+            # Hover Durumunda Köşe Vurguları
+            if is_hover:
+                pygame.draw.polygon(surface, (255, 255, 255, 100), points, width=2)
+
+        # 5. [LAYER 4] Label & Icon (Max Contrast)
+        # Metni saf beyaza çekiyoruz ki karanlık panelde bıçak gibi keskin olsun
+        lbl_col = (255, 255, 255) if enabled else (120, 125, 140)
+        # İkonu bir tık daha parlak (vibrant) yapıyoruz
+        icon_col = tuple(min(255, int(c * 1.1)) for c in color) if enabled else (80, 85, 100)
+        
+        text_rect = pygame.Rect(rect)
+        if icon_name:
+            icon_size = 13
+            icon_y_off = (rect.h - icon_size) // 2
+            # Çift gölge efekti (subtle)
+            font_cache.render_icon(surface, icon_name, icon_size, icon_col, (rect.x + 10, rect.y + icon_y_off), shadow=enabled)
+            text_rect.x += 16
+            text_rect.w -= 16
+
+        font_cache.render_text(surface, label, font_cache.bold(12), lbl_col, text_rect, align="center", v_align="center", shadow=enabled)
+        
