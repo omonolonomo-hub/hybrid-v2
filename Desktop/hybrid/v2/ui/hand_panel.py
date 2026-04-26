@@ -57,10 +57,10 @@ class HandPanel:
 
         # ── DCI Tactical Shelf (Frameless / Seamless) ──────────────────────
         self.bg_surface = pygame.Surface((Screen.W, Layout.HAND_PANEL_H), pygame.SRCALPHA).convert_alpha()
-        self.bg_surface.fill((10, 12, 20, 245))
+        self.bg_surface.fill((16, 13, 20, 245))  # Karbon-mor ton (hex grid ile uyumlu)
         
-        # Üst ayırıcı çizgi (Minimap stili frameless border)
-        pygame.draw.line(self.bg_surface, (42, 58, 92, 100), (0, 0), (Screen.W, 0), 1)
+        # Üst ayırıcı çizgi (Karbon-mor frameless border)
+        pygame.draw.line(self.bg_surface, (50, 41, 61, 100), (0, 0), (Screen.W, 0), 1)
 
         # Sci-fi Decal Yazısı (subtitle, sag hizalı)
         from v2.ui.font_cache import mono, render_text as _rt
@@ -86,16 +86,16 @@ class HandPanel:
                 angle = math.radians(60 * i - 30)
                 points.append((cx + radius * math.cos(angle), cy + radius * math.sin(angle)))
 
-            # İç Zemin Çukuru (Void / Dark hex)
-            pygame.draw.polygon(self.bg_surface, (6, 8, 12, 220), points)
+            # İç Zemin Çukuru (Karbon-mor void)
+            pygame.draw.polygon(self.bg_surface, (10, 9, 14, 220), points)
             
-            # Hexagon Çerçeve (Mat tactical çizgi)
-            pygame.draw.polygon(self.bg_surface, (30, 40, 55, 150), points, width=1)
+            # Hexagon Çerçeve (Karbon-mor tactical çizgi)
+            pygame.draw.polygon(self.bg_surface, (50, 41, 61, 150), points, width=1)
             
-            # Siberpunk Vurgular (Üst ve alt noktalarda veri portu görünümü)
+            # Siberpunk Vurgular (Karbon-mor veri portu)
             # points[2] = Bottom Center (90 deg), points[5] = Top Center (270 deg)
-            pygame.draw.circle(self.bg_surface, (80, 140, 255, 100), points[2], 2)
-            pygame.draw.circle(self.bg_surface, (80, 140, 255, 100), points[5], 2)
+            pygame.draw.circle(self.bg_surface, (105, 78, 135, 100), points[2], 2)
+            pygame.draw.circle(self.bg_surface, (105, 78, 135, 100), points[5], 2)
 
         # ── El verisi: ShopScene set_hand() ile iter, burada boş başla ──
         self._card_names: list[str | None] = [None] * Layout.HAND_MAX_CARDS

@@ -463,27 +463,27 @@ def render_hex_grid(surface: pygame.Surface, board_cards: dict | None = None, ca
 
         # 5. [LAYER 1] Outer Glow (KALDIRILDI)
         
-        # 6. [LAYER 2] Glass Body (Gövde Derinliği - Daha Karanlık "Void" Efekti)
-        # (8, 10, 14) ve (12, 15, 20) renkleriyle iç içe poligonlar (cam efekti)
+        # 6. [LAYER 2] Glass Body (Gövde Derinliği - Dengeli Karbon-Mor)
+        # Karbon ve mor arası dengeli ton
         base_alpha = 140 if is_filled else 30
-        body_col = (8, 10, 14, base_alpha)
+        body_col = (16, 13, 20, base_alpha)  # Karbon-mor dengeli
             
         pygame.draw.polygon(surface, body_col, points)
-        # Inner Gradient/Highlight Simülasyonu (Boşsa adeta bir gölge gibi)
+        # Inner Gradient/Highlight Simülasyonu
         inner_alpha = 80 if is_filled else 20
-        inner_col = (12, 15, 20, inner_alpha)
+        inner_col = (25, 21, 31, inner_alpha)  # Dengeli highlight
         pygame.draw.polygon(surface, inner_col, inner_points)
 
-        # 7. [LAYER 3] Tactical Borders (Kenarlıklar)
-        # Hover durumunda (60, 120, 200) renginde neon bir parlama
-        border_col = (60, 120, 200, 180) if is_hover else (35, 48, 75, 100)
+        # 7. [LAYER 3] Tactical Borders (Kenarlıklar - Dengeli Neon)
+        # Hover durumunda dengeli mor-gri neon
+        border_col = (105, 78, 135, 180) if is_hover else (50, 41, 61, 100)  # Orta ton
         border_w = max(1, int(2 * zoom))
         
         # Dış Neon
         pygame.draw.polygon(surface, border_col, points, border_w)
-        # İç Highlight (Rim Light)
+        # İç Highlight (Rim Light - Dengeli)
         if is_hover or is_filled:
-            pygame.draw.polygon(surface, (140, 200, 255, 100), inner_points, 1)
+            pygame.draw.polygon(surface, (145, 120, 175, 100), inner_points, 1)  # Dengeli highlight
 
     surface.set_clip(old_clip)
 

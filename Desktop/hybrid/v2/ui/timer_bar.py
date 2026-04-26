@@ -15,8 +15,8 @@ class TimerBar:
         """
         ratio: 0.0 ile 1.0 arasinda eriyen isiyi/sureyi temsil eder.
         """
-        # 1. Background track (Koyu gri/siyah zemin)
-        pygame.draw.rect(surface, (15, 12, 18), self.rect)
+        # 1. Background track (Koyu mor-karbon zemin)
+        pygame.draw.rect(surface, (18, 15, 22), self.rect)
         
         # 2. Eriyen Ates Kismi (Cyber Turuncu)
         # Ratio'nun guvenligini al (tasmamasi icin)
@@ -31,6 +31,6 @@ class TimerBar:
             glow_rect = pygame.Rect(self.rect.x, self.rect.y + 2, fill_w, 2)
             pygame.draw.rect(surface, (255, 200, 80), glow_rect)
 
-        # 3. Ust ve Alt ince Cyber Sınır Cizgileri
-        pygame.draw.line(surface, (42, 58, 92), (self.rect.x, self.rect.y), (self.rect.right, self.rect.y), 1)
-        pygame.draw.line(surface, (42, 58, 92), (self.rect.x, self.rect.bottom), (self.rect.right, self.rect.bottom), 1)
+        # 3. Ust ve Alt ince Cyber Sınır Cizgileri (Karbon-mor)
+        pygame.draw.line(surface, (50, 41, 61), (self.rect.x, self.rect.y), (self.rect.right, self.rect.y), 1)
+        pygame.draw.line(surface, (50, 41, 61), (self.rect.x, self.rect.bottom), (self.rect.right, self.rect.bottom), 1)

@@ -14,17 +14,17 @@ def _empty_view_model() -> SynergyViewState:
 
 
 class SynergyHud:
-    _C_TITLE = (100, 140, 220)
+    _C_TITLE = (160, 140, 200)  # Mor-gri ton (mavi yerine)
     _C_WHITE = (220, 224, 240)
-    _C_DIM = (80, 85, 110)
+    _C_DIM = (100, 95, 120)  # Mor-gri dim
     _C_PANEL = (10, 12, 20, 235)
-    _C_BORDER = (42, 58, 92, 180)
-    _C_OFF = (42, 48, 72)
+    _C_BORDER = (50, 41, 61, 180)  # Karbon-mor border
+    _C_OFF = (50, 45, 60)  # Mor-karbon off state
 
-    # Gradient panel renkleri
-    _C_PANEL_TOP = (36, 42, 62, 255)
-    _C_PANEL_BOT = (16, 22, 42, 255)
-    _C_BORDER    = (42, 58, 92, 180)
+    # Gradient panel renkleri (Karbon-mor tonları)
+    _C_PANEL_TOP = (28, 24, 35, 255)  # Koyu mor-karbon
+    _C_PANEL_BOT = (16, 13, 20, 255)  # Daha koyu mor-karbon
+    _C_BORDER    = (50, 41, 61, 180)  # Karbon-mor border
 
     def __init__(self):
         self.rect = pygame.Rect(
@@ -38,7 +38,7 @@ class SynergyHud:
         inner_w = self.rect.w - pad * 2
         x0 = self.rect.x + pad
         y0 = self.rect.y
-        usable_h = self.rect.h - 16 - 20  # 16px top/bottom margin, 20px gaps
+        usable_h = self.rect.h - 16 - 18  # 20'den 18'e düşürüldü (gaps azaltıldı)
         phi = 1.618
         
         # 3-Way Golden Ratio Progression:
@@ -50,12 +50,12 @@ class SynergyHud:
         a = b * phi
         
         groups_h = int(a)
-        feed_h = int(b)
+        feed_h = int(b) - 3  # Passives 3px kısaltıldı
         effects_h = usable_h - groups_h - feed_h
         
         self.groups_rect = pygame.Rect(x0, y0 + 8, inner_w, groups_h)
-        self.effects_rect = pygame.Rect(x0, self.groups_rect.bottom + 10, inner_w, effects_h)
-        self.passive_feed_rect = pygame.Rect(x0, self.effects_rect.bottom + 10, inner_w, feed_h)
+        self.effects_rect = pygame.Rect(x0, self.groups_rect.bottom + 8, inner_w, effects_h)  # 10'dan 8'e
+        self.passive_feed_rect = pygame.Rect(x0, self.effects_rect.bottom + 8, inner_w, feed_h)  # 10'dan 8'e
 
         # Önceden hazırlanan gradient yüzeyleri (her frame yeniden çizilmez)
         self._grp_surf  = UIUtils.create_gradient_panel(
@@ -129,11 +129,11 @@ class SynergyHud:
             # Altın oran dengesi için uyumlu boşluk
             row_rect = pygame.Rect(self.groups_rect.x + 6, row_y + 4, self.groups_rect.w - 12, row_h - 8)
 
-            # Arka plan
+            # Arka plan (Karbon-mor tonları)
             if active:
                 bg_col = tuple(c * (50 if flash else 28) // 255 for c in group.color)
             else:
-                bg_col = (22, 26, 42)
+                bg_col = (18, 16, 22)  # Koyu mor-karbon
             pygame.draw.rect(surface, bg_col, row_rect, border_radius=5)
             if active:
                 dim_c = tuple(max(0, c - 80) for c in group.color)
@@ -166,46 +166,57 @@ class SynergyHud:
                 next_tier = f"next {group.next_tier_count} → +{group.next_tier_bonus}"
             font_cache.render_text(
                 surface, next_tier, font_cache.mono(8),
-                (160, 165, 195) if active else self._C_DIM,
+                (180, 170, 200) if active else self._C_DIM,  # Mor-gri ton
                 pygame.Rect(row_rect.x, next_y, row_rect.w - pad_x, 12),
                 align="right",
             )
 
-            # Pip bar — Altıgen (Hexagonal) Pipler
-            pip_r   = max(6, int(row_rect.h * 0.16)) # Boyutları daha büyük
+            # Pip bar — Altıgen (Hexagonal) Pipler - Net Çizim
+            pip_r   = max(6, int(row_rect.h * 0.16))
             pip_x0  = row_rect.x + pad_x
-            pip_gap = int((row_rect.w * 0.55) / 5)  # Genişliğin %55'ine yay
+            pip_gap = int((row_rect.w * 0.55) / 5)
 
             filled_count = int(round(self._display_counts.get(group.key, 0.0)))
             for idx in range(6):
                 pip_cx = pip_x0 + idx * pip_gap + pip_r
                 pip_cy = pip_y + pip_r
                 
-                # Altıgen noktalarını hesapla
+                # Altıgen noktalarını hesapla (integer koordinatlar)
                 hex_points = []
                 for i in range(6):
                     angle = math.radians(60 * i - 30)
-                    px = pip_cx + pip_r * math.cos(angle)
-                    py = pip_cy + pip_r * math.sin(angle)
+                    px = int(pip_cx + pip_r * math.cos(angle))
+                    py = int(pip_cy + pip_r * math.sin(angle))
                     hex_points.append((px, py))
                     
                 if idx < filled_count:
                     pulse = (0.8 + 0.2 * math.sin(self._t * 6)) if flash else 1.0
                     rc = tuple(min(255, int(c * pulse)) for c in group.color)
-                    pygame.draw.polygon(surface, rc, hex_points)
                     
-                    # İç highlight (rim light) için daha küçük altıgen
+                    # Dolu altıgen - gfxdraw ile net çizim
+                    pygame.gfxdraw.filled_polygon(surface, hex_points, rc)
+                    pygame.gfxdraw.aapolygon(surface, hex_points, rc)
+                    
+                    # İç highlight (rim light) - daha belirgin
                     inner_r = max(2, pip_r - 2)
                     inner_points = []
                     for i in range(6):
                         angle = math.radians(60 * i - 30)
-                        px = pip_cx + inner_r * math.cos(angle)
-                        py = pip_cy + inner_r * math.sin(angle)
+                        px = int(pip_cx + inner_r * math.cos(angle))
+                        py = int(pip_cy + inner_r * math.sin(angle))
                         inner_points.append((px, py))
-                    pygame.draw.polygon(surface, (255, 255, 255, 180), inner_points, 1)
+                    
+                    # Beyaz highlight border
+                    highlight_col = (255, 255, 255)
+                    pygame.gfxdraw.aapolygon(surface, inner_points, highlight_col)
                 else:
-                    pygame.draw.polygon(surface, self._C_OFF, hex_points)
-                    pygame.draw.polygon(surface, (60, 65, 95), hex_points, 1)
+                    # Boş altıgen - gfxdraw ile net çizim
+                    pygame.gfxdraw.filled_polygon(surface, hex_points, self._C_OFF)
+                    pygame.gfxdraw.aapolygon(surface, hex_points, self._C_OFF)
+                    
+                    # Border
+                    border_col = (60, 65, 95)
+                    pygame.gfxdraw.aapolygon(surface, hex_points, border_col)
             row_y += row_h
 
     def _render_effects(self, surface: pygame.Surface) -> None:

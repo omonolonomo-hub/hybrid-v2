@@ -21,12 +21,10 @@ class MinimapHUD:
     """
     def __init__(self, screen_w=Screen.W, screen_h=Screen.H):
         # 🎯 Size & Scale - SynergyHud'un altındaki kalan alanı tam kullan
-        # SynergyHud: y=Layout.SYNERGY_HUD_Y, h=Layout.SYNERGY_HUD_H
-        # Minimap başlangıç: Layout.SYNERGY_HUD_Y + Layout.SYNERGY_HUD_H
         self.base_w = Layout.SIDEBAR_LEFT_W  # 340px (sidebar genişliği)
         self.base_h = Screen.H - (Layout.SYNERGY_HUD_Y + Layout.SYNERGY_HUD_H)
         
-        # 📍 Anchor: SynergyHud'un hemen altı (dikişsiz)
+        # 📍 Anchor: SynergyHud'un hemen altı (dikişsiz - boşluk daraltıldı)
         self.anchor_x = 0 
         self.anchor_y = Layout.SYNERGY_HUD_Y + Layout.SYNERGY_HUD_H
         
@@ -41,11 +39,43 @@ class MinimapHUD:
         # Hex grid configuration (lazy initialization)
         self._hex_config = HexGridConfig.from_engine()
         
-        # 🎨 Layout Proportions (Optimized)
-        # Hex Grid: Üst 65% (~300px) - Daha büyük alan, hex grid rahat
-        # Category Dashboard: Alt 35% (~160px) - Kompakt ama okunabilir
-        self.grid_section_h = int(self.base_h * 0.65)
+        # 🎨 Layout Proportions (Optimized - hex grid'e daha fazla alan)
+        # Hex Grid: Üst 68% (artırıldı) - Hex grid için daha fazla alan
+        # Category Dashboard: Alt 32% (azaltıldı) - Kompakt
+        self.grid_section_h = int(self.base_h * 0.68)
         self.category_section_h = self.base_h - self.grid_section_h
+        
+        # ── SynergyHud Stili: Gradient Panel Önbellekleri ──────────────────────
+        from v2.ui.ui_utils import UIUtils
+        
+        # Renk paleti (Karbon-mor tonları - hex grid ile uyumlu)
+        self._C_PANEL_TOP = (28, 24, 35, 255)  # Koyu mor-karbon
+        self._C_PANEL_BOT = (16, 13, 20, 255)  # Daha koyu mor-karbon
+        self._C_BORDER = (50, 41, 61, 180)  # Karbon-mor border
+        
+        # Grid section için gradient panel (üst padding azaltıldı)
+        pad_top = 3  # Üst padding çok azaltıldı (Passives ile boşluk daraldı)
+        pad_side = 6
+        pad_bottom = 6
+        
+        grid_inner_w = self.base_w - pad_side * 2
+        grid_inner_h = self.grid_section_h - pad_top - pad_bottom
+        self._grid_panel = UIUtils.create_gradient_panel(
+            grid_inner_w, grid_inner_h, 
+            self._C_PANEL_TOP, self._C_PANEL_BOT,
+            border_radius=8, border_color=self._C_BORDER
+        )
+        self.grid_panel_rect = pygame.Rect(pad_side, pad_top, grid_inner_w, grid_inner_h)
+        
+        # Category section için gradient panel
+        cat_inner_w = self.base_w - pad_side * 2
+        cat_inner_h = self.category_section_h - pad_side * 2
+        self._cat_panel = UIUtils.create_gradient_panel(
+            cat_inner_w, cat_inner_h,
+            self._C_PANEL_TOP, self._C_PANEL_BOT,
+            border_radius=8, border_color=self._C_BORDER
+        )
+        self.cat_panel_rect = pygame.Rect(pad_side, self.grid_section_h + pad_side, cat_inner_w, cat_inner_h)
 
     def update(self, dt_ms: float, board_cards: dict, mouse_pos: tuple) -> None:
         """ShopScene board_cards verisini iter — GameState'e dokunmaz."""
@@ -92,32 +122,48 @@ class MinimapHUD:
     def render(self, screen):
         self.surface.fill((0, 0, 0, 0))
         
-        # 1. Unified Background (SynergyHud ile dikişsiz dikey blok)
-        pygame.draw.rect(self.surface, (10, 12, 20, 245), (0, 0, self.base_w, self.base_h))
-        # Sol ayırıcı çizgi
-        pygame.draw.line(self.surface, (42, 58, 92, 100), (0, 0), (0, self.base_h), 1)
+        # ── 1. Grid Section Panel (SynergyHud stili) ───────────────────────────
+        self.surface.blit(self._grid_panel, self.grid_panel_rect.topleft)
         
-        # 2. Header (Tactical Minimap Label)
-        header_rect = pygame.Rect(0, 4, self.base_w, 18)
-        font_cache.render_text(self.surface, "TACTICAL OVERVIEW", font_cache.bold(10), 
-                               (100, 140, 220), header_rect, align="center")
-        pygame.draw.line(self.surface, (42, 58, 92, 120), (10, 24), (self.base_w - 10, 24), 1)
+        # Header (Grid panel içinde - küçültülmüş)
+        header_rect = pygame.Rect(self.grid_panel_rect.x, self.grid_panel_rect.y + 2, 
+                                  self.grid_panel_rect.w, 14)
+        font_cache.render_text(self.surface, "TACTICAL OVERVIEW", font_cache.bold(9), 
+                               (160, 140, 200), header_rect, align="center")  # Mor-gri ton
         
-        # 3. Layer A: Tactical Hex Grid (Optimized Center & Size)
-        # Grid merkezi: Genişliğin ortası, grid section'ın ortası
-        cx = self.base_w // 2
-        cy = 28 + (self.grid_section_h - 28) // 2  # Header altından başla, section ortası
-        hex_size = 24  # Daha büyük hexler (22 -> 24, daha fazla alan var)
+        # ── 2. Hex Grid (Grid panel içinde, clipping ile) ──────────────────────
+        # Grid merkezi: Panel içinde ortalanmış, header altında
+        header_h = 18  # 28'den 18'e düşürüldü
+        available_h = self.grid_panel_rect.h - header_h
+        
+        cx = self.grid_panel_rect.x + self.grid_panel_rect.w // 2
+        cy = self.grid_panel_rect.y + header_h + (available_h // 2)
+        
+        # Hex boyutu eski haline (24px)
+        hex_size = 24
+        
+        # Clipping: Sadece grid panel içinde çiz (daha az padding)
+        old_clip = self.surface.get_clip()
+        grid_clip = pygame.Rect(
+            self.grid_panel_rect.x + 1,
+            self.grid_panel_rect.y + header_h,
+            self.grid_panel_rect.w - 2,
+            available_h - 2
+        )
+        self.surface.set_clip(grid_clip)
+        
         self._draw_hex_grid(self.surface, cx, cy, hex_size)
         
-        # 4. Separator Line (Grid ve Category arası)
-        sep_y = self.grid_section_h
-        pygame.draw.line(self.surface, (42, 58, 92, 140), (8, sep_y), (self.base_w - 8, sep_y), 1)
+        # Clipping'i geri yükle
+        self.surface.set_clip(old_clip)
         
-        # 5. Layer B: Category Dashboard (Optimized Compact Layout)
+        # ── 3. Category Section Panel (SynergyHud stili) ───────────────────────
+        self.surface.blit(self._cat_panel, self.cat_panel_rect.topleft)
+        
+        # Category Dashboard (Panel içinde)
         self._draw_category_overlay(self.surface)
 
-        # 6. Final Blit
+        # ── 4. Final Blit ──────────────────────────────────────────────────────
         screen.blit(self.surface, (self.anchor_x, self.anchor_y))
 
     def _draw_hex_grid(self, surface, cx, cy, size):
@@ -144,9 +190,9 @@ class MinimapHUD:
                 # 4. Beyaz kenarlık (net sınır) - daha belirgin
                 self._draw_mini_hex(surface, hx, hy, size - 1, (255, 255, 255, 200), width=1)
             else:
-                # Boş hex - Soluk ama görünür
-                self._draw_mini_hex(surface, hx, hy, size - 2, (30, 38, 55, 120))
-                self._draw_mini_hex(surface, hx, hy, size - 2, (50, 65, 95, 100), width=1)
+                # Boş hex - Mor-karbon tonları
+                self._draw_mini_hex(surface, hx, hy, size - 2, (35, 30, 42, 120))  # Mor-karbon fill
+                self._draw_mini_hex(surface, hx, hy, size - 2, (60, 50, 75, 100), width=1)  # Mor-karbon border
 
     def _boost_saturation(self, color: tuple, factor: float) -> tuple:
         """Rengin doygunluğunu artırır (RGB -> daha canlı RGB)."""
@@ -168,14 +214,24 @@ class MinimapHUD:
         pygame.draw.polygon(surface, color, pts, width)
 
     def _draw_category_overlay(self, surface):
-        """Optimized compact category dashboard with perfect alignment."""
-        # Category section başlangıcı (separator'ın hemen altı)
-        section_start_y = self.grid_section_h + 10
+        """Category dashboard with SynergyHud-style layout."""
+        # Category panel içinde başlangıç (header için yer bırak - küçültülmüş)
+        header_h = 16  # 20'den 16'ya düşürüldü
+        section_start_y = self.cat_panel_rect.y + header_h
         
-        # 6 kategori için 3x2 grid (3 satır, 2 sütun)
-        padding = 10
-        col_w = (self.base_w - padding * 3) // 2  # 2 sütun
-        row_h = (self.category_section_h - padding * 4 - 10) // 3  # 3 satır
+        # Header (küçültülmüş)
+        header_rect = pygame.Rect(self.cat_panel_rect.x, self.cat_panel_rect.y + 2, 
+                                  self.cat_panel_rect.w, 12)
+        font_cache.render_text(surface, "CATEGORIES", font_cache.bold(9), 
+                               (160, 140, 200), header_rect, align="center")  # Mor-gri ton
+        
+        # 6 kategori için 3x2 grid (3 satır, 2 sütun) - daha dar boşluklar
+        padding = 6  # 8'den 6'ya düşürüldü
+        available_w = self.cat_panel_rect.w - padding * 3
+        available_h = self.cat_panel_rect.h - header_h - padding * 4
+        
+        col_w = available_w // 2  # 2 sütun
+        row_h = available_h // 3  # 3 satır
         
         idx = 0
         for cat, data in _CAT_DATA.items():
@@ -187,46 +243,45 @@ class MinimapHUD:
             # Grid pozisyonu (3 satır x 2 sütun)
             row = idx // 2
             col = idx % 2
-            px = padding + col * (col_w + padding)
+            px = self.cat_panel_rect.x + padding + col * (col_w + padding)
             py = section_start_y + row * (row_h + padding)
             
-            # ─ Bant Arkaplanı (Glass) ─
+            # ─ Bant Arkaplanı (Karbon-mor glass) ─
             b_alpha = 90 if count > 0 else 40
             bg_rect = pygame.Rect(px, py, col_w, row_h)
-            pygame.draw.rect(surface, (15, 22, 38, b_alpha), bg_rect, border_radius=5)
+            pygame.draw.rect(surface, (18, 16, 22, b_alpha), bg_rect, border_radius=5)  # Koyu mor-karbon
             
             # Aktif kenarlık
             if count > 0:
                 pygame.draw.rect(surface, (*color, 120), bg_rect, width=1, border_radius=5)
             
-            # ─ Matematiksel Hizalama Hesaplamaları (GÜNCELLEME: Boyutlar artırıldı) ─
-            icon_size = 20
-            icon_padding_left = 10
-            text_padding_left = 10  # Biraz daha açıldı
+            # ─ İçerik Yerleşimi (Dikey ortalanmış) ─
+            icon_size = 18
+            icon_padding = 8
+            text_gap = 8
             
-            # Dikey merkez (row_h'nin tam ortası)
+            # Dikey merkez
             vertical_center = py + (row_h // 2)
             
             # ─ İkon (Sol taraf, dikey ortalanmış) ─
             t_alpha = 255 if count > 0 else 110
-            icon_x = px + icon_padding_left
+            icon_x = px + icon_padding
             icon_y = vertical_center - (icon_size // 2)
             font_cache.render_icon(surface, icon_key, icon_size, (*color, t_alpha), (icon_x, icon_y))
             
-            # ─ Kısaltma (Yeni font uygulandı, boyutu artırıldı) ─
-            abbr_font = font_cache.minimap_cat(14)
-            abbr_x = icon_x + icon_size + text_padding_left
+            # ─ Kısaltma (İkonun yanında) ─
+            abbr_font = font_cache.minimap_cat(13)
+            abbr_x = icon_x + icon_size + text_gap
+            abbr_w = col_w - (abbr_x - px) - 30  # Sayı için yer bırak
             
-            # Metni dikey ortala (font yüksekliğine göre)
-            abbr_rect = pygame.Rect(abbr_x, py, col_w - abbr_x + px - 50, row_h)
+            abbr_rect = pygame.Rect(abbr_x, py, abbr_w, row_h)
             font_cache.render_text(surface, abbr, abbr_font, (*color, t_alpha), 
                                    abbr_rect, align="left", v_align="center")
             
-            # ─ Sayı (Sağ taraf, boyutu artırıldı) ─
+            # ─ Sayı (Sağ taraf, dikey ortalanmış) ─
             if count > 0:
-                count_rect = pygame.Rect(px, py, col_w - 12, row_h)
-                # Sayı fontu daha da büyütüldü
-                font_cache.render_text(surface, str(count), font_cache.bold(22), color, 
+                count_rect = pygame.Rect(px, py, col_w - 8, row_h)
+                font_cache.render_text(surface, str(count), font_cache.bold(18), color, 
                                        count_rect, align="right", v_align="center")
             
             idx += 1

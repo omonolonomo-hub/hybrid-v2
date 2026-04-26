@@ -10,7 +10,6 @@ from v2.core.phase_machine import PhaseMachine
 from v2.core.scene_manager import Scene
 from v2.core.shop_controller import ShopController
 from v2.ui.hand_panel import HandPanel
-from v2.ui.income_preview import IncomePreview
 from v2.ui.info_box import InfoBox
 from v2.ui.lobby_panel import LobbyPanel
 from v2.ui.minimap_hud import MinimapHUD
@@ -49,7 +48,6 @@ class ShopScene(Scene):
         self.synergy_hud = SynergyHud()
         self.lobby_panel = LobbyPanel(player_count=8)
         self.timer_bar = TimerBar()
-        self.income_preview = IncomePreview()
         self.minimap = MinimapHUD(Screen.W, Screen.H)
         self.ft_manager = FloatingTextManager()
 
@@ -90,10 +88,6 @@ class ShopScene(Scene):
         # Persistent surfaces to avoid per-frame allocations
         self._sidebar_bg = pygame.Surface((Layout.SIDEBAR_LEFT_W, Screen.H), pygame.SRCALPHA).convert_alpha()
         self._sidebar_bg.fill((10, 12, 18, 235))
-        
-        ip_r = self.income_preview.rect
-        self._ip_bg = pygame.Surface((ip_r.w + 24, ip_r.h + 8), pygame.SRCALPHA).convert_alpha()
-        self._ip_bg.fill((8, 10, 16, 200))
 
         # Text surface cache for copy labels — invalidated on sync_view()
         self._copy_label_cache: dict[tuple[str, int], pygame.Surface] = {}
@@ -597,7 +591,7 @@ class ShopScene(Scene):
         self._hand_info.render(surface)
 
         surface.blit(self._sidebar_bg, (0, 0))
-        pygame.draw.line(surface, (42, 58, 92, 100), (Layout.SIDEBAR_LEFT_W - 1, 0), (Layout.SIDEBAR_LEFT_W - 1, Screen.H), 1)
+        pygame.draw.line(surface, (50, 41, 61, 100), (Layout.SIDEBAR_LEFT_W - 1, 0), (Layout.SIDEBAR_LEFT_W - 1, Screen.H), 1)  # Karbon-mor
         self.player_hub.render(surface)
         self.synergy_hud.render(surface)
         self.minimap.render(surface)
@@ -606,8 +600,6 @@ class ShopScene(Scene):
         self._last_lobby_players = self._lobby_players
 
         self.timer_bar.render(surface, ratio=0.65)
-        surface.blit(self._ip_bg, (self.income_preview.rect.x - 12, self.income_preview.rect.y - 4))
-        self.income_preview.render(surface, *self._income_data)
         self.ft_manager.render(surface)
 
         if self.drag_state["is_dragging"]:

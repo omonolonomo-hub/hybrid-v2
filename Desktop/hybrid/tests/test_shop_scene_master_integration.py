@@ -13,7 +13,6 @@ from v2.mock.engine_mock import MockGame
 from v2.scenes.shop import ShopScene
 from v2.ui.background_manager import BackgroundManager
 from v2.ui.hex_grid import VALID_HEX_COORDS
-from v2.ui.income_preview import IncomePreview
 from v2.ui import font_cache
 
 REPO_ROOT = os.path.dirname(os.path.dirname(__file__))
@@ -144,12 +143,6 @@ def test_shop_scene_update_keeps_core_hud_in_sync_same_frame():
     scene.update(16)
 
     state = gs.get_public_state()
-    expected_income = IncomePreview._compute(
-        player.gold,
-        player.hp,
-        player.win_streak,
-        state.active_player.hud.interest_multiplier,
-    )["total"]
     synergy_state = scene._current_public_state().active_player.synergy
 
     assert scene.shop_panel.get_card_names() == list(state.active_player.shop.slots)

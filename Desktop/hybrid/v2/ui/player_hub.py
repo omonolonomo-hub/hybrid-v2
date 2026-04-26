@@ -25,11 +25,11 @@ class PlayerHub:
     """SOL PANEL: DCI-REFIT (Digital Combat Interface) Oyuncu Merkezi."""
 
     _MAX_HP: int      = 150
-    # DCI Renk Paleti (Deep Carbon Glass)
-    _C_VOID_BG   = (10, 12, 18, 255) # Deep Carbon base
-    _C_RIM_TOP   = (120, 140, 180, 180) # Üst cam parlaması
+    # DCI Renk Paleti (Karbon-Mor Tonları)
+    _C_VOID_BG   = (16, 13, 20, 255)  # Koyu mor-karbon base
+    _C_RIM_TOP   = (140, 120, 160, 180)  # Mor-gri cam parlaması
     _C_SCANLINE  = (255, 255, 255, 8)
-    _C_TITLE     = (100, 150, 255)
+    _C_TITLE     = (160, 140, 200)  # Mor-gri title
     _C_GOLD_GLOW = (255, 180, 50, 40)
     _C_HP_GLOW   = (255, 50, 50, 30)
 
@@ -67,8 +67,8 @@ class PlayerHub:
         from v2.ui.ui_utils import UIUtils
         self._bg_surf = UIUtils.create_gradient_panel(
             self.inner_rect.w, self.inner_rect.h, 
-            (36, 42, 62, 255), (16, 22, 42, 255),
-            border_radius=8, border_color=(42, 58, 92, 180)
+            (28, 24, 35, 255), (16, 13, 20, 255),  # Karbon-mor gradient
+            border_radius=8, border_color=(50, 41, 61, 180)  # Karbon-mor border
         )
 
     def update_view(self, data: PlayerHubData) -> None:
@@ -138,10 +138,10 @@ class PlayerHub:
         surface.blit(panel_surf, self.inner_rect.topleft)
 
     def _render_header(self, surf):
-        # Synergy stili ortalanmış "SYSTEM HUB" başlığı
-        font_cache.render_text(surf, "SYSTEM HUB", font_cache.bold(10), (100, 140, 220), pygame.Rect(0, 4, surf.get_width(), 14), align="center")
-        # Döngü Sayısı (Sağa dayalı ufak bilgi)
-        font_cache.render_text(surf, f"CYCLE {self._turn}", font_cache.mono(9), (140, 160, 200), pygame.Rect(0, 4, surf.get_width()-10, 14), align="right")
+        # Synergy stili ortalanmış "SYSTEM HUB" başlığı (Mor-gri ton)
+        font_cache.render_text(surf, "SYSTEM HUB", font_cache.bold(10), (160, 140, 200), pygame.Rect(0, 4, surf.get_width(), 14), align="center")
+        # Döngü Sayısı (Sağa dayalı ufak bilgi - Mor-gri ton)
+        font_cache.render_text(surf, f"CYCLE {self._turn}", font_cache.mono(9), (180, 170, 200), pygame.Rect(0, 4, surf.get_width()-10, 14), align="right")
 
     def _render_hp_cell(self, surf):
         # HP Bar - DCI Tactical Energy Cells
@@ -197,7 +197,7 @@ class PlayerHub:
 
         # HP Metni - En sağa hizalı
         txt = f"{int(self._display_hp)}/{self._MAX_HP}"
-        font_cache.render_text(surf, txt, font_cache.bold(11), (220, 230, 255), 
+        font_cache.render_text(surf, txt, font_cache.bold(11), (200, 190, 220), 
                                 pygame.Rect(r.right - 80, r.y, 75, r.h), align="right", v_align="center", shadow=True)
 
     def _render_economy_row(self, surf):
@@ -234,6 +234,6 @@ class PlayerHub:
         p_r = self.pts_rect
         pygame.draw.rect(surf, (18, 22, 35), p_r, border_radius=4)
         # 🧪 [ICON] Strategy (Gear)
-        font_cache.render_icon(surf, "GEAR", 10, (180, 200, 255), (p_r.x + 6, p_r.y + 5))
+        font_cache.render_icon(surf, "GEAR", 10, (160, 140, 200), (p_r.x + 6, p_r.y + 5))
         
-        font_cache.render_text(surf, f"STRAT_SCORE: {int(self._display_pts)}", font_cache.mono(10), (180, 200, 255), p_r, align="center", v_align="center")
+        font_cache.render_text(surf, f"STRAT_SCORE: {int(self._display_pts)}", font_cache.mono(10), (160, 140, 200), p_r, align="center", v_align="center")
