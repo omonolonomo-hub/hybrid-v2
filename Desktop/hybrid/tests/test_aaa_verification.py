@@ -126,7 +126,8 @@ def test_turn_manager_isolated_independence():
         next_card_uid_fn=lambda: 1,
         ai_class=None,
         signals=None,
-        action_log=None
+        action_log=None,
+        game_ref=None,  # Tests run without Game instance
     )
     
     tm.start_turn()

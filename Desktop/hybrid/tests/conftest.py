@@ -30,9 +30,11 @@ def pygame_mock_init():
 def reset_class_state():
     """Her test öncesi/sonrası class-level mutable state'leri sıfırla.
 
-    H3-6: GameState._instance ve SynergyCalculator class-level cache gibi
-    singleton/mutable class değişkenleri test izolasyonunu zedeler.
-    Bu fixture her test öncesi ve sonrası bunları temizler.
+    H3-6: GameState._instance gibi singleton/mutable class değişkenleri 
+    test izolasyonunu zedeler. Bu fixture her test öncesi ve sonrası bunları temizler.
+    
+    Note: SynergyCalculator artık instance-level cache kullanıyor, 
+    bu yüzden global temizlik gerektirmiyor.
     """
     # Test öncesi temizlik
     try:
@@ -40,10 +42,16 @@ def reset_class_state():
         GameState._instance = None
     except ImportError:
         pass
-
+    
     try:
-        from v2.core.synergy_calculator import SynergyCalculator
-        SynergyCalculator.invalidate_cache()
+        from engine_core.card import CardPool
+        CardPool.reset()
+    except ImportError:
+        pass
+    
+    try:
+        from v2.ui.hex_grid_config import reset_default_config
+        reset_default_config()
     except ImportError:
         pass
 
@@ -55,9 +63,15 @@ def reset_class_state():
         GameState._instance = None
     except ImportError:
         pass
-
+    
     try:
-        from v2.core.synergy_calculator import SynergyCalculator
-        SynergyCalculator.invalidate_cache()
+        from engine_core.card import CardPool
+        CardPool.reset()
+    except ImportError:
+        pass
+    
+    try:
+        from v2.ui.hex_grid_config import reset_default_config
+        reset_default_config()
     except ImportError:
         pass

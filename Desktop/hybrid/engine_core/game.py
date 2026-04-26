@@ -94,6 +94,7 @@ class Game:
             verbose=self.verbose,
             signals=self.signals,
             action_log=self.action_log,
+            game_ref=self,
         )
         # NOT: TurnManager.__init__ içinde _deal_starting_hands() çağrılır.
         # Game.__init__ artık _deal_starting_hands() çağırmaz; çift dağıtım olmaz.

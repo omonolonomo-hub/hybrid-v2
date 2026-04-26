@@ -65,6 +65,7 @@ def _build_turn_manager(strategies=None, seed=42):
         next_card_uid_fn=_next_uid,
         ai_class=AI,
         verbose=False,
+        game_ref=None,  # Tests run without Game instance
     )
     return tm, players, market
 

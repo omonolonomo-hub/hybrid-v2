@@ -25,10 +25,15 @@ from __future__ import annotations
 
 import warnings
 import logging
-from typing import Callable, Dict, List, Optional, Tuple
+import weakref
+from typing import Callable, Dict, List, Optional, Tuple, TYPE_CHECKING
 
 from engine_core.board_utils import iter_board_cards, clear_transient_board_state
 from engine_core.progression_system import ProgressionSystem
+
+if TYPE_CHECKING:
+    from engine_core.signals import SignalBus
+    from engine_core.action_log import ActionLog
 
 logger = logging.getLogger(__name__)
 
@@ -51,6 +56,7 @@ class TurnManager:
         verbose: bool = False,
         signals: Optional[SignalBus] = None,
         action_log: Optional[ActionLog] = None,
+        game_ref=None,
     ) -> None:
         """
         Args:
@@ -63,6 +69,7 @@ class TurnManager:
             verbose:            Ayrıntılı log açık/kapalı.
             signals:            SignalBus örneği (opsiyonel).
             action_log:         ActionLog örneği (opsiyonel).
+            game_ref:           Game nesnesi referansı (opsiyonel, weakref tercih edilir).
         """
         self._players          = players
         self._market           = market
@@ -73,6 +80,8 @@ class TurnManager:
         self._verbose          = verbose
         self._signals          = signals
         self._action_log       = action_log
+        # Use weakref to prevent circular references (Game → TurnManager → Game)
+        self._game_ref         = weakref.ref(game_ref) if game_ref is not None else None
 
         # Tur sayacı — tek gerçek kaynak; Game.turn bu değeri property ile okur
         self.turn: int = 0
@@ -225,9 +234,11 @@ class TurnManager:
             player.income()
             # H3-2: Provide market_window and market ref for passive triggers
             player_market = self._current_player_markets.get(player.pid, [])
+            # Dereference weakref safely
+            game = self._game_ref() if self._game_ref is not None else None
             _ctx = {
                 "turn": _turn,
-                "game": None,
+                "game": game,  # ← None or actual Game instance (safe)
                 "market": _market,
                 "market_window": player_market,
                 "card_by_name": self._card_by_name

@@ -231,16 +231,44 @@ class Card:
         return f"Card({self.name} {self.rarity} pwr={self.total_power()} rot={self.rotation})"
 
 
-_card_pool_cache: Optional[List[Card]] = None
+class CardPool:
+    """
+    Singleton factory for card pool with test isolation support.
+    
+    Replaces the problematic global _card_pool_cache that caused:
+    - In-place mutations to leak across simulations
+    - Impossible test isolation without process restart
+    - Hidden state pollution from apply_micro_buff_to_weak_cards
+    """
+    _instance: Optional[List[Card]] = None
+    
+    @classmethod
+    def instance(cls) -> List[Card]:
+        """
+        Get the cached card pool instance.
+        Creates and buffs cards on first call, returns cached copy thereafter.
+        """
+        if cls._instance is None:
+            pool = build_card_pool()
+            apply_micro_buff_to_weak_cards(pool)
+            cls._instance = pool
+        return cls._instance
+    
+    @classmethod
+    def reset(cls) -> None:
+        """
+        Clear the cached pool. Used in tests to ensure isolation.
+        Forces next instance() call to rebuild from scratch.
+        """
+        cls._instance = None
 
 
 def get_card_pool() -> List[Card]:
-    global _card_pool_cache
-    if _card_pool_cache is None:
-        pool = build_card_pool()
-        apply_micro_buff_to_weak_cards(pool)
-        _card_pool_cache = pool
-    return _card_pool_cache
+    """
+    Legacy function maintained for backward compatibility.
+    Returns the singleton CardPool instance.
+    """
+    return CardPool.instance()
 
 
 def build_card_pool() -> List[Card]:

@@ -19,7 +19,7 @@ def _make_fallback_surface(color: tuple, w: int, h: int) -> pygame.Surface:
         points.append((cx + radius * math.cos(angle), cy + radius * math.sin(angle)))
     pygame.draw.polygon(surf, color, points)
     pygame.draw.polygon(surf, (80, 100, 130), points, 2)
-    return surf
+    return surf.convert_alpha()
 
 
 class HandPanel:
@@ -56,7 +56,7 @@ class HandPanel:
         self.info_rect = pygame.Rect(info_x, start_y, info_w, Layout.HAND_CARD_H)
 
         # ── DCI Tactical Shelf (Frameless / Seamless) ──────────────────────
-        self.bg_surface = pygame.Surface((Screen.W, Layout.HAND_PANEL_H), pygame.SRCALPHA)
+        self.bg_surface = pygame.Surface((Screen.W, Layout.HAND_PANEL_H), pygame.SRCALPHA).convert_alpha()
         self.bg_surface.fill((10, 12, 20, 245))
         
         # Üst ayırıcı çizgi (Minimap stili frameless border)
@@ -105,7 +105,7 @@ class HandPanel:
         self._build_flips()    # _card_names hazır olduğunda çağır
 
         # ── Persistent Ghost Layer (per-frame allocation yerine) ───────
-        self._ghost_layer = pygame.Surface((Screen.W, Screen.H), pygame.SRCALPHA)
+        self._ghost_layer = pygame.Surface((Screen.W, Screen.H), pygame.SRCALPHA).convert_alpha()
 
     def _is_evolved_card(self, card_name: str | None) -> bool:
         if not card_name:

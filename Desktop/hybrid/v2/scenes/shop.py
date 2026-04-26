@@ -29,6 +29,7 @@ from v2.ui.hex_grid import (
     render_synergy_lines,
     render_synergy_preview
 )
+from v2.ui.hex_grid_config import HexGridConfig
 from v2.ui.card_flip import CardFlip
 
 
@@ -41,6 +42,7 @@ class ShopScene(Scene):
     def __init__(self, game_state: Optional[GameState] = None):
         super().__init__()
         self._game_state = game_state
+        self._hex_config = HexGridConfig.from_engine()
         self.shop_panel = ShopPanel()
         self.hand_panel = HandPanel()
         self.player_hub = PlayerHub()
@@ -86,11 +88,11 @@ class ShopScene(Scene):
         self.ready_btn_rect = self.shop_panel.ready_rect
 
         # Persistent surfaces to avoid per-frame allocations
-        self._sidebar_bg = pygame.Surface((Layout.SIDEBAR_LEFT_W, Screen.H), pygame.SRCALPHA)
+        self._sidebar_bg = pygame.Surface((Layout.SIDEBAR_LEFT_W, Screen.H), pygame.SRCALPHA).convert_alpha()
         self._sidebar_bg.fill((10, 12, 18, 235))
         
         ip_r = self.income_preview.rect
-        self._ip_bg = pygame.Surface((ip_r.w + 24, ip_r.h + 8), pygame.SRCALPHA)
+        self._ip_bg = pygame.Surface((ip_r.w + 24, ip_r.h + 8), pygame.SRCALPHA).convert_alpha()
         self._ip_bg.fill((8, 10, 16, 200))
 
         # Text surface cache for copy labels — invalidated on sync_view()
@@ -314,8 +316,6 @@ class ShopScene(Scene):
             self._hand_info.set_card(None)
 
     def _drop_dragged_card(self) -> None:
-        from v2.ui.hex_grid import VALID_HEX_COORDS, pixel_to_axial
-
         if self.drag_state["source_panel"] != "hand":
             self.drag_state.update({"is_dragging": False, "source_panel": None, "source_index": -1, "rotation": 0, "card_data": None})
             return
@@ -323,7 +323,7 @@ class ShopScene(Scene):
         src_idx = self.drag_state["source_index"]
         drop_pos = self.drag_state["mouse_pos"]
         coord = pixel_to_axial(*drop_pos, self.camera)
-        if coord in VALID_HEX_COORDS:
+        if coord in self._hex_config.valid_coords:
             outcome = self.controller.place_card_from_hand(src_idx, coord, rotation=self.drag_state["rotation"])
             if outcome.result == ActionResult.OK:
                 state = self.sync_view(outcome.state)
@@ -357,8 +357,8 @@ class ShopScene(Scene):
         for idx, slot_rect in enumerate(self.hand_panel.card_rects):
             if slot_rect.collidepoint(event.pos):
                 card_name = self.hand_panel.get_card_name(idx)
-                from v2.core.card_database import CardDatabase
-                card_data = CardDatabase.get().lookup(card_name) if card_name else None
+                from v2.core.engine_adapter import EngineAdapter
+                card_data = EngineAdapter.get_card_info(card_name) if card_name else None
                 
                 self.drag_state.update(
                     {
@@ -508,10 +508,10 @@ class ShopScene(Scene):
             loader = AssetLoader.get()
             back = loader.get_card_back(card_name)
             front = loader.get_card_front(card_name)
-            from v2.core.card_database import CardDatabase
+            from v2.core.engine_adapter import EngineAdapter
 
-            db = CardDatabase.get().lookup(card_name)
-            evolved = bool(db and getattr(db, "rarity", None) == "E")
+            card_data = EngineAdapter.get_card_info(card_name)
+            evolved = bool(card_data and card_data.rarity == "E")
         except AutochessException:
             back = self._fallback_card_surface((38, 42, 62), w, h)
             front = self._fallback_card_surface((20, 60, 100), w, h)
@@ -533,7 +533,7 @@ class ShopScene(Scene):
             for i in range(6)
         ]
         pygame.draw.polygon(surf, color, points)
-        return surf
+        return surf.convert_alpha()
 
     def _build_hub_data(self, state) -> PlayerHubData:
         hud = state.active_player.hud
@@ -628,15 +628,15 @@ class ShopScene(Scene):
             self.endgame_overlay.render(surface)
 
     def _spawn_placement_float(self, coord: tuple[int, int], card_name: str, new_synergy_total: int | None = None) -> None:
-        from v2.core.card_database import CardDatabase
+        from v2.core.engine_adapter import EngineAdapter
         from v2.ui.hex_grid import axial_to_pixel
 
         dom_grp = "EXISTENCE"
         try:
-            data = CardDatabase.get().lookup(card_name)
-            if data:
+            card_data = EngineAdapter.get_card_info(card_name)
+            if card_data:
                 counts = defaultdict(int)
-                for stat, value in data.stats.items():
+                for stat, value in card_data.stats.items():
                     if value > 0:
                         group = STAT_TO_GROUP.get(stat)
                         if group:

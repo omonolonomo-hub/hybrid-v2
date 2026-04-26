@@ -106,8 +106,9 @@ def test_valid_hand_drop_places_card_and_syncs_panels(monkeypatch):
         pygame.event.Event(pygame.MOUSEBUTTONUP, button=1, pos=target_pos)
     )
 
-    assert gs.get_board_cards()[target_coord]["name"] == card_name
-    assert gs.get_board_rotations()[target_coord] == 0
+    state = gs.get_public_state()
+    assert state.active_player.board_cards[target_coord]["name"] == card_name
+    assert state.active_player.board_cards[target_coord]["rotation"] == 0
     assert game.players[0].hand[slot_idx] is None
     assert scene.hand_panel.get_card_name(slot_idx) is None
     assert scene.player_hub._board_used == 1
@@ -142,22 +143,23 @@ def test_shop_scene_update_keeps_core_hud_in_sync_same_frame():
     scene.sync_view()
     scene.update(16)
 
+    state = gs.get_public_state()
     expected_income = IncomePreview._compute(
         player.gold,
         player.hp,
         player.win_streak,
-        gs.get_interest_multiplier(0),
+        state.active_player.hud.interest_multiplier,
     )["total"]
     synergy_state = scene._current_public_state().active_player.synergy
 
-    assert scene.shop_panel.get_card_names() == gs.get_shop(0)
-    assert scene.hand_panel.get_card_names() == gs.get_hand(0)
+    assert scene.shop_panel.get_card_names() == list(state.active_player.shop.slots)
+    assert scene.hand_panel.get_card_names() == list(state.active_player.hand.slots)
     assert scene.player_hub._gold == player.gold
     assert scene.player_hub._hp == player.hp
     assert scene.player_hub._streak == player.win_streak
     assert scene.player_hub._total_pts == player.total_pts
     assert scene.player_hub._turn == game.turn
-    assert scene.player_hub._board_used == len(gs.get_board_cards()) == 2
+    assert scene.player_hub._board_used == len(state.active_player.board_cards) == 2
     assert scene.player_hub._next_gold == expected_income
     assert {group.key for group in synergy_state.groups} == {"MIND", "CONNECTION", "EXISTENCE"}
     assert sum(group.count for group in synergy_state.groups) > 0

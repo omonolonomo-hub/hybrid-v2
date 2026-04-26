@@ -144,7 +144,8 @@ def test_combat_engine_synergy_matches_synergy_calculator():
         p0.board.place(coord, card)
 
     engine_score = calculate_group_synergy_bonus(p0.board)
-    ui_score = SynergyCalculator.compute(
+    calc = SynergyCalculator()
+    ui_score = calc.compute(
         _board_snapshot(p0.board), CardDatabase.get()
     ).total
 
@@ -167,5 +168,6 @@ def test_empty_board_synergy_is_zero_in_combat_context():
 
     # SynergyCalculator ile de parity kontrolü
     CardDatabase.initialize(JSON_PATH)
-    ui_result = SynergyCalculator.compute({}, CardDatabase.get())
+    calc = SynergyCalculator()
+    ui_result = calc.compute({}, CardDatabase.get())
     assert ui_result.total == 0

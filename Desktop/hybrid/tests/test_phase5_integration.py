@@ -84,5 +84,6 @@ def test_sync_state_pulls_hp_and_gold_from_real_engine(mock_engine_and_state):
     engine.players[0].gold = 10
 
     # Phase 5 senkronizasyonu
-    assert gs.get_hp(0) == 55
-    assert gs.get_gold(0) == 10
+    state = gs.get_public_state()
+    assert state.active_player.hp == 55
+    assert state.active_player.gold == 10

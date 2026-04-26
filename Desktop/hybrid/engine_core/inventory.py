@@ -69,3 +69,19 @@ class Inventory:
         if 0 <= index < len(self.hand):
             self.hand[index] = None
             self._emit_change()
+    
+    def clear_slots_batch(self, indices: List[int]) -> None:
+        """Clears multiple hand slots without emitting signals for each.
+        
+        Emits only ONE signal after all slots are cleared, preventing
+        N-signal emission when clearing N cards (e.g., during place_cards).
+        
+        Args:
+            indices: List of slot indices to clear
+        """
+        for index in indices:
+            if 0 <= index < len(self.hand):
+                self.hand[index] = None
+        # Single signal emission after all clears
+        if indices:
+            self._emit_change()

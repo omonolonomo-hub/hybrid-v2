@@ -1,12 +1,44 @@
 import logging
-from typing import Any, Dict, List, Optional, Tuple
+from typing import Any, Dict, List, Optional, Tuple, NamedTuple
 
-from engine_core.constants import CARD_COSTS
+from engine_core.constants import (
+    CARD_COSTS,
+    STARTING_HP,
+    CATEGORY_DISPLAY_MAP,
+    COPY_THRESH,
+    COPY_THRESH_C,
+    SYNERGY_THRESHOLDS,
+    BOARD_RADIUS,
+)
 from engine_core.game import Game
 from engine_core.card import Card
+from engine_core.synergy import tier_bonus as _engine_tier_bonus
+from engine_core.board import hex_coords as _engine_hex_coords
 from v2.core.action_result import ActionResult
 
 logger = logging.getLogger(__name__)
+
+
+class EngineConstants(NamedTuple):
+    """Immutable snapshot of engine constants to prevent direct engine_core imports."""
+    STARTING_HP: int
+    CATEGORY_DISPLAY_MAP: Dict[str, str]
+    COPY_THRESH: Tuple[int, int]
+    COPY_THRESH_C: Tuple[int, int]
+    SYNERGY_THRESHOLDS: Tuple[int, ...]
+    CARD_COSTS: Dict[str, int]
+    BOARD_RADIUS: int
+
+
+class CardDataSnapshot(NamedTuple):
+    """Immutable snapshot of card data to prevent direct CardDatabase access."""
+    name: str
+    category: str
+    rarity: str
+    stats: Dict[str, int]
+    passive_type: str
+    passive_effect: str
+    synergy_group: str
 
 
 class EngineAdapter:
@@ -106,6 +138,9 @@ class EngineAdapter:
             economy = getattr(player, "economy", None)
             if economy is None or not economy.spend_gold(2):
                 return False
+            
+            # Track stats for analytics (consistent with buy_card pattern)
+            player.stats["gold_spent"] = player.stats.get("gold_spent", 0) + 2
                 
             self._engine.market.deal_market_window(player, 5)
             
@@ -139,16 +174,14 @@ class EngineAdapter:
             if card is None:
                 return ActionResult.ERR_INVALID_HAND_IDX
 
-            # Actual Card object handling
-            if isinstance(card, str):
-                # Fallback: create a card if we somehow got a string (should not happen in production)
-                card_template = getattr(self._engine, "card_by_name", {}).get(card)
-                if card_template:
-                    card = card_template.clone()
-                    card.uid = self._engine.next_card_uid()
-                else:
-                    logger.error("Could not resolve card name %s to Card object", card)
-                    return ActionResult.ERR_ENGINE_EXCEPTION
+            # Type safety: hand must contain Card objects, not strings
+            if not isinstance(card, Card):
+                logger.error(
+                    "perform_placement: hand[%d] is not a Card object (type=%s). "
+                    "This indicates a data integrity violation. Rejecting placement.",
+                    hand_index, type(card).__name__
+                )
+                return ActionResult.ERR_ENGINE_EXCEPTION
 
             # Update rotation
             card.rotation = rotation % 6
@@ -297,17 +330,22 @@ class EngineAdapter:
 
     def reroll_market(self, player_index: int = 0, cost: int = 2) -> bool:
         """Spend `cost` gold to refresh the market window for the player.
+        
         Returns True on success, False if the player cannot afford it.
-        Delegates to perform_reroll() for cost=2; handles custom cost inline."""
-        if cost == 2:
-            return self.perform_reroll(player_index)
-        # Custom cost path (future use)
-        player = self.get_player(player_index)
-        if not player or player.gold < cost:
+        
+        SECURITY: Always delegates to perform_reroll() which uses Economy.spend_gold()
+        for proper validation, stats tracking, and signal emission. Custom cost paths
+        have been removed to prevent economy API bypass exploits.
+        """
+        if cost != 2:
+            logger.warning(
+                "reroll_market called with non-standard cost=%d. "
+                "Only cost=2 is supported. Rejecting operation.",
+                cost
+            )
             return False
-        player.gold -= cost
-        self._engine.market.deal_market_window(player, 5)
-        return True
+        
+        return self.perform_reroll(player_index)
 
     def get_display_name(self, pid: int) -> str:
         """Return the UI-friendly name for a player. Avoids AttributeError on
@@ -316,3 +354,66 @@ class EngineAdapter:
             if p.pid == pid:
                 return getattr(p, "name", f"P{pid}")
         return f"P{pid}"
+
+    @staticmethod
+    def get_constants() -> EngineConstants:
+        """Return immutable snapshot of engine constants.
+        
+        This prevents UI/view layers from directly importing engine_core.constants.
+        All constant access should go through this method to maintain layer isolation.
+        """
+        return EngineConstants(
+            STARTING_HP=STARTING_HP,
+            CATEGORY_DISPLAY_MAP=dict(CATEGORY_DISPLAY_MAP),
+            COPY_THRESH=COPY_THRESH,
+            COPY_THRESH_C=COPY_THRESH_C,
+            SYNERGY_THRESHOLDS=SYNERGY_THRESHOLDS,
+            CARD_COSTS=dict(CARD_COSTS),
+            BOARD_RADIUS=BOARD_RADIUS,
+        )
+
+    @staticmethod
+    def get_card_info(name: str) -> Optional[CardDataSnapshot]:
+        """Return immutable snapshot of card data from CardDatabase.
+        
+        This prevents UI/view layers from directly importing CardDatabase.
+        All card data access should go through this method to maintain layer isolation.
+        
+        Returns None if card not found or database not initialized.
+        """
+        try:
+            from v2.core.card_database import CardDatabase
+            db = CardDatabase.get()
+            card = db.lookup(name)
+            if card is None:
+                return None
+            return CardDataSnapshot(
+                name=card.name,
+                category=card.category,
+                rarity=card.rarity,
+                stats=dict(card.stats),
+                passive_type=card.passive_type,
+                passive_effect=card.passive_effect,
+                synergy_group=card.synergy_group,
+            )
+        except Exception:
+            logger.exception("EngineAdapter.get_card_info failed for name=%s", name)
+            return None
+
+    @staticmethod
+    def tier_bonus(threshold: int) -> int:
+        """Calculate tier bonus for a given threshold.
+        
+        Delegates to engine_core.synergy.tier_bonus to ensure UI and engine
+        use the same bonus calculation logic.
+        """
+        return _engine_tier_bonus(threshold)
+
+    @staticmethod
+    def get_hex_coords(radius: int) -> List[Tuple[int, int]]:
+        """Return list of valid hex coordinates for the given radius.
+        
+        Delegates to engine_core.board.hex_coords to ensure UI and engine
+        use the same coordinate system.
+        """
+        return _engine_hex_coords(radius)

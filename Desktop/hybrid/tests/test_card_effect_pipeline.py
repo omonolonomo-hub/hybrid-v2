@@ -225,7 +225,8 @@ def test_board_snapshot_and_elimination_share_same_resolved_truth():
     engine = SimpleNamespace(players=[player], turn=1, last_combat_results=[], market=None, signals=MagicMock())
     gs.hook_engine(engine)
 
-    snapshot = gs.get_board_cards(0)
+    state = gs.get_public_state()
+    snapshot = dict(state.active_player.board_cards)
 
     assert snapshot[(0, 0)]["stats"]["Power"] == 2
     assert card.is_eliminated() is False

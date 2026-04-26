@@ -153,6 +153,8 @@ class Player:
         if not free: return
         _choice = rng.choice if rng is not None else random.choice
         placed = 0
+        cleared_indices = []  # Track which slots to clear
+        
         for i in range(len(self.inventory.hand)):
             if placed >= PLACE_PER_TURN or not free:
                 break
@@ -162,12 +164,13 @@ class Player:
             
             coord = _choice(free)
             self.board.place(coord, card)
-            self.inventory.hand[i] = None
+            cleared_indices.append(i)  # Mark for clearing
             free.remove(coord)
             placed += 1
-            
-        if placed > 0:
-            self.inventory._emit_change()
+        
+        # Batch clear: N cards → 1 signal instead of N signals
+        if cleared_indices:
+            self.inventory.clear_slots_batch(cleared_indices)
 
     def check_copy_strengthening(self, turn: int, trigger_passive_fn=None):
         warnings.warn(

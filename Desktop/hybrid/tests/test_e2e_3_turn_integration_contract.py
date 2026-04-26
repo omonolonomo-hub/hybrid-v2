@@ -62,15 +62,20 @@ def test_e2e_real_engine_hp_syncs_after_combat(gs_with_real_engine):
     """
     Phase 5 Madde 35: HP değerleri engine ile UI arasında eşleşmeli.
     Arrange: preparation_phase + combat_phase çalıştırıldı.
-    Act:     gs.get_hp(pid) çağrılır.
+    Act:     PublicState üzerinden HP okunur.
     Assert:  Her oyuncu için UI'dan okunan HP, engine'deki ile aynı olmalı.
     """
     gs, game = gs_with_real_engine
     game.preparation_phase()
     game.combat_phase()
 
+    state = gs.get_public_state()
     for p in game.players:
-        assert gs.get_hp(p.pid) == p.hp
+        if p.pid == state.view_index:
+            assert state.active_player.hp == p.hp
+        else:
+            # Non-active players: read from engine directly via adapter
+            assert gs._adapter.get_player_hp(p.pid) == p.hp
 
 
 def test_e2e_real_engine_combat_results_have_correct_shape(gs_with_real_engine):
@@ -118,6 +123,7 @@ def test_e2e_3_turn_full_game_loop_no_crash(gs_with_real_engine):
         assert isinstance(alive, list)
         for pid in alive:
             assert isinstance(pid, int)
-            assert gs.get_hp(pid) > 0, f"Tur {turn_num}: P{pid} öldü ama hala alive listesinde!"
+            hp = gs._adapter.get_player_hp(pid) if gs._adapter else 0
+            assert hp > 0, f"Tur {turn_num}: P{pid} öldü ama hala alive listesinde!"
 
     assert game.turn == 3

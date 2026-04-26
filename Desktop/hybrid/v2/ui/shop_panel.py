@@ -23,7 +23,7 @@ class ShopPanelAction:
     card_name: str | None = None
 
 
-def _make_fallback_surface(color: tuple, w: int, h: int) -> pygame.Surface:
+def _make_fallback_surface(color: tuple, w: int, h: h) -> pygame.Surface:
     surf = pygame.Surface((w, h), pygame.SRCALPHA)
     cx, cy = w // 2, h // 2
     radius = h / 2
@@ -36,7 +36,7 @@ def _make_fallback_surface(color: tuple, w: int, h: int) -> pygame.Surface:
     ]
     pygame.draw.polygon(surf, color, points)
     pygame.draw.polygon(surf, (60, 65, 75), points, 2)
-    return surf
+    return surf.convert_alpha()
 
 
 class ShopPanel:
@@ -88,7 +88,7 @@ class ShopPanel:
         self.info_rect = pygame.Rect(info_x, start_y, info_w, Layout.SHOP_CARD_H)
         # ──────────────────────────────────────────────────────────────────
 
-        self.bg_surface = pygame.Surface((Screen.W, Layout.SHOP_PANEL_H), pygame.SRCALPHA)
+        self.bg_surface = pygame.Surface((Screen.W, Layout.SHOP_PANEL_H), pygame.SRCALPHA).convert_alpha()
         self.bg_surface.fill((10, 12, 20, 245))
         
         # Alt ayırıcı çizgi (Minimap stili frameless border)

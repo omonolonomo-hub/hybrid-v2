@@ -2,12 +2,9 @@ from __future__ import annotations
 
 from typing import Any, Dict, List, Optional, Tuple
 
-from engine_core.constants import (
-    STARTING_HP, CATEGORY_DISPLAY_MAP, COPY_THRESH, COPY_THRESH_C, SYNERGY_THRESHOLDS
-)
-from engine_core.synergy import tier_bonus as _engine_tier_bonus
 from v2.constants import Colors, Paths
 from v2.core.card_database import CardDatabase
+from v2.core.engine_adapter import EngineAdapter
 from v2.core.exceptions import AutochessException, DatabaseError
 from v2.core.synergy_calculator import SynergyCalculator, SynergyComputeResult
 from v2.core.public_state import (
@@ -33,9 +30,12 @@ class UIAdapter:
         ("CONNECTION", "CONNECTION", "CONN", Colors.CONNECTION),
         ("EXISTENCE",  "EXISTENCE",  "EXST", Colors.EXISTENCE),
     ]
-    # Tier hesaplaması artık engine_core/synergy.tier_bonus()'a delegate eder.
-    # Hardcoded _TIER_THRESHOLDS kaldırıldı; engine_core.constants.SYNERGY_THRESHOLDS kullanılır (H3-1).
-    _TIER_THRESHOLDS = SYNERGY_THRESHOLDS
+
+    def __init__(self):
+        """Initialize UIAdapter with instance-level SynergyCalculator and engine constants."""
+        self._synergy_calculator = SynergyCalculator()
+        # Cache engine constants to avoid repeated calls
+        self._constants = EngineAdapter.get_constants()
 
     @staticmethod
     def _iter_board_items(player):
@@ -65,16 +65,15 @@ class UIAdapter:
     def _safe_float(value: Any, default: float = 0.0) -> float:
         return float(value) if isinstance(value, (int, float)) else default
 
-    @classmethod
-    def _next_tier(cls, count: int) -> tuple[int | None, int | None]:
+    def _next_tier(self, count: int) -> tuple[int | None, int | None]:
         """Bir sonraki tier eşik değerini ve bonusunu döndür.
 
-        Bonus hesaplaması engine_core/synergy.tier_bonus()'a delegate eder.
+        Bonus hesaplaması EngineAdapter.tier_bonus()'a delegate eder.
         Böylece UI ile engine arasındaki tier bonus değerleri her zaman eşleşir.
         """
-        for threshold in cls._TIER_THRESHOLDS:
+        for threshold in self._constants.SYNERGY_THRESHOLDS:
             if count < threshold:
-                return threshold, _engine_tier_bonus(threshold)
+                return threshold, EngineAdapter.tier_bonus(threshold)
         return None, None
 
     def build_public_state(self, adapter, store, formatter) -> PublicState:
@@ -105,7 +104,7 @@ class UIAdapter:
         empty_shop = ShopViewState(slots=tuple([None] * 5), is_locked=False, rarity_probabilities={"1": 100.0})
         empty_hand = HandViewState(slots=tuple([None] * 6))
         empty_hud = PlayerHudViewState(
-            hp=STARTING_HP,
+            hp=self._constants.STARTING_HP,
             gold=10,
             win_streak=0,
             total_pts=0,
@@ -194,7 +193,7 @@ class UIAdapter:
         # Synergy TEK yerde hesaplanır — SynergyCalculator tek kaynak
         try:
             db = CardDatabase.get()
-            syn_result = SynergyCalculator.compute(board_cards, db)
+            syn_result = self._synergy_calculator.compute(board_cards, db)
         except AutochessException:
             # CardDatabase başlatılmadıysa ya da hesaplama hatası: boş synergy dön
             syn_result = SynergyComputeResult.empty()
@@ -360,7 +359,7 @@ class UIAdapter:
                 {
                     "name": f"P{pid}",
                     "hp": adapter.get_player_hp(pid),
-                    "max_hp": STARTING_HP,
+                    "max_hp": self._constants.STARTING_HP,
                     "gold": adapter.get_player_gold(pid),
                     "rank": 0,
                     "index": pid,
@@ -401,7 +400,7 @@ class UIAdapter:
             card = db.lookup(info["name"])
             if card is None:
                 continue
-            category = CATEGORY_DISPLAY_MAP.get(card.category, card.category.upper().split(" & ")[0])
+            category = self._constants.CATEGORY_DISPLAY_MAP.get(card.category, card.category.upper().split(" & ")[0])
             counts[category] = counts.get(category, 0) + 1
         return counts
 
@@ -412,7 +411,7 @@ class UIAdapter:
         board_cards: Dict[Tuple[int, int], Dict[str, Any]],
     ) -> List[Dict[str, Any]]:
         board = getattr(player, "board", None)
-        thresholds = COPY_THRESH_C if (board and getattr(board, "has_catalyst", False)) else COPY_THRESH
+        thresholds = self._constants.COPY_THRESH_C if (board and getattr(board, "has_catalyst", False)) else self._constants.COPY_THRESH
         
         if turn not in thresholds:
             return []
@@ -432,7 +431,3 @@ class UIAdapter:
             if turn == thresholds[1] and count >= 3 and not applied.get("3", False):
                 milestones.append({"card": card_name, "trigger": "copy_3", "count": count, "turn": turn})
         return milestones
-
-    def _compute_next_gold(self, gold: int, hp: int, win_streak: int, interest_multiplier: float) -> int:
-        """Deprecated: use player.economy.calculate_total_next_income instead."""
-        return 0

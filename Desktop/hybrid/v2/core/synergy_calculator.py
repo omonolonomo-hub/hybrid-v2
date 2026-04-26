@@ -62,14 +62,17 @@ class SynergyCalculator:
 
     P1-2: Board-hash based caching avoids redundant BFS recomputation.
     Cache is automatically invalidated when board_cards content changes.
+    
+    IMPORTANT: Cache is instance-level to prevent memory leaks and data races
+    across multiple GameState instances (e.g., during restart or parallel simulations).
     """
 
-    # Class-level cache (shared across instances since compute is @classmethod)
-    _last_board_hash: Optional[int] = None
-    _cached_result: Optional[SynergyComputeResult] = None
+    def __init__(self):
+        """Initialize instance-level cache."""
+        self._last_board_hash: Optional[int] = None
+        self._cached_result: Optional[SynergyComputeResult] = None
 
-    @classmethod
-    def _compute_board_hash(cls, board_cards: Dict[Coord, Dict]) -> int:
+    def _compute_board_hash(self, board_cards: Dict[Coord, Dict]) -> int:
         """Compute a hash from board state for cache invalidation.
 
         Uses frozenset of (coord, name, rotation) tuples for stable hashing.
@@ -79,19 +82,17 @@ class SynergyCalculator:
             for k, v in board_cards.items()
         ))
 
-    @classmethod
-    def invalidate_cache(cls) -> None:
+    def invalidate_cache(self) -> None:
         """Explicitly invalidate the synergy cache.
 
         Call this when board state changes are known but the hash
         hasn't naturally changed (e.g., external card data mutation).
         """
-        cls._last_board_hash = None
-        cls._cached_result = None
+        self._last_board_hash = None
+        self._cached_result = None
 
-    @classmethod
     def compute(
-        cls,
+        self,
         board_cards: Dict[Coord, Dict],
         db,
     ) -> SynergyComputeResult:
@@ -99,9 +100,9 @@ class SynergyCalculator:
             return SynergyComputeResult.empty()
 
         # Cache check: return cached result if board hasn't changed
-        board_hash = cls._compute_board_hash(board_cards)
-        if board_hash == cls._last_board_hash and cls._cached_result is not None:
-            return cls._cached_result
+        board_hash = self._compute_board_hash(board_cards)
+        if board_hash == self._last_board_hash and self._cached_result is not None:
+            return self._cached_result
 
         coord_list = list(board_cards.keys())
         coord_set  = set(coord_list)
@@ -136,7 +137,7 @@ class SynergyCalculator:
         )
 
         # Store in cache
-        cls._last_board_hash = board_hash
-        cls._cached_result = computed
+        self._last_board_hash = board_hash
+        self._cached_result = computed
 
         return computed

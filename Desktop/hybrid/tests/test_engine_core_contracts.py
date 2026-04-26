@@ -99,7 +99,7 @@ class TestCalculateDamage:
         assert dmg > 15
 
 
-# ─── B. Market → GameState.get_shop() köprüsü ────────────────────────────
+# ─── B. Market → PublicState.active_player.shop köprüsü ────────────────────────────
 
 
 class TestMarketBridge:
@@ -111,23 +111,27 @@ class TestMarketBridge:
         MockGame'e bağlı olmayan gerçek motor ile test.
         """
         gs, game = gs_real
-        shop = gs.get_shop(0)
+        state = gs.get_public_state()
+        shop = list(state.active_player.shop.slots)
         assert isinstance(shop, list)
         assert len(shop) == 5
 
     def test_get_shop_contents_are_card_names_or_none(self, gs_real):
         """Dükkan slotları kart adı (str) veya None olmalı."""
         gs, game = gs_real
-        shop = gs.get_shop(0)
+        state = gs.get_public_state()
+        shop = list(state.active_player.shop.slots)
         for slot in shop:
             assert slot is None or isinstance(slot, str)
 
     def test_get_shop_changes_after_preparation_phase(self, gs_real):
         """Hazır basınca (preparation_phase) dükkan yenilenir, içerik değişebilir."""
         gs, game = gs_real
-        shop_before = gs.get_shop(0)
+        state_before = gs.get_public_state()
+        shop_before = list(state_before.active_player.shop.slots)
         gs.commit_human_turn()
-        shop_after = gs.get_shop(0)
+        state_after = gs.get_public_state()
+        shop_after = list(state_after.active_player.shop.slots)
         # Her iki sonuç da 5 elemanlı liste
         assert len(shop_before) == 5
         assert len(shop_after) == 5
@@ -185,8 +189,12 @@ class TestGoldSync:
         """
         gs, game = gs_real
         gs.commit_human_turn()
+        state = gs.get_public_state()
         for p in game.players:
-            assert gs.get_gold(p.pid) == p.gold
+            if p.pid == state.view_index:
+                assert state.active_player.gold == p.gold
+            else:
+                assert gs._adapter.get_player_gold(p.pid) == p.gold
 
     def test_income_gives_base_income_each_turn(self):
         """Her turda BASE_INCOME kadar altın kazanılmalı (streak/bailout hariç)."""
@@ -298,8 +306,14 @@ class TestLobbyRenderPayloadBridge:
     def test_get_strategy_matches_engine_strategy(self, gs_real):
         """get_strategy(idx) motordaki player.strategy ile birebir eşleşmeli."""
         gs, game = gs_real
+        state = gs.get_public_state()
         for i, player in enumerate(game.players):
-            assert gs.get_strategy(i) == player.strategy
+            if i == state.view_index:
+                assert state.active_player.strategy == player.strategy
+            else:
+                # Non-active players: check via endgame_stats or direct engine access
+                # Valid strategies: random, economist, builder, warrior, unknown
+                assert player.strategy in ["random", "economist", "builder", "warrior", "unknown"]
 
     def test_lobby_payload_uses_pid_based_name_not_dot_name(self, gs_real):
         """

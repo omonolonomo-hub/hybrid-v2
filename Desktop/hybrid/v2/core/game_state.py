@@ -13,9 +13,16 @@ logger = logging.getLogger(__name__)
 
 class GameState:
     """
-    Faz 4: game_state.py slim-down.
-    Geriye yalnızca engine mutasyon metodları ve cache yönetimi kaldı.
-    Okuma erişimi için get_public_state() → PublicState kullanılmalıdır.
+    Faz 4: game_state.py slim-down + H4-1 accessor cleanup.
+    
+    Public API:
+    - Mutations: buy_card, reroll_market, place_card, commit_human_turn, etc.
+    - Reads: get_public_state() → PublicState (single source of truth)
+    - Properties: view_index, place_locked
+    
+    Legacy accessor methods (get_hp, get_gold, get_hand, get_shop, get_board_cards,
+    get_board_rotations, get_strategy, get_interest_multiplier) have been removed.
+    All UI reads now go through get_public_state().
     """
 
     def __init__(self):
@@ -27,16 +34,15 @@ class GameState:
         #   _invalidate_cache() çağrılır; sonraki get_public_state() yeniden inşa eder.
         self._cached_public_state: Optional[PublicState] = None
 
-    def __del__(self):
-        """Cleanup signal observers to prevent memory leaks."""
-        self._detach_engine_signals()
-
     def hook_engine(self, engine):
         self._adapter = EngineAdapter(engine)
         self._attach_engine_signals()
 
     def cleanup(self) -> None:
-        """Explicitly cleanup resources. Call before discarding GameState instance."""
+        """Explicitly cleanup resources. Call before discarding GameState instance.
+        
+        This method is idempotent and can be safely called multiple times.
+        """
         self._detach_engine_signals()
         self._cached_public_state = None
         self._adapter = None
@@ -86,12 +92,15 @@ class GameState:
     def _invalidate_cache(self, **kwargs) -> None:
         """Herhangi bir mutasyon sonrası çağrılır; bir sonraki get_public_state() yeniden inşa eder.
         
-        Sinyal pid içeriyorsa, sadece pid=0 (insan oyuncu) için cache invalidate edilir.
+        Sinyal pid içeriyorsa, sadece view_index ile eşleşen oyuncu için cache invalidate edilir.
         Global sinyaller (pid içermeyenler) her zaman invalidate eder.
+        
+        SECURITY FIX: Eskiden pid != 0 kontrolü yapıyordu, bu spectator modunda stale data
+        gösterilmesine neden oluyordu. Artık view_index ile karşılaştırılıyor.
         """
         pid = kwargs.get("pid")
-        if pid is not None and pid != 0:
-            # AI oyuncuların mutasyonları UI cache'ini bozmaz (performans optimizasyonu)
+        if pid is not None and pid != self._store.view_index:
+            # Sadece izlenen oyuncunun mutasyonu cache'i invalidate eder
             return
             
         self._cached_public_state = None
@@ -132,6 +141,8 @@ class GameState:
     def buy_card_from_slot(self, player_index: int, slot_index: int) -> ActionResult:
         if player_index != 0:
             return ActionResult.ERR_NOT_OWNER
+        if self._store.phase != "STATE_PREPARATION":
+            return ActionResult.ERR_NOT_IN_PREP_PHASE
         if not self._adapter:
             return ActionResult.ERR_ENGINE_EXCEPTION
         result = self._adapter.perform_buy_card(player_index, slot_index)
@@ -210,50 +221,6 @@ class GameState:
         """Havuz kopya sayaçları — PublicState'te karşılığı yoktur."""
         return self._adapter.get_pool_copies() if self._adapter else {}
 
-    # ------------------------------------------------------------------ H4-1: Accessors
-    def get_board_cards(self, player_index: Optional[int] = None) -> dict:
-        """Oyuncunun tahtasındaki kartları (coord -> dict) döner."""
-        state = self.get_public_state()
-        if player_index is None or (self._adapter and player_index == state.view_index):
-            return dict(state.active_player.board_cards)
-        
-        # Fallback for non-active player
-        player = self._get_player(player_index)
-        if player and hasattr(player, "board"):
-            return {
-                coord: {
-                    "name": getattr(card, "name", str(card)),
-                    "stats": getattr(card, "stats", {}),
-                    "rotation": getattr(card, "rotation", 0)
-                } 
-                for coord, card in player.board.grid.items()
-            }
-        return {}
-
-    def get_board_rotations(self, player_index: Optional[int] = None) -> dict:
-        cards = self.get_board_cards(player_index)
-        return {coord: info.get("rotation", 0) for coord, info in cards.items()}
-
-    def get_hp(self, player_index: Optional[int] = None) -> int:
-        if player_index is None:
-            return self.get_public_state().active_player.hp
-        return self._adapter.get_player_hp(player_index) if self._adapter else 0
-
-    def get_gold(self, player_index: Optional[int] = None) -> int:
-        if player_index is None:
-            return self.get_public_state().active_player.gold
-        return self._adapter.get_player_gold(player_index) if self._adapter else 0
-
-    def get_hand(self, player_index: Optional[int] = None) -> list:
-        if player_index is None:
-            return list(self.get_public_state().active_player.hand.slots)
-        return self._adapter.get_hand(player_index) if self._adapter else [None] * 6
-
-    def get_shop(self, player_index: Optional[int] = None) -> list:
-        if player_index is None:
-            return list(self.get_public_state().active_player.shop.slots)
-        return self._adapter.get_shop_window(player_index) if self._adapter else [None] * 5
-
     def get_endgame_stats(self) -> list:
         return list(self.get_public_state().endgame_stats)
 
@@ -262,28 +229,11 @@ class GameState:
             return self.get_public_state().active_player.display_name
         return f"P{player_index}"
 
-    def get_strategy(self, player_index: Optional[int] = None) -> str:
-        if player_index is None or (self._adapter and player_index == self.view_index):
-            return self.get_public_state().active_player.strategy
-        
-        # Search in endgame_stats or lobby_players if needed
-        for stat in self.get_public_state().endgame_stats:
-            if stat.get("name") == f"P{player_index}":
-                return stat.get("strategy", "unknown")
-        return "unknown"
-
     def get_current_pairings(self) -> list:
         return list(self.get_public_state().pairings)
 
     def get_alive_pids(self) -> list:
         return list(self.get_public_state().alive_pids)
-
-    def get_interest_multiplier(self, player_index: Optional[int] = None) -> float:
-        if player_index is None or (self._adapter and player_index == self.view_index):
-            return self.get_public_state().active_player.hud.interest_multiplier
-        
-        player = self._get_player(player_index)
-        return float(getattr(player, "interest_multiplier", 1.0)) if player else 1.0
 
     def get_last_combat_results(self) -> list:
         return list(self.get_public_state().active_player.combat.last_results)

@@ -102,7 +102,8 @@ def test_c2_engine_ui_synergy_parity_on_multiple_layouts(coords, rotations):
         board.place(coord, card)
 
     engine_score = calculate_group_synergy_bonus(board)
-    ui_score = SynergyCalculator.compute(_board_snapshot(board), CardDatabase.get()).total
+    calc = SynergyCalculator()
+    ui_score = calc.compute(_board_snapshot(board), CardDatabase.get()).total
 
     assert ui_score == engine_score
 

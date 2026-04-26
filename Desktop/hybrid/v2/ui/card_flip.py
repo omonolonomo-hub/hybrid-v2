@@ -152,8 +152,9 @@ class CardFlip:
         if self._cached_surf and same_src:
             if not self.is_animating and self._last_draw_params == current_params:
                 use_cache = True
-            elif draw_w_delta < 2 and scale_delta < 2:
-                # Animasyon sırasında <2px değişimleri yoksayarak CPU tasarrufu (delta threshold)
+            elif draw_w_delta < 4 and scale_delta < 4:
+                # Animasyon sırasında <4px değişimleri yoksayarak CPU tasarrufu (delta threshold)
+                # 4px threshold: hover animasyonunun çoğu frame'inde cache hit sağlar
                 use_cache = True
 
         if use_cache:

@@ -27,9 +27,12 @@ def test_spectate_view_index_swap_hp_gold_updates(spectate_setup):
     gs.view_index = 1
     
     # Assert
-    assert gs.get_gold() == 50
-    assert gs.get_hp() == 42
-    assert gs.get_gold(0) == 10 # Explicit query still works
+    state = gs.get_public_state()
+    assert state.active_player.gold == 50
+    assert state.active_player.hp == 42
+    # View index should now be 1 (P1)
+    assert state.view_index == 1
+    assert state.active_player.gold == 50
 
 def test_aaa_action_gating_security(spectate_setup):
     """

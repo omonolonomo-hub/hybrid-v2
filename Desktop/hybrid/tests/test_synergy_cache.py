@@ -14,11 +14,11 @@ class TestSynergyCache:
     """Test synergy calculator caching behavior."""
 
     def setup_method(self):
-        """Clear cache before each test."""
-        SynergyCalculator.invalidate_cache()
+        """Create a fresh calculator instance before each test."""
+        self.calculator = SynergyCalculator()
 
     def test_empty_board_returns_empty_result(self):
-        result = SynergyCalculator.compute({}, None)
+        result = self.calculator.compute({}, None)
         assert result.total == 0
 
     def test_cache_returns_same_result_for_same_input(self):
@@ -27,9 +27,9 @@ class TestSynergyCache:
             (0, 0): {"name": "TestCard", "stats": {"Power": 5}, "rotation": 0},
         }
         # First call computes
-        result1 = SynergyCalculator.compute(board_cards, _MockDB())
+        result1 = self.calculator.compute(board_cards, _MockDB())
         # Second call should use cache
-        result2 = SynergyCalculator.compute(board_cards, _MockDB())
+        result2 = self.calculator.compute(board_cards, _MockDB())
         assert result1 is result2  # same object from cache
 
     def test_cache_invalidated_on_board_change(self):
@@ -41,8 +41,8 @@ class TestSynergyCache:
             (0, 0): {"name": "CardB", "stats": {"Power": 5}, "rotation": 0},
         }
         db = _MockDB()
-        result1 = SynergyCalculator.compute(board1, db)
-        result2 = SynergyCalculator.compute(board2, db)
+        result1 = self.calculator.compute(board1, db)
+        result2 = self.calculator.compute(board2, db)
         # Different board hash → different result object
         assert result1 is not result2
 
@@ -52,13 +52,13 @@ class TestSynergyCache:
             (0, 0): {"name": "CardA", "stats": {"Power": 5}, "rotation": 0},
         }
         db = _MockDB()
-        result1 = SynergyCalculator.compute(board, db)
+        result1 = self.calculator.compute(board, db)
 
-        SynergyCalculator.invalidate_cache()
-        assert SynergyCalculator._last_board_hash is None
-        assert SynergyCalculator._cached_result is None
+        self.calculator.invalidate_cache()
+        assert self.calculator._last_board_hash is None
+        assert self.calculator._cached_result is None
 
-        result2 = SynergyCalculator.compute(board, db)
+        result2 = self.calculator.compute(board, db)
         # After invalidation, new computation produces new object
         assert result1 is not result2
         # But same values
@@ -70,17 +70,35 @@ class TestSynergyCache:
             (0, 0): {"name": "CardA", "rotation": 0},
             (1, -1): {"name": "CardB", "rotation": 1},
         }
-        h1 = SynergyCalculator._compute_board_hash(board)
-        h2 = SynergyCalculator._compute_board_hash(board)
+        h1 = self.calculator._compute_board_hash(board)
+        h2 = self.calculator._compute_board_hash(board)
         assert h1 == h2
 
     def test_rotation_change_invalidates_cache(self):
         """Different rotation should produce different hash."""
         board1 = {(0, 0): {"name": "CardA", "rotation": 0}}
         board2 = {(0, 0): {"name": "CardA", "rotation": 1}}
-        h1 = SynergyCalculator._compute_board_hash(board1)
-        h2 = SynergyCalculator._compute_board_hash(board2)
+        h1 = self.calculator._compute_board_hash(board1)
+        h2 = self.calculator._compute_board_hash(board2)
         assert h1 != h2
+    
+    def test_instance_isolation(self):
+        """Different calculator instances should have separate caches."""
+        board = {
+            (0, 0): {"name": "CardA", "stats": {"Power": 5}, "rotation": 0},
+        }
+        db = _MockDB()
+        
+        calc1 = SynergyCalculator()
+        calc2 = SynergyCalculator()
+        
+        result1 = calc1.compute(board, db)
+        result2 = calc2.compute(board, db)
+        
+        # Different instances should compute independently
+        assert result1 is not result2
+        # But values should be the same
+        assert result1.total == result2.total
 
 
 class _MockDB:

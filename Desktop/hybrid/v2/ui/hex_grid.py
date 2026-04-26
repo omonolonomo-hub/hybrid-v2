@@ -7,8 +7,18 @@ from v2.constants import CameraState, GridMath, Layout, Colors, ENGINE_HEX_DIRS,
 from v2.core.card_database import CardDatabase, CATEGORY_TO_SYNERGY
 from v2.core.exceptions import AutochessException
 from v2.ui import font_cache
-from engine_core.constants import BOARD_RADIUS
-from engine_core.board import hex_coords
+from v2.ui.hex_grid_config import HexGridConfig, get_default_config
+
+# Backward compatibility: module-level __getattr__ for lazy loading
+# This allows existing code to use "from v2.ui.hex_grid import VALID_HEX_COORDS"
+# without triggering engine initialization at import time
+def __getattr__(name):
+    """Lazy module attribute access for backward compatibility."""
+    if name == "VALID_HEX_COORDS":
+        return get_default_config().valid_coords
+    elif name == "BOARD_RADIUS":
+        return get_default_config().board_radius
+    raise AttributeError(f"module '{__name__}' has no attribute '{name}'")
 
 # ──────────────────────────────────────────────────────────────────────────────
 # Synergy Bağlantı Çizgileri
@@ -157,6 +167,7 @@ def render_synergy_preview(
     board_rotations: dict = None,
     card_data: any = None,
     camera: CameraState = None,
+    config: HexGridConfig = None,
 ) -> None:
     """
     Sürüklenen kartın hover ettiği hex'e yerleşince oluşturacağı
@@ -164,9 +175,13 @@ def render_synergy_preview(
     - drag_rotation: sürüklenen kartın şu anki rotasyonu (0-5)
     - board_rotations: {(q,r): int} board'daki her kartın rotasyonu
     - card_data: Dışarıdan sağlanan kart verisi (isteğe bağlı)
+    - config: HexGridConfig instance (defaults to engine config)
     Sadece aynı grup eşleşmeleri (synergy) için çizgi çizilir.
     """
-    if hover_coord not in VALID_HEX_COORDS:
+    if config is None:
+        config = get_default_config()
+    
+    if hover_coord not in config.valid_coords:
         return
 
     if board_rotations is None:
@@ -289,18 +304,23 @@ def render_ghost_preview(
     mouse_pos: tuple[int, int], 
     rotation: int = 0,
     card_data: Any = None,
-    camera: CameraState = None
+    camera: CameraState = None,
+    config: HexGridConfig = None,
 ):
     """
     Sürüklenen kartın (hand/shop) altındaki hex grid üzerinde 
     %60 saydam önizlemesini ve kenar statlarını (edge stats) çizer.
     rotation: mevcut rotasyon adımı (0-5), her adım 60° döndürür.
+    config: HexGridConfig instance (defaults to engine config)
     """
+    if config is None:
+        config = get_default_config()
+    
     # 1. Mouse altındaki en yakın hex'i bul
     q, r = pixel_to_axial(mouse_pos[0], mouse_pos[1], camera)
     
     # 2. Hex geçerli mi (aktif board içinde mi)?
-    is_valid = (q, r) in VALID_HEX_COORDS
+    is_valid = (q, r) in config.valid_coords
     
     # 3. Hex merkezini bul (ekran koordinatı)
     cx, cy = axial_to_pixel(q, r, camera)
@@ -379,13 +399,17 @@ def render_ghost_preview(
             tw, th = text_surf.get_size()
             surface.blit(text_surf, (int(sx - tw//2), int(sy - th//2)))
 
-def render_hex_grid(surface: pygame.Surface, board_cards: dict | None = None, camera: CameraState = None):
+def render_hex_grid(surface: pygame.Surface, board_cards: dict | None = None, camera: CameraState = None, config: HexGridConfig = None):
     """
     Board üzerindeki aktif (board) hücreleri "DCI Premium" stiliyle çizer.
     Glow, Depth ve Breathing efektleri içerir.
+    config: HexGridConfig instance (defaults to engine config)
     """
     if board_cards is None:
         board_cards = {}
+    
+    if config is None:
+        config = get_default_config()
     
     # ── 1. Render Alanı Sınırlama ────────────────────────────────────
     center_rect = pygame.Rect(
@@ -406,7 +430,7 @@ def render_hex_grid(surface: pygame.Surface, board_cards: dict | None = None, ca
     base_radius = GridMath.HEX_SIZE * zoom
     
     # ── 3. Hex Grid Çizimi ───────────────────────────────────────────
-    for q, r in VALID_HEX_COORDS:
+    for q, r in config.valid_coords:
         cx, cy = axial_to_pixel(q, r, camera)
         
         # Görünürlük kontrolü
@@ -507,6 +531,6 @@ def _hex_round(q_f: float, r_f: float) -> tuple[int, int]:
         r = -q - s
     return q, r
 
-VALID_HEX_COORDS: set[tuple[int,int]] = set(hex_coords(BOARD_RADIUS))
+# VALID_HEX_COORDS is defined at the top of the file via EngineAdapter
 
 HEX_DIRECTION_MAP = {i: d for i, d in enumerate(ENGINE_HEX_DIRS)}

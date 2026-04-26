@@ -2,6 +2,7 @@ import pygame
 import math
 from v2.constants import Screen, Colors, Layout
 from v2.ui import font_cache
+from v2.ui.hex_grid_config import HexGridConfig
 
 # ── Kategori Verileri (Minimap Taktik Renk Paleti & İkonlar) ───────────────────
 _CAT_DATA = {
@@ -36,6 +37,9 @@ class MinimapHUD:
         self.time = 0.0
         self.category_stats = {}
         self.board_grid = {}
+        
+        # Hex grid configuration (lazy initialization)
+        self._hex_config = HexGridConfig.from_engine()
         
         # 🎨 Layout Proportions (Optimized)
         # Hex Grid: Üst 65% (~300px) - Daha büyük alan, hex grid rahat
@@ -117,9 +121,7 @@ class MinimapHUD:
         screen.blit(self.surface, (self.anchor_x, self.anchor_y))
 
     def _draw_hex_grid(self, surface, cx, cy, size):
-        from v2.ui.hex_grid import VALID_HEX_COORDS
-        
-        for q, r in VALID_HEX_COORDS:
+        for q, r in self._hex_config.valid_coords:
             dx = size * (math.sqrt(3) * q + math.sqrt(3)/2 * r)
             dy = size * (3/2 * r)
             hx, hy = cx + dx, cy + dy

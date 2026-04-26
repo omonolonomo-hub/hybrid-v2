@@ -1,6 +1,9 @@
 import pytest
 from v2.ui.hex_grid import axial_to_pixel, pixel_to_axial, VALID_HEX_COORDS, HEX_DIRECTION_MAP, _hex_round
-from v2.constants import GridMath
+from v2.constants import GridMath, CameraState
+
+# Default camera for tests (no zoom, no offset)
+DEFAULT_CAMERA = CameraState(zoom=1.0, offset_x=0.0, offset_y=0.0)
 
 # --- 1. CONTRACT ---
 def test_hexgrid_has_37_valid_cells():
@@ -21,18 +24,18 @@ def test_hexgrid_rejects_out_of_bounds_coordinates():
         assert coord not in VALID_HEX_COORDS
 
 def test_hexgrid_extreme_pixel_click():
-    q, r = pixel_to_axial(-10000, 50000)
+    q, r = pixel_to_axial(-10000, 50000, DEFAULT_CAMERA)
     assert isinstance(q, int)
     assert isinstance(r, int)
 
 # --- 3. INVARIANT ---
 def test_hexgrid_center_is_stable():
-    assert pixel_to_axial(GridMath.ORIGIN_X, GridMath.ORIGIN_Y) == (0, 0)
+    assert pixel_to_axial(GridMath.ORIGIN_X, GridMath.ORIGIN_Y, DEFAULT_CAMERA) == (0, 0)
     
 def test_hexgrid_roundtrip_stability():
     for q, r in VALID_HEX_COORDS:
-        px, py = axial_to_pixel(q, r)
-        assert pixel_to_axial(px, py) == (q, r)
+        px, py = axial_to_pixel(q, r, DEFAULT_CAMERA)
+        assert pixel_to_axial(px, py, DEFAULT_CAMERA) == (q, r)
 
 # --- 4. PRECISION EDGE CASES (TDD 1) ---
 def test_hexgrid_tie_breaker_rounding():

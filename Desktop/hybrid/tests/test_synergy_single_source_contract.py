@@ -67,7 +67,8 @@ def test_engine_and_ui_synergy_scores_match_for_same_board_state():
     c2.rotate(2)
 
     engine_score = calculate_group_synergy_bonus(board)
-    ui_score = SynergyCalculator.compute(
+    calc = SynergyCalculator()
+    ui_score = calc.compute(
         _board_cards_snapshot(board), CardDatabase.get()
     ).total
 
