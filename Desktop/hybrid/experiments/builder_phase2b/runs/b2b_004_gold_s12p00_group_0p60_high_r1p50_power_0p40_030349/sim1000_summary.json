@@ -1,0 +1,26 @@
+{
+  "config": {
+    "games": 1000,
+    "players": 8,
+    "seed": 2024
+  },
+  "runtime": {
+    "seconds": 3.22,
+    "games_per_sec": 310.85
+  },
+  "game_length": {
+    "avg": 0,
+    "median": 0,
+    "min": 0,
+    "max": 0,
+    "turn_50_hits": 0
+  },
+  "crashes": 1000,
+  "total_bugs": 1000,
+  "bugs_by_severity": {
+    "CRITICAL": 1000,
+    "WARNING": 0,
+    "INFO": 0
+  },
+  "strategies": {}
+}

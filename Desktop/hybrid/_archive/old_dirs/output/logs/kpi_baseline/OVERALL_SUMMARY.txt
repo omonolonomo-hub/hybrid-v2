@@ -1,0 +1,73 @@
+================================================================================
+  AUTOCHESS HYBRID - OVERALL KPI SUMMARY
+  500 Games Comprehensive Analysis
+================================================================================
+
+STRATEGY WIN RATES:
+--------------------------------------------------------------------------------
+  tempo         464 wins   92.8%
+  builder       214 wins   42.8%
+  warrior        47 wins    9.4%
+  economist      42 wins    8.4%
+  rare_hunter    39 wins    7.8%
+  balancer       38 wins    7.6%
+  random         21 wins    4.2%
+  evolver        17 wins    3.4%
+
+================================================================================
+  BEST STRATEGY: tempo
+  Total Wins: 464/500 (92.8%)
+================================================================================
+
+BATCH-BY-BATCH BREAKDOWN:
+--------------------------------------------------------------------------------
+
+Batch 1 (Games 1-100):
+  tempo         46 wins
+  builder       23 wins
+  balancer       8 wins
+  economist      6 wins
+  rare_hunter    5 wins
+  warrior        4 wins
+  random         4 wins
+  evolver        4 wins
+
+Batch 2 (Games 101-200):
+  tempo         44 wins
+  builder       21 wins
+  rare_hunter    8 wins
+  random         7 wins
+  balancer       6 wins
+  warrior        5 wins
+  evolver        5 wins
+  economist      4 wins
+
+Batch 3 (Games 201-300):
+  tempo         53 wins
+  builder       20 wins
+  warrior        6 wins
+  rare_hunter    6 wins
+  economist      5 wins
+  balancer       5 wins
+  random         4 wins
+  evolver        1 wins
+
+Batch 4 (Games 301-400):
+  tempo         48 wins
+  builder       23 wins
+  warrior        9 wins
+  rare_hunter    8 wins
+  balancer       4 wins
+  evolver        4 wins
+  economist      3 wins
+  random         1 wins
+
+Batch 5 (Games 401-500):
+  tempo         41 wins
+  builder       20 wins
+  economist     12 wins
+  warrior        8 wins
+  balancer       7 wins
+  random         5 wins
+  rare_hunter    4 wins
+  evolver        3 wins

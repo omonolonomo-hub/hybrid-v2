@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "github.com/modelcontextprotocol/servers/tree/main/src/filesystem": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-filesystem", "c:/Users/Özhan/Desktop/hybrid"]
+    }
+  }
+}

@@ -1,0 +1,30 @@
+================================================================================
+BALANCE RECOMMENDATIONS
+================================================================================
+
+NERF RECOMMENDATIONS
+
+⚠️  TEMPO: 45.4% (target: 12.5%)
+   Recommendation: Significant nerf required
+
+⚠️  BUILDER: 34.0% (target: 12.5%)
+   Recommendation: Significant nerf required
+
+
+BUFF RECOMMENDATIONS
+
+⚠️  RANDOM: 0.4% (target: 12.5%)
+   Recommendation: Significant buff required
+
+⚠️  BALANCER: 2.9% (target: 12.5%)
+   Recommendation: Significant buff required
+
+⚠️  ECONOMIST: 2.9% (target: 12.5%)
+   Recommendation: Significant buff required
+
+⚠️  EVOLVER: 3.5% (target: 12.5%)
+   Recommendation: Significant buff required
+
+⚠️  WARRIOR: 4.4% (target: 12.5%)
+   Recommendation: Significant buff required
+

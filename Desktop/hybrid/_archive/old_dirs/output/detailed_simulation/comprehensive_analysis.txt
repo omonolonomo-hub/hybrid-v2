@@ -1,0 +1,145 @@
+================================================================================
+5000 MAÇLIK SİMÜLASYON - KAPSAMLI ANALİZ RAPORU
+================================================================================
+
+--------------------------------------------------------------------------------
+1. STRATEJİ PERFORMANS ANALİZİ
+--------------------------------------------------------------------------------
+
+Sıra   Strateji        Kazanma %    Ort. Hasar   Ort. HP     
+--------------------------------------------------------------------------------
+1      builder         55.66        223.9        40.1        
+2      economist       17.80        123.3        6.6         
+3      evolver         14.92        124.4        5.6         
+4      balancer        11.62        115.4        4.2         
+
+Strateji Değerlendirmesi:
+
+BUILDER:
+  • Kazanma oranı: 55.7%
+  • Ortalama hasar: 223.9
+  • Ortalama kill: 4.9
+  • Hayatta kalma HP: 40.1
+  ⭐ ÇOK GÜÇLÜ - Meta dominant strateji
+
+ECONOMIST:
+  • Kazanma oranı: 17.8%
+  • Ortalama hasar: 123.3
+  • Ortalama kill: 5.2
+  • Hayatta kalma HP: 6.6
+  ~ ORTA - Duruma göre değişken
+
+EVOLVER:
+  • Kazanma oranı: 14.9%
+  • Ortalama hasar: 124.4
+  • Ortalama kill: 5.5
+  • Hayatta kalma HP: 5.6
+  ✗ ZAYIF - Buff gerektirebilir
+
+BALANCER:
+  • Kazanma oranı: 11.6%
+  • Ortalama hasar: 115.4
+  • Ortalama kill: 5.2
+  • Hayatta kalma HP: 4.2
+  ✗ ZAYIF - Buff gerektirebilir
+
+
+--------------------------------------------------------------------------------
+2. KART PERFORMANS ANALİZİ
+--------------------------------------------------------------------------------
+
+EN YÜKSEK KAZANMA ORANINA SAHİP KARTLAR (min 100 satın alma):
+
+Kart                                Kazanma %    Satın Alma   Ort. Güç    
+--------------------------------------------------------------------------------
+Minotaur                            62.3         2683         19.8        
+Asteroid Belt                       60.0         2408         25.0        
+Tardigrade                          59.9         1805         23.1        
+Migration                           55.2         1439         22.8        
+Truva Atı                           54.9         1338         22.9        
+Venus Flytrap                       54.6         1340         23.8        
+Narwhal                             53.0         1331         25.2        
+Sirius                              52.5         1169         26.6        
+Cerberus                            51.9         2819         27.2        
+World War II                        49.3         5103         36.4        
+Industrial Revolution               48.5         3215         28.8        
+Komodo Dragon                       48.0         3477         27.2        
+Coelacanth                          47.7         3206         39.4        
+Blue Whale                          46.4         3997         33.1        
+Babylon                             46.3         1891         26.2        
+
+EN POPÜLER KARTLAR:
+
+Kart                                Satın Alma   Kazanma %    Ort. Tur    
+--------------------------------------------------------------------------------
+Platypus                            6998         29.8         22.9        
+Frida Kahlo                         6677         18.4         23.8        
+Moon Landing                        6552         20.3         23.5        
+Ottoman Empire                      6381         28.6         23.4        
+Space-Time                          6207         36.9         24.2        
+Pop Art                             6042         21.4         22.9        
+Mongol Empire                       6025         35.3         23.3        
+Graffiti                            6017         19.8         22.9        
+Ragnarök                            5963         32.3         24.3        
+Shadow Puppetry                     5887         29.4         22.7        
+Betelgeuse                          5581         35.2         23.2        
+Golden Ratio                        5519         21.2         23.5        
+Cosmic Microwave Background         5315         24.4         24.4        
+Sparta                              5264         36.5         23.2        
+World War II                        5103         49.3         23.7        
+
+
+--------------------------------------------------------------------------------
+3. OYUN DİNAMİKLERİ ANALİZİ
+--------------------------------------------------------------------------------
+
+Oyun Uzunluğu İstatistikleri:
+
+  Ortalama: 23.4 tur
+  En kısa: 11 tur
+  En uzun: 37 tur
+
+Tur Dağılımı:
+
+  11-15         35 maç (  0.7%)  
+  16-20       1272 maç ( 25.4%)  ████████████
+  21-25       2099 maç ( 42.0%)  ████████████████████
+  26-30       1436 maç ( 28.7%)  ██████████████
+  31-35        157 maç (  3.1%)  █
+  36+            1 maç (  0.0%)  
+
+
+--------------------------------------------------------------------------------
+4. BALANS ÖNERİLERİ
+--------------------------------------------------------------------------------
+
+⚠️  BUILDER STRATEJİSİ ÇOK DOMINANT:
+   • Kazanma oranı: 55.7% (hedef: ~25%)
+   • Öneriler:
+     - Board boyutu limitini azalt
+     - Kart maliyetlerini artır
+     - Tempo stratejisine buff ver
+
+⚠️  ZAYIF STRATEJİLER:
+
+   EVOLVER:
+     • Kazanma oranı: 14.9%
+     • Öneriler: Strateji-spesifik buff gerekli
+
+   BALANCER:
+     • Kazanma oranı: 11.6%
+     • Öneriler: Strateji-spesifik buff gerekli
+
+KART BALANS ÖNERİLERİ:
+
+   Çok Güçlü Kartlar (nerf düşünülebilir):
+     • Minotaur: 62.3% kazanma oranı
+     • Asteroid Belt: 60.0% kazanma oranı
+     • Tardigrade: 59.9% kazanma oranı
+     • Migration: 55.2% kazanma oranı
+     • Truva Atı: 54.9% kazanma oranı
+
+
+================================================================================
+RAPOR SONU
+================================================================================

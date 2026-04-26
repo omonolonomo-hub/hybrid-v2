@@ -1,0 +1,273 @@
+{
+  "_metadata": {
+    "description": "Aggregated passive trigger statistics across all games",
+    "detailed_kpi_file": "passive_efficiency_kpi.jsonl",
+    "note": "For per-game passive efficiency metrics including normalized values and win rate correlation, see passive_efficiency_kpi.jsonl"
+  },
+  "passive_cards": [
+    {
+      "card": "Frida Kahlo",
+      "total_triggers": 21812,
+      "triggers_by_type": {
+        "combat_lose": 21812
+      },
+      "total_delta": 21812,
+      "avg_delta_per_trigger": 1.0,
+      "strategies_using": {
+        "warrior": 4333,
+        "rare_hunter": 4198,
+        "tempo": 3999,
+        "balancer": 3868,
+        "evolver": 2658,
+        "economist": 1723,
+        "random": 851,
+        "builder": 182
+      }
+    },
+    {
+      "card": "Isaac Newton",
+      "total_triggers": 15025,
+      "triggers_by_type": {
+        "pre_combat": 15025
+      },
+      "total_delta": 15025,
+      "avg_delta_per_trigger": 1.0,
+      "strategies_using": {
+        "balancer": 2658,
+        "economist": 2562,
+        "warrior": 2538,
+        "rare_hunter": 2519,
+        "tempo": 2419,
+        "evolver": 1703,
+        "random": 596,
+        "builder": 30
+      }
+    },
+    {
+      "card": "Minotaur",
+      "total_triggers": 4712,
+      "triggers_by_type": {
+        "combat_lose": 4712
+      },
+      "total_delta": 4712,
+      "avg_delta_per_trigger": 1.0,
+      "strategies_using": {
+        "builder": 3757,
+        "random": 876,
+        "economist": 48,
+        "warrior": 15,
+        "tempo": 8,
+        "balancer": 4,
+        "evolver": 4
+      }
+    },
+    {
+      "card": "Code of Hammurabi",
+      "total_triggers": 3196,
+      "triggers_by_type": {
+        "combat_lose": 3196
+      },
+      "total_delta": 6392,
+      "avg_delta_per_trigger": 2.0,
+      "strategies_using": {
+        "balancer": 705,
+        "economist": 649,
+        "random": 477,
+        "tempo": 408,
+        "warrior": 397,
+        "builder": 284,
+        "evolver": 276
+      }
+    },
+    {
+      "card": "Phoenix",
+      "total_triggers": 1162,
+      "triggers_by_type": {
+        "card_killed": 1162
+      },
+      "total_delta": -3629,
+      "avg_delta_per_trigger": -3.123,
+      "strategies_using": {
+        "warrior": 211,
+        "rare_hunter": 209,
+        "tempo": 200,
+        "economist": 179,
+        "evolver": 158,
+        "balancer": 149,
+        "random": 56
+      }
+    },
+    {
+      "card": "Space-Time",
+      "total_triggers": 1054,
+      "triggers_by_type": {
+        "copy_2": 972,
+        "copy_3": 82
+      },
+      "total_delta": 6324,
+      "avg_delta_per_trigger": 6.0,
+      "strategies_using": {
+        "tempo": 205,
+        "economist": 198,
+        "warrior": 171,
+        "balancer": 156,
+        "rare_hunter": 153,
+        "evolver": 141,
+        "builder": 16,
+        "random": 14
+      }
+    },
+    {
+      "card": "Narwhal",
+      "total_triggers": 881,
+      "triggers_by_type": {
+        "combat_win": 881
+      },
+      "total_delta": 881,
+      "avg_delta_per_trigger": 1.0,
+      "strategies_using": {
+        "builder": 537,
+        "random": 123,
+        "economist": 95,
+        "balancer": 47,
+        "warrior": 34,
+        "tempo": 31,
+        "evolver": 14
+      }
+    },
+    {
+      "card": "Event Horizon",
+      "total_triggers": 863,
+      "triggers_by_type": {
+        "copy_2": 798,
+        "copy_3": 65
+      },
+      "total_delta": 863,
+      "avg_delta_per_trigger": 1.0,
+      "strategies_using": {
+        "warrior": 185,
+        "economist": 161,
+        "rare_hunter": 139,
+        "evolver": 129,
+        "tempo": 128,
+        "balancer": 111,
+        "random": 10
+      }
+    },
+    {
+      "card": "Coelacanth",
+      "total_triggers": 814,
+      "triggers_by_type": {
+        "copy_2": 754,
+        "copy_3": 60
+      },
+      "total_delta": 1628,
+      "avg_delta_per_trigger": 2.0,
+      "strategies_using": {
+        "rare_hunter": 186,
+        "economist": 167,
+        "evolver": 157,
+        "tempo": 86,
+        "warrior": 82,
+        "balancer": 71,
+        "builder": 45,
+        "random": 20
+      }
+    },
+    {
+      "card": "Anubis",
+      "total_triggers": 736,
+      "triggers_by_type": {
+        "card_killed": 736
+      },
+      "total_delta": 736,
+      "avg_delta_per_trigger": 1.0,
+      "strategies_using": {
+        "random": 153,
+        "tempo": 134,
+        "warrior": 126,
+        "rare_hunter": 125,
+        "evolver": 77,
+        "balancer": 70,
+        "economist": 42,
+        "builder": 9
+      }
+    },
+    {
+      "card": "Axolotl",
+      "total_triggers": 672,
+      "triggers_by_type": {
+        "card_killed": 672
+      },
+      "total_delta": -4389,
+      "avg_delta_per_trigger": -6.531,
+      "strategies_using": {
+        "random": 262,
+        "builder": 181,
+        "economist": 100,
+        "warrior": 38,
+        "balancer": 37,
+        "tempo": 33,
+        "evolver": 21
+      }
+    },
+    {
+      "card": "DNA",
+      "total_triggers": 597,
+      "triggers_by_type": {
+        "copy_2": 559,
+        "copy_3": 38
+      },
+      "total_delta": 597,
+      "avg_delta_per_trigger": 1.0,
+      "strategies_using": {
+        "tempo": 131,
+        "evolver": 122,
+        "warrior": 109,
+        "rare_hunter": 96,
+        "balancer": 63,
+        "economist": 38,
+        "random": 36,
+        "builder": 2
+      }
+    },
+    {
+      "card": "Sirius",
+      "total_triggers": 586,
+      "triggers_by_type": {
+        "combat_win": 586
+      },
+      "total_delta": 586,
+      "avg_delta_per_trigger": 1.0,
+      "strategies_using": {
+        "builder": 349,
+        "random": 89,
+        "economist": 80,
+        "warrior": 22,
+        "balancer": 22,
+        "evolver": 14,
+        "tempo": 10
+      }
+    },
+    {
+      "card": "Charles Darwin",
+      "total_triggers": 461,
+      "triggers_by_type": {
+        "copy_2": 440,
+        "copy_3": 21
+      },
+      "total_delta": 461,
+      "avg_delta_per_trigger": 1.0,
+      "strategies_using": {
+        "evolver": 126,
+        "balancer": 104,
+        "rare_hunter": 60,
+        "warrior": 53,
+        "tempo": 46,
+        "random": 40,
+        "economist": 31,
+        "builder": 1
+      }
+    }
+  ]
+}

@@ -1,0 +1,30 @@
+63f7b34db8d8cdea90c76aacccf841ec
+::res://::1775505976
+::res://assets/::1775502199
+::res://assets/cards/::1775504932
+Odin_back (4).png::CompressedTexture2D::6260629351239967873::1775501443::1775502328::1::::<><><>0<>0<>90c367db1f3b95ad083cbba9527cf469<>res://.godot/imported/Odin_back (4).png-ab70f0ac89ecfef776957843f29ebe7a.ctex::
+Odin_front (4).png::CompressedTexture2D::4745912280870222977::1775501442::1775502328::1::::<><><>0<>0<>bb2782e52da6e4243cb11d1073294609<>res://.godot/imported/Odin_front (4).png-3893bc1dab86309d4cead835df7e46d1.ctex::
+README.md::TextFile::-1::1775504914::0::1::::<><><>0<>0<><>::
+::res://assets/cards/backs/::1775504932
+::res://assets/cards/fronts/::1775504932
+::res://assets/data/::1775499432
+cards.json::JSON::-1::1775499432::0::1::::<><><>0<>0<><>::
+::res://scenes/::1775502553
+BoardRenderer.gd::GDScript::3929636446887816145::1775504893::0::1::::<>Node2D<><>0<>0<><>::
+BoardRenderer.tscn::PackedScene::-1::1775497150::0::1::::<><><>0<>0<><>::res://scenes/BoardRenderer.gd
+Main.gd::GDScript::2392543805478479574::1775504753::0::1::::<>Node<><>0<>0<><>::
+Main.tscn::PackedScene::471933::1775498227::0::1::::<><><>0<>0<><>::res://scenes/Main.gd<>res://scenes/BoardRenderer.gd
+::res://scripts/::1775504679
+ai.gd::GDScript::2480709509177697693::1775504679::0::1::::AI<>RefCounted<><>0<>0<><>::
+board.gd::GDScript::1153291712911882932::1775504679::0::1::::HexBoard<>RefCounted<><>0<>0<><>::
+builder_synergy_matrix.gd::GDScript::4439014154456527554::1775499570::0::1::::BuilderSynergyMatrix<>RefCounted<><>0<>0<><>::
+card.gd::GDScript::6888016783686013993::1775502478::0::1::::Card<>RefCounted<><>0<>0<><>::
+card_pool.gd::GDScript::41645017132881930::1775502518::0::1::::<>Node<><>0<>0<><>::
+combat.gd::GDScript::1465957565361459622::1775499592::0::1::::CombatResolver<>RefCounted<><>0<>0<><>::
+constants.gd::GDScript::8565783923001162039::1775501927::0::1::::<>Node<><>0<>0<><>::
+game.gd::GDScript::913056593544628712::1775505534::0::1::::Game<>RefCounted<><>0<>0<><>::
+market.gd::GDScript::901073548907329298::1775505546::0::1::::Market<>RefCounted<><>0<>0<><>::
+passive_trigger.gd::GDScript::2047561724327650149::1775504510::0::1::::<>Node<><>0<>0<><>::
+player.gd::GDScript::7169940626249946064::1775504882::0::1::::Player<>RefCounted<><>0<>0<><>::
+::res://tools/::1775504968
+::res://ui/::1775495824

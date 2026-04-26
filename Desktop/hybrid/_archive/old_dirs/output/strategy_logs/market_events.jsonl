@@ -1,0 +1,229 @@
+{"game_id": 1000, "turn": 0, "player": "balancer", "cards_seen": ["Sirius", "Jazz", "Exoplanet", "Asteroid Belt", "Kabuki"], "rarity_counts": {"2": 4, "3": 1}}
+{"game_id": 1000, "turn": 0, "player": "builder", "cards_seen": ["Fibonacci Sequence", "Code of Hammurabi", "Babylon", "Camouflage", "Printing Press"], "rarity_counts": {"2": 5}}
+{"game_id": 1000, "turn": 0, "player": "tempo", "cards_seen": ["Venus Flytrap", "Pulsar", "The Persistence of Memory", "Ballet", "Moon Landing"], "rarity_counts": {"2": 2, "3": 3}}
+{"game_id": 1000, "turn": 0, "player": "random", "cards_seen": ["Code of Hammurabi", "Fibonacci Sequence", "Platypus", "Schrödinger's Cat", "Cubism"], "rarity_counts": {"2": 3, "1": 1, "3": 1}}
+{"game_id": 1000, "turn": 0, "player": "evolver", "cards_seen": ["Truva Atı", "Impressionism", "The Persistence of Memory", "Sirius", "Platypus"], "rarity_counts": {"2": 3, "3": 1, "1": 1}}
+{"game_id": 1000, "turn": 0, "player": "warrior", "cards_seen": ["Charles Darwin", "Jazz", "Anubis", "Medusa", "Minimalism"], "rarity_counts": {"3": 3, "2": 1, "1": 1}}
+{"game_id": 1000, "turn": 0, "player": "economist", "cards_seen": ["Narwhal", "Migration", "Printing Press", "Fibonacci Sequence", "Venus Flytrap"], "rarity_counts": {"2": 5}}
+{"game_id": 1000, "turn": 0, "player": "rare_hunter", "cards_seen": ["Surrealism", "Printing Press", "Sparta", "Ottoman Empire", "Truva Atı"], "rarity_counts": {"3": 3, "2": 2}}
+{"game_id": 1000, "turn": 1, "player": "balancer", "cards_seen": ["Narwhal", "Jazz", "Periodic Table", "Venus Flytrap", "Platypus"], "rarity_counts": {"2": 3, "3": 1, "1": 1}}
+{"game_id": 1000, "turn": 1, "player": "builder", "cards_seen": ["Camouflage", "Opera", "Minimalism", "Ottoman Empire", "Pandora'nın Kutusu"], "rarity_counts": {"2": 2, "1": 1, "3": 2}}
+{"game_id": 1000, "turn": 1, "player": "tempo", "cards_seen": ["Babylon", "Flamenco", "Schrödinger's Cat", "Pulsar", "Athena"], "rarity_counts": {"2": 2, "3": 3}}
+{"game_id": 1000, "turn": 1, "player": "random", "cards_seen": ["Narwhal", "Schrödinger's Cat", "Shadow Puppetry", "Sparta", "Axolotl"], "rarity_counts": {"2": 2, "3": 2, "1": 1}}
+{"game_id": 1000, "turn": 1, "player": "evolver", "cards_seen": ["Impressionism", "Truva Atı", "Loki", "Kabuki", "Migration"], "rarity_counts": {"2": 3, "3": 2}}
+{"game_id": 1000, "turn": 1, "player": "warrior", "cards_seen": ["Opera", "Midas Dokunuşu", "Minotaur", "Code of Hammurabi", "Periodic Table"], "rarity_counts": {"2": 4, "3": 1}}
+{"game_id": 1000, "turn": 1, "player": "economist", "cards_seen": ["Camouflage", "Rainforest", "Pop Art", "Graffiti", "Ballet"], "rarity_counts": {"2": 2, "3": 1, "1": 2}}
+{"game_id": 1000, "turn": 1, "player": "rare_hunter", "cards_seen": ["Rainforest", "Ottoman Empire", "Asteroid Belt", "Fibonacci Sequence", "Ballet"], "rarity_counts": {"3": 2, "2": 3}}
+{"game_id": 1000, "turn": 2, "player": "balancer", "cards_seen": ["Surrealism", "Camouflage", "Silk Road", "Venus Flytrap", "Minimalism"], "rarity_counts": {"3": 2, "2": 2, "1": 1}}
+{"game_id": 1000, "turn": 2, "player": "builder", "cards_seen": ["Loki", "Sparta", "Algorithm", "Olympus", "Printing Press"], "rarity_counts": {"3": 3, "2": 2}}
+{"game_id": 1000, "turn": 2, "player": "tempo", "cards_seen": ["Camouflage", "Coral Reef", "Nebula", "Ballet", "Venus Flytrap"], "rarity_counts": {"2": 3, "3": 2}}
+{"game_id": 1000, "turn": 2, "player": "random", "cards_seen": ["Jazz", "Europa", "Flamenco", "Asteroid Belt", "Printing Press"], "rarity_counts": {"2": 5}}
+{"game_id": 1000, "turn": 2, "player": "evolver", "cards_seen": ["Periodic Table", "Babylon", "Graffiti", "Kabuki", "Fungus"], "rarity_counts": {"3": 2, "2": 2, "1": 1}}
+{"game_id": 1000, "turn": 2, "player": "warrior", "cards_seen": ["Babylon", "Impressionism", "Sirius", "Midas Dokunuşu", "The Persistence of Memory"], "rarity_counts": {"2": 4, "3": 1}}
+{"game_id": 1000, "turn": 2, "player": "economist", "cards_seen": ["Moon Landing", "Pop Art", "Cubism", "Golden Ratio", "Narwhal"], "rarity_counts": {"3": 2, "1": 1, "2": 2}}
+{"game_id": 1000, "turn": 2, "player": "rare_hunter", "cards_seen": ["Fibonacci Sequence", "Sirius", "Impressionism", "Athena", "Cubism"], "rarity_counts": {"2": 4, "3": 1}}
+{"game_id": 1000, "turn": 3, "player": "balancer", "cards_seen": ["Golden Ratio", "Europa", "Betelgeuse", "Sparta", "Axolotl"], "rarity_counts": {"3": 3, "2": 2}}
+{"game_id": 1000, "turn": 3, "player": "builder", "cards_seen": ["Fibonacci Sequence", "Printing Press", "Venus Flytrap", "Mongol Empire", "Gothic Architecture"], "rarity_counts": {"2": 3, "3": 2}}
+{"game_id": 1000, "turn": 3, "player": "tempo", "cards_seen": ["Sirius", "Nebula", "Truva Atı", "Silk Road", "Cold War"], "rarity_counts": {"2": 2, "3": 3}}
+{"game_id": 1000, "turn": 3, "player": "random", "cards_seen": ["Algorithm", "Pop Art", "Gothic Architecture", "Medusa", "Code of Hammurabi"], "rarity_counts": {"2": 2, "1": 1, "3": 2}}
+{"game_id": 1000, "turn": 3, "player": "evolver", "cards_seen": ["Algorithm", "Pop Art", "Jazz", "Sirius", "Opera"], "rarity_counts": {"2": 4, "1": 1}}
+{"game_id": 1000, "turn": 3, "player": "warrior", "cards_seen": ["Schrödinger's Cat", "Pop Art", "Graffiti", "French Revolution", "Gothic Architecture"], "rarity_counts": {"3": 3, "1": 2}}
+{"game_id": 1000, "turn": 3, "player": "economist", "cards_seen": ["Jazz", "Europa", "Flamenco", "Charles Darwin", "French Revolution"], "rarity_counts": {"2": 3, "3": 2}}
+{"game_id": 1000, "turn": 3, "player": "rare_hunter", "cards_seen": ["Valhalla", "π (Pi)", "Cubism", "Platypus", "Minimalism"], "rarity_counts": {"3": 2, "2": 1, "1": 2}}
+{"game_id": 1000, "turn": 4, "player": "balancer", "cards_seen": ["Coral Reef", "Minimalism", "Baroque", "Jazz", "Opera"], "rarity_counts": {"3": 1, "1": 1, "2": 3}}
+{"game_id": 1000, "turn": 4, "player": "builder", "cards_seen": ["Asteroid Belt", "Ballet", "Europa", "Cubism", "Pop Art"], "rarity_counts": {"2": 4, "1": 1}}
+{"game_id": 1000, "turn": 4, "player": "tempo", "cards_seen": ["Fungus", "Sirius", "Nebula", "Valhalla", "Flamenco"], "rarity_counts": {"2": 3, "3": 2}}
+{"game_id": 1000, "turn": 4, "player": "random", "cards_seen": ["Medusa", "Shadow Puppetry", "Cubism", "Pandora'nın Kutusu", "Mongol Empire"], "rarity_counts": {"3": 3, "1": 1, "2": 1}}
+{"game_id": 1000, "turn": 4, "player": "evolver", "cards_seen": ["Code of Hammurabi", "Migration", "Venus Flytrap", "Europa", "Age of Discovery"], "rarity_counts": {"2": 4, "3": 1}}
+{"game_id": 1000, "turn": 4, "player": "warrior", "cards_seen": ["Valhalla", "Migration", "Olympus", "Baobab", "Baroque"], "rarity_counts": {"3": 3, "2": 2}}
+{"game_id": 1000, "turn": 4, "player": "economist", "cards_seen": ["Minimalism", "Shadow Puppetry", "Axolotl", "Midas Dokunuşu", "Athena"], "rarity_counts": {"1": 2, "2": 2, "3": 1}}
+{"game_id": 1000, "turn": 4, "player": "rare_hunter", "cards_seen": ["Asteroid Belt", "Midas Dokunuşu", "Cubism", "Babylon", "Migration"], "rarity_counts": {"2": 5}}
+{"game_id": 1000, "turn": 5, "player": "balancer", "cards_seen": ["Periodic Table", "Midas Dokunuşu", "Narwhal", "Migration", "Camouflage"], "rarity_counts": {"3": 1, "2": 4}}
+{"game_id": 1000, "turn": 5, "player": "builder", "cards_seen": ["The Persistence of Memory", "Flamenco", "Sparta", "Venus Flytrap", "Code of Hammurabi"], "rarity_counts": {"3": 2, "2": 3}}
+{"game_id": 1000, "turn": 5, "player": "tempo", "cards_seen": ["Truva Atı", "Valhalla", "DNA", "Gothic Architecture", "French Revolution"], "rarity_counts": {"2": 1, "3": 4}}
+{"game_id": 1000, "turn": 5, "player": "random", "cards_seen": ["Narwhal", "French Revolution", "Industrial Revolution", "Opera", "Baobab"], "rarity_counts": {"2": 2, "3": 3}}
+{"game_id": 1000, "turn": 5, "player": "evolver", "cards_seen": ["Shadow Puppetry", "Ballet", "Graffiti", "Cerberus", "Pandora'nın Kutusu"], "rarity_counts": {"1": 2, "2": 1, "3": 2}}
+{"game_id": 1000, "turn": 5, "player": "warrior", "cards_seen": ["Axolotl", "Golden Ratio", "Pandora'nın Kutusu", "Kraken", "Impressionism"], "rarity_counts": {"2": 2, "3": 2, "4": 1}}
+{"game_id": 1000, "turn": 5, "player": "economist", "cards_seen": ["DNA", "Venus Flytrap", "Truva Atı", "Cubism", "Betelgeuse"], "rarity_counts": {"3": 2, "2": 3}}
+{"game_id": 1000, "turn": 5, "player": "rare_hunter", "cards_seen": ["Gothic Architecture", "Dark Matter", "Guernica", "Olympus", "Pandora'nın Kutusu"], "rarity_counts": {"3": 3, "4": 2}}
+{"game_id": 1000, "turn": 6, "player": "balancer", "cards_seen": ["Golden Ratio", "Pop Art", "Age of Discovery", "Sparta", "Quetzalcoatl"], "rarity_counts": {"3": 3, "1": 1, "4": 1}}
+{"game_id": 1000, "turn": 6, "player": "builder", "cards_seen": ["Minotaur", "Graffiti", "Anubis", "Baroque", "Cubism"], "rarity_counts": {"2": 3, "1": 1, "3": 1}}
+{"game_id": 1000, "turn": 6, "player": "tempo", "cards_seen": ["Charles Darwin", "Europa", "Komodo Dragon", "Entropy", "Impressionism"], "rarity_counts": {"3": 3, "2": 2}}
+{"game_id": 1000, "turn": 6, "player": "random", "cards_seen": ["Flamenco", "Gothic Architecture", "Coral Reef", "Komodo Dragon", "Graffiti"], "rarity_counts": {"2": 1, "3": 3, "1": 1}}
+{"game_id": 1000, "turn": 6, "player": "evolver", "cards_seen": ["The Persistence of Memory", "Fungus", "Minotaur", "Babylon", "Coral Reef"], "rarity_counts": {"3": 2, "2": 3}}
+{"game_id": 1000, "turn": 6, "player": "warrior", "cards_seen": ["Truva Atı", "Guernica", "Cubism", "Minotaur", "Flamenco"], "rarity_counts": {"2": 4, "4": 1}}
+{"game_id": 1000, "turn": 6, "player": "economist", "cards_seen": ["Exoplanet", "Code of Hammurabi", "Event Horizon", "Europa", "Mongol Empire"], "rarity_counts": {"2": 3, "4": 1, "3": 1}}
+{"game_id": 1000, "turn": 6, "player": "rare_hunter", "cards_seen": ["Jazz", "Ottoman Empire", "Cordyceps", "Truva Atı", "DNA"], "rarity_counts": {"2": 2, "3": 2, "4": 1}}
+{"game_id": 1000, "turn": 7, "player": "balancer", "cards_seen": ["Quetzalcoatl", "Tardigrade", "Moon Landing", "Flamenco", "Gothic Architecture"], "rarity_counts": {"4": 1, "3": 3, "2": 1}}
+{"game_id": 1000, "turn": 7, "player": "builder", "cards_seen": ["Baroque", "Entropy", "Jazz", "Minimalism", "Medusa"], "rarity_counts": {"2": 2, "3": 2, "1": 1}}
+{"game_id": 1000, "turn": 7, "player": "tempo", "cards_seen": ["Graffiti", "Axolotl", "Asteroid Belt", "Sirius", "Rainforest"], "rarity_counts": {"1": 1, "2": 3, "3": 1}}
+{"game_id": 1000, "turn": 7, "player": "random", "cards_seen": ["Pandora'nın Kutusu", "Mongol Empire", "Exoplanet", "Flamenco", "Algorithm"], "rarity_counts": {"3": 2, "2": 3}}
+{"game_id": 1000, "turn": 7, "player": "evolver", "cards_seen": ["π (Pi)", "Minimalism", "Entropy", "Asteroid Belt", "Exoplanet"], "rarity_counts": {"3": 2, "1": 1, "2": 2}}
+{"game_id": 1000, "turn": 7, "player": "warrior", "cards_seen": ["Industrial Revolution", "Opera", "Pandora'nın Kutusu", "Charles Darwin", "Impressionism"], "rarity_counts": {"3": 3, "2": 2}}
+{"game_id": 1000, "turn": 7, "player": "economist", "cards_seen": ["Narwhal", "Printing Press", "Quetzalcoatl", "π (Pi)", "Axolotl"], "rarity_counts": {"2": 3, "4": 1, "3": 1}}
+{"game_id": 1000, "turn": 7, "player": "rare_hunter", "cards_seen": ["Migration", "Graffiti", "Pulsar", "Minotaur", "Platypus"], "rarity_counts": {"2": 2, "1": 2, "3": 1}}
+{"game_id": 1000, "turn": 8, "player": "balancer", "cards_seen": ["Rainforest", "Age of Discovery", "French Revolution", "DNA", "Sirius"], "rarity_counts": {"3": 4, "2": 1}}
+{"game_id": 1000, "turn": 8, "player": "builder", "cards_seen": ["Bioluminescence", "Flamenco", "Platypus", "Frida Kahlo", "Tardigrade"], "rarity_counts": {"3": 3, "2": 1, "1": 1}}
+{"game_id": 1000, "turn": 8, "player": "tempo", "cards_seen": ["Narwhal", "Opera", "Coral Reef", "Medusa", "Sparta"], "rarity_counts": {"2": 2, "3": 3}}
+{"game_id": 1000, "turn": 8, "player": "random", "cards_seen": ["Black Death", "Coral Reef", "Camouflage", "π (Pi)", "Impressionism"], "rarity_counts": {"5": 1, "3": 2, "2": 2}}
+{"game_id": 1000, "turn": 8, "player": "evolver", "cards_seen": ["Mongol Empire", "Bioluminescence", "Baobab", "Europa", "Migration"], "rarity_counts": {"3": 3, "2": 2}}
+{"game_id": 1000, "turn": 8, "player": "warrior", "cards_seen": ["Andromeda Galaxy", "Milky Way", "Athena", "Tardigrade", "Camouflage"], "rarity_counts": {"4": 2, "3": 2, "2": 1}}
+{"game_id": 1000, "turn": 8, "player": "economist", "cards_seen": ["Cubism", "Frida Kahlo", "Moon Landing", "Sirius", "Exoplanet"], "rarity_counts": {"2": 3, "3": 2}}
+{"game_id": 1000, "turn": 8, "player": "rare_hunter", "cards_seen": ["Ottoman Empire", "Algorithm", "Entropy", "Gravity", "Exoplanet"], "rarity_counts": {"3": 3, "2": 2}}
+{"game_id": 1000, "turn": 9, "player": "balancer", "cards_seen": ["Quantum Mechanics", "Axolotl", "Venus Flytrap", "Fungus", "Gothic Architecture"], "rarity_counts": {"4": 1, "2": 3, "3": 1}}
+{"game_id": 1000, "turn": 9, "player": "builder", "cards_seen": ["Sirius", "Quantum Mechanics", "Golden Ratio", "Opera", "Migration"], "rarity_counts": {"2": 3, "4": 1, "3": 1}}
+{"game_id": 1000, "turn": 9, "player": "tempo", "cards_seen": ["Algorithm", "Europa", "Camouflage", "Migration", "The Persistence of Memory"], "rarity_counts": {"2": 4, "3": 1}}
+{"game_id": 1000, "turn": 9, "player": "random", "cards_seen": ["Truva Atı", "Cubism", "Gravity", "Cerberus", "Pandora'nın Kutusu"], "rarity_counts": {"2": 2, "3": 3}}
+{"game_id": 1000, "turn": 9, "player": "evolver", "cards_seen": ["Surrealism", "Age of Discovery", "Europa", "Medusa", "Opera"], "rarity_counts": {"3": 3, "2": 2}}
+{"game_id": 1000, "turn": 9, "player": "warrior", "cards_seen": ["Athena", "Flamenco", "Industrial Revolution", "Fibonacci Sequence", "Event Horizon"], "rarity_counts": {"3": 2, "2": 2, "4": 1}}
+{"game_id": 1000, "turn": 9, "player": "economist", "cards_seen": ["Opera", "DNA", "Asteroid Belt", "Cosmic Microwave Background", "Migration"], "rarity_counts": {"2": 3, "3": 1, "4": 1}}
+{"game_id": 1000, "turn": 9, "player": "rare_hunter", "cards_seen": ["Age of Discovery", "Algorithm", "Cold War", "Tardigrade", "Komodo Dragon"], "rarity_counts": {"3": 4, "2": 1}}
+{"game_id": 1000, "turn": 10, "player": "balancer", "cards_seen": ["Turing Machine", "π (Pi)", "Marie Curie", "Printing Press", "Gravity"], "rarity_counts": {"4": 2, "3": 2, "2": 1}}
+{"game_id": 1000, "turn": 10, "player": "builder", "cards_seen": ["Opera", "Marie Curie", "Mantis Karidesi", "Anubis", "Truva Atı"], "rarity_counts": {"2": 2, "4": 2, "3": 1}}
+{"game_id": 1000, "turn": 10, "player": "tempo", "cards_seen": ["Opera", "Sirius", "Cold War", "Medusa", "Camouflage"], "rarity_counts": {"2": 3, "3": 2}}
+{"game_id": 1000, "turn": 10, "player": "random", "cards_seen": ["Blue Whale", "Marie Curie", "Surrealism", "Nikola Tesla", "Camouflage"], "rarity_counts": {"4": 3, "3": 1, "2": 1}}
+{"game_id": 1000, "turn": 10, "player": "evolver", "cards_seen": ["Asteroid Belt", "Impressionism", "Pandora'nın Kutusu", "Renaissance", "Cold War"], "rarity_counts": {"2": 2, "3": 2, "4": 1}}
+{"game_id": 1000, "turn": 10, "player": "warrior", "cards_seen": ["Axolotl", "Baroque", "Mantis Karidesi", "Andromeda Galaxy", "Pop Art"], "rarity_counts": {"2": 2, "4": 2, "1": 1}}
+{"game_id": 1000, "turn": 10, "player": "economist", "cards_seen": ["Narwhal", "Ragnarök", "Silk Road", "French Revolution", "Pandora'nın Kutusu"], "rarity_counts": {"2": 1, "4": 1, "3": 3}}
+{"game_id": 1000, "turn": 10, "player": "rare_hunter", "cards_seen": ["Schrödinger's Cat", "Truva Atı", "Higgs Boson", "Surrealism", "Loki"], "rarity_counts": {"3": 3, "2": 1, "4": 1}}
+{"game_id": 1000, "turn": 11, "player": "balancer", "cards_seen": ["Babylon", "Industrial Revolution", "Marie Curie", "Kraken", "Minotaur"], "rarity_counts": {"2": 2, "3": 1, "4": 2}}
+{"game_id": 1000, "turn": 11, "player": "builder", "cards_seen": ["Fibonacci Sequence", "Axolotl", "Komodo Dragon", "World War II", "Migration"], "rarity_counts": {"2": 3, "3": 1, "4": 1}}
+{"game_id": 1000, "turn": 11, "player": "tempo", "cards_seen": ["Cerberus", "Exoplanet", "Coral Reef", "Gravity", "Cosmic Microwave Background"], "rarity_counts": {"3": 3, "2": 1, "4": 1}}
+{"game_id": 1000, "turn": 11, "player": "random", "cards_seen": ["Baobab", "Impressionism", "Venus Flytrap", "Andromeda Galaxy", "Pandora'nın Kutusu"], "rarity_counts": {"3": 2, "2": 2, "4": 1}}
+{"game_id": 1000, "turn": 11, "player": "evolver", "cards_seen": ["Sirius", "Camouflage", "Jazz", "Medusa", "Schrödinger's Cat"], "rarity_counts": {"2": 3, "3": 2}}
+{"game_id": 1000, "turn": 11, "player": "warrior", "cards_seen": ["Tardigrade", "Phoenix", "Golden Ratio", "Dark Matter", "Baroque"], "rarity_counts": {"3": 2, "4": 2, "2": 1}}
+{"game_id": 1000, "turn": 11, "player": "economist", "cards_seen": ["Ballet", "Cubism", "Nikola Tesla", "Cold War", "Ragnarök"], "rarity_counts": {"2": 2, "4": 2, "3": 1}}
+{"game_id": 1000, "turn": 11, "player": "rare_hunter", "cards_seen": ["Blue Whale", "Algorithm", "Quetzalcoatl", "Cerberus", "Golden Ratio"], "rarity_counts": {"4": 2, "2": 1, "3": 2}}
+{"game_id": 1000, "turn": 12, "player": "balancer", "cards_seen": ["Marie Curie", "Graffiti", "Babylon", "Tardigrade", "Shadow Puppetry"], "rarity_counts": {"4": 1, "1": 2, "2": 1, "3": 1}}
+{"game_id": 1000, "turn": 12, "player": "builder", "cards_seen": ["Silk Road", "Minimalism", "Milky Way", "Minotaur", "Pandora'nın Kutusu"], "rarity_counts": {"3": 2, "1": 1, "4": 1, "2": 1}}
+{"game_id": 1000, "turn": 12, "player": "tempo", "cards_seen": ["Sirius", "Blue Whale", "Midas Dokunuşu", "Pandora'nın Kutusu", "Industrial Revolution"], "rarity_counts": {"2": 2, "4": 1, "3": 2}}
+{"game_id": 1000, "turn": 12, "player": "random", "cards_seen": ["Surrealism", "Narwhal", "World War II", "Industrial Revolution", "Fibonacci Sequence"], "rarity_counts": {"3": 2, "2": 2, "4": 1}}
+{"game_id": 1000, "turn": 12, "player": "evolver", "cards_seen": ["Mantis Karidesi", "Space-Time", "Coral Reef", "Cubism", "Tardigrade"], "rarity_counts": {"4": 2, "3": 2, "2": 1}}
+{"game_id": 1000, "turn": 12, "player": "warrior", "cards_seen": ["Dark Matter", "Gothic Architecture", "Betelgeuse", "Shadow Puppetry", "Pop Art"], "rarity_counts": {"4": 1, "3": 2, "1": 2}}
+{"game_id": 1000, "turn": 12, "player": "economist", "cards_seen": ["Ragnarök", "Impressionism", "Flamenco", "Platypus", "Baroque"], "rarity_counts": {"4": 1, "2": 3, "1": 1}}
+{"game_id": 1000, "turn": 12, "player": "rare_hunter", "cards_seen": ["Bioluminescence", "Frida Kahlo", "Olympus", "Truva Atı", "Coral Reef"], "rarity_counts": {"3": 4, "2": 1}}
+{"game_id": 1000, "turn": 13, "player": "balancer", "cards_seen": ["Loki", "World War II", "Babylon", "Event Horizon", "Camouflage"], "rarity_counts": {"3": 1, "4": 2, "2": 2}}
+{"game_id": 1000, "turn": 13, "player": "builder", "cards_seen": ["Impressionism", "Gravity", "Golden Ratio", "Fibonacci Sequence", "Ragnarök"], "rarity_counts": {"2": 2, "3": 2, "4": 1}}
+{"game_id": 1000, "turn": 13, "player": "tempo", "cards_seen": ["Frida Kahlo", "Babylon", "Albert Einstein", "Golden Ratio", "Pandora'nın Kutusu"], "rarity_counts": {"3": 3, "2": 1, "5": 1}}
+{"game_id": 1000, "turn": 13, "player": "random", "cards_seen": ["Frida Kahlo", "Printing Press", "Dark Matter", "Pulsar", "Turing Machine"], "rarity_counts": {"3": 2, "2": 1, "4": 2}}
+{"game_id": 1000, "turn": 13, "player": "evolver", "cards_seen": ["Baroque", "Narwhal", "Sirius", "Turing Machine", "Graffiti"], "rarity_counts": {"2": 3, "4": 1, "1": 1}}
+{"game_id": 1000, "turn": 13, "player": "warrior", "cards_seen": ["Guernica", "Kraken", "Pop Art", "Komodo Dragon", "Pulsar"], "rarity_counts": {"4": 2, "1": 1, "3": 2}}
+{"game_id": 1000, "turn": 13, "player": "economist", "cards_seen": ["Mantis Karidesi", "Migration", "Asteroid Belt", "Truva Atı", "Odin"], "rarity_counts": {"4": 2, "2": 3}}
+{"game_id": 1000, "turn": 13, "player": "rare_hunter", "cards_seen": ["World War II", "Fungus", "Baobab", "Shadow Puppetry", "Bioluminescence"], "rarity_counts": {"4": 1, "2": 1, "3": 2, "1": 1}}
+{"game_id": 1000, "turn": 14, "player": "balancer", "cards_seen": ["DNA", "Quasar", "Entropy", "Nikola Tesla", "Turing Machine"], "rarity_counts": {"3": 2, "4": 3}}
+{"game_id": 1000, "turn": 14, "player": "builder", "cards_seen": ["Gravity", "Space-Time", "Odin", "Jazz", "Medusa"], "rarity_counts": {"3": 2, "4": 2, "2": 1}}
+{"game_id": 1000, "turn": 14, "player": "tempo", "cards_seen": ["Olympus", "Ballet", "Gravity", "Quasar", "Medusa"], "rarity_counts": {"3": 3, "2": 1, "4": 1}}
+{"game_id": 1000, "turn": 14, "player": "random", "cards_seen": ["Mantis Karidesi", "Exoplanet", "Blue Whale", "Pandora'nın Kutusu", "Olympus"], "rarity_counts": {"4": 2, "2": 1, "3": 2}}
+{"game_id": 1000, "turn": 14, "player": "evolver", "cards_seen": ["Cordyceps", "Truva Atı", "Kraken", "Fibonacci Sequence", "Algorithm"], "rarity_counts": {"4": 2, "2": 3}}
+{"game_id": 1000, "turn": 14, "player": "warrior", "cards_seen": ["Midas Dokunuşu", "Ballet", "Komodo Dragon", "Quantum Mechanics", "Truva Atı"], "rarity_counts": {"2": 3, "3": 1, "4": 1}}
+{"game_id": 1000, "turn": 14, "player": "economist", "cards_seen": ["Pulsar", "Turing Machine", "Odin", "Midas Dokunuşu", "Flamenco"], "rarity_counts": {"3": 1, "4": 2, "2": 2}}
+{"game_id": 1000, "turn": 14, "player": "rare_hunter", "cards_seen": ["Europa", "Venus Flytrap", "Exoplanet", "Cubism", "Baroque"], "rarity_counts": {"2": 5}}
+{"game_id": 1000, "turn": 15, "player": "balancer", "cards_seen": ["Olympus", "Albert Einstein", "Cubism", "Baobab", "Minotaur"], "rarity_counts": {"3": 2, "5": 1, "2": 2}}
+{"game_id": 1000, "turn": 15, "player": "builder", "cards_seen": ["Anubis", "Fungus", "Printing Press", "Albert Einstein", "Black Death"], "rarity_counts": {"3": 1, "2": 2, "5": 2}}
+{"game_id": 1000, "turn": 15, "player": "tempo", "cards_seen": ["Komodo Dragon", "Olympus", "Asteroid Belt", "Baobab", "Minimalism"], "rarity_counts": {"3": 3, "2": 1, "1": 1}}
+{"game_id": 1000, "turn": 15, "player": "random", "cards_seen": ["Ragnarök", "Algorithm", "Nikola Tesla", "Loki", "Odin"], "rarity_counts": {"4": 3, "2": 1, "3": 1}}
+{"game_id": 1000, "turn": 15, "player": "evolver", "cards_seen": ["Event Horizon", "Medusa", "Guernica", "Kraken", "Coral Reef"], "rarity_counts": {"4": 3, "3": 2}}
+{"game_id": 1000, "turn": 15, "player": "warrior", "cards_seen": ["Marie Curie", "Milky Way", "Pulsar", "Roman Empire", "Exoplanet"], "rarity_counts": {"4": 3, "3": 1, "2": 1}}
+{"game_id": 1000, "turn": 15, "player": "economist", "cards_seen": ["Asteroid Belt", "Flamenco", "Cosmic Microwave Background", "Blue Whale", "Roman Empire"], "rarity_counts": {"2": 2, "4": 3}}
+{"game_id": 1000, "turn": 15, "player": "rare_hunter", "cards_seen": ["Algorithm", "Surrealism", "Blue Whale", "Opera", "Minimalism"], "rarity_counts": {"2": 2, "3": 1, "4": 1, "1": 1}}
+{"game_id": 1000, "turn": 16, "player": "balancer", "cards_seen": ["Coral Reef", "Minimalism", "Pop Art", "Ballet", "Jazz"], "rarity_counts": {"3": 1, "1": 2, "2": 2}}
+{"game_id": 1000, "turn": 16, "player": "builder", "cards_seen": ["Narwhal", "Entropy", "Venus Flytrap", "Minimalism", "Supernova"], "rarity_counts": {"2": 2, "3": 1, "1": 1, "4": 1}}
+{"game_id": 1000, "turn": 16, "player": "tempo", "cards_seen": ["Entropy", "Migration", "Shadow Puppetry", "Baobab", "Golden Ratio"], "rarity_counts": {"3": 3, "2": 1, "1": 1}}
+{"game_id": 1000, "turn": 16, "player": "random", "cards_seen": ["Algorithm", "Migration", "Quasar", "Betelgeuse", "Isaac Newton"], "rarity_counts": {"2": 2, "4": 2, "3": 1}}
+{"game_id": 1000, "turn": 16, "player": "evolver", "cards_seen": ["Midas Dokunuşu", "Bioluminescence", "Turing Machine", "Roman Empire", "Frida Kahlo"], "rarity_counts": {"2": 1, "3": 2, "4": 2}}
+{"game_id": 1000, "turn": 16, "player": "warrior", "cards_seen": ["Black Hole", "Loki", "Ballet", "Milky Way", "Minotaur"], "rarity_counts": {"5": 1, "3": 1, "2": 2, "4": 1}}
+{"game_id": 1000, "turn": 16, "player": "economist", "cards_seen": ["Quantum Mechanics", "Black Death", "Isaac Newton", "Cerberus", "Odin"], "rarity_counts": {"4": 3, "5": 1, "3": 1}}
+{"game_id": 1000, "turn": 16, "player": "rare_hunter", "cards_seen": ["Event Horizon", "Exoplanet", "Golden Ratio", "Impressionism", "Babylon"], "rarity_counts": {"4": 1, "2": 3, "3": 1}}
+{"game_id": 1000, "turn": 17, "player": "balancer", "cards_seen": ["Roman Empire", "Opera", "Europa", "Event Horizon", "Camouflage"], "rarity_counts": {"4": 2, "2": 3}}
+{"game_id": 1000, "turn": 17, "player": "builder", "cards_seen": ["Migration", "Platypus", "Axolotl", "Impressionism", "Flamenco"], "rarity_counts": {"2": 4, "1": 1}}
+{"game_id": 1000, "turn": 17, "player": "tempo", "cards_seen": ["Betelgeuse", "Milky Way", "Pandora'nın Kutusu", "Albert Einstein", "Frida Kahlo"], "rarity_counts": {"3": 3, "4": 1, "5": 1}}
+{"game_id": 1000, "turn": 17, "player": "random", "cards_seen": ["Venus Flytrap", "Isaac Newton", "Baroque", "Renaissance", "Quantum Mechanics"], "rarity_counts": {"2": 2, "4": 3}}
+{"game_id": 1000, "turn": 17, "player": "evolver", "cards_seen": ["Asteroid Belt", "Code of Hammurabi", "Marie Curie", "Blue Whale", "Truva Atı"], "rarity_counts": {"2": 3, "4": 2}}
+{"game_id": 1000, "turn": 17, "player": "warrior", "cards_seen": ["Gothic Architecture", "Entropy", "Printing Press", "Pop Art", "Code of Hammurabi"], "rarity_counts": {"3": 2, "2": 2, "1": 1}}
+{"game_id": 1000, "turn": 17, "player": "economist", "cards_seen": ["Higgs Boson", "Gravity", "Algorithm", "Migration", "Opera"], "rarity_counts": {"4": 1, "3": 1, "2": 3}}
+{"game_id": 1000, "turn": 17, "player": "rare_hunter", "cards_seen": ["Isaac Newton", "Ballet", "E = mc²", "Cordyceps", "Algorithm"], "rarity_counts": {"4": 2, "2": 2, "5": 1}}
+{"game_id": 1000, "turn": 18, "player": "balancer", "cards_seen": ["Albert Einstein", "Cerberus", "Platypus", "Graffiti", "Pop Art"], "rarity_counts": {"5": 1, "3": 1, "1": 3}}
+{"game_id": 1000, "turn": 18, "player": "builder", "cards_seen": ["Coelacanth", "Europa", "Minimalism", "Komodo Dragon", "Impressionism"], "rarity_counts": {"5": 1, "2": 2, "1": 1, "3": 1}}
+{"game_id": 1000, "turn": 18, "player": "tempo", "cards_seen": ["Venus Flytrap", "Algorithm", "Minotaur", "Ballet", "Printing Press"], "rarity_counts": {"2": 5}}
+{"game_id": 1000, "turn": 18, "player": "random", "cards_seen": ["Ballet", "Cold War", "Milky Way", "Space-Time", "Guernica"], "rarity_counts": {"2": 1, "3": 1, "4": 3}}
+{"game_id": 1000, "turn": 18, "player": "evolver", "cards_seen": ["Marie Curie", "Fibonacci Sequence", "Cosmic Microwave Background", "Coelacanth", "Gothic Architecture"], "rarity_counts": {"4": 2, "2": 1, "5": 1, "3": 1}}
+{"game_id": 1000, "turn": 18, "player": "warrior", "cards_seen": ["Event Horizon", "Truva Atı", "Guernica", "Quantum Mechanics", "Cold War"], "rarity_counts": {"4": 3, "2": 1, "3": 1}}
+{"game_id": 1000, "turn": 18, "player": "economist", "cards_seen": ["Guernica", "Blue Whale", "Space-Time", "Sirius", "Flamenco"], "rarity_counts": {"4": 3, "2": 2}}
+{"game_id": 1000, "turn": 18, "player": "rare_hunter", "cards_seen": ["E = mc²", "Babylon", "Fungus", "Minimalism", "Gravity"], "rarity_counts": {"5": 1, "2": 2, "1": 1, "3": 1}}
+{"game_id": 1000, "turn": 19, "player": "balancer", "cards_seen": ["Odin", "Komodo Dragon", "Graffiti", "Migration", "Milky Way"], "rarity_counts": {"4": 2, "3": 1, "1": 1, "2": 1}}
+{"game_id": 1000, "turn": 19, "player": "builder", "cards_seen": ["Printing Press", "Gravity", "Golden Ratio", "Albert Einstein", "Code of Hammurabi"], "rarity_counts": {"2": 2, "3": 2, "5": 1}}
+{"game_id": 1000, "turn": 19, "player": "tempo", "cards_seen": ["Impressionism", "Cordyceps", "Fungus", "Platypus", "Baroque"], "rarity_counts": {"2": 3, "4": 1, "1": 1}}
+{"game_id": 1000, "turn": 19, "player": "random", "cards_seen": ["Graffiti", "Ballet", "Anubis", "Yggdrasil", "Black Death"], "rarity_counts": {"1": 1, "2": 1, "3": 1, "5": 2}}
+{"game_id": 1000, "turn": 19, "player": "evolver", "cards_seen": ["Guernica", "Axolotl", "Medusa", "Graffiti", "Cold War"], "rarity_counts": {"4": 1, "2": 1, "3": 2, "1": 1}}
+{"game_id": 1000, "turn": 19, "player": "warrior", "cards_seen": ["Minotaur", "Higgs Boson", "World War II", "Betelgeuse", "Mantis Karidesi"], "rarity_counts": {"2": 1, "4": 3, "3": 1}}
+{"game_id": 1000, "turn": 19, "player": "economist", "cards_seen": ["Narwhal", "Guernica", "Cold War", "Baobab", "Renaissance"], "rarity_counts": {"2": 1, "4": 2, "3": 2}}
+{"game_id": 1000, "turn": 19, "player": "rare_hunter", "cards_seen": ["Quantum Mechanics", "Baroque", "Medusa", "Supernova", "Mantis Karidesi"], "rarity_counts": {"4": 3, "2": 1, "3": 1}}
+{"game_id": 1000, "turn": 20, "player": "balancer", "cards_seen": ["Algorithm", "Narwhal", "Shadow Puppetry", "Roman Empire", "Printing Press"], "rarity_counts": {"2": 3, "1": 1, "4": 1}}
+{"game_id": 1000, "turn": 20, "player": "builder", "cards_seen": ["Mantis Karidesi", "Pop Art", "Guernica", "Camouflage", "Yggdrasil"], "rarity_counts": {"4": 2, "1": 1, "2": 1, "5": 1}}
+{"game_id": 1000, "turn": 20, "player": "tempo", "cards_seen": ["Black Hole", "Anubis", "Shadow Puppetry", "Asteroid Belt", "Jazz"], "rarity_counts": {"5": 1, "3": 1, "1": 1, "2": 2}}
+{"game_id": 1000, "turn": 20, "player": "random", "cards_seen": ["Asteroid Belt", "Europa", "Cordyceps", "Milky Way", "Truva Atı"], "rarity_counts": {"2": 3, "4": 2}}
+{"game_id": 1000, "turn": 20, "player": "evolver", "cards_seen": ["Flamenco", "Anubis", "Black Death", "Venus Flytrap", "Tardigrade"], "rarity_counts": {"2": 2, "3": 2, "5": 1}}
+{"game_id": 1000, "turn": 20, "player": "warrior", "cards_seen": ["Coral Reef", "Venus Flytrap", "Cosmic Microwave Background", "Cold War", "Truva Atı"], "rarity_counts": {"3": 2, "2": 2, "4": 1}}
+{"game_id": 1000, "turn": 20, "player": "economist", "cards_seen": ["Supernova", "Code of Hammurabi", "Exoplanet", "Tardigrade", "Sirius"], "rarity_counts": {"4": 1, "2": 3, "3": 1}}
+{"game_id": 1000, "turn": 20, "player": "rare_hunter", "cards_seen": ["World War II", "Surrealism", "Quasar", "Coelacanth", "Cubism"], "rarity_counts": {"4": 2, "3": 1, "5": 1, "2": 1}}
+{"game_id": 1000, "turn": 21, "player": "balancer", "cards_seen": ["Printing Press", "Flamenco", "Renaissance", "Bioluminescence", "Industrial Revolution"], "rarity_counts": {"2": 2, "4": 1, "3": 2}}
+{"game_id": 1000, "turn": 21, "player": "builder", "cards_seen": ["Albert Einstein", "Code of Hammurabi", "Blue Whale", "Odin", "Camouflage"], "rarity_counts": {"5": 1, "2": 2, "4": 2}}
+{"game_id": 1000, "turn": 21, "player": "tempo", "cards_seen": ["Cerberus", "Quantum Mechanics", "World War II", "Graffiti", "Printing Press"], "rarity_counts": {"3": 1, "4": 2, "1": 1, "2": 1}}
+{"game_id": 1000, "turn": 21, "player": "random", "cards_seen": ["Cerberus", "Platypus", "Europa", "Fibonacci Sequence", "Narwhal"], "rarity_counts": {"3": 1, "1": 1, "2": 3}}
+{"game_id": 1000, "turn": 21, "player": "evolver", "cards_seen": ["Entropy", "Cubism", "Roman Empire", "Ballet", "Pandora'nın Kutusu"], "rarity_counts": {"3": 2, "2": 2, "4": 1}}
+{"game_id": 1000, "turn": 21, "player": "warrior", "cards_seen": ["Cubism", "Minimalism", "Graffiti", "Anubis", "Asteroid Belt"], "rarity_counts": {"2": 2, "1": 2, "3": 1}}
+{"game_id": 1000, "turn": 21, "player": "economist", "cards_seen": ["Exoplanet", "Sirius", "Cold War", "Milky Way", "Supernova"], "rarity_counts": {"2": 2, "3": 1, "4": 2}}
+{"game_id": 1000, "turn": 21, "player": "rare_hunter", "cards_seen": ["Tardigrade", "Opera", "Jazz", "Industrial Revolution", "Supernova"], "rarity_counts": {"3": 2, "2": 2, "4": 1}}
+{"game_id": 1000, "turn": 22, "player": "balancer", "cards_seen": ["Code of Hammurabi", "Minimalism", "Opera", "Narwhal", "Golden Ratio"], "rarity_counts": {"2": 3, "1": 1, "3": 1}}
+{"game_id": 1000, "turn": 22, "player": "builder", "cards_seen": ["Migration", "Higgs Boson", "Camouflage", "Platypus", "Entropy"], "rarity_counts": {"2": 2, "4": 1, "1": 1, "3": 1}}
+{"game_id": 1000, "turn": 22, "player": "tempo", "cards_seen": ["Flamenco", "Europa", "Albert Einstein", "Cold War", "Supernova"], "rarity_counts": {"2": 2, "5": 1, "3": 1, "4": 1}}
+{"game_id": 1000, "turn": 22, "player": "random", "cards_seen": ["E = mc²", "Graffiti", "Renaissance", "Cordyceps", "Europa"], "rarity_counts": {"5": 1, "1": 1, "4": 2, "2": 1}}
+{"game_id": 1000, "turn": 22, "player": "evolver", "cards_seen": ["Baroque", "Venus Flytrap", "Truva Atı", "Coral Reef", "Opera"], "rarity_counts": {"2": 4, "3": 1}}
+{"game_id": 1000, "turn": 22, "player": "warrior", "cards_seen": ["Bioluminescence", "Ballet", "Minotaur", "Minimalism", "Coelacanth"], "rarity_counts": {"3": 1, "2": 2, "1": 1, "5": 1}}
+{"game_id": 1000, "turn": 22, "player": "economist", "cards_seen": ["Shadow Puppetry", "Asteroid Belt", "Cold War", "Narwhal", "Andromeda Galaxy"], "rarity_counts": {"1": 1, "2": 2, "3": 1, "4": 1}}
+{"game_id": 1000, "turn": 22, "player": "rare_hunter", "cards_seen": ["Algorithm", "Isaac Newton", "Roman Empire", "Tardigrade", "Code of Hammurabi"], "rarity_counts": {"2": 2, "4": 2, "3": 1}}
+{"game_id": 1000, "turn": 23, "player": "balancer", "cards_seen": ["Pandora'nın Kutusu", "Ballet", "Bioluminescence", "Algorithm", "Frida Kahlo"], "rarity_counts": {"3": 3, "2": 2}}
+{"game_id": 1000, "turn": 23, "player": "builder", "cards_seen": ["Migration", "Opera", "Mantis Karidesi", "Fungus", "Flamenco"], "rarity_counts": {"2": 4, "4": 1}}
+{"game_id": 1000, "turn": 23, "player": "tempo", "cards_seen": ["Minimalism", "Minotaur", "Supernova", "Truva Atı", "Frida Kahlo"], "rarity_counts": {"1": 1, "2": 2, "4": 1, "3": 1}}
+{"game_id": 1000, "turn": 23, "player": "random", "cards_seen": ["Jazz", "Midas Dokunuşu", "Minimalism", "Medusa", "Narwhal"], "rarity_counts": {"2": 3, "1": 1, "3": 1}}
+{"game_id": 1000, "turn": 23, "player": "evolver", "cards_seen": ["Higgs Boson", "Babylon", "Algorithm", "Surrealism", "Odin"], "rarity_counts": {"4": 2, "2": 2, "3": 1}}
+{"game_id": 1000, "turn": 23, "player": "warrior", "cards_seen": ["Code of Hammurabi", "Graffiti", "Yggdrasil", "Cordyceps", "Cubism"], "rarity_counts": {"2": 2, "1": 1, "5": 1, "4": 1}}
+{"game_id": 1000, "turn": 23, "player": "economist", "cards_seen": ["Europa", "Roman Empire", "Gothic Architecture", "Baroque", "Komodo Dragon"], "rarity_counts": {"2": 2, "4": 1, "3": 2}}
+{"game_id": 1000, "turn": 23, "player": "rare_hunter", "cards_seen": ["Baroque", "Exoplanet", "Pop Art", "Platypus", "Black Hole"], "rarity_counts": {"2": 2, "1": 2, "5": 1}}
+{"game_id": 1000, "turn": 24, "player": "builder", "cards_seen": ["World War II", "Minimalism", "Truva Atı", "Jazz", "Odin"], "rarity_counts": {"4": 2, "1": 1, "2": 2}}
+{"game_id": 1000, "turn": 24, "player": "tempo", "cards_seen": ["Nikola Tesla", "Baroque", "Asteroid Belt", "Anubis", "Babylon"], "rarity_counts": {"4": 1, "2": 3, "3": 1}}
+{"game_id": 1000, "turn": 24, "player": "random", "cards_seen": ["Komodo Dragon", "Frida Kahlo", "Venus Flytrap", "Industrial Revolution", "Odin"], "rarity_counts": {"3": 3, "2": 1, "4": 1}}
+{"game_id": 1000, "turn": 24, "player": "evolver", "cards_seen": ["Gothic Architecture", "Narwhal", "Guernica", "Baroque", "Flamenco"], "rarity_counts": {"3": 1, "2": 3, "4": 1}}
+{"game_id": 1000, "turn": 24, "player": "warrior", "cards_seen": ["Sirius", "Minimalism", "Asteroid Belt", "Printing Press", "Graffiti"], "rarity_counts": {"2": 3, "1": 2}}
+{"game_id": 1000, "turn": 24, "player": "economist", "cards_seen": ["Platypus", "Venus Flytrap", "Sirius", "Silk Road", "Jazz"], "rarity_counts": {"1": 1, "2": 3, "3": 1}}
+{"game_id": 1000, "turn": 24, "player": "rare_hunter", "cards_seen": ["Space-Time", "Fungus", "Nikola Tesla", "Ballet", "Minotaur"], "rarity_counts": {"4": 2, "2": 3}}
+{"game_id": 1000, "turn": 25, "player": "builder", "cards_seen": ["Axolotl", "Silk Road", "Midas Dokunuşu", "Europa", "Fibonacci Sequence"], "rarity_counts": {"2": 4, "3": 1}}
+{"game_id": 1000, "turn": 25, "player": "tempo", "cards_seen": ["Jazz", "Ballet", "Code of Hammurabi", "Platypus", "Renaissance"], "rarity_counts": {"2": 3, "1": 1, "4": 1}}
+{"game_id": 1000, "turn": 25, "player": "random", "cards_seen": ["Truva Atı", "Pop Art", "Pandora'nın Kutusu", "Flamenco", "Fungus"], "rarity_counts": {"2": 3, "1": 1, "3": 1}}
+{"game_id": 1000, "turn": 25, "player": "evolver", "cards_seen": ["Komodo Dragon", "Sirius", "Camouflage", "Babylon", "Gothic Architecture"], "rarity_counts": {"3": 2, "2": 3}}
+{"game_id": 1000, "turn": 25, "player": "warrior", "cards_seen": ["Industrial Revolution", "Asteroid Belt", "Tardigrade", "Opera", "Pandora'nın Kutusu"], "rarity_counts": {"3": 3, "2": 2}}
+{"game_id": 1000, "turn": 25, "player": "rare_hunter", "cards_seen": ["Cold War", "Pandora'nın Kutusu", "Isaac Newton", "Black Death", "Cubism"], "rarity_counts": {"3": 2, "4": 1, "5": 1, "2": 1}}
+{"game_id": 1000, "turn": 26, "player": "builder", "cards_seen": ["Shadow Puppetry", "Cold War", "Cerberus", "Pandora'nın Kutusu", "Printing Press"], "rarity_counts": {"1": 1, "3": 3, "2": 1}}
+{"game_id": 1000, "turn": 26, "player": "tempo", "cards_seen": ["Platypus", "Code of Hammurabi", "Graffiti", "Sirius", "Impressionism"], "rarity_counts": {"1": 2, "2": 3}}
+{"game_id": 1000, "turn": 26, "player": "evolver", "cards_seen": ["Exoplanet", "Phoenix", "Frida Kahlo", "Graffiti", "Fibonacci Sequence"], "rarity_counts": {"2": 2, "4": 1, "3": 1, "1": 1}}
+{"game_id": 1000, "turn": 27, "player": "builder", "cards_seen": ["Narwhal", "Impressionism", "Europa", "Black Hole", "Pop Art"], "rarity_counts": {"2": 3, "5": 1, "1": 1}}
+{"game_id": 1000, "turn": 27, "player": "tempo", "cards_seen": ["Bioluminescence", "Asteroid Belt", "Pandora'nın Kutusu", "Axolotl", "Graffiti"], "rarity_counts": {"3": 2, "2": 2, "1": 1}}
+{"game_id": 1000, "turn": 27, "player": "evolver", "cards_seen": ["Surrealism", "Milky Way", "Opera", "Mantis Karidesi", "Cubism"], "rarity_counts": {"3": 1, "4": 2, "2": 2}}
+{"game_id": 1000, "turn": 28, "player": "builder", "cards_seen": ["Phoenix", "Isaac Newton", "Tardigrade", "Cubism", "Exoplanet"], "rarity_counts": {"4": 2, "3": 1, "2": 2}}
+{"game_id": 1000, "turn": 28, "player": "tempo", "cards_seen": ["Entropy", "Phoenix", "Mantis Karidesi", "Narwhal", "Industrial Revolution"], "rarity_counts": {"3": 2, "4": 2, "2": 1}}
+{"game_id": 1000, "turn": 29, "player": "builder", "cards_seen": ["Yggdrasil", "Axolotl", "Jazz", "Komodo Dragon", "Pandora'nın Kutusu"], "rarity_counts": {"5": 1, "2": 2, "3": 2}}
+{"game_id": 1000, "turn": 29, "player": "tempo", "cards_seen": ["Algorithm", "Camouflage", "Cordyceps", "Printing Press", "Entropy"], "rarity_counts": {"2": 3, "4": 1, "3": 1}}
+{"game_id": 1000, "turn": 30, "player": "builder", "cards_seen": ["Nikola Tesla", "Baroque", "Midas Dokunuşu", "Babylon", "Mantis Karidesi"], "rarity_counts": {"4": 2, "2": 3}}
+{"game_id": 1000, "turn": 30, "player": "tempo", "cards_seen": ["Odin", "Anubis", "Nikola Tesla", "Graffiti", "Cubism"], "rarity_counts": {"4": 2, "3": 1, "1": 1, "2": 1}}
+{"game_id": 1000, "turn": 31, "player": "builder", "cards_seen": ["Midas Dokunuşu", "Fibonacci Sequence", "Minotaur", "Baroque", "Pop Art"], "rarity_counts": {"2": 4, "1": 1}}
+{"game_id": 1000, "turn": 31, "player": "tempo", "cards_seen": ["Platypus", "Narwhal", "Tardigrade", "Cold War", "Exoplanet"], "rarity_counts": {"1": 1, "2": 2, "3": 2}}
+{"game_id": 1000, "turn": 32, "player": "builder", "cards_seen": ["Sirius", "Asteroid Belt", "Bioluminescence", "Anubis", "Nikola Tesla"], "rarity_counts": {"2": 2, "3": 2, "4": 1}}
+{"game_id": 1000, "turn": 32, "player": "tempo", "cards_seen": ["Babylon", "Asteroid Belt", "Sirius", "Minimalism", "Golden Ratio"], "rarity_counts": {"2": 3, "1": 1, "3": 1}}
+{"game_id": 1000, "turn": 33, "player": "builder", "cards_seen": ["Sirius", "Asteroid Belt", "Baobab", "Isaac Newton", "Flamenco"], "rarity_counts": {"2": 3, "3": 1, "4": 1}}
+{"game_id": 1000, "turn": 33, "player": "tempo", "cards_seen": ["Quasar", "Baobab", "Baroque", "Industrial Revolution", "Babylon"], "rarity_counts": {"4": 1, "3": 2, "2": 2}}
+{"game_id": 1000, "turn": 34, "player": "builder", "cards_seen": ["Yggdrasil", "Phoenix", "Surrealism", "Midas Dokunuşu", "Jazz"], "rarity_counts": {"5": 1, "4": 1, "3": 1, "2": 2}}
+{"game_id": 1000, "turn": 34, "player": "tempo", "cards_seen": ["Impressionism", "Sirius", "Ballet", "Isaac Newton", "Venus Flytrap"], "rarity_counts": {"2": 4, "4": 1}}
+{"game_id": 1000, "turn": 35, "player": "builder", "cards_seen": ["Baobab", "Fungus", "Shadow Puppetry", "Camouflage", "Quasar"], "rarity_counts": {"3": 1, "2": 2, "1": 1, "4": 1}}
+{"game_id": 1000, "turn": 35, "player": "tempo", "cards_seen": ["Europa", "Phoenix", "Printing Press", "Shadow Puppetry", "Axolotl"], "rarity_counts": {"2": 3, "4": 1, "1": 1}}
+{"game_id": 1000, "turn": 36, "player": "builder", "cards_seen": ["Platypus", "Graffiti", "Opera", "Nikola Tesla", "Cubism"], "rarity_counts": {"1": 2, "2": 2, "4": 1}}
+{"game_id": 1000, "turn": 36, "player": "tempo", "cards_seen": ["Pop Art", "Camouflage", "Mantis Karidesi", "Impressionism", "Bioluminescence"], "rarity_counts": {"1": 1, "2": 2, "4": 1, "3": 1}}

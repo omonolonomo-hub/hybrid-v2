@@ -1,0 +1,49 @@
+{
+  "economist": {
+    "thresh_high": 27.012525825899594,
+    "thresh_mid": 5.887870123764179,
+    "thresh_low": 11.572130722067811,
+    "buy_2_thresh": 15.0,
+    "greed_turn_end": 5.0,
+    "spike_turn_end": 14.773731014667712,
+    "greed_gold_thresh": 15.0,
+    "spike_r4_thresh": 42.07452062733782,
+    "convert_r5_thresh": 80.0,
+    "spike_buy_count": 3.1891953600814538,
+    "convert_buy_count": 3.6086842743641023
+  },
+  "warrior": {
+    "power_weight": 1.0,
+    "rarity_weight": 0.0
+  },
+  "builder": {
+    "power_weight": 0.4,
+    "combo_weight": 0.5,
+    "greed_turn_end": 5.0,
+    "spike_turn_end": 14.773731014667712,
+    "greed_gold_thresh": 8.0,
+    "spike_r4_thresh": 42.07452062733782,
+    "convert_r5_thresh": 80.0,
+    "spike_buy_count": 2.0,
+    "convert_buy_count": 2.0
+  },
+  "evolver": {
+    "evo_near_bonus": 1000.0,
+    "evo_one_bonus": 500.0,
+    "rarity_weight_mult": 10.0,
+    "power_weight": 1.0
+  },
+  "balancer": {
+    "group_bonus": 5.0,
+    "group_thresh": 3.0,
+    "power_weight": 1.0
+  },
+  "rare_hunter": {
+    "fallback_rarity": 3.0
+  },
+  "tempo": {
+    "power_center_thresh": 45.0,
+    "combo_center_weight": 1.5
+  },
+  "random": {}
+}

@@ -1,0 +1,2 @@
+class DebugOverlay:
+    pass

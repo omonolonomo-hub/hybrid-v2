@@ -1,0 +1,6 @@
+{
+  "builder.combo_weight": 0.5,
+  "builder.greed_gold_thresh": 8.0,
+  "builder.spike_buy_count": 1.0,
+  "builder.convert_buy_count": 2.0
+}

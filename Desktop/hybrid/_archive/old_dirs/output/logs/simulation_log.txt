@@ -1,0 +1,1126 @@
+
+============================================================
+  GAME 1 | 38 turns | Winner: P2 (economist) HP=104
+============================================================
+
+  [EVOLUTIONS]
+    P3 (evolver): Minimalism (turn 7), Pulsar (turn 21), Platypus (turn 23), Quetzalcoatl (turn 29), Pop Art (turn 34) — 5 total
+
+  [OPPONENT BOARD CHECKS]
+    P0 (random): 0 checks
+    P1 (warrior): 0 checks
+    P2 (economist): 0 checks
+    P3 (evolver): 0 checks
+
+  [PASSIVE TRIGGERS] (card -> trigger: count)
+    Age of Discovery: card_buy:85, combat_win:9, copy_2:2, income:85, market_refresh:85, pre_combat:70
+    Albert Einstein: card_buy:48, income:48, market_refresh:48, pre_combat:38
+    Algorithm: combat_lose:2
+    Andromeda Galaxy: card_buy:67, combat_win:6, copy_2:2, income:67, market_refresh:67, pre_combat:58
+    Asteroid Belt: card_killed:1, combat_lose:7
+    Athena: card_buy:35, copy_2:2, income:35, market_refresh:35, pre_combat:24
+    Babylon: card_killed:3, combat_lose:15
+    Ballet: card_buy:64, card_killed:1, combat_lose:3, combat_win:2, copy_2:2, income:64, market_refresh:64, pre_combat:60
+    Baobab: combat_win:4
+    Betelgeuse: card_killed:1, combat_lose:4, combat_win:4
+    Bioluminescence: combat_win:1
+    Black Death: card_buy:21, income:21, market_refresh:21, pre_combat:16
+    Black Hole: card_buy:56, copy_2:2, income:56, market_refresh:56, pre_combat:44
+    Blue Whale: card_buy:10, copy_2:2, income:10, market_refresh:10, pre_combat:7
+    Cerberus: card_killed:1, combat_lose:4, combat_win:2
+    Code of Hammurabi: card_buy:72, card_killed:1, combat_lose:2, copy_2:2, income:72, market_refresh:72, pre_combat:61
+    Coelacanth: card_buy:13, card_killed:1, combat_lose:4, combat_win:11, copy_2:2, income:13, market_refresh:13, pre_combat:14
+    Coral Reef: combat_lose:2, combat_win:7
+    Cubism: card_buy:4, income:4, market_refresh:4, pre_combat:5
+    Entropy: card_buy:18, income:18, market_refresh:18, pre_combat:19
+    Europa: card_buy:30, card_killed:3, combat_lose:6, combat_win:5, income:30, market_refresh:30, pre_combat:28
+    Event Horizon: card_buy:64, copy_2:2, income:64, market_refresh:64, pre_combat:47
+    Evolved Pulsar: card_buy:17, income:17, market_refresh:17, pre_combat:11
+    Evolved Quetzalcoatl: card_buy:9, income:9, market_refresh:9, pre_combat:5
+    Exoplanet: card_buy:2, combat_lose:1, income:2, market_refresh:2, pre_combat:3
+    French Revolution: card_buy:47, combat_win:8, income:47, market_refresh:47, pre_combat:40
+    Frida Kahlo: card_buy:1, combat_lose:4, combat_win:4, income:1, market_refresh:1, pre_combat:1
+    Fungus: card_buy:32, combat_lose:1, income:32, market_refresh:32, pre_combat:30
+    Golden Ratio: card_buy:22, income:22, market_refresh:22, pre_combat:18
+    Gothic Architecture: combat_lose:2
+    Gravity: card_buy:64, card_killed:1, combat_lose:4, combat_win:6, copy_2:2, income:64, market_refresh:64, pre_combat:54
+    Guernica: card_buy:21, combat_win:7, copy_2:2, copy_3:3, income:21, market_refresh:21, pre_combat:24
+    Higgs Boson: card_buy:37, copy_2:3, copy_3:3, income:37, market_refresh:37, pre_combat:26
+    Impressionism: combat_lose:1
+    Industrial Revolution: combat_win:2
+    Isaac Newton: card_buy:25, income:25, market_refresh:25, pre_combat:23
+    Jazz: card_killed:1, combat_lose:4, combat_win:4
+    Kabuki: card_buy:23, card_killed:1, combat_lose:4, combat_win:1, income:23, market_refresh:23, pre_combat:19
+    Komodo Dragon: card_killed:2, combat_lose:10
+    Kraken: card_buy:7, combat_win:5, copy_2:2, income:7, market_refresh:7, pre_combat:6
+    Marie Curie: card_killed:1, combat_lose:4, combat_win:3
+    Medusa: card_buy:5, income:5, market_refresh:5, pre_combat:6
+    Milky Way: card_buy:6, copy_2:1, income:6, market_refresh:6, pre_combat:6
+    Minotaur: card_buy:4, copy_2:2, income:4, market_refresh:4, pre_combat:6
+    Mongol Empire: card_buy:50, combat_lose:4, combat_win:2, copy_2:2, income:50, market_refresh:50, pre_combat:40
+    Moon Landing: card_buy:50, card_killed:1, combat_lose:6, combat_win:11, copy_2:2, income:50, market_refresh:50, pre_combat:41
+    Nikola Tesla: card_buy:22, income:22, market_refresh:22, pre_combat:14
+    Odin: card_buy:15, income:15, market_refresh:15, pre_combat:14
+    Ottoman Empire: combat_win:6
+    Periodic Table: card_buy:15, income:15, market_refresh:15, pre_combat:16
+    Phoenix: combat_lose:1, combat_win:5
+    Printing Press: card_buy:47, income:47, market_refresh:47, pre_combat:46
+    Pulsar: card_buy:28, combat_win:9, copy_2:2, income:28, market_refresh:28, pre_combat:28
+    Quantum Mechanics: card_buy:22, combat_win:5, income:22, market_refresh:22, pre_combat:16
+    Quasar: card_buy:31, combat_win:3, income:31, market_refresh:31, pre_combat:27
+    Quetzalcoatl: card_buy:13, copy_2:2, income:13, market_refresh:13, pre_combat:10
+    Rainforest: card_buy:40, income:40, market_refresh:40, pre_combat:36
+    Renaissance: card_buy:26, card_killed:1, combat_lose:5, combat_win:2, copy_2:2, income:26, market_refresh:26, pre_combat:17
+    Roman Empire: card_buy:20, income:20, market_refresh:20, pre_combat:18
+    Sirius: card_killed:1, combat_lose:3, combat_win:3
+    Space-Time: card_buy:67, copy_2:2, income:67, market_refresh:67, pre_combat:58
+    Sparta: card_buy:47, copy_2:2, income:47, market_refresh:47, pre_combat:36
+    Supernova: combat_win:2
+    Valhalla: card_buy:63, combat_win:3, income:63, market_refresh:63, pre_combat:56
+    Venus Flytrap: card_buy:51, combat_lose:4, combat_win:2, income:51, market_refresh:51, pre_combat:50
+    World War II: card_buy:11, income:11, market_refresh:11, pre_combat:8
+    Yggdrasil: card_buy:43, income:43, market_refresh:43, pre_combat:33
+
+  [COMBAT WIN RATE] (cards with 3+ combats, sorted by win rate)
+    French Revolution                   8W 0L  100%  ####################
+    Guernica                            7W 0L  100%  ####################
+    Kraken                              5W 0L  100%  ####################
+    Ottoman Empire                      6W 0L  100%  ####################
+    Age of Discovery                    9W 0L  100%  ####################
+    Pulsar                              9W 0L  100%  ####################
+    Quantum Mechanics                   5W 0L  100%  ####################
+    Valhalla                            3W 0L  100%  ####################
+    Baobab                              4W 0L  100%  ####################
+    Andromeda Galaxy                    6W 0L  100%  ####################
+    Quasar                              3W 0L  100%  ####################
+    Phoenix                             5W 1L  83%  ################
+    Coral Reef                          7W 2L  78%  ###############
+    Coelacanth                          11W 4L  73%  ##############
+    Moon Landing                        11W 6L  65%  ############
+    Gravity                             6W 4L  60%  ############
+    Cold War                            6W 5L  55%  ##########
+    Betelgeuse                          4W 4L  50%  ##########
+    Frida Kahlo                         4W 4L  50%  ##########
+    Sirius                              3W 3L  50%  ##########
+    Pandora'nn Kutusu                   2W 2L  50%  ##########
+    Jazz                                4W 4L  50%  ##########
+    Europa                              5W 6L  45%  #########
+    Marie Curie                         3W 4L  43%  ########
+    Ballet                              2W 3L  40%  ########
+    Platypus                            4W 8L  33%  ######
+    Venus Flytrap                       2W 4L  33%  ######
+    Mongol Empire                       2W 4L  33%  ######
+    Cerberus                            2W 4L  33%  ######
+    Renaissance                         2W 5L  29%  #####
+    Kabuki                              1W 4L  20%  ####
+    Surrealism                          0W 3L  0%  
+    Midas Dokunuu                       0W 8L  0%  
+    Minimalism                          0W 10L  0%  
+    Migration                           0W 5L  0%  
+    Asteroid Belt                       0W 7L  0%  
+    Komodo Dragon                       0W 10L  0%  
+    Babylon                             0W 15L  0%  
+    Shadow Puppetry                     0W 4L  0%  
+    Graffiti                            0W 5L  0%  
+
+  [CARD SURVIVAL] (avg turns alive on board, per player)
+    P0 (random):
+      Camouflage                          36 turns
+      Platypus                            21 turns
+      Cold War                            20 turns
+      Entropy                             19 turns
+      Venus Flytrap                       17 turns
+      Periodic Table                      16 turns
+      Code of Hammurabi                   15 turns
+      Printing Press                      14 turns
+    P1 (warrior):
+      Gravity                             66 turns
+      Mongol Empire                       52 turns
+      Moon Landing                        46 turns
+      Age of Discovery                    45 turns
+      Sparta                              41 turns
+      Ragnarök                            40 turns
+      Rainforest                          36 turns
+      Valhalla                            35 turns
+    P2 (economist):
+      Ballet                              66 turns
+      Cosmic Microwave Background         64 turns
+      Space-Time                          50 turns
+      Andromeda Galaxy                    44 turns
+      Minimalism                          38 turns
+      Pop Art                             37 turns
+      Venus Flytrap                       36 turns
+      Printing Press                      35 turns
+    P3 (evolver):
+      Code of Hammurabi                   60 turns
+      Black Hole                          44 turns
+      Event Horizon                       43 turns
+      Surrealism                          38 turns
+      Pop Art                             38 turns
+      Athena                              37 turns
+      Platypus                            36 turns
+      Truva Atı                           36 turns
+
+============================================================
+  GAME 2 | 35 turns | Winner: P1 (economist) HP=110
+============================================================
+
+  [EVOLUTIONS]
+    P2 (evolver): Platypus (turn 4), Entropy (turn 21) — 2 total
+
+  [OPPONENT BOARD CHECKS]
+    P0 (warrior): 0 checks
+    P1 (economist): 0 checks
+    P2 (evolver): 0 checks
+    P3 (random): 0 checks
+
+  [PASSIVE TRIGGERS] (card -> trigger: count)
+    Age of Discovery: card_buy:21, income:21, market_refresh:21, pre_combat:16
+    Albert Einstein: card_buy:16, copy_2:2, income:16, market_refresh:16, pre_combat:14
+    Andromeda Galaxy: card_buy:48, income:48, market_refresh:48, pre_combat:49
+    Anubis: card_buy:17, income:17, market_refresh:17, pre_combat:18
+    Asteroid Belt: card_buy:31, income:31, market_refresh:31, pre_combat:26
+    Ballet: card_buy:31, income:31, market_refresh:31, pre_combat:32
+    Baobab: card_buy:33, income:33, market_refresh:33, pre_combat:33
+    Baroque: card_buy:30, copy_2:2, income:30, market_refresh:30, pre_combat:23
+    Betelgeuse: card_buy:2, income:2, market_refresh:2, pre_combat:2
+    Bioluminescence: card_buy:36, income:36, market_refresh:36, pre_combat:36
+    Black Hole: card_buy:41, income:41, market_refresh:41, pre_combat:36
+    Charles Darwin: card_buy:25, income:25, market_refresh:25, pre_combat:26
+    Code of Hammurabi: card_buy:24, copy_2:2, income:24, market_refresh:24, pre_combat:14
+    Cordyceps: card_buy:11, income:11, market_refresh:11, pre_combat:6
+    Cubism: card_buy:34, income:34, market_refresh:34, pre_combat:30
+    Entropy: card_buy:5, income:5, market_refresh:5, pre_combat:5
+    Europa: card_buy:28, income:28, market_refresh:28, pre_combat:29
+    Evolved Entropy: card_buy:5, income:5, market_refresh:5, pre_combat:6
+    Fibonacci Sequence: card_buy:32, income:32, market_refresh:32, pre_combat:33
+    French Revolution: card_buy:57, income:57, market_refresh:57, pre_combat:52
+    Frida Kahlo: card_buy:51, copy_2:2, income:51, market_refresh:51, pre_combat:49
+    Fungus: card_buy:30, income:30, market_refresh:30, pre_combat:25
+    Gravity: card_buy:54, income:54, market_refresh:54, pre_combat:49
+    Higgs Boson: card_buy:17, income:17, market_refresh:17, pre_combat:20
+    Impressionism: card_buy:32, income:32, market_refresh:32, pre_combat:27
+    Komodo Dragon: card_buy:23, income:23, market_refresh:23, pre_combat:22
+    Kraken: card_buy:17, income:17, market_refresh:17, pre_combat:16
+    Loki: card_buy:30, income:30, market_refresh:30, pre_combat:29
+    Milky Way: card_buy:49, copy_2:2, income:49, market_refresh:49, pre_combat:49
+    Mongol Empire: card_buy:25, income:25, market_refresh:25, pre_combat:24
+    Moon Landing: card_buy:69, copy_2:2, income:69, market_refresh:69, pre_combat:70
+    Narwhal: card_buy:6, income:6, market_refresh:6, pre_combat:2
+    Nebula: card_buy:31, income:31, market_refresh:31, pre_combat:30
+    Odin: card_buy:2, income:2, market_refresh:2, pre_combat:3
+    Olympus: card_buy:17, income:17, market_refresh:17, pre_combat:12
+    Opera: card_buy:48, copy_2:2, income:48, market_refresh:48, pre_combat:38
+    Ottoman Empire: card_buy:64, income:64, market_refresh:64, pre_combat:65
+    Periodic Table: card_buy:21, copy_2:2, income:21, market_refresh:21, pre_combat:16
+    Phoenix: card_buy:6, income:6, market_refresh:6, pre_combat:7
+    Printing Press: card_buy:48, income:48, market_refresh:48, pre_combat:44
+    Pulsar: card_buy:24, income:24, market_refresh:24, pre_combat:27
+    Quetzalcoatl: card_buy:56, income:56, market_refresh:56, pre_combat:53
+    Rainforest: card_buy:23, income:23, market_refresh:23, pre_combat:18
+    Renaissance: card_buy:49, copy_2:2, income:49, market_refresh:49, pre_combat:51
+    Space-Time: card_buy:38, copy_2:4, income:38, market_refresh:38, pre_combat:38
+    Sparta: card_buy:39, income:39, market_refresh:39, pre_combat:33
+    Tardigrade: card_buy:20, income:20, market_refresh:20, pre_combat:21
+    Venus Flytrap: card_buy:29, income:29, market_refresh:29, pre_combat:30
+    World War II: card_buy:17, copy_2:2, income:17, market_refresh:17, pre_combat:18
+    Yggdrasil: card_buy:27, income:27, market_refresh:27, pre_combat:27
+
+  [COMBAT WIN RATE] (cards with 3+ combats, sorted by win rate)
+    No cards with 3+ combats
+
+  [CARD SURVIVAL] (avg turns alive on board, per player)
+    P0 (warrior):
+      Frida Kahlo                         53 turns
+      Bioluminescence                     35 turns
+      Surrealism                          34 turns
+      Baobab                              33 turns
+      Nebula                              32 turns
+      Ragnarök                            32 turns
+      Loki                                31 turns
+      Moon Landing                        29 turns
+    P1 (economist):
+      Turing Machine                      39 turns
+      Minimalism                          35 turns
+      Shadow Puppetry                     34 turns
+      Fibonacci Sequence                  33 turns
+      Mantis Karidesi                     33 turns
+      Ballet                              32 turns
+      Midas Dokunuşu                      31 turns
+      Venus Flytrap                       30 turns
+    P2 (evolver):
+      Moon Landing                        43 turns
+      Ottoman Empire                      26 turns
+      Printing Press                      25 turns
+      Evolved Platypus                    23 turns
+      Shadow Puppetry                     23 turns
+      Graffiti                            22 turns
+      French Revolution                   20 turns
+      Milky Way                           19 turns
+    P3 (random):
+      Opera                               50 turns
+      Platypus                            37 turns
+      Impressionism                       33 turns
+      Asteroid Belt                       32 turns
+      Baroque                             32 turns
+      Fungus                              31 turns
+      π (Pi)                              30 turns
+      Quetzalcoatl                        29 turns
+
+============================================================
+  GAME 3 | 29 turns | Winner: P2 (warrior) HP=143
+============================================================
+
+  [EVOLUTIONS]
+    P1 (evolver): Pop Art (turn 9), Platypus (turn 11), Isaac Newton (turn 25) — 3 total
+
+  [OPPONENT BOARD CHECKS]
+    P0 (random): 0 checks
+    P1 (evolver): 0 checks
+    P2 (warrior): 0 checks
+    P3 (economist): 0 checks
+
+  [PASSIVE TRIGGERS] (card -> trigger: count)
+    Age of Discovery: card_buy:45, copy_2:2, income:45, market_refresh:45, pre_combat:42
+    Albert Einstein: card_buy:10, income:10, market_refresh:10, pre_combat:6
+    Andromeda Galaxy: card_buy:32, copy_2:2, copy_3:3, income:32, market_refresh:32, pre_combat:22
+    Asteroid Belt: card_buy:18, income:18, market_refresh:18, pre_combat:19
+    Athena: card_buy:15, income:15, market_refresh:15, pre_combat:16
+    Axolotl: card_buy:9, income:9, market_refresh:9, pre_combat:10
+    Babylon: card_buy:49, income:50, market_refresh:50, pre_combat:47
+    Baobab: card_buy:10, income:10, market_refresh:10, pre_combat:11
+    Baroque: card_buy:22, income:23, market_refresh:23, pre_combat:19
+    Black Hole: card_buy:12, copy_2:2, income:12, market_refresh:12, pre_combat:14
+    Blue Whale: card_buy:24, copy_2:2, income:24, market_refresh:24, pre_combat:22
+    Coelacanth: pre_combat:1
+    Cubism: card_buy:1, income:1, market_refresh:1, pre_combat:2
+    Europa: card_buy:5, income:5, market_refresh:5, pre_combat:6
+    Event Horizon: card_buy:16, income:16, market_refresh:16, pre_combat:12
+    Evolved Isaac Newton: card_buy:3, income:3, market_refresh:3, pre_combat:3
+    Flamenco: card_buy:28, copy_2:2, income:28, market_refresh:28, pre_combat:26
+    Frida Kahlo: card_buy:50, copy_2:2, income:50, market_refresh:50, pre_combat:40
+    Fungus: card_buy:22, copy_2:2, income:22, market_refresh:22, pre_combat:24
+    Golden Ratio: card_buy:6, income:6, market_refresh:6, pre_combat:3
+    Gravity: card_buy:42, income:42, market_refresh:42, pre_combat:39
+    Guernica: card_buy:24, copy_2:2, income:24, market_refresh:24, pre_combat:23
+    Higgs Boson: card_buy:19, copy_2:2, income:19, market_refresh:19, pre_combat:13
+    Impressionism: card_buy:23, copy_2:2, income:23, market_refresh:23, pre_combat:25
+    Isaac Newton: card_buy:17, copy_2:2, income:17, market_refresh:17, pre_combat:11
+    Komodo Dragon: card_buy:27, income:27, market_refresh:27, pre_combat:24
+    Kraken: card_buy:2, income:2, market_refresh:2, pre_combat:1
+    Marie Curie: card_buy:13, income:13, market_refresh:13, pre_combat:10
+    Milky Way: card_buy:7, income:7, market_refresh:7, pre_combat:5
+    Mongol Empire: card_buy:1, income:1, market_refresh:1, pre_combat:2
+    Moon Landing: card_buy:20, income:20, market_refresh:20, pre_combat:21
+    Nebula: card_buy:16, income:16, market_refresh:16, pre_combat:18
+    Olympus: card_buy:27, income:27, market_refresh:27, pre_combat:28
+    Ottoman Empire: card_buy:65, income:65, market_refresh:65, pre_combat:59
+    Phoenix: card_buy:13, income:13, market_refresh:13, pre_combat:14
+    Pulsar: card_buy:11, income:11, market_refresh:11, pre_combat:12
+    Quantum Mechanics: card_buy:14, income:14, market_refresh:14, pre_combat:12
+    Quasar: card_buy:38, copy_2:2, income:38, market_refresh:38, pre_combat:40
+    Quetzalcoatl: card_buy:22, income:22, market_refresh:22, pre_combat:23
+    Renaissance: card_buy:40, copy_2:2, income:40, market_refresh:40, pre_combat:31
+    Roman Empire: card_buy:20, copy_2:2, income:20, market_refresh:20, pre_combat:18
+    Sirius: card_buy:14, income:14, market_refresh:14, pre_combat:15
+    Space-Time: card_buy:26, copy_2:2, income:26, market_refresh:26, pre_combat:28
+    Sparta: card_buy:9, income:9, market_refresh:9, pre_combat:5
+    Supernova: card_buy:22, income:22, market_refresh:22, pre_combat:19
+    Tardigrade: card_buy:6, income:6, market_refresh:6, pre_combat:7
+    World War II: card_buy:9, income:9, market_refresh:9, pre_combat:6
+    Yggdrasil: card_buy:10, income:10, market_refresh:10, pre_combat:9
+
+  [COMBAT WIN RATE] (cards with 3+ combats, sorted by win rate)
+    No cards with 3+ combats
+
+  [CARD SURVIVAL] (avg turns alive on board, per player)
+    P0 (random):
+      Impressionism                       25 turns
+      Fungus                              24 turns
+      Asteroid Belt                       19 turns
+      Truva Atı                           18 turns
+      Schrödinger's Cat                   17 turns
+      Sirius                              15 turns
+      Dark Matter                         14 turns
+      Baobab                              11 turns
+    P1 (evolver):
+      Frida Kahlo                         32 turns
+      Komodo Dragon                       28 turns
+      Age of Discovery                    28 turns
+      Dark Matter                         27 turns
+      Ottoman Empire                      25 turns
+      π (Pi)                              24 turns
+      Blue Whale                          24 turns
+      Renaissance                         24 turns
+    P2 (warrior):
+      Quasar                              40 turns
+      Gravity                             29 turns
+      Olympus                             28 turns
+      Space-Time                          28 turns
+      Ottoman Empire                      27 turns
+      Cold War                            26 turns
+      Babylon                             25 turns
+      Ragnarök                            24 turns
+    P3 (economist):
+      Andromeda Galaxy                    35 turns
+      Platypus                            29 turns
+      Pop Art                             28 turns
+      Babylon                             27 turns
+      Camouflage                          26 turns
+      Midas Dokunuşu                      25 turns
+      Baroque                             24 turns
+      Graffiti                            23 turns
+
+============================================================
+  GAME 4 | 33 turns | Winner: P3 (economist) HP=135
+============================================================
+
+  [EVOLUTIONS]
+    P2 (evolver): Pop Art (turn 4), Shadow Puppetry (turn 8), Graffiti (turn 11), Tardigrade (turn 30) — 4 total
+
+  [OPPONENT BOARD CHECKS]
+    P0 (random): 0 checks
+    P1 (warrior): 0 checks
+    P2 (evolver): 0 checks
+    P3 (economist): 0 checks
+
+  [PASSIVE TRIGGERS] (card -> trigger: count)
+    Albert Einstein: card_buy:1, income:1, market_refresh:1, pre_combat:1
+    Andromeda Galaxy: card_buy:9, copy_2:2, income:9, market_refresh:9, pre_combat:11
+    Anubis: card_buy:13, income:13, market_refresh:13, pre_combat:14
+    Axolotl: card_buy:10, income:10, market_refresh:10, pre_combat:11
+    Babylon: card_buy:27, income:27, market_refresh:27, pre_combat:28
+    Betelgeuse: card_buy:26, income:26, market_refresh:26, pre_combat:27
+    Bioluminescence: card_buy:6, income:6, market_refresh:6, pre_combat:7
+    Black Hole: pre_combat:1
+    Blue Whale: card_buy:24, copy_2:2, income:24, market_refresh:24, pre_combat:27
+    Charles Darwin: card_buy:28, income:28, market_refresh:28, pre_combat:29
+    Code of Hammurabi: card_buy:30, income:30, market_refresh:30, pre_combat:31
+    Coelacanth: card_buy:5, income:5, market_refresh:5, pre_combat:1
+    Cordyceps: card_buy:3, income:3, market_refresh:3, pre_combat:4
+    DNA: card_buy:23, income:23, market_refresh:23, pre_combat:24
+    Event Horizon: card_buy:24, income:24, market_refresh:24, pre_combat:26
+    Evolved Tardigrade: card_buy:3, income:3, market_refresh:3, pre_combat:1
+    Fibonacci Sequence: card_buy:18, income:18, market_refresh:18, pre_combat:19
+    Flamenco: card_buy:62, copy_2:2, income:62, market_refresh:62, pre_combat:65
+    Frida Kahlo: card_buy:61, income:61, market_refresh:61, pre_combat:58
+    Golden Ratio: card_buy:25, income:25, market_refresh:25, pre_combat:26
+    Gravity: card_buy:13, copy_2:2, income:13, market_refresh:13, pre_combat:15
+    Guernica: card_buy:27, copy_2:2, income:27, market_refresh:27, pre_combat:25
+    Isaac Newton: card_buy:33, copy_2:2, income:33, market_refresh:33, pre_combat:24
+    Kabuki: card_buy:24, income:24, market_refresh:24, pre_combat:20
+    Komodo Dragon: card_buy:24, income:24, market_refresh:24, pre_combat:25
+    Loki: card_buy:31, income:31, market_refresh:31, pre_combat:32
+    Marie Curie: card_buy:60, copy_2:2, copy_3:3, income:60, market_refresh:60, pre_combat:63
+    Medusa: card_buy:19, income:19, market_refresh:19, pre_combat:20
+    Milky Way: card_buy:61, copy_2:2, income:61, market_refresh:61, pre_combat:52
+    Mongol Empire: card_buy:46, copy_2:2, income:46, market_refresh:46, pre_combat:48
+    Moon Landing: card_buy:57, copy_2:2, income:57, market_refresh:57, pre_combat:50
+    Narwhal: card_buy:25, income:25, market_refresh:25, pre_combat:26
+    Nebula: card_buy:49, income:49, market_refresh:49, pre_combat:51
+    Nikola Tesla: card_buy:15, income:15, market_refresh:15, pre_combat:16
+    Odin: card_buy:12, income:12, market_refresh:12, pre_combat:13
+    Olympus: card_buy:2, income:2, market_refresh:2, pre_combat:1
+    Opera: card_buy:23, income:23, market_refresh:23, pre_combat:24
+    Ottoman Empire: card_buy:22, income:22, market_refresh:22, pre_combat:18
+    Periodic Table: card_buy:14, income:14, market_refresh:14, pre_combat:15
+    Printing Press: card_buy:26, income:26, market_refresh:26, pre_combat:27
+    Pulsar: card_buy:46, copy_2:2, income:46, market_refresh:46, pre_combat:48
+    Quantum Mechanics: card_buy:29, copy_2:2, income:29, market_refresh:29, pre_combat:20
+    Quasar: card_buy:21, copy_2:2, income:21, market_refresh:21, pre_combat:24
+    Quetzalcoatl: card_buy:8, income:8, market_refresh:8, pre_combat:9
+    Rainforest: card_buy:30, income:30, market_refresh:30, pre_combat:25
+    Renaissance: card_buy:3, income:3, market_refresh:3, pre_combat:4
+    Roman Empire: card_buy:42, income:42, market_refresh:42, pre_combat:39
+    Silk Road: card_buy:23, income:23, market_refresh:23, pre_combat:24
+    Space-Time: card_buy:38, copy_2:2, income:38, market_refresh:38, pre_combat:41
+    Sparta: card_buy:62, copy_2:2, income:62, market_refresh:62, pre_combat:65
+    Supernova: card_buy:49, income:49, market_refresh:49, pre_combat:46
+    Tardigrade: card_buy:42, copy_2:2, income:42, market_refresh:42, pre_combat:37
+    Yggdrasil: card_buy:11, copy_2:2, income:11, market_refresh:11, pre_combat:13
+
+  [COMBAT WIN RATE] (cards with 3+ combats, sorted by win rate)
+    No cards with 3+ combats
+
+  [CARD SURVIVAL] (avg turns alive on board, per player)
+    P0 (random):
+      Flamenco                            35 turns
+      Golden Ratio                        26 turns
+      Sparta                              25 turns
+      Opera                               24 turns
+      Nebula                              23 turns
+      Moon Landing                        22 turns
+      Medusa                              20 turns
+      Fibonacci Sequence                  19 turns
+    P1 (warrior):
+      Marie Curie                         63 turns
+      Pulsar                              48 turns
+      Mongol Empire                       48 turns
+      Surrealism                          44 turns
+      Loki                                32 turns
+      Charles Darwin                      29 turns
+      Nebula                              28 turns
+      Betelgeuse                          27 turns
+    P2 (evolver):
+      Milky Way                           42 turns
+      Moon Landing                        38 turns
+      Tardigrade                          35 turns
+      The Persistence of Memory           33 turns
+      Rainforest                          31 turns
+      Evolved Pop Art                     30 turns
+      Frida Kahlo                         28 turns
+      Roman Empire                        27 turns
+    P3 (economist):
+      Ragnarök                            41 turns
+      Sparta                              40 turns
+      Platypus                            33 turns
+      Minimalism                          32 turns
+      Space-Time                          32 turns
+      Code of Hammurabi                   31 turns
+      Flamenco                            30 turns
+      Camouflage                          29 turns
+
+============================================================
+  GAME 5 | 36 turns | Winner: P0 (random) HP=36
+============================================================
+
+  [EVOLUTIONS]
+    P2 (evolver): Graffiti (turn 12), Pop Art (turn 15), Frida Kahlo (turn 17) — 3 total
+
+  [OPPONENT BOARD CHECKS]
+    P0 (random): 0 checks
+    P1 (warrior): 0 checks
+    P2 (evolver): 0 checks
+    P3 (economist): 0 checks
+
+  [PASSIVE TRIGGERS] (card -> trigger: count)
+    Age of Discovery: card_buy:2, income:2, market_refresh:2, pre_combat:3
+    Albert Einstein: card_buy:2, income:2, market_refresh:2, pre_combat:3
+    Algorithm: card_buy:46, income:46, market_refresh:46, pre_combat:39
+    Andromeda Galaxy: card_buy:37, copy_2:2, copy_3:3, income:37, market_refresh:37, pre_combat:25
+    Ballet: card_buy:35, copy_2:2, income:35, market_refresh:35, pre_combat:35
+    Baobab: card_buy:31, income:31, market_refresh:31, pre_combat:30
+    Baroque: card_buy:28, income:28, market_refresh:28, pre_combat:21
+    Betelgeuse: card_buy:54, income:54, market_refresh:54, pre_combat:46
+    Bioluminescence: card_buy:67, copy_2:2, income:67, market_refresh:67, pre_combat:59
+    Black Death: card_buy:25, copy_2:2, income:25, market_refresh:25, pre_combat:12
+    Black Hole: card_buy:11, income:11, market_refresh:11, pre_combat:10
+    Blue Whale: card_buy:31, income:31, market_refresh:31, pre_combat:23
+    Cerberus: card_buy:34, income:34, market_refresh:34, pre_combat:34
+    Code of Hammurabi: card_buy:78, copy_2:2, income:78, market_refresh:78, pre_combat:77
+    Coral Reef: card_buy:16, income:16, market_refresh:16, pre_combat:15
+    Entropy: card_buy:11, income:11, market_refresh:11, pre_combat:12
+    Europa: card_buy:19, income:19, market_refresh:19, pre_combat:19
+    Event Horizon: card_buy:39, income:39, market_refresh:39, pre_combat:32
+    Evolved Frida Kahlo: card_buy:7, income:7, market_refresh:7, pre_combat:8
+    Fibonacci Sequence: card_buy:31, income:31, market_refresh:31, pre_combat:31
+    Flamenco: card_buy:20, copy_2:2, income:20, market_refresh:20, pre_combat:21
+    French Revolution: card_buy:56, copy_2:2, income:56, market_refresh:56, pre_combat:55
+    Frida Kahlo: card_buy:38, copy_2:2, income:38, market_refresh:38, pre_combat:37
+    Guernica: card_buy:25, income:25, market_refresh:25, pre_combat:18
+    Higgs Boson: card_buy:42, copy_2:2, income:42, market_refresh:42, pre_combat:35
+    Industrial Revolution: card_buy:28, income:28, market_refresh:28, pre_combat:28
+    Isaac Newton: card_buy:35, copy_2:2, income:35, market_refresh:35, pre_combat:20
+    Jazz: card_buy:33, income:33, market_refresh:33, pre_combat:33
+    Kabuki: card_buy:63, copy_2:2, income:63, market_refresh:63, pre_combat:61
+    Kraken: card_buy:10, income:10, market_refresh:10, pre_combat:10
+    Marie Curie: card_buy:16, copy_2:2, income:16, market_refresh:16, pre_combat:9
+    Medusa: card_buy:26, income:26, market_refresh:26, pre_combat:26
+    Milky Way: card_buy:14, copy_2:4, income:14, market_refresh:14, pre_combat:14
+    Mongol Empire: card_buy:18, income:18, market_refresh:18, pre_combat:19
+    Nebula: card_buy:21, income:21, market_refresh:21, pre_combat:15
+    Nikola Tesla: card_buy:23, copy_2:2, income:23, market_refresh:23, pre_combat:24
+    Odin: card_buy:6, income:6, market_refresh:6, pre_combat:3
+    Olympus: card_buy:37, income:37, market_refresh:37, pre_combat:36
+    Ottoman Empire: card_buy:30, copy_2:2, income:30, market_refresh:30, pre_combat:28
+    Periodic Table: card_buy:15, income:15, market_refresh:15, pre_combat:15
+    Phoenix: card_buy:38, income:38, market_refresh:38, pre_combat:31
+    Printing Press: card_buy:24, income:24, market_refresh:24, pre_combat:24
+    Pulsar: card_buy:32, income:32, market_refresh:32, pre_combat:32
+    Quasar: card_buy:62, copy_2:2, income:62, market_refresh:62, pre_combat:47
+    Quetzalcoatl: card_buy:7, income:7, market_refresh:7, pre_combat:8
+    Renaissance: card_buy:40, income:40, market_refresh:40, pre_combat:32
+    Roman Empire: card_buy:5, income:5, market_refresh:5, pre_combat:6
+    Silk Road: card_buy:50, copy_2:2, income:50, market_refresh:50, pre_combat:49
+    Sirius: card_buy:42, income:42, market_refresh:42, pre_combat:36
+    Space-Time: card_buy:27, income:27, market_refresh:27, pre_combat:20
+    Sparta: card_buy:43, income:43, market_refresh:43, pre_combat:43
+    Supernova: card_buy:3, income:3, market_refresh:3, pre_combat:2
+    Tardigrade: card_buy:47, copy_2:2, income:47, market_refresh:47, pre_combat:49
+    Valhalla: card_buy:50, income:50, market_refresh:50, pre_combat:51
+    Venus Flytrap: card_buy:54, income:54, market_refresh:54, pre_combat:47
+    World War II: card_buy:6, copy_2:2, income:6, market_refresh:6, pre_combat:4
+    Yggdrasil: card_buy:33, copy_2:2, income:33, market_refresh:33, pre_combat:32
+
+  [COMBAT WIN RATE] (cards with 3+ combats, sorted by win rate)
+    No cards with 3+ combats
+
+  [CARD SURVIVAL] (avg turns alive on board, per player)
+    P0 (random):
+      Code of Hammurabi                   50 turns
+      Cold War                            38 turns
+      Ballet                              37 turns
+      Cerberus                            35 turns
+      Jazz                                34 turns
+      Pulsar                              33 turns
+      Fibonacci Sequence                  32 turns
+      Valhalla                            31 turns
+    P1 (warrior):
+      Kabuki                              65 turns
+      Bioluminescence                     59 turns
+      Cosmic Microwave Background         58 turns
+      French Revolution                   48 turns
+      Betelgeuse                          33 turns
+      Baobab                              32 turns
+      Ottoman Empire                      32 turns
+      Code of Hammurabi                   31 turns
+    P2 (evolver):
+      Schrödinger's Cat                   30 turns
+      Platypus                            29 turns
+      Frida Kahlo                         24 turns
+      Tardigrade                          24 turns
+      Valhalla                            21 turns
+      Mongol Empire                       19 turns
+      Sparta                              17 turns
+      Event Horizon                       15 turns
+    P3 (economist):
+      Quasar                              41 turns
+      Andromeda Galaxy                    40 turns
+      Platypus                            36 turns
+      Graffiti                            35 turns
+      Sirius                              34 turns
+      Camouflage                          33 turns
+      Venus Flytrap                       32 turns
+      Truva Atı                           31 turns
+
+============================================================
+  GAME 6 | 28 turns | Winner: P1 (economist) HP=147
+============================================================
+
+  [EVOLUTIONS]
+    P2 (evolver): Pop Art (turn 4), Shadow Puppetry (turn 12), Event Horizon (turn 22), Age of Discovery (turn 23) — 4 total
+
+  [OPPONENT BOARD CHECKS]
+    P0 (random): 0 checks
+    P1 (economist): 0 checks
+    P2 (evolver): 0 checks
+    P3 (warrior): 0 checks
+
+  [PASSIVE TRIGGERS] (card -> trigger: count)
+    Age of Discovery: card_buy:13, copy_2:2, income:13, market_refresh:13, pre_combat:13
+    Albert Einstein: card_buy:21, copy_2:2, income:21, market_refresh:21, pre_combat:21
+    Algorithm: card_buy:18, income:18, market_refresh:18, pre_combat:18
+    Andromeda Galaxy: card_buy:10, income:10, market_refresh:10, pre_combat:11
+    Athena: card_buy:3, income:3, market_refresh:3, pre_combat:3
+    Axolotl: card_buy:11, income:11, market_refresh:11, pre_combat:11
+    Ballet: card_buy:24, income:24, market_refresh:24, pre_combat:24
+    Baobab: card_buy:15, income:15, market_refresh:15, pre_combat:15
+    Baroque: card_buy:44, copy_2:2, income:44, market_refresh:44, pre_combat:45
+    Black Hole: card_buy:11, income:11, market_refresh:11, pre_combat:10
+    Blue Whale: card_buy:39, income:39, market_refresh:39, pre_combat:40
+    Code of Hammurabi: card_buy:22, income:22, market_refresh:22, pre_combat:23
+    Coelacanth: card_buy:3, income:3, market_refresh:3, pre_combat:4
+    Entropy: card_buy:13, income:13, market_refresh:13, pre_combat:12
+    Event Horizon: card_buy:19, copy_2:2, income:19, market_refresh:19, pre_combat:18
+    Evolved Age of Discovery: card_buy:1, income:1, market_refresh:1, pre_combat:2
+    Evolved Event Horizon: card_buy:2, income:2, market_refresh:2, pre_combat:3
+    Exoplanet: card_buy:24, income:24, market_refresh:24, pre_combat:25
+    Flamenco: card_buy:25, income:25, market_refresh:25, pre_combat:26
+    French Revolution: pre_combat:1
+    Frida Kahlo: card_buy:10, income:10, market_refresh:10, pre_combat:11
+    Fungus: card_buy:6, income:6, market_refresh:6, pre_combat:6
+    Golden Ratio: card_buy:36, income:36, market_refresh:36, pre_combat:36
+    Gothic Architecture: card_buy:22, income:22, market_refresh:22, pre_combat:22
+    Guernica: card_buy:2, income:2, market_refresh:2, pre_combat:3
+    Higgs Boson: card_buy:21, copy_2:2, income:21, market_refresh:21, pre_combat:24
+    Impressionism: card_buy:21, income:21, market_refresh:21, pre_combat:22
+    Kabuki: card_buy:21, income:21, market_refresh:21, pre_combat:23
+    Komodo Dragon: card_buy:20, income:20, market_refresh:20, pre_combat:19
+    Kraken: card_buy:4, income:4, market_refresh:4, pre_combat:3
+    Marie Curie: card_buy:14, income:14, market_refresh:14, pre_combat:14
+    Milky Way: card_buy:24, copy_2:2, income:24, market_refresh:24, pre_combat:27
+    Mongol Empire: card_buy:42, income:42, market_refresh:42, pre_combat:42
+    Moon Landing: card_buy:30, copy_2:2, income:30, market_refresh:30, pre_combat:32
+    Nebula: card_buy:7, income:7, market_refresh:7, pre_combat:6
+    Odin: pre_combat:1
+    Opera: card_buy:23, income:23, market_refresh:23, pre_combat:24
+    Ottoman Empire: card_buy:6, income:6, market_refresh:6, pre_combat:7
+    Periodic Table: card_buy:28, income:28, market_refresh:28, pre_combat:29
+    Phoenix: card_buy:21, income:21, market_refresh:21, pre_combat:20
+    Printing Press: card_buy:64, income:64, market_refresh:64, pre_combat:64
+    Quantum Mechanics: card_buy:11, income:11, market_refresh:11, pre_combat:10
+    Quetzalcoatl: card_buy:17, income:17, market_refresh:17, pre_combat:16
+    Rainforest: card_buy:26, income:26, market_refresh:26, pre_combat:25
+    Renaissance: card_buy:28, copy_2:2, income:28, market_refresh:28, pre_combat:30
+    Roman Empire: card_buy:8, income:8, market_refresh:8, pre_combat:10
+    Silk Road: card_buy:41, income:41, market_refresh:41, pre_combat:41
+    Space-Time: card_buy:44, copy_2:2, income:44, market_refresh:44, pre_combat:46
+    Sparta: card_buy:23, income:23, market_refresh:23, pre_combat:22
+    Supernova: card_buy:10, income:10, market_refresh:10, pre_combat:10
+    Tardigrade: card_buy:19, income:19, market_refresh:19, pre_combat:19
+    Valhalla: card_buy:28, copy_2:2, income:28, market_refresh:28, pre_combat:27
+    World War II: card_buy:21, income:21, market_refresh:21, pre_combat:21
+
+  [COMBAT WIN RATE] (cards with 3+ combats, sorted by win rate)
+    No cards with 3+ combats
+
+  [CARD SURVIVAL] (avg turns alive on board, per player)
+    P0 (random):
+      Minimalism                          46 turns
+      The Persistence of Memory           36 turns
+      Printing Press                      28 turns
+      Camouflage                          26 turns
+      Baroque                             26 turns
+      Ballet                              25 turns
+      Gothic Architecture                 23 turns
+      Albert Einstein                     23 turns
+    P1 (economist):
+      Renaissance                         30 turns
+      Space-Time                          29 turns
+      Minimalism                          28 turns
+      Graffiti                            27 turns
+      Flamenco                            26 turns
+      Exoplanet                           25 turns
+      Opera                               24 turns
+      Code of Hammurabi                   23 turns
+    P2 (evolver):
+      Moon Landing                        32 turns
+      Periodic Table                      24 turns
+      Platypus                            23 turns
+      Evolved Pop Art                     21 turns
+      Printing Press                      20 turns
+      Blue Whale                          19 turns
+      Higgs Boson                         18 turns
+      Event Horizon                       17 turns
+    P3 (warrior):
+      Dark Matter                         31 turns
+      Surrealism                          31 turns
+      Valhalla                            30 turns
+      Rainforest                          27 turns
+      Golden Ratio                        26 turns
+      Mongol Empire                       25 turns
+      Sparta                              24 turns
+      Silk Road                           23 turns
+
+============================================================
+  GAME 7 | 26 turns | Winner: P0 (economist) HP=150
+============================================================
+
+  [EVOLUTIONS]
+    P2 (evolver): Minimalism (turn 3), The Persistence of Memory (turn 12), Platypus (turn 18), Mongol Empire (turn 21) — 4 total
+
+  [OPPONENT BOARD CHECKS]
+    P0 (economist): 0 checks
+    P1 (random): 0 checks
+    P2 (evolver): 0 checks
+    P3 (warrior): 0 checks
+
+  [PASSIVE TRIGGERS] (card -> trigger: count)
+    Albert Einstein: card_buy:3, income:3, market_refresh:3, pre_combat:5
+    Athena: card_buy:16, income:16, market_refresh:16, pre_combat:17
+    Ballet: card_buy:21, income:21, market_refresh:21, pre_combat:21
+    Betelgeuse: card_buy:38, copy_2:2, income:38, market_refresh:38, pre_combat:38
+    Black Death: card_buy:6, income:6, market_refresh:6, pre_combat:8
+    Code of Hammurabi: card_buy:21, income:21, market_refresh:21, pre_combat:22
+    Coelacanth: card_buy:3, income:3, market_refresh:3, pre_combat:3
+    Coral Reef: card_buy:55, copy_2:2, income:55, market_refresh:55, pre_combat:57
+    DNA: card_buy:4, income:4, market_refresh:4, pre_combat:4
+    Entropy: card_buy:16, income:16, market_refresh:16, pre_combat:17
+    Europa: card_buy:10, income:10, market_refresh:10, pre_combat:10
+    Event Horizon: card_buy:8, income:8, market_refresh:8, pre_combat:9
+    Evolved Mongol Empire: card_buy:4, income:4, market_refresh:4, pre_combat:5
+    Exoplanet: card_buy:28, income:28, market_refresh:28, pre_combat:29
+    Frida Kahlo: card_buy:2, income:2, market_refresh:2, pre_combat:3
+    Fungus: card_buy:17, income:17, market_refresh:17, pre_combat:17
+    Golden Ratio: card_buy:27, copy_2:2, income:27, market_refresh:27, pre_combat:29
+    Gravity: card_buy:48, copy_2:2, copy_3:3, income:48, market_refresh:48, pre_combat:51
+    Guernica: card_buy:1, income:1, market_refresh:1, pre_combat:2
+    Higgs Boson: card_buy:4, income:4, market_refresh:4, pre_combat:5
+    Impressionism: card_buy:16, income:16, market_refresh:16, pre_combat:16
+    Isaac Newton: card_buy:15, income:15, market_refresh:15, pre_combat:15
+    Kabuki: card_buy:52, income:52, market_refresh:52, pre_combat:55
+    Kraken: card_buy:9, income:9, market_refresh:9, pre_combat:10
+    Loki: card_buy:31, income:31, market_refresh:31, pre_combat:32
+    Milky Way: card_buy:14, income:14, market_refresh:14, pre_combat:16
+    Mongol Empire: card_buy:12, copy_2:2, income:12, market_refresh:12, pre_combat:12
+    Moon Landing: card_buy:7, income:7, market_refresh:7, pre_combat:8
+    Narwhal: card_buy:18, income:18, market_refresh:18, pre_combat:19
+    Nebula: card_buy:52, copy_2:2, income:52, market_refresh:52, pre_combat:55
+    Odin: card_buy:29, copy_2:2, income:29, market_refresh:29, pre_combat:31
+    Ottoman Empire: card_buy:22, income:22, market_refresh:22, pre_combat:25
+    Printing Press: card_buy:22, income:22, market_refresh:22, pre_combat:22
+    Pulsar: card_buy:33, copy_2:2, income:33, market_refresh:33, pre_combat:35
+    Quantum Mechanics: card_buy:15, income:15, market_refresh:15, pre_combat:16
+    Roman Empire: card_buy:10, income:10, market_refresh:10, pre_combat:11
+    Silk Road: card_buy:21, income:21, market_refresh:21, pre_combat:22
+    Sirius: pre_combat:1
+    Space-Time: card_buy:15, income:15, market_refresh:15, pre_combat:16
+    Supernova: card_buy:12, income:12, market_refresh:12, pre_combat:13
+    Valhalla: card_buy:32, income:32, market_refresh:32, pre_combat:34
+    Venus Flytrap: card_buy:23, income:23, market_refresh:23, pre_combat:23
+    World War II: card_buy:22, income:22, market_refresh:22, pre_combat:24
+    Yggdrasil: card_buy:4, income:4, market_refresh:4, pre_combat:5
+
+  [COMBAT WIN RATE] (cards with 3+ combats, sorted by win rate)
+    No cards with 3+ combats
+
+  [CARD SURVIVAL] (avg turns alive on board, per player)
+    P0 (economist):
+      Minimalism                          46 turns
+      Platypus                            26 turns
+      Exoplanet                           24 turns
+      Camouflage                          23 turns
+      Code of Hammurabi                   22 turns
+      Truva Atı                           20 turns
+      Narwhal                             19 turns
+      Turing Machine                      18 turns
+    P1 (random):
+      Betelgeuse                          40 turns
+      Truva Atı                           25 turns
+      Venus Flytrap                       24 turns
+      Printing Press                      23 turns
+      Ballet                              22 turns
+      Coral Reef                          21 turns
+      Camouflage                          20 turns
+      Migration                           20 turns
+    P2 (evolver):
+      Odin                                31 turns
+      Platypus                            29 turns
+      Evolved Minimalism                  23 turns
+      Valhalla                            21 turns
+      Dark Matter                         19 turns
+      The Persistence of Memory           18 turns
+      Athena                              17 turns
+      Golden Ratio                        17 turns
+    P3 (warrior):
+      Gravity                             51 turns
+      Nebula                              39 turns
+      Coral Reef                          37 turns
+      Schrödinger's Cat                   33 turns
+      Kabuki                              23 turns
+      Pulsar                              21 turns
+      Entropy                             17 turns
+      Space-Time                          16 turns
+
+============================================================
+  GAME 8 | 32 turns | Winner: P0 (economist) HP=147
+============================================================
+
+  [EVOLUTIONS]
+    P2 (evolver): Shadow Puppetry (turn 4), Platypus (turn 22), Isaac Newton (turn 26) — 3 total
+
+  [OPPONENT BOARD CHECKS]
+    P0 (economist): 0 checks
+    P1 (random): 0 checks
+    P2 (evolver): 0 checks
+    P3 (warrior): 0 checks
+
+  [PASSIVE TRIGGERS] (card -> trigger: count)
+    Age of Discovery: card_buy:5, income:5, market_refresh:5, pre_combat:3
+    Albert Einstein: card_buy:33, copy_2:2, income:33, market_refresh:33, pre_combat:32
+    Algorithm: card_buy:26, income:26, market_refresh:26, pre_combat:22
+    Andromeda Galaxy: card_buy:42, income:42, market_refresh:42, pre_combat:39
+    Axolotl: card_buy:4, income:4, market_refresh:4, pre_combat:5
+    Babylon: card_buy:70, copy_2:2, income:70, market_refresh:70, pre_combat:61
+    Ballet: card_buy:19, income:19, market_refresh:19, pre_combat:20
+    Baroque: card_buy:54, income:54, market_refresh:54, pre_combat:51
+    Bioluminescence: card_buy:24, income:24, market_refresh:24, pre_combat:20
+    Black Death: card_buy:3, income:3, market_refresh:3, pre_combat:3
+    Black Hole: card_buy:19, income:19, market_refresh:19, pre_combat:14
+    Blue Whale: card_buy:4, income:4, market_refresh:4, pre_combat:2
+    Cerberus: card_buy:23, income:23, market_refresh:23, pre_combat:18
+    Charles Darwin: card_buy:22, income:22, market_refresh:22, pre_combat:18
+    Code of Hammurabi: card_buy:29, income:29, market_refresh:29, pre_combat:30
+    Coral Reef: card_buy:14, income:14, market_refresh:14, pre_combat:10
+    Cordyceps: card_buy:8, income:8, market_refresh:8, pre_combat:10
+    Cubism: card_buy:28, income:28, market_refresh:28, pre_combat:24
+    DNA: card_buy:66, copy_2:2, income:66, market_refresh:66, pre_combat:57
+    Event Horizon: card_buy:15, income:15, market_refresh:15, pre_combat:11
+    Evolved Isaac Newton: card_buy:6, income:6, market_refresh:6, pre_combat:3
+    Exoplanet: card_buy:8, income:8, market_refresh:8, pre_combat:9
+    Fibonacci Sequence: card_buy:26, income:26, market_refresh:26, pre_combat:27
+    Frida Kahlo: card_buy:9, income:9, market_refresh:9, pre_combat:10
+    Fungus: card_buy:27, income:27, market_refresh:27, pre_combat:28
+    Golden Ratio: card_buy:28, income:28, market_refresh:28, pre_combat:25
+    Gravity: card_buy:17, income:17, market_refresh:17, pre_combat:18
+    Guernica: card_buy:24, income:24, market_refresh:24, pre_combat:18
+    Higgs Boson: card_buy:39, income:39, market_refresh:39, pre_combat:32
+    Industrial Revolution: card_buy:9, income:9, market_refresh:9, pre_combat:10
+    Isaac Newton: card_buy:21, copy_2:2, income:21, market_refresh:21, pre_combat:17
+    Kabuki: card_buy:53, copy_2:2, income:53, market_refresh:53, pre_combat:56
+    Komodo Dragon: pre_combat:1
+    Kraken: card_buy:43, income:43, market_refresh:43, pre_combat:34
+    Marie Curie: card_buy:27, copy_2:2, income:27, market_refresh:27, pre_combat:21
+    Milky Way: card_buy:50, copy_2:4, income:50, market_refresh:50, pre_combat:38
+    Mongol Empire: card_buy:23, income:23, market_refresh:23, pre_combat:19
+    Moon Landing: card_buy:63, income:63, market_refresh:63, pre_combat:55
+    Nebula: card_buy:19, income:19, market_refresh:19, pre_combat:20
+    Nikola Tesla: card_buy:4, income:4, market_refresh:4, pre_combat:5
+    Opera: card_buy:3, income:3, market_refresh:3, pre_combat:4
+    Ottoman Empire: card_buy:21, income:21, market_refresh:21, pre_combat:17
+    Phoenix: card_buy:25, income:25, market_refresh:25, pre_combat:27
+    Printing Press: card_buy:14, income:14, market_refresh:14, pre_combat:15
+    Quantum Mechanics: card_buy:47, copy_2:2, income:47, market_refresh:47, pre_combat:43
+    Quetzalcoatl: card_buy:9, income:9, market_refresh:9, pre_combat:5
+    Renaissance: card_buy:16, income:16, market_refresh:16, pre_combat:12
+    Sirius: card_buy:32, copy_2:2, income:32, market_refresh:32, pre_combat:34
+    Space-Time: card_buy:12, income:12, market_refresh:12, pre_combat:7
+    World War II: card_buy:16, income:16, market_refresh:16, pre_combat:17
+
+  [COMBAT WIN RATE] (cards with 3+ combats, sorted by win rate)
+    No cards with 3+ combats
+
+  [CARD SURVIVAL] (avg turns alive on board, per player)
+    P0 (economist):
+      Kabuki                              45 turns
+      Platypus                            32 turns
+      Shadow Puppetry                     31 turns
+      Code of Hammurabi                   30 turns
+      Camouflage                          29 turns
+      Fungus                              28 turns
+      Fibonacci Sequence                  27 turns
+      Babylon                             26 turns
+    P1 (random):
+      Sirius                              34 turns
+      Ballet                              20 turns
+      Migration                           19 turns
+      Cold War                            17 turns
+      Printing Press                      15 turns
+      Surrealism                          14 turns
+      Moon Landing                        13 turns
+      Albert Einstein                     12 turns
+    P2 (evolver):
+      DNA                                 54 turns
+      Babylon                             47 turns
+      Platypus                            40 turns
+      Pop Art                             36 turns
+      Cosmic Microwave Background         36 turns
+      Evolved Shadow Puppetry             29 turns
+      Quantum Mechanics                   29 turns
+      Cerberus                            24 turns
+    P3 (warrior):
+      Milky Way                           39 turns
+      Baroque                             31 turns
+      Moon Landing                        30 turns
+      Cubism                              29 turns
+      Camouflage                          28 turns
+      Algorithm                           27 turns
+      Marie Curie                         27 turns
+      Kraken                              26 turns
+
+============================================================
+  GAME 9 | 42 turns | Winner: P3 (economist) HP=9
+============================================================
+
+  [EVOLUTIONS]
+    P0 (evolver): Minimalism (turn 6), Sparta (turn 27), Supernova (turn 34), Loki (turn 37) — 4 total
+
+  [OPPONENT BOARD CHECKS]
+    P0 (evolver): 0 checks
+    P1 (random): 0 checks
+    P2 (warrior): 0 checks
+    P3 (economist): 0 checks
+
+  [PASSIVE TRIGGERS] (card -> trigger: count)
+    Albert Einstein: card_buy:36, copy_2:1, income:36, market_refresh:36, pre_combat:29
+    Algorithm: card_buy:18, income:18, market_refresh:18, pre_combat:19
+    Andromeda Galaxy: card_buy:42, income:42, market_refresh:42, pre_combat:34
+    Axolotl: card_buy:5, income:5, market_refresh:5, pre_combat:6
+    Baobab: card_buy:37, copy_2:2, income:37, market_refresh:37, pre_combat:31
+    Bioluminescence: card_buy:25, income:25, market_refresh:25, pre_combat:18
+    Black Hole: card_buy:63, copy_2:2, income:63, market_refresh:63, pre_combat:43
+    Charles Darwin: card_buy:40, income:40, market_refresh:40, pre_combat:38
+    Coelacanth: card_buy:9, income:9, market_refresh:9, pre_combat:7
+    Coral Reef: card_buy:59, copy_2:2, income:59, market_refresh:59, pre_combat:45
+    Cordyceps: card_buy:45, income:45, market_refresh:45, pre_combat:39
+    Cubism: card_buy:46, income:46, market_refresh:46, pre_combat:40
+    Entropy: card_buy:24, income:24, market_refresh:24, pre_combat:23
+    Europa: card_buy:53, income:53, market_refresh:53, pre_combat:47
+    Event Horizon: card_buy:50, copy_2:2, income:50, market_refresh:50, pre_combat:47
+    Evolved Loki: card_buy:1, income:1, market_refresh:1, pre_combat:1
+    Evolved Sparta: card_buy:11, income:11, market_refresh:11, pre_combat:5
+    Evolved Supernova: card_buy:4, income:4, market_refresh:4, pre_combat:3
+    Exoplanet: card_buy:24, income:24, market_refresh:24, pre_combat:17
+    Frida Kahlo: card_buy:12, income:12, market_refresh:12, pre_combat:13
+    Golden Ratio: card_buy:17, income:17, market_refresh:17, pre_combat:18
+    Gravity: card_buy:26, income:26, market_refresh:26, pre_combat:26
+    Guernica: card_buy:29, income:29, market_refresh:29, pre_combat:23
+    Higgs Boson: card_buy:27, copy_2:1, income:27, market_refresh:27, pre_combat:23
+    Industrial Revolution: card_buy:55, copy_2:2, income:55, market_refresh:55, pre_combat:43
+    Isaac Newton: pre_combat:1
+    Jazz: card_buy:3, income:3, market_refresh:3, pre_combat:4
+    Kabuki: card_buy:81, copy_2:2, income:81, market_refresh:81, pre_combat:71
+    Loki: card_buy:51, copy_2:2, income:51, market_refresh:51, pre_combat:39
+    Marie Curie: card_buy:69, copy_2:2, income:69, market_refresh:69, pre_combat:56
+    Milky Way: card_buy:56, copy_2:2, income:56, market_refresh:56, pre_combat:49
+    Moon Landing: card_buy:70, income:70, market_refresh:70, pre_combat:60
+    Nebula: card_buy:44, income:44, market_refresh:44, pre_combat:43
+    Nikola Tesla: card_buy:70, copy_2:2, copy_3:2, income:70, market_refresh:70, pre_combat:50
+    Odin: card_buy:13, copy_2:1, income:13, market_refresh:13, pre_combat:9
+    Olympus: card_buy:58, income:58, market_refresh:58, pre_combat:49
+    Opera: card_buy:35, income:35, market_refresh:35, pre_combat:28
+    Ottoman Empire: card_buy:22, income:22, market_refresh:22, pre_combat:20
+    Phoenix: card_buy:31, copy_2:2, income:31, market_refresh:31, pre_combat:29
+    Printing Press: card_buy:105, copy_2:2, income:105, market_refresh:105, pre_combat:87
+    Quasar: card_buy:43, copy_2:2, income:43, market_refresh:43, pre_combat:34
+    Quetzalcoatl: card_buy:26, income:26, market_refresh:26, pre_combat:24
+    Rainforest: card_buy:29, income:29, market_refresh:29, pre_combat:27
+    Renaissance: card_buy:47, copy_2:2, income:47, market_refresh:47, pre_combat:35
+    Roman Empire: card_buy:49, copy_2:2, income:49, market_refresh:49, pre_combat:49
+    Space-Time: card_buy:55, copy_2:2, income:55, market_refresh:55, pre_combat:42
+    Sparta: card_buy:29, copy_2:2, income:29, market_refresh:29, pre_combat:29
+    Supernova: card_buy:37, copy_2:2, income:37, market_refresh:37, pre_combat:27
+    Valhalla: card_buy:27, copy_2:2, income:27, market_refresh:27, pre_combat:18
+    Venus Flytrap: card_buy:38, income:38, market_refresh:38, pre_combat:31
+    World War II: card_buy:4, income:4, market_refresh:4, pre_combat:5
+    Yggdrasil: card_buy:34, income:34, market_refresh:34, pre_combat:28
+
+  [COMBAT WIN RATE] (cards with 3+ combats, sorted by win rate)
+    No cards with 3+ combats
+
+  [CARD SURVIVAL] (avg turns alive on board, per player)
+    P0 (evolver):
+      Platypus                            72 turns
+      Industrial Revolution               57 turns
+      Printing Press                      55 turns
+      Loki                                51 turns
+      Renaissance                         44 turns
+      Baobab                              39 turns
+      Space-Time                          38 turns
+      Supernova                           37 turns
+    P1 (random):
+      Europa                              20 turns
+      Algorithm                           19 turns
+      Golden Ratio                        18 turns
+      Truva Atı                           17 turns
+      Camouflage                          16 turns
+      Mantis Karidesi                     15 turns
+      Printing Press                      14 turns
+      Frida Kahlo                         13 turns
+    P2 (warrior):
+      Cold War                            75 turns
+      Kabuki                              71 turns
+      Charles Darwin                      41 turns
+      π (Pi)                              40 turns
+      Roman Empire                        40 turns
+      Event Horizon                       39 turns
+      Nebula                              38 turns
+      Mantis Karidesi                     37 turns
+    P3 (economist):
+      Coral Reef                          61 turns
+      Nikola Tesla                        53 turns
+      Marie Curie                         51 turns
+      Black Hole                          47 turns
+      Quasar                              45 turns
+      Minimalism                          42 turns
+      Pop Art                             41 turns
+      Printing Press                      40 turns
+
+============================================================
+  GAME 10 | 33 turns | Winner: P0 (warrior) HP=106
+============================================================
+
+  [EVOLUTIONS]
+    P1 (evolver): Betelgeuse (turn 11), Cosmic Microwave Background (turn 25) — 2 total
+
+  [OPPONENT BOARD CHECKS]
+    P0 (warrior): 0 checks
+    P1 (evolver): 0 checks
+    P2 (economist): 0 checks
+    P3 (random): 0 checks
+
+  [PASSIVE TRIGGERS] (card -> trigger: count)
+    Age of Discovery: card_buy:37, copy_2:2, income:37, market_refresh:37, pre_combat:30
+    Albert Einstein: card_buy:36, copy_2:2, income:36, market_refresh:36, pre_combat:24
+    Andromeda Galaxy: card_buy:13, income:13, market_refresh:13, pre_combat:15
+    Asteroid Belt: card_buy:31, income:31, market_refresh:31, pre_combat:28
+    Babylon: card_buy:25, income:25, market_refresh:25, pre_combat:21
+    Betelgeuse: card_buy:12, copy_2:2, income:12, market_refresh:12, pre_combat:12
+    Bioluminescence: card_buy:19, income:19, market_refresh:19, pre_combat:16
+    Black Hole: card_buy:20, copy_2:2, income:20, market_refresh:20, pre_combat:13
+    Blue Whale: card_buy:41, copy_2:2, income:41, market_refresh:41, pre_combat:29
+    Cerberus: card_buy:15, income:15, market_refresh:15, pre_combat:16
+    Charles Darwin: card_buy:41, income:41, market_refresh:41, pre_combat:39
+    Code of Hammurabi: card_buy:57, income:57, market_refresh:57, pre_combat:50
+    Coelacanth: card_buy:12, copy_2:2, copy_3:3, income:12, market_refresh:12, pre_combat:15
+    Coral Reef: card_buy:18, income:18, market_refresh:18, pre_combat:14
+    Cordyceps: card_buy:31, copy_2:2, income:31, market_refresh:31, pre_combat:23
+    DNA: card_buy:69, copy_2:2, income:69, market_refresh:69, pre_combat:59
+    Entropy: card_buy:2, income:2, market_refresh:2, pre_combat:2
+    Event Horizon: card_buy:17, income:17, market_refresh:17, pre_combat:13
+    Evolved Betelgeuse: card_buy:22, income:22, market_refresh:22, pre_combat:18
+    Exoplanet: card_buy:17, income:17, market_refresh:17, pre_combat:18
+    Fibonacci Sequence: card_buy:28, income:28, market_refresh:28, pre_combat:24
+    Flamenco: card_buy:15, income:15, market_refresh:15, pre_combat:12
+    French Revolution: card_buy:16, income:16, market_refresh:16, pre_combat:13
+    Frida Kahlo: card_buy:32, income:32, market_refresh:32, pre_combat:29
+    Golden Ratio: card_buy:70, income:70, market_refresh:70, pre_combat:59
+    Guernica: card_buy:23, income:23, market_refresh:23, pre_combat:20
+    Higgs Boson: card_buy:20, copy_2:2, income:20, market_refresh:20, pre_combat:17
+    Isaac Newton: card_buy:3, income:3, market_refresh:3, pre_combat:2
+    Jazz: card_buy:46, copy_2:2, income:46, market_refresh:46, pre_combat:44
+    Kabuki: card_buy:29, copy_2:2, income:29, market_refresh:29, pre_combat:27
+    Komodo Dragon: card_buy:67, copy_2:2, income:67, market_refresh:67, pre_combat:56
+    Kraken: pre_combat:1
+    Loki: card_buy:28, income:28, market_refresh:28, pre_combat:24
+    Marie Curie: card_buy:53, copy_2:2, income:53, market_refresh:53, pre_combat:41
+    Milky Way: card_buy:33, income:33, market_refresh:33, pre_combat:28
+    Mongol Empire: card_buy:14, income:14, market_refresh:14, pre_combat:10
+    Moon Landing: card_buy:78, copy_2:2, income:78, market_refresh:78, pre_combat:66
+    Narwhal: card_buy:1, income:1, market_refresh:1, pre_combat:2
+    Nikola Tesla: card_buy:2, income:2, market_refresh:2, pre_combat:3
+    Odin: card_buy:9, income:9, market_refresh:9, pre_combat:10
+    Olympus: card_buy:66, copy_2:2, income:66, market_refresh:66, pre_combat:57
+    Opera: card_buy:12, income:12, market_refresh:12, pre_combat:13
+    Ottoman Empire: card_buy:4, income:4, market_refresh:4, pre_combat:3
+    Phoenix: card_buy:13, copy_2:2, income:13, market_refresh:13, pre_combat:9
+    Pulsar: card_buy:14, income:14, market_refresh:14, pre_combat:11
+    Quantum Mechanics: pre_combat:1
+    Quasar: card_buy:11, income:11, market_refresh:11, pre_combat:7
+    Renaissance: pre_combat:1
+    Space-Time: card_buy:13, income:13, market_refresh:13, pre_combat:11
+    Supernova: card_buy:17, income:17, market_refresh:17, pre_combat:14
+    Valhalla: card_buy:62, copy_2:2, income:62, market_refresh:62, pre_combat:54
+    World War II: card_buy:11, income:11, market_refresh:11, pre_combat:12
+    Yggdrasil: card_buy:5, income:5, market_refresh:5, pre_combat:3
+
+  [COMBAT WIN RATE] (cards with 3+ combats, sorted by win rate)
+    No cards with 3+ combats
+
+  [CARD SURVIVAL] (avg turns alive on board, per player)
+    P0 (warrior):
+      Valhalla                            42 turns
+      Camouflage                          41 turns
+      Olympus                             41 turns
+      DNA                                 40 turns
+      Frida Kahlo                         33 turns
+      Charles Darwin                      32 turns
+      Code of Hammurabi                   31 turns
+      Kabuki                              31 turns
+    P1 (evolver):
+      Moon Landing                        57 turns
+      Komodo Dragon                       45 turns
+      Cordyceps                           33 turns
+      DNA                                 32 turns
+      Loki                                29 turns
+      Olympus                             28 turns
+      Age of Discovery                    28 turns
+      Mantis Karidesi                     28 turns
+    P2 (economist):
+      Platypus                            32 turns
+      Minimalism                          31 turns
+      Jazz                                30 turns
+      Marie Curie                         30 turns
+      Fibonacci Sequence                  29 turns
+      Code of Hammurabi                   28 turns
+      Asteroid Belt                       27 turns
+      Babylon                             26 turns
+    P3 (random):
+      Jazz                                19 turns
+      Exoplanet                           18 turns
+      Camouflage                          17 turns
+      Cerberus                            16 turns
+      Platypus                            14 turns
+      Opera                               13 turns
+      World War II                        12 turns
+      Charles Darwin                      11 turns

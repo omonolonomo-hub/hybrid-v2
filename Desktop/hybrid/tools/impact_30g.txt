@@ -1,0 +1,264 @@
+﻿  [ 1/80] Odin                           (sinerjik_alan)  score=  9.7  [INERT]  WR d=+0.000  DMG d=+6.3
+  [ 2/80] Anubis                         (combat)  score=  0.0  [INERT]  WR d=+0.000  DMG d=+0.0
+  [ 3/80] Quetzalcoatl                   (combat)  score= 10.7  [INERT]  WR d=+0.000  DMG d=+9.4
+  [ 4/80] Athena                         (combo)  score=  0.0  [INERT]  WR d=+0.000  DMG d=+0.0
+  [ 5/80] Loki                           (combat)  score= 25.2  [WEAK]  WR d=+0.067  DMG d=+1.3
+  [ 6/80] Yggdrasil                      (kopya)  score= 92.8  [STRONG]  WR d=+0.533  DMG d=+131.2
+  [ 7/80] Valhalla                       (hayatta_kalma)  score= 73.0  [STRONG]  WR d=-0.067  DMG d=-13.0
+  [ 8/80] Olympus                        (sinerjik_alan)  score= 27.0  [WEAK]  WR d=-0.033  DMG d=-1.5
+  [ 9/80] Ragnar├Âk                       (combat)  score= 45.4  [MODERATE]  WR d=+0.033  DMG d=+25.7
+  [10/80] Medusa                         (sinerjik_alan)  score= 70.6  [STRONG]  WR d=+0.133  DMG d=+9.2
+  [11/80] Minotaur                       (combat)  score= 37.9  [MODERATE]  WR d=-0.100  DMG d=-7.8
+  [12/80] Phoenix                        (hayatta_kalma)  score=  0.0  [INERT]  WR d=+0.000  DMG d=+0.0
+  [13/80] Kraken                         (sinerjik_alan)  score= 21.9  [WEAK]  WR d=+0.000  DMG d=+10.9
+  [14/80] Cerberus                       (combat)  score=  0.0  [INERT]  WR d=+0.000  DMG d=+0.0
+  [15/80] Guernica                       (combat)  score= 13.9  [WEAK]  WR d=+0.033  DMG d=+4.5
+  [16/80] Frida Kahlo                    (hayatta_kalma)  score= 35.2  [MODERATE]  WR d=+0.000  DMG d=+26.3
+  [17/80] Ballet                         (combo)  score=  0.0  [INERT]  WR d=+0.000  DMG d=+0.0
+  [18/80] Opera                          (sinerjik_alan)  score= 29.9  [WEAK]  WR d=-0.033  DMG d=+3.4
+  [19/80] Cubism                         (combat)  score= 13.9  [WEAK]  WR d=-0.033  DMG d=-3.6
+  [20/80] Impressionism                  (combo)  score=  0.0  [INERT]  WR d=+0.000  DMG d=+0.0
+  [21/80] Gothic Architecture            (hayatta_kalma)  score= 28.2  [WEAK]  WR d=+0.033  DMG d=-2.4
+  [22/80] Baroque                        (sinerjik_alan)  score= 76.9  [STRONG]  WR d=+0.100  DMG d=+24.9
+  [23/80] Jazz                           (combo)  score= 99.9  [STRONG]  WR d=+0.167  DMG d=+29.9
+  [24/80] Flamenco                       (combat)  score= 16.0  [WEAK]  WR d=-0.033  DMG d=+1.8
+  [25/80] Kabuki                         (sinerjik_alan)  score=  0.0  [INERT]  WR d=+0.000  DMG d=+0.0
+  [26/80] Blue Whale                     (sinerjik_alan)  score= 46.7  [MODERATE]  WR d=+0.000  DMG d=+19.0
+  [27/80] Komodo Dragon                  (combat)  score=  3.8  [INERT]  WR d=+0.000  DMG d=+1.5
+  [28/80] Axolotl                        (hayatta_kalma)  score=  0.0  [INERT]  WR d=+0.000  DMG d=+0.0
+  [29/80] Narwhal                        (combat)  score= 18.2  [WEAK]  WR d=+0.033  DMG d=+8.9
+  [30/80] Coral Reef                     (sinerjik_alan)  score= 25.7  [WEAK]  WR d=-0.033  DMG d=+1.5
+  [31/80] Rainforest                     (sinerjik_alan)  score= 54.9  [MODERATE]  WR d=-0.133  DMG d=+0.2
+  [32/80] Venus Flytrap                  (combat)  score=  1.0  [INERT]  WR d=+0.000  DMG d=-0.7
+  [33/80] Bioluminescence                (combo)  score= 93.1  [STRONG]  WR d=+0.167  DMG d=+24.8
+  [34/80] Fungus                         (kopya)  score= 19.2  [WEAK]  WR d=+0.033  DMG d=+6.4
+  [35/80] Tardigrade                     (hayatta_kalma)  score=  0.0  [INERT]  WR d=+0.000  DMG d=+0.0
+  [36/80] Cordyceps                      (sinerjik_alan)  score= 93.9  [STRONG]  WR d=+0.167  DMG d=+29.7
+  [37/80] Baobab                         (hayatta_kalma)  score= 54.5  [MODERATE]  WR d=+0.067  DMG d=+5.0
+  [38/80] Coelacanth                     (kopya)  score=  0.2  [INERT]  WR d=+0.000  DMG d=-0.0
+  [39/80] Milky Way                      (sinerjik_alan)  score= 62.2  [STRONG]  WR d=+0.067  DMG d=+17.2
+  [40/80] Andromeda Galaxy               (sinerjik_alan)  score= 91.4  [STRONG]  WR d=+0.167  DMG d=+28.5
+  [41/80] Sirius                         (combat)  score=  0.6  [INERT]  WR d=+0.000  DMG d=+0.1
+  [42/80] Betelgeuse                     (hayatta_kalma)  score= 78.6  [STRONG]  WR d=-0.100  DMG d=-10.9
+  [43/80] Europa                         (sinerjik_alan)  score=  5.2  [INERT]  WR d=+0.000  DMG d=+1.4
+  [44/80] Black Hole                     (sinerjik_alan)  score= 13.6  [WEAK]  WR d=+0.033  DMG d=+0.4
+  [45/80] Supernova                      (hayatta_kalma)  score= 80.7  [STRONG]  WR d=+0.067  DMG d=+18.4
+  [46/80] Nebula                         (combo)  score=  0.0  [INERT]  WR d=+0.000  DMG d=+0.0
+  [47/80] Event Horizon                  (kopya)  score=  0.0  [INERT]  WR d=+0.000  DMG d=+0.0
+  [48/80] Asteroid Belt                  (combat)  score= 19.8  [WEAK]  WR d=+0.033  DMG d=+9.6
+  [49/80] Pulsar                         (combat)  score= 11.4  [INERT]  WR d=-0.033  DMG d=+1.7
+  [50/80] Quasar                         (sinerjik_alan)  score= 97.9  [STRONG]  WR d=+0.167  DMG d=+33.2
+  [51/80] Gravity                        (sinerjik_alan)  score= 55.9  [STRONG]  WR d=-0.067  DMG d=-10.1
+  [52/80] Exoplanet                      (ekonomi)  score=100.0  [STRONG]  WR d=+0.300  DMG d=+89.4
+  [53/80] Space-Time                     (kopya)  score= 97.3  [STRONG]  WR d=+0.267  DMG d=+81.6
+  [54/80] Albert Einstein                (combo)  score=  0.0  [INERT]  WR d=+0.000  DMG d=+0.0
+  [55/80] Isaac Newton                   (sinerjik_alan)  score= 42.8  [MODERATE]  WR d=+0.067  DMG d=+5.9
+  [56/80] Marie Curie                    (kopya)  score= 44.9  [MODERATE]  WR d=+0.033  DMG d=+22.5
+  [57/80] Charles Darwin                 (kopya)  score=  0.0  [INERT]  WR d=+0.000  DMG d=+0.0
+  [58/80] Nikola Tesla                   (sinerjik_alan)  score= 14.7  [WEAK]  WR d=+0.033  DMG d=-1.8
+  [59/80] Golden Ratio                   (combo)  score=  0.0  [INERT]  WR d=+0.000  DMG d=+0.0
+  [60/80] Quantum Mechanics              (combat)  score= 25.9  [WEAK]  WR d=+0.033  DMG d=-12.3
+  [61/80] Entropy                        (sinerjik_alan)  score=100.0  [STRONG]  WR d=-0.200  DMG d=-60.3
+  [62/80] DNA                            (kopya)  score= 15.6  [WEAK]  WR d=+0.000  DMG d=+2.7
+  [63/80] Periodic Table                 (sinerjik_alan)  score= 29.5  [WEAK]  WR d=-0.033  DMG d=+7.0
+  [64/80] Algorithm                      (ekonomi)  score= 77.7  [STRONG]  WR d=+0.067  DMG d=+35.4
+  [65/80] Higgs Boson                    (sinerjik_alan)  score= 77.4  [STRONG]  WR d=+0.100  DMG d=+20.4
+  [66/80] French Revolution              (sinerjik_alan)  score= 67.6  [STRONG]  WR d=+0.067  DMG d=+20.3
+  [67/80] Industrial Revolution          (ekonomi)  score= 86.7  [STRONG]  WR d=+0.067  DMG d=+34.3
+  [68/80] Renaissance                    (sinerjik_alan)  score= 69.6  [STRONG]  WR d=+0.100  DMG d=+13.5
+  [69/80] Age of Discovery               (ekonomi)  score= 56.2  [STRONG]  WR d=+0.000  DMG d=+34.6
+  [70/80] World War II                   (combat)  score= 95.6  [STRONG]  WR d=+0.133  DMG d=+51.6
+  [71/80] Silk Road                      (ekonomi)  score=  0.0  [INERT]  WR d=+0.000  DMG d=+0.0
+  [72/80] Roman Empire                   (sinerjik_alan)  score=100.0  [STRONG]  WR d=+0.233  DMG d=+35.7
+  [73/80] Mongol Empire                  (combat)  score= 32.6  [MODERATE]  WR d=+0.100  DMG d=+5.9
+  [74/80] Ottoman Empire                 (ekonomi)  score= 95.0  [STRONG]  WR d=+0.100  DMG d=+47.5
+  [75/80] Sparta                         (combat)  score= 37.8  [MODERATE]  WR d=+0.067  DMG d=-18.0
+  [76/80] Babylon                        (ekonomi)  score= 56.5  [STRONG]  WR d=+0.000  DMG d=+41.2
+  [77/80] Code of Hammurabi              (combat)  score= 19.8  [WEAK]  WR d=+0.000  DMG d=-9.7
+  [78/80] Printing Press                 (ekonomi)  score=100.0  [STRONG]  WR d=+0.167  DMG d=+24.3
+  [79/80] Moon Landing                   (ekonomi)  score= 86.0  [STRONG]  WR d=+0.133  DMG d=+42.3
+  [80/80] Black Death                    (sinerjik_alan)  score= 22.8  [WEAK]  WR d=+0.000  DMG d=+9.7
+
+========================================================================================================================
+  AUTOCHESS HYBRID - Passive Impact Analysis  (v2 - improved board setup)
+  80 passive cards  |  A/B controlled simulation  |  score 0-100
+========================================================================================================================
+========================================================================================================================
+  1. FULL IMPACT TABLE  (sorted by impact score)
+------------------------------------------------------------------------------------------------------------------------
+  CARD                           TYPE               RR        SCORE  CLASS          WR d    DMG d     HP d   GOLD d
+  ----------------------------------------------------------------------------------------------------------------------
+  Exoplanet                      ekonomi            ÔùåÔùå        100.0  [STRONG] STRONG     +0.300   +89.43   +20.27   +25.27
+  Entropy                        sinerjik_alan      ÔùåÔùåÔùå       100.0  [STRONG] STRONG     -0.200   -60.27   -29.67    +0.37
+  Roman Empire                   sinerjik_alan      ÔùåÔùåÔùåÔùå      100.0  [STRONG] STRONG     +0.233   +35.73   +34.33    -2.87
+  Printing Press                 ekonomi            ÔùåÔùå        100.0  [STRONG] STRONG     +0.167   +24.27   +15.10   +13.63
+  Jazz                           combo              ÔùåÔùå         99.9  [STRONG] STRONG     +0.167   +29.93   +27.30    +1.07
+  Quasar                         sinerjik_alan      ÔùåÔùåÔùåÔùå       97.9  [STRONG] STRONG     +0.167   +33.20   +28.97    -6.43
+  Space-Time                     kopya              ÔùåÔùåÔùåÔùå       97.3  [STRONG] STRONG     +0.267   +81.63   +35.27    +5.83
+  World War II                   combat             ÔùåÔùåÔùåÔùå       95.6  [STRONG] STRONG     +0.133   +51.63   +24.00    +1.83
+  Ottoman Empire                 ekonomi            ÔùåÔùåÔùå        95.0  [STRONG] STRONG     +0.100   +47.50   +10.23   +19.53
+  Cordyceps                      sinerjik_alan      ÔùåÔùåÔùåÔùå       93.9  [STRONG] STRONG     +0.167   +29.70   +18.10    +4.53
+  Bioluminescence                combo              ÔùåÔùåÔùå        93.1  [STRONG] STRONG     +0.167   +24.83   +15.90    -2.70
+  Yggdrasil                      kopya              ÔùåÔùåÔùåÔùåÔùå      92.8  [STRONG] STRONG     +0.533  +131.17   +46.97    +2.20
+  Andromeda Galaxy               sinerjik_alan      ÔùåÔùåÔùåÔùå       91.4  [STRONG] STRONG     +0.167   +28.47   +11.47    +4.00
+  Industrial Revolution          ekonomi            ÔùåÔùåÔùå        86.7  [STRONG] STRONG     +0.067   +34.33   +19.60   +14.40
+  Moon Landing                   ekonomi            ÔùåÔùåÔùå        86.0  [STRONG] STRONG     +0.133   +42.33    +4.27    +8.47
+  Supernova                      hayatta_kalma      ÔùåÔùåÔùåÔùå       80.7  [STRONG] STRONG     +0.067   +18.43    +2.17    +9.67
+  Betelgeuse                     hayatta_kalma      ÔùåÔùåÔùå        78.6  [STRONG] STRONG     -0.100   -10.90    -1.67    -1.00
+  Algorithm                      ekonomi            ÔùåÔùå         77.7  [STRONG] STRONG     +0.067   +35.43    +4.00   +13.50
+  Higgs Boson                    sinerjik_alan      ÔùåÔùåÔùåÔùå       77.4  [STRONG] STRONG     +0.100   +20.37   +13.27    +0.13
+  Baroque                        sinerjik_alan      ÔùåÔùå         76.9  [STRONG] STRONG     +0.100   +24.90    +9.27    -1.03
+  Valhalla                       hayatta_kalma      ÔùåÔùåÔùå        73.0  [STRONG] STRONG     -0.067   -12.97    -0.60    +0.40
+  Medusa                         sinerjik_alan      ÔùåÔùåÔùå        70.6  [STRONG] STRONG     +0.133    +9.23   +13.93    +4.10
+  Renaissance                    sinerjik_alan      ÔùåÔùåÔùåÔùå       69.6  [STRONG] STRONG     +0.100   +13.50   +22.80    -4.00
+  French Revolution              sinerjik_alan      ÔùåÔùåÔùå        67.6  [STRONG] STRONG     +0.067   +20.30   +16.50    -3.27
+  Milky Way                      sinerjik_alan      ÔùåÔùåÔùåÔùå       62.2  [STRONG] STRONG     +0.067   +17.17   +11.10    -3.47
+  Babylon                        ekonomi            ÔùåÔùå         56.5  [STRONG] STRONG     +0.000   +41.20    -1.00   +15.17
+  Age of Discovery               ekonomi            ÔùåÔùåÔùå        56.2  [STRONG] STRONG     +0.000   +34.63    -0.80   +10.13
+  Gravity                        sinerjik_alan      ÔùåÔùåÔùå        55.9  [STRONG] STRONG     -0.067   -10.07   -13.03    -1.53
+  Rainforest                     sinerjik_alan      ÔùåÔùåÔùå        54.9  [MOD] MODERATE   -0.133    +0.23    -9.40    +5.90
+  Baobab                         hayatta_kalma      ÔùåÔùåÔùå        54.5  [MOD] MODERATE   +0.067    +5.03    +0.60    +2.03
+  Blue Whale                     sinerjik_alan      ÔùåÔùåÔùåÔùå       46.7  [MOD] MODERATE   +0.000   +19.00   +19.93    -0.03
+  Ragnar├Âk                       combat             ÔùåÔùåÔùåÔùå       45.4  [MOD] MODERATE   +0.033   +25.67    +8.10    -1.37
+  Marie Curie                    kopya              ÔùåÔùåÔùåÔùå       44.9  [MOD] MODERATE   +0.033   +22.53    +1.77    +4.77
+  Isaac Newton                   sinerjik_alan      ÔùåÔùåÔùåÔùå       42.8  [MOD] MODERATE   +0.067    +5.93    +7.93    -3.90
+  Minotaur                       combat             ÔùåÔùå         37.9  [MOD] MODERATE   -0.100    -7.77    -2.57    +1.97
+  Sparta                         combat             ÔùåÔùåÔùå        37.8  [MOD] MODERATE   +0.067   -17.97    +1.57    -5.87
+  Frida Kahlo                    hayatta_kalma      ÔùåÔùåÔùå        35.2  [MOD] MODERATE   +0.000   +26.27    +0.10    +4.60
+  Mongol Empire                  combat             ÔùåÔùåÔùå        32.6  [MOD] MODERATE   +0.100    +5.90    +0.00    +3.67
+  Opera                          sinerjik_alan      ÔùåÔùå         29.9  [WEAK] WEAK       -0.033    +3.43    +7.80    -6.57
+  Periodic Table                 sinerjik_alan      ÔùåÔùåÔùå        29.5  [WEAK] WEAK       -0.033    +7.00    +5.67    -1.93
+  Gothic Architecture            hayatta_kalma      ÔùåÔùåÔùå        28.2  [WEAK] WEAK       +0.033    -2.43    +0.90    +1.97
+  Olympus                        sinerjik_alan      ÔùåÔùåÔùå        27.0  [WEAK] WEAK       -0.033    -1.47    -7.47    +2.80
+  Quantum Mechanics              combat             ÔùåÔùåÔùåÔùå       25.9  [WEAK] WEAK       +0.033   -12.27    -3.53    -2.80
+  Coral Reef                     sinerjik_alan      ÔùåÔùåÔùå        25.7  [WEAK] WEAK       -0.033    +1.50    -6.83    -0.67
+  Loki                           combat             ÔùåÔùåÔùå        25.2  [WEAK] WEAK       +0.067    +1.33    +4.53    -1.20
+  Black Death                    sinerjik_alan      ÔùåÔùåÔùåÔùåÔùå      22.8  [WEAK] WEAK       +0.000    +9.67    +5.63    -1.37
+  Kraken                         sinerjik_alan      ÔùåÔùåÔùåÔùå       21.9  [WEAK] WEAK       +0.000   +10.93    +4.50    -4.13
+  Asteroid Belt                  combat             ÔùåÔùå         19.8  [WEAK] WEAK       +0.033    +9.63    +0.97    +1.73
+  Code of Hammurabi              combat             ÔùåÔùå         19.8  [WEAK] WEAK       +0.000    -9.67    +7.63    -3.17
+  Fungus                         kopya              ÔùåÔùå         19.2  [WEAK] WEAK       +0.033    +6.43    +0.53    +0.87
+  Narwhal                        combat             ÔùåÔùå         18.2  [WEAK] WEAK       +0.033    +8.87    +0.37    +1.67
+  Flamenco                       combat             ÔùåÔùå         16.0  [WEAK] WEAK       -0.033    +1.77    +4.03    +2.73
+  DNA                            kopya              ÔùåÔùåÔùå        15.6  [WEAK] WEAK       +0.000    +2.73    -3.60    +5.17
+  Nikola Tesla                   sinerjik_alan      ÔùåÔùåÔùåÔùå       14.7  [WEAK] WEAK       +0.033    -1.83    +1.37    -0.33
+  Guernica                       combat             ÔùåÔùåÔùåÔùå       13.9  [WEAK] WEAK       +0.033    +4.53    +0.33    +1.27
+  Cubism                         combat             ÔùåÔùå         13.9  [WEAK] WEAK       -0.033    -3.63    +1.03    -2.40
+  Black Hole                     sinerjik_alan      ÔùåÔùåÔùåÔùåÔùå      13.6  [WEAK] WEAK       +0.033    +0.40    +1.63    +0.33
+  Pulsar                         combat             ÔùåÔùåÔùå        11.4  [INERT] INERT      -0.033    +1.73    -0.60    +3.00
+  Quetzalcoatl                   combat             ÔùåÔùåÔùåÔùå       10.7  [INERT] INERT      +0.000    +9.40    -1.00    +0.73
+  Odin                           sinerjik_alan      ÔùåÔùåÔùåÔùå        9.7  [INERT] INERT      +0.000    +6.33    -1.17    +2.37
+  Europa                         sinerjik_alan      ÔùåÔùå          5.2  [INERT] INERT      +0.000    +1.43    -1.73    +3.17
+  Komodo Dragon                  combat             ÔùåÔùåÔùå         3.8  [INERT] INERT      +0.000    +1.50    +1.73    +0.73
+  Venus Flytrap                  combat             ÔùåÔùå          1.0  [INERT] INERT      +0.000    -0.73    -0.17    -0.03
+  Sirius                         combat             ÔùåÔùå          0.6  [INERT] INERT      +0.000    +0.10    +0.37    +0.13
+  Coelacanth                     kopya              ÔùåÔùåÔùåÔùåÔùå       0.2  [INERT] INERT      +0.000    -0.03    -0.10    -0.03
+  Anubis                         combat             ÔùåÔùåÔùå         0.0  [INERT] INERT      +0.000    +0.00    +0.00    +0.00
+  Athena                         combo              ÔùåÔùåÔùå         0.0  [INERT] INERT      +0.000    +0.00    +0.00    +0.00
+  Phoenix                        hayatta_kalma      ÔùåÔùåÔùåÔùå        0.0  [INERT] INERT      +0.000    +0.00    +0.00    +0.00
+  Cerberus                       combat             ÔùåÔùåÔùå         0.0  [INERT] INERT      +0.000    +0.00    +0.00    +0.00
+  Ballet                         combo              ÔùåÔùå          0.0  [INERT] INERT      +0.000    +0.00    +0.00    +0.00
+  Impressionism                  combo              ÔùåÔùå          0.0  [INERT] INERT      +0.000    +0.00    +0.00    +0.00
+  Kabuki                         sinerjik_alan      ÔùåÔùåÔùå         0.0  [INERT] INERT      +0.000    +0.00    +0.00    +0.00
+  Axolotl                        hayatta_kalma      ÔùåÔùå          0.0  [INERT] INERT      +0.000    +0.00    +0.00    +0.00
+  Tardigrade                     hayatta_kalma      ÔùåÔùåÔùå         0.0  [INERT] INERT      +0.000    +0.00    +0.00    +0.00
+  Nebula                         combo              ÔùåÔùåÔùå         0.0  [INERT] INERT      +0.000    +0.00    +0.00    +0.00
+  Event Horizon                  kopya              ÔùåÔùåÔùåÔùå        0.0  [INERT] INERT      +0.000    +0.00    +0.00    +0.00
+  Albert Einstein                combo              ÔùåÔùåÔùåÔùåÔùå       0.0  [INERT] INERT      +0.000    +0.00    +0.00    +0.00
+  Charles Darwin                 kopya              ÔùåÔùåÔùå         0.0  [INERT] INERT      +0.000    +0.00    +0.00    +0.00
+  Golden Ratio                   combo              ÔùåÔùåÔùå         0.0  [INERT] INERT      +0.000    +0.00    +0.00    +0.00
+  Silk Road                      ekonomi            ÔùåÔùåÔùå         0.0  [INERT] INERT      +0.000    +0.00    +0.00    +0.00
+========================================================================================================================
+  2. CLASSIFICATION SUMMARY
+------------------------------------------------------------------------------------------------------------------------
+  [STRONG]     28 cards  (35.0%)  ############################
+  [MOD]        10 cards  (12.5%)  ##########
+  [WEAK]       19 cards  (23.8%)  ###################
+  [INERT]      23 cards  (28.7%)  #######################
+========================================================================================================================
+  3. TOP 10 STRONGEST PASSIVES
+------------------------------------------------------------------------------------------------------------------------
+   1. [STRONG] Exoplanet                      ekonomi             score=100.0  WR d=+0.300  DMG d=+89.43  HP d=+20.27  GOLD d=+25.27
+   2. [STRONG] Entropy                        sinerjik_alan       score=100.0  WR d=-0.200  DMG d=-60.27  HP d=-29.67  GOLD d=+0.37
+   3. [STRONG] Roman Empire                   sinerjik_alan       score=100.0  WR d=+0.233  DMG d=+35.73  HP d=+34.33  GOLD d=-2.87
+   4. [STRONG] Printing Press                 ekonomi             score=100.0  WR d=+0.167  DMG d=+24.27  HP d=+15.10  GOLD d=+13.63
+   5. [STRONG] Jazz                           combo               score= 99.9  WR d=+0.167  DMG d=+29.93  HP d=+27.30  GOLD d=+1.07
+   6. [STRONG] Quasar                         sinerjik_alan       score= 97.9  WR d=+0.167  DMG d=+33.20  HP d=+28.97  GOLD d=-6.43
+   7. [STRONG] Space-Time                     kopya               score= 97.3  WR d=+0.267  DMG d=+81.63  HP d=+35.27  GOLD d=+5.83
+   8. [STRONG] World War II                   combat              score= 95.6  WR d=+0.133  DMG d=+51.63  HP d=+24.00  GOLD d=+1.83
+   9. [STRONG] Ottoman Empire                 ekonomi             score= 95.0  WR d=+0.100  DMG d=+47.50  HP d=+10.23  GOLD d=+19.53
+  10. [STRONG] Cordyceps                      sinerjik_alan       score= 93.9  WR d=+0.167  DMG d=+29.70  HP d=+18.10  GOLD d=+4.53
+========================================================================================================================
+  4. BOTTOM 10 WEAKEST / INERT PASSIVES
+------------------------------------------------------------------------------------------------------------------------
+   1. [INERT] Silk Road                      ekonomi             score=  0.0  WR d=+0.000  DMG d=+0.00  HP d=+0.00  GOLD d=+0.00
+   2. [INERT] Golden Ratio                   combo               score=  0.0  WR d=+0.000  DMG d=+0.00  HP d=+0.00  GOLD d=+0.00
+   3. [INERT] Charles Darwin                 kopya               score=  0.0  WR d=+0.000  DMG d=+0.00  HP d=+0.00  GOLD d=+0.00
+   4. [INERT] Albert Einstein                combo               score=  0.0  WR d=+0.000  DMG d=+0.00  HP d=+0.00  GOLD d=+0.00
+   5. [INERT] Event Horizon                  kopya               score=  0.0  WR d=+0.000  DMG d=+0.00  HP d=+0.00  GOLD d=+0.00
+   6. [INERT] Nebula                         combo               score=  0.0  WR d=+0.000  DMG d=+0.00  HP d=+0.00  GOLD d=+0.00
+   7. [INERT] Tardigrade                     hayatta_kalma       score=  0.0  WR d=+0.000  DMG d=+0.00  HP d=+0.00  GOLD d=+0.00
+   8. [INERT] Axolotl                        hayatta_kalma       score=  0.0  WR d=+0.000  DMG d=+0.00  HP d=+0.00  GOLD d=+0.00
+   9. [INERT] Kabuki                         sinerjik_alan       score=  0.0  WR d=+0.000  DMG d=+0.00  HP d=+0.00  GOLD d=+0.00
+  10. [INERT] Impressionism                  combo               score=  0.0  WR d=+0.000  DMG d=+0.00  HP d=+0.00  GOLD d=+0.00
+========================================================================================================================
+  5. IMPACT BY PASSIVE TYPE
+------------------------------------------------------------------------------------------------------------------------
+  TYPE                    N     AVG     MAX     MIN  DISTRIBUTION
+  ----------------------------------------------------------------------
+  combat                 20    21.5    95.6     0.0  STRONG x1 MOD x4 WEAK x8 INERT x7
+  combo                   8    24.1    99.9     0.0  STRONG x2 MOD x0 WEAK x0 INERT x6
+  ekonomi                 9    73.1   100.0     0.0  STRONG x8 MOD x0 WEAK x0 INERT x1
+  hayatta_kalma           9    38.9    80.7     0.0  STRONG x3 MOD x2 WEAK x1 INERT x3
+  kopya                   8    33.8    97.3     0.0  STRONG x2 MOD x1 WEAK x2 INERT x3
+  sinerjik_alan          26    50.3   100.0     0.0  STRONG x12 MOD x3 WEAK x8 INERT x3
+========================================================================================================================
+  6. INERT PASSIVES (23) -- no measurable gameplay impact
+------------------------------------------------------------------------------------------------------------------------
+  [INERT] Pulsar                         combat              score=11.4  WR d=-0.0333  DMG d=+1.73  HP d=-0.60  GOLD d=+3.00
+  [INERT] Quetzalcoatl                   combat              score=10.7  WR d=+0.0000  DMG d=+9.40  HP d=-1.00  GOLD d=+0.73
+  [INERT] Odin                           sinerjik_alan       score=9.7  WR d=+0.0000  DMG d=+6.33  HP d=-1.17  GOLD d=+2.37
+  [INERT] Europa                         sinerjik_alan       score=5.2  WR d=+0.0000  DMG d=+1.43  HP d=-1.73  GOLD d=+3.17
+  [INERT] Komodo Dragon                  combat              score=3.8  WR d=+0.0000  DMG d=+1.50  HP d=+1.73  GOLD d=+0.73
+  [INERT] Venus Flytrap                  combat              score=1.0  WR d=+0.0000  DMG d=-0.73  HP d=-0.17  GOLD d=-0.03
+  [INERT] Sirius                         combat              score=0.6  WR d=+0.0000  DMG d=+0.10  HP d=+0.37  GOLD d=+0.13
+  [INERT] Coelacanth                     kopya               score=0.2  WR d=+0.0000  DMG d=-0.03  HP d=-0.10  GOLD d=-0.03
+  [INERT] Anubis                         combat              score=0.0  WR d=+0.0000  DMG d=+0.00  HP d=+0.00  GOLD d=+0.00
+  [INERT] Athena                         combo               score=0.0  WR d=+0.0000  DMG d=+0.00  HP d=+0.00  GOLD d=+0.00
+  [INERT] Phoenix                        hayatta_kalma       score=0.0  WR d=+0.0000  DMG d=+0.00  HP d=+0.00  GOLD d=+0.00
+  [INERT] Cerberus                       combat              score=0.0  WR d=+0.0000  DMG d=+0.00  HP d=+0.00  GOLD d=+0.00
+  [INERT] Ballet                         combo               score=0.0  WR d=+0.0000  DMG d=+0.00  HP d=+0.00  GOLD d=+0.00
+  [INERT] Impressionism                  combo               score=0.0  WR d=+0.0000  DMG d=+0.00  HP d=+0.00  GOLD d=+0.00
+  [INERT] Kabuki                         sinerjik_alan       score=0.0  WR d=+0.0000  DMG d=+0.00  HP d=+0.00  GOLD d=+0.00
+  [INERT] Axolotl                        hayatta_kalma       score=0.0  WR d=+0.0000  DMG d=+0.00  HP d=+0.00  GOLD d=+0.00
+  [INERT] Tardigrade                     hayatta_kalma       score=0.0  WR d=+0.0000  DMG d=+0.00  HP d=+0.00  GOLD d=+0.00
+  [INERT] Nebula                         combo               score=0.0  WR d=+0.0000  DMG d=+0.00  HP d=+0.00  GOLD d=+0.00
+  [INERT] Event Horizon                  kopya               score=0.0  WR d=+0.0000  DMG d=+0.00  HP d=+0.00  GOLD d=+0.00
+  [INERT] Albert Einstein                combo               score=0.0  WR d=+0.0000  DMG d=+0.00  HP d=+0.00  GOLD d=+0.00
+  [INERT] Charles Darwin                 kopya               score=0.0  WR d=+0.0000  DMG d=+0.00  HP d=+0.00  GOLD d=+0.00
+  [INERT] Golden Ratio                   combo               score=0.0  WR d=+0.0000  DMG d=+0.00  HP d=+0.00  GOLD d=+0.00
+  [INERT] Silk Road                      ekonomi             score=0.0  WR d=+0.0000  DMG d=+0.00  HP d=+0.00  GOLD d=+0.00
+========================================================================================================================
+  7. DESIGN NOTES -- cards that may need attention
+------------------------------------------------------------------------------------------------------------------------
+  Cards scoring INERT despite non-trivial passive descriptions:
+  [!] Pulsar                         rarity=ÔùåÔùåÔùå  type=combat  score=11.4
+  [!] Quetzalcoatl                   rarity=ÔùåÔùåÔùåÔùå  type=combat  score=10.7
+  [!] Odin                           rarity=ÔùåÔùåÔùåÔùå  type=sinerjik_alan  score=9.7
+  [!] Komodo Dragon                  rarity=ÔùåÔùåÔùå  type=combat  score=3.8
+  [!] Coelacanth                     rarity=ÔùåÔùåÔùåÔùåÔùå  type=kopya  score=0.2
+  [!] Anubis                         rarity=ÔùåÔùåÔùå  type=combat  score=0.0
+  [!] Athena                         rarity=ÔùåÔùåÔùå  type=combo  score=0.0
+  [!] Phoenix                        rarity=ÔùåÔùåÔùåÔùå  type=hayatta_kalma  score=0.0
+  [!] Cerberus                       rarity=ÔùåÔùåÔùå  type=combat  score=0.0
+  [!] Kabuki                         rarity=ÔùåÔùåÔùå  type=sinerjik_alan  score=0.0
+  [!] Tardigrade                     rarity=ÔùåÔùåÔùå  type=hayatta_kalma  score=0.0
+  [!] Nebula                         rarity=ÔùåÔùåÔùå  type=combo  score=0.0
+  [!] Event Horizon                  rarity=ÔùåÔùåÔùåÔùå  type=kopya  score=0.0
+  [!] Albert Einstein                rarity=ÔùåÔùåÔùåÔùåÔùå  type=combo  score=0.0
+  [!] Charles Darwin                 rarity=ÔùåÔùåÔùå  type=kopya  score=0.0
+  [!] Golden Ratio                   rarity=ÔùåÔùåÔùå  type=combo  score=0.0
+  [!] Silk Road                      rarity=ÔùåÔùåÔùå  type=ekonomi  score=0.0
+========================================================================================================================
+  IMPACT ANALYSIS COMPLETE
+========================================================================================================================

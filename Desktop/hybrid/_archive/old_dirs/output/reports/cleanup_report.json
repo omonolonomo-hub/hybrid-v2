@@ -1,0 +1,56 @@
+{
+  "timestamp": "2026-03-28T22:25:14.044999",
+  "deleted_files": [
+    {
+      "path": "__pycache__",
+      "type": "directory",
+      "size": 454675,
+      "reason": "Python cache"
+    },
+    {
+      "path": "engine_core\\__pycache__",
+      "type": "directory",
+      "size": 140425,
+      "reason": "Python cache"
+    },
+    {
+      "path": "tests\\__pycache__",
+      "type": "directory",
+      "size": 363044,
+      "reason": "Python cache"
+    },
+    {
+      "path": "tools\\__pycache__",
+      "type": "directory",
+      "size": 23594,
+      "reason": "Python cache"
+    },
+    {
+      "path": "analyze_references.py",
+      "type": "file",
+      "size": 8861,
+      "reason": "One-time analysis script"
+    },
+    {
+      "path": "analyze_unused_files.py",
+      "type": "file",
+      "size": 8455,
+      "reason": "One-time analysis script"
+    },
+    {
+      "path": "auto_fix_references.py",
+      "type": "file",
+      "size": 7223,
+      "reason": "One-time analysis script"
+    },
+    {
+      "path": "safe_cleanup.py",
+      "type": "file",
+      "size": 6196,
+      "reason": "One-time analysis script"
+    }
+  ],
+  "total_deleted": 8,
+  "total_size_bytes": 1012473,
+  "total_size_mb": 0.9655694961547852
+}

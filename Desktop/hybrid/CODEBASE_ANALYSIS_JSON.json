@@ -1,0 +1,353 @@
+{
+  "metadata": {
+    "analysis_date": "2026-04-22",
+    "project": "Hybrid Card Game (Pygame-CE)",
+    "scope": ["engine_core", "v2/core"],
+    "total_findings": 27,
+    "critical_count": 5,
+    "strategic_count": 8,
+    "code_smell_count": 10
+  },
+  "critical_issues": [
+    {
+      "id": "C1",
+      "severity": "CRITICAL",
+      "category": "State Desynchronization",
+      "where": "v2/core/state_store.py:36-44",
+      "what": "Board state cache (_board_names, _board_rotations) not auto-synced with Player.board.grid mutations",
+      "why": "StateStore.update_board() called manually; if Player.board modified outside this call, StateStore becomes stale",
+      "impact_severity": "HIGH",
+      "likelihood": "MEDIUM",
+      "consequence": "UI renders stale board state; dropped cards reappear; rotations reset",
+      "effort_hours": 4,
+      "fix": "Hook Board.place()/remove() to notify StateStore, or rebuild StateStore.board every get_public_state() call"
+    },
+    {
+      "id": "C2",
+      "severity": "CRITICAL",
+      "category": "Code Duplication",
+      "where": ["engine_core/board.py:198-241", "v2/core/synergy_calculator.py:77-145", "v2/core/ui_adapter.py (assumed)"],
+      "what": "Synergy BFS cluster algorithm copied in 3+ modules",
+      "why": "Different implementations of same algorithm increase maintenance burden; bugs fixed in one place don't auto-propagate",
+      "impact_severity": "HIGH",
+      "likelihood": "HIGH",
+      "consequence": "Synergy scores differ between engine calculation and UI display; inconsistent balance",
+      "effort_hours": 6,
+      "fix": "Migrate all consumers to synergy_calculator.py; delete board.py and ui_adapter.py copies"
+    },
+    {
+      "id": "C3",
+      "severity": "CRITICAL",
+      "category": "Extensibility Blocker",
+      "where": ["engine_core/board.py:152-153, 218", "synergy_calculator.py:27", "engine_core/constants.py"],
+      "what": "Synergy group system hardcoded to exactly 3 types ('MIND', 'CONNECTION', 'EXISTENCE'); hex edge system hardcoded to 6",
+      "why": "Both are literal constants in code; no registry or configuration",
+      "impact_severity": "HIGH",
+      "likelihood": "MEDIUM",
+      "consequence": "Impossible to add 4th synergy type without refactoring core; impossible to create non-hex board",
+      "effort_hours": 8,
+      "fix": "Create GroupRegistry (dynamic) and EdgeSystem config; move hardcoded values to constants dict"
+    },
+    {
+      "id": "C4",
+      "severity": "CRITICAL",
+      "category": "Parallel State",
+      "where": "engine_core/player.py:70, 129, 154",
+      "what": "cards_bought_this_turn tracked in both Player.cards_bought_this_turn (int) and Player.stats['cards_bought_this_turn'] (int)",
+      "why": "Both incremented separately in buy_card(); no shared source",
+      "impact_severity": "MEDIUM",
+      "likelihood": "LOW",
+      "consequence": "One tracking system can desync from other; stats incorrect in UI",
+      "effort_hours": 2,
+      "fix": "Remove direct int; use only stats dict, or create single property"
+    },
+    {
+      "id": "C5",
+      "severity": "CRITICAL",
+      "category": "Error Handling",
+      "where": "v2/core/engine_adapter.py:30-35, 52-61",
+      "what": "Errors handled by returning None or shim objects (_AdapterCardShim) instead of raising exceptions",
+      "why": "Pattern: adapter.get_player(999) returns None instead of raising IndexError",
+      "impact_severity": "MEDIUM",
+      "likelihood": "MEDIUM",
+      "consequence": "Errors manifest as AttributeError downstream; hard to debug; no clear error context",
+      "effort_hours": 2,
+      "fix": "Replace shim pattern; raise EngineAdapterError with descriptive message"
+    }
+  ],
+  "strategic_concerns": [
+    {
+      "id": "S1",
+      "category": "God Object",
+      "where": "engine_core/board.py (~400 LOC)",
+      "issues": [
+        "Hex grid management (place, remove, neighbors, free_coords)",
+        "Combat resolution (resolve_single_combat - 40 LOC)",
+        "Combo detection (find_combos - 30 LOC)",
+        "Synergy calculation (calculate_group_synergy_bonus - 50 LOC, BFS + tiers)",
+        "Damage calculation (calculate_damage - 30 LOC with turn multiplier)"
+      ],
+      "why_matters": "Hard to unit test in isolation; changes to one responsibility affect others",
+      "refactor_effort": "16 hours",
+      "fix": "Extract to ComboDetector, SynergyCalculator (already done), DamageCalculator; leave Board as pure hex grid"
+    },
+    {
+      "id": "S2",
+      "category": "Performance",
+      "where": "v2/core/synergy_calculator.py:77-145",
+      "algorithm": "BFS traversal × 3 groups",
+      "complexity": "O(3 × V × (V+E)) where V=board_size (~37), E=neighbors (~6)",
+      "worst_case_ops": "3 × 37 × 43 = 4,767 operations per board state",
+      "call_frequency": "60 times/second (60 FPS UI rendering)",
+      "throughput_impact": "286,020 ops/sec in synergy alone",
+      "why_matters": "Runs every frame even if board unchanged; could be cached",
+      "mitigation_current": "Cached in GameState until next mutation",
+      "mitigation_opportunity": "Cache hash of board; only recalc if hash changes",
+      "fix_effort": "3 hours",
+      "roi": "Reduce UI frame processing by ~10%"
+    },
+    {
+      "id": "S3",
+      "category": "Duplication",
+      "where": "engine_core/board.py:198-241 vs synergy_calculator.py:77-145",
+      "what": "Two BFS implementations for group-based cluster detection",
+      "why_matters": "Maintenance nightmare; bug fixes don't propagate; test coverage splits",
+      "fix_effort": "6 hours",
+      "priority": "HIGH"
+    },
+    {
+      "id": "S4",
+      "category": "Data/Logic Coupling",
+      "where": "engine_core/card.py + engine_core/board.py",
+      "issue": "Board directly calls card.rotated_edges(), card.edge_val(), card.edge_group() to access internals",
+      "why_matters": "Card cannot refactor edge representation without updating Board, Combat, Synergy systems",
+      "coupling_type": "Structural (shared data model)",
+      "fix_effort": "12 hours (facade pattern)",
+      "priority": "MEDIUM"
+    },
+    {
+      "id": "S5",
+      "category": "Evolution Logic Hardcoding",
+      "where": "engine_core/player.py:176-225 (check_evolution method)",
+      "what": "Evolution check hardcoded for strategy == 'evolver'",
+      "why_matters": "New strategies cannot have custom evolution; tightly coupled to strategy name",
+      "fix_effort": "4 hours (polymorphism or config)",
+      "impact": "Blocks adding new evolution-based strategies"
+    },
+    {
+      "id": "S6",
+      "category": "Constants",
+      "where": ["engine_core/board.py:348-375 (damage formula)", "board.py:228-241 (synergy tiers)", "constants.py (scattered)"],
+      "what": "Magic numbers for game balance scattered across codebase",
+      "examples": [
+        "Damage multiplier: 0.5, 1.0, 5, 15 hardcoded in function",
+        "Synergy tier: 3, 9, 16, 25 in calculate_group_synergy_bonus",
+        "Copy thresholds: 4, 7 in player.py",
+        "Hex directions: 6 in multiple places"
+      ],
+      "why_matters": "Tuning requires code changes + recompilation; balance parameters scattered",
+      "fix_effort": "2 hours (GameBalance config class)",
+      "impact": "Slows balance iteration during development"
+    },
+    {
+      "id": "S7",
+      "category": "Unbounded Growth",
+      "where": "engine_core/game.py:70",
+      "what": "Game.log list appended every _log() call with no max cap",
+      "risk": "After 50,000 turns, log could be 5+ MB; GC overhead",
+      "fix_effort": "1 hour (rolling buffer or cap)",
+      "priority": "LOW (rare for 50+ turn games)"
+    },
+    {
+      "id": "S8",
+      "category": "Technical Debt",
+      "where": "engine_core/passive_trigger.py:128-137",
+      "what": "Legacy _legacy_passive_log still exported for backward compatibility",
+      "why": "Passive trigger system refactored; old code might still use it",
+      "fix_effort": "1 hour (search and remove)",
+      "priority": "LOW"
+    }
+  ],
+  "performance_findings": [
+    {
+      "location": "v2/core/synergy_calculator.py",
+      "issue": "BFS runs for each of 3 groups",
+      "complexity": "O(3VE)",
+      "frequency": "Every frame (60 FPS)",
+      "recommendation": "Implement board state hash; only recalc on change",
+      "expected_speedup": "90% frame time reduction when board stable"
+    },
+    {
+      "location": "engine_core/game.py, turn_manager.py, combat_engine.py",
+      "issue": "tuple(dict.values()) called repeatedly to prevent concurrent modification",
+      "complexity": "O(n) copies per iteration",
+      "frequency": "~100× per turn",
+      "recommendation": "Use dict snapshot or weakref instead of tuple copy",
+      "expected_speedup": "5-10% turn processing"
+    },
+    {
+      "location": "engine_core/board.py:308-325",
+      "issue": "find_combos() uses set() for tracked pairs",
+      "complexity": "O(n²) worst case for combo detection",
+      "frequency": "Every combat phase",
+      "note": "Acceptable due to small board size (~37 cards max)"
+    }
+  ],
+  "error_handling": [
+    {
+      "location": "engine_core/strategy_logger.py:329, 513",
+      "pattern": "except Exception as e:",
+      "issue": "Bare exception catch without logging context",
+      "severity": "MEDIUM",
+      "impact": "Silent failures make debugging hard"
+    },
+    {
+      "location": "engine_core/event_logger.py:194, 206",
+      "pattern": "except Exception as e:",
+      "issue": "Bare catch, output unclear",
+      "severity": "MEDIUM",
+      "impact": "Error context lost"
+    },
+    {
+      "location": "engine_core/player.py:209",
+      "pattern": "except (ValueError, TypeError): pass",
+      "issue": "Silent catch in check_evolution",
+      "severity": "LOW",
+      "rationale": "Specific exception types; failure is graceful (evolution skipped)"
+    },
+    {
+      "location": "v2/core/engine_adapter.py",
+      "pattern": "Returns None or shim on error",
+      "issue": "No exception raised; errors silent",
+      "severity": "HIGH",
+      "impact": "AttributeError later instead of immediate descriptive error"
+    }
+  ],
+  "extensibility_impact": [
+    {
+      "scenario": "Add 100 new cards",
+      "blockers": [],
+      "requirements": [
+        "Ensure card stats match STAT_TO_GROUP (currently 12 stats → 3 groups)",
+        "Register passive handlers for new card abilities",
+        "Update card pool JSON"
+      ],
+      "effort": "2-4 hours per 10 cards"
+    },
+    {
+      "scenario": "Add 5 new synergy types (e.g., 4th group)",
+      "blockers": [
+        "CRITICAL: 3-group hardcoded in synergy_calculator.py:27",
+        "CRITICAL: 3-group hardcoded in board.py:218",
+        "Board.resolve_single_combat assumes 6 edges"
+      ],
+      "effort_to_unblock": "8 hours",
+      "affected_systems": ["SynergyCalculator", "Board", "Card edge rotation", "DamageCalculator"]
+    },
+    {
+      "scenario": "Add rarity-6 cards",
+      "blockers": [
+        "AI buy thresholds hardcoded in ai.py (TRAINED_PARAMS)",
+        "RARITY_TAVAN must be extended"
+      ],
+      "effort": "2-4 hours",
+      "affected_systems": ["AI strategies", "economy.py", "card.py"]
+    },
+    {
+      "scenario": "Implement new game phase (Draft phase)",
+      "blockers": [
+        "Game.run() hardcoded phase sequence [game.py:195-205]",
+        "TurnManager.preparation_phase() assumes fixed turn flow",
+        "StateStore.phase uses string, not enum"
+      ],
+      "effort": "16+ hours",
+      "affected_systems": ["Game orchestration", "TurnManager", "StateStore", "UI phase display"]
+    },
+    {
+      "scenario": "Replace combat system (e.g., 1v1 duels instead of board battles)",
+      "blockers": [
+        "Card structure assumes 6-edge hex design",
+        "Passive triggers assume board coordinate system",
+        "CombatEngine tightly coupled to Board hexes"
+      ],
+      "effort": "40+ hours",
+      "affected_systems": ["All of engine_core"]
+    }
+  ],
+  "code_quality_metrics": {
+    "god_objects": [
+      {
+        "name": "Board",
+        "location": "engine_core/board.py",
+        "responsibilities": 5,
+        "lines_of_code": 400,
+        "public_methods": 12,
+        "refactor_difficulty": "HIGH",
+        "priority": "P1"
+      },
+      {
+        "name": "Game",
+        "location": "engine_core/game.py",
+        "responsibilities": 5,
+        "lines_of_code": 200,
+        "public_methods": 8,
+        "refactor_difficulty": "MEDIUM",
+        "priority": "P2",
+        "note": "Partially refactored into TurnManager and CombatEngine"
+      },
+      {
+        "name": "Player",
+        "location": "engine_core/player.py",
+        "responsibilities": 5,
+        "lines_of_code": 250,
+        "public_methods": 15,
+        "refactor_difficulty": "MEDIUM",
+        "priority": "P2"
+      }
+    ],
+    "circular_dependencies": [],
+    "unidirectional_dependency_ok": true
+  },
+  "recommendations": {
+    "priority_critical": [
+      {
+        "rank": 1,
+        "title": "Fix Synergy BFS Duplication",
+        "effort": "6 hours",
+        "impact": "HIGH",
+        "blocks": "Nothing, but prevents future bug divergence"
+      },
+      {
+        "rank": 2,
+        "title": "Parameterize 3-Group System",
+        "effort": "8 hours",
+        "impact": "HIGH",
+        "enables": "Adding 4th synergy type without code change"
+      },
+      {
+        "rank": 3,
+        "title": "Fix StateStore Board Sync",
+        "effort": "4 hours",
+        "impact": "HIGH",
+        "prevents": "UI desync bugs"
+      }
+    ],
+    "priority_strategic": [
+      {
+        "title": "Extract Board God Object",
+        "effort": "16 hours",
+        "roi": "Enables testing, reduces change impact"
+      },
+      {
+        "title": "Parameterize Game Balance",
+        "effort": "2 hours",
+        "roi": "Faster iteration cycles"
+      },
+      {
+        "title": "Cache Synergy BFS Between Frames",
+        "effort": "3 hours",
+        "roi": "10% UI performance improvement"
+      }
+    ]
+  }
+}

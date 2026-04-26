@@ -1,0 +1,3406 @@
+{
+  "_metadata": {
+    "description": "Aggregated passive trigger statistics across all games",
+    "detailed_kpi_file": "passive_efficiency_kpi.jsonl",
+    "note": "For per-game passive efficiency metrics including normalized values and win rate correlation, see passive_efficiency_kpi.jsonl"
+  },
+  "passive_cards": [
+    {
+      "card": "Frida Kahlo",
+      "total_triggers": 22306,
+      "triggers_by_type": {
+        "pre_combat": 4873,
+        "income": 4825,
+        "market_refresh": 4825,
+        "card_buy": 4793,
+        "combat_lose": 1989,
+        "combat_win": 872,
+        "copy_2": 80,
+        "card_killed": 46,
+        "copy_3": 3
+      },
+      "total_delta": 1749,
+      "avg_delta_per_trigger": 0.078,
+      "strategies_using": {
+        "balancer": 5438,
+        "warrior": 4386,
+        "rare_hunter": 3509,
+        "tempo": 3299,
+        "evolver": 3008,
+        "economist": 1628,
+        "random": 688,
+        "builder": 350
+      }
+    },
+    {
+      "card": "Platypus",
+      "total_triggers": 21497,
+      "triggers_by_type": {
+        "pre_combat": 4990,
+        "income": 4601,
+        "market_refresh": 4601,
+        "card_buy": 4512,
+        "combat_lose": 1963,
+        "card_killed": 390,
+        "copy_2": 210,
+        "combat_win": 175,
+        "copy_3": 55
+      },
+      "total_delta": 0,
+      "avg_delta_per_trigger": 0.0,
+      "strategies_using": {
+        "builder": 9293,
+        "economist": 4322,
+        "random": 3459,
+        "evolver": 2826,
+        "rare_hunter": 1480,
+        "warrior": 94,
+        "tempo": 23
+      }
+    },
+    {
+      "card": "Moon Landing",
+      "total_triggers": 17090,
+      "triggers_by_type": {
+        "pre_combat": 3852,
+        "income": 3642,
+        "market_refresh": 3642,
+        "card_buy": 3623,
+        "combat_win": 1164,
+        "combat_lose": 859,
+        "card_killed": 211,
+        "copy_2": 86,
+        "copy_3": 11
+      },
+      "total_delta": 0,
+      "avg_delta_per_trigger": 0.0,
+      "strategies_using": {
+        "warrior": 3695,
+        "rare_hunter": 3506,
+        "tempo": 3334,
+        "balancer": 2909,
+        "evolver": 2171,
+        "economist": 821,
+        "random": 577,
+        "builder": 77
+      }
+    },
+    {
+      "card": "Ottoman Empire",
+      "total_triggers": 16480,
+      "triggers_by_type": {
+        "pre_combat": 3724,
+        "income": 3521,
+        "market_refresh": 3521,
+        "card_buy": 3509,
+        "combat_win": 1121,
+        "combat_lose": 819,
+        "card_killed": 204,
+        "copy_2": 55,
+        "copy_3": 6
+      },
+      "total_delta": 0,
+      "avg_delta_per_trigger": 0.0,
+      "strategies_using": {
+        "tempo": 3261,
+        "warrior": 2962,
+        "rare_hunter": 2631,
+        "balancer": 2335,
+        "evolver": 2306,
+        "builder": 1385,
+        "random": 1105,
+        "economist": 495
+      }
+    },
+    {
+      "card": "Golden Ratio",
+      "total_triggers": 16376,
+      "triggers_by_type": {
+        "pre_combat": 3679,
+        "income": 3499,
+        "market_refresh": 3499,
+        "card_buy": 3477,
+        "combat_win": 1269,
+        "combat_lose": 680,
+        "card_killed": 206,
+        "copy_2": 64,
+        "copy_3": 3
+      },
+      "total_delta": 0,
+      "avg_delta_per_trigger": 0.0,
+      "strategies_using": {
+        "warrior": 3332,
+        "tempo": 2950,
+        "evolver": 2627,
+        "rare_hunter": 2513,
+        "balancer": 2279,
+        "random": 1196,
+        "economist": 883,
+        "builder": 596
+      }
+    },
+    {
+      "card": "Olympus",
+      "total_triggers": 16228,
+      "triggers_by_type": {
+        "pre_combat": 3618,
+        "income": 3512,
+        "market_refresh": 3512,
+        "card_buy": 3486,
+        "combat_win": 1504,
+        "combat_lose": 413,
+        "card_killed": 93,
+        "copy_2": 76,
+        "copy_3": 14
+      },
+      "total_delta": 0,
+      "avg_delta_per_trigger": 0.0,
+      "strategies_using": {
+        "tempo": 3764,
+        "warrior": 3139,
+        "rare_hunter": 2547,
+        "balancer": 2213,
+        "evolver": 2147,
+        "random": 1462,
+        "economist": 765,
+        "builder": 191
+      }
+    },
+    {
+      "card": "Space-Time",
+      "total_triggers": 15409,
+      "triggers_by_type": {
+        "pre_combat": 3436,
+        "income": 3280,
+        "market_refresh": 3280,
+        "card_buy": 3271,
+        "combat_win": 1545,
+        "combat_lose": 451,
+        "card_killed": 76,
+        "copy_2": 67,
+        "copy_3": 3
+      },
+      "total_delta": 420,
+      "avg_delta_per_trigger": 0.027,
+      "strategies_using": {
+        "economist": 2785,
+        "warrior": 2774,
+        "evolver": 2659,
+        "tempo": 2243,
+        "balancer": 1936,
+        "rare_hunter": 1724,
+        "builder": 1067,
+        "random": 221
+      }
+    },
+    {
+      "card": "Isaac Newton",
+      "total_triggers": 15240,
+      "triggers_by_type": {
+        "pre_combat": 3379,
+        "income": 3298,
+        "market_refresh": 3298,
+        "card_buy": 3286,
+        "combat_win": 1644,
+        "combat_lose": 224,
+        "copy_2": 84,
+        "card_killed": 21,
+        "copy_3": 6
+      },
+      "total_delta": 1365,
+      "avg_delta_per_trigger": 0.09,
+      "strategies_using": {
+        "warrior": 3690,
+        "rare_hunter": 2689,
+        "tempo": 2318,
+        "economist": 2303,
+        "evolver": 1935,
+        "balancer": 1445,
+        "random": 860
+      }
+    },
+    {
+      "card": "Kabuki",
+      "total_triggers": 14931,
+      "triggers_by_type": {
+        "pre_combat": 3364,
+        "income": 3197,
+        "market_refresh": 3197,
+        "card_buy": 3180,
+        "combat_lose": 850,
+        "combat_win": 842,
+        "card_killed": 204,
+        "copy_2": 91,
+        "copy_3": 6
+      },
+      "total_delta": 0,
+      "avg_delta_per_trigger": 0.0,
+      "strategies_using": {
+        "tempo": 3075,
+        "balancer": 2675,
+        "warrior": 2571,
+        "evolver": 2320,
+        "rare_hunter": 2202,
+        "random": 1208,
+        "economist": 589,
+        "builder": 291
+      }
+    },
+    {
+      "card": "Guernica",
+      "total_triggers": 14624,
+      "triggers_by_type": {
+        "pre_combat": 3256,
+        "income": 3184,
+        "market_refresh": 3184,
+        "card_buy": 3168,
+        "combat_win": 1484,
+        "combat_lose": 246,
+        "copy_2": 76,
+        "card_killed": 20,
+        "copy_3": 6
+      },
+      "total_delta": 0,
+      "avg_delta_per_trigger": 0.0,
+      "strategies_using": {
+        "tempo": 2658,
+        "warrior": 2484,
+        "balancer": 2454,
+        "economist": 2447,
+        "rare_hunter": 2173,
+        "evolver": 1980,
+        "random": 428
+      }
+    },
+    {
+      "card": "Dark Matter",
+      "total_triggers": 14503,
+      "triggers_by_type": {
+        "pre_combat": 3204,
+        "income": 3158,
+        "market_refresh": 3158,
+        "card_buy": 3144,
+        "combat_win": 1271,
+        "combat_lose": 414,
+        "copy_2": 89,
+        "card_killed": 62,
+        "copy_3": 3
+      },
+      "total_delta": 0,
+      "avg_delta_per_trigger": 0.0,
+      "strategies_using": {
+        "economist": 2888,
+        "warrior": 2396,
+        "evolver": 2190,
+        "rare_hunter": 2137,
+        "tempo": 2122,
+        "balancer": 2011,
+        "random": 635,
+        "builder": 124
+      }
+    },
+    {
+      "card": "Ragnarök",
+      "total_triggers": 14344,
+      "triggers_by_type": {
+        "pre_combat": 3187,
+        "income": 3088,
+        "market_refresh": 3088,
+        "card_buy": 3077,
+        "combat_win": 1114,
+        "combat_lose": 608,
+        "card_killed": 124,
+        "copy_2": 58
+      },
+      "total_delta": 0,
+      "avg_delta_per_trigger": 0.0,
+      "strategies_using": {
+        "economist": 2612,
+        "warrior": 2611,
+        "balancer": 2066,
+        "evolver": 1854,
+        "tempo": 1758,
+        "rare_hunter": 1726,
+        "builder": 1089,
+        "random": 628
+      }
+    },
+    {
+      "card": "Cosmic Microwave Background",
+      "total_triggers": 14280,
+      "triggers_by_type": {
+        "pre_combat": 3149,
+        "income": 3063,
+        "market_refresh": 3063,
+        "card_buy": 3052,
+        "combat_win": 1362,
+        "combat_lose": 398,
+        "card_killed": 122,
+        "copy_2": 65,
+        "copy_3": 6
+      },
+      "total_delta": 0,
+      "avg_delta_per_trigger": 0.0,
+      "strategies_using": {
+        "warrior": 2896,
+        "tempo": 2888,
+        "rare_hunter": 2464,
+        "economist": 2170,
+        "evolver": 1629,
+        "balancer": 1579,
+        "random": 551,
+        "builder": 103
+      }
+    },
+    {
+      "card": "Pulsar",
+      "total_triggers": 14163,
+      "triggers_by_type": {
+        "pre_combat": 3191,
+        "income": 3040,
+        "market_refresh": 3040,
+        "card_buy": 3025,
+        "combat_win": 1253,
+        "combat_lose": 410,
+        "card_killed": 144,
+        "copy_2": 58,
+        "copy_3": 2
+      },
+      "total_delta": 0,
+      "avg_delta_per_trigger": 0.0,
+      "strategies_using": {
+        "tempo": 3079,
+        "rare_hunter": 2204,
+        "warrior": 2136,
+        "builder": 1933,
+        "balancer": 1820,
+        "evolver": 1236,
+        "economist": 1037,
+        "random": 718
+      }
+    },
+    {
+      "card": "Mongol Empire",
+      "total_triggers": 14151,
+      "triggers_by_type": {
+        "pre_combat": 3210,
+        "income": 3021,
+        "market_refresh": 3021,
+        "card_buy": 3003,
+        "combat_lose": 1209,
+        "combat_win": 413,
+        "card_killed": 199,
+        "copy_2": 60,
+        "copy_3": 15
+      },
+      "total_delta": 0,
+      "avg_delta_per_trigger": 0.0,
+      "strategies_using": {
+        "builder": 3130,
+        "tempo": 2387,
+        "rare_hunter": 2167,
+        "warrior": 1916,
+        "balancer": 1497,
+        "evolver": 1403,
+        "random": 1004,
+        "economist": 647
+      }
+    },
+    {
+      "card": "Andromeda Galaxy",
+      "total_triggers": 13981,
+      "triggers_by_type": {
+        "pre_combat": 3086,
+        "income": 3041,
+        "market_refresh": 3041,
+        "card_buy": 3032,
+        "combat_win": 1019,
+        "combat_lose": 590,
+        "card_killed": 91,
+        "copy_2": 75,
+        "copy_3": 6
+      },
+      "total_delta": 0,
+      "avg_delta_per_trigger": 0.0,
+      "strategies_using": {
+        "balancer": 3029,
+        "warrior": 2849,
+        "tempo": 2366,
+        "economist": 1930,
+        "evolver": 1892,
+        "rare_hunter": 1503,
+        "random": 316,
+        "builder": 96
+      }
+    },
+    {
+      "card": "French Revolution",
+      "total_triggers": 13556,
+      "triggers_by_type": {
+        "pre_combat": 3026,
+        "income": 2900,
+        "market_refresh": 2900,
+        "card_buy": 2877,
+        "combat_win": 1196,
+        "combat_lose": 460,
+        "card_killed": 134,
+        "copy_2": 63
+      },
+      "total_delta": 0,
+      "avg_delta_per_trigger": 0.0,
+      "strategies_using": {
+        "evolver": 2744,
+        "rare_hunter": 2603,
+        "warrior": 2334,
+        "tempo": 2167,
+        "balancer": 1765,
+        "random": 1017,
+        "economist": 621,
+        "builder": 305
+      }
+    },
+    {
+      "card": "π (Pi)",
+      "total_triggers": 13134,
+      "triggers_by_type": {
+        "pre_combat": 2980,
+        "income": 2812,
+        "market_refresh": 2812,
+        "card_buy": 2800,
+        "combat_lose": 955,
+        "combat_win": 514,
+        "card_killed": 190,
+        "copy_2": 69,
+        "copy_3": 2
+      },
+      "total_delta": 0,
+      "avg_delta_per_trigger": 0.0,
+      "strategies_using": {
+        "balancer": 2751,
+        "evolver": 2316,
+        "tempo": 2212,
+        "warrior": 1996,
+        "rare_hunter": 1829,
+        "random": 1174,
+        "economist": 848,
+        "builder": 8
+      }
+    },
+    {
+      "card": "Betelgeuse",
+      "total_triggers": 12656,
+      "triggers_by_type": {
+        "pre_combat": 2889,
+        "income": 2709,
+        "market_refresh": 2709,
+        "card_buy": 2685,
+        "combat_lose": 847,
+        "combat_win": 536,
+        "card_killed": 197,
+        "copy_2": 76,
+        "copy_3": 8
+      },
+      "total_delta": 0,
+      "avg_delta_per_trigger": 0.0,
+      "strategies_using": {
+        "builder": 3579,
+        "rare_hunter": 2022,
+        "balancer": 1607,
+        "tempo": 1513,
+        "warrior": 1484,
+        "evolver": 1315,
+        "random": 781,
+        "economist": 355
+      }
+    },
+    {
+      "card": "Valhalla",
+      "total_triggers": 12582,
+      "triggers_by_type": {
+        "pre_combat": 2833,
+        "income": 2665,
+        "market_refresh": 2665,
+        "card_buy": 2651,
+        "combat_win": 772,
+        "combat_lose": 737,
+        "card_killed": 177,
+        "copy_2": 71,
+        "copy_3": 11
+      },
+      "total_delta": 0,
+      "avg_delta_per_trigger": 0.0,
+      "strategies_using": {
+        "tempo": 2632,
+        "rare_hunter": 2345,
+        "warrior": 2088,
+        "balancer": 1855,
+        "evolver": 1766,
+        "random": 958,
+        "economist": 797,
+        "builder": 141
+      }
+    },
+    {
+      "card": "Higgs Boson",
+      "total_triggers": 12477,
+      "triggers_by_type": {
+        "pre_combat": 2799,
+        "income": 2718,
+        "market_refresh": 2718,
+        "card_buy": 2709,
+        "combat_win": 953,
+        "combat_lose": 455,
+        "card_killed": 60,
+        "copy_2": 57,
+        "copy_3": 8
+      },
+      "total_delta": 0,
+      "avg_delta_per_trigger": 0.0,
+      "strategies_using": {
+        "tempo": 2708,
+        "rare_hunter": 2144,
+        "warrior": 2084,
+        "balancer": 2037,
+        "economist": 1868,
+        "evolver": 1194,
+        "random": 412,
+        "builder": 30
+      }
+    },
+    {
+      "card": "Milky Way",
+      "total_triggers": 12444,
+      "triggers_by_type": {
+        "pre_combat": 2814,
+        "income": 2686,
+        "market_refresh": 2686,
+        "card_buy": 2673,
+        "combat_win": 972,
+        "combat_lose": 427,
+        "card_killed": 108,
+        "copy_2": 76,
+        "copy_3": 2
+      },
+      "total_delta": 0,
+      "avg_delta_per_trigger": 0.0,
+      "strategies_using": {
+        "warrior": 2445,
+        "economist": 2199,
+        "evolver": 2110,
+        "balancer": 2015,
+        "rare_hunter": 1893,
+        "tempo": 1091,
+        "random": 568,
+        "builder": 123
+      }
+    },
+    {
+      "card": "Roman Empire",
+      "total_triggers": 12336,
+      "triggers_by_type": {
+        "pre_combat": 2754,
+        "income": 2665,
+        "market_refresh": 2665,
+        "card_buy": 2655,
+        "combat_win": 796,
+        "combat_lose": 640,
+        "card_killed": 102,
+        "copy_2": 57,
+        "copy_3": 2
+      },
+      "total_delta": 0,
+      "avg_delta_per_trigger": 0.0,
+      "strategies_using": {
+        "builder": 2586,
+        "warrior": 1922,
+        "balancer": 1816,
+        "economist": 1583,
+        "rare_hunter": 1494,
+        "tempo": 1295,
+        "evolver": 1250,
+        "random": 390
+      }
+    },
+    {
+      "card": "Age of Discovery",
+      "total_triggers": 12241,
+      "triggers_by_type": {
+        "pre_combat": 2804,
+        "income": 2589,
+        "market_refresh": 2589,
+        "card_buy": 2582,
+        "combat_lose": 964,
+        "combat_win": 453,
+        "card_killed": 204,
+        "copy_2": 53,
+        "copy_3": 3
+      },
+      "total_delta": 0,
+      "avg_delta_per_trigger": 0.0,
+      "strategies_using": {
+        "warrior": 2128,
+        "evolver": 1801,
+        "rare_hunter": 1798,
+        "builder": 1588,
+        "tempo": 1520,
+        "balancer": 1294,
+        "random": 1208,
+        "economist": 904
+      }
+    },
+    {
+      "card": "Schrödinger's Cat",
+      "total_triggers": 11990,
+      "triggers_by_type": {
+        "pre_combat": 2726,
+        "income": 2539,
+        "market_refresh": 2539,
+        "card_buy": 2521,
+        "combat_lose": 961,
+        "combat_win": 470,
+        "card_killed": 172,
+        "copy_2": 62
+      },
+      "total_delta": 0,
+      "avg_delta_per_trigger": 0.0,
+      "strategies_using": {
+        "warrior": 2171,
+        "tempo": 2168,
+        "evolver": 2163,
+        "balancer": 2089,
+        "rare_hunter": 1483,
+        "random": 1304,
+        "economist": 612
+      }
+    },
+    {
+      "card": "Marie Curie",
+      "total_triggers": 11839,
+      "triggers_by_type": {
+        "pre_combat": 2660,
+        "income": 2565,
+        "market_refresh": 2565,
+        "card_buy": 2560,
+        "combat_win": 828,
+        "combat_lose": 496,
+        "card_killed": 94,
+        "copy_2": 65,
+        "copy_3": 6
+      },
+      "total_delta": 0,
+      "avg_delta_per_trigger": 0.0,
+      "strategies_using": {
+        "tempo": 2306,
+        "warrior": 2297,
+        "balancer": 1923,
+        "evolver": 1849,
+        "economist": 1692,
+        "rare_hunter": 1197,
+        "random": 575
+      }
+    },
+    {
+      "card": "Event Horizon",
+      "total_triggers": 11735,
+      "triggers_by_type": {
+        "pre_combat": 2629,
+        "income": 2487,
+        "market_refresh": 2487,
+        "card_buy": 2484,
+        "combat_win": 1047,
+        "combat_lose": 396,
+        "card_killed": 134,
+        "copy_2": 68,
+        "copy_3": 3
+      },
+      "total_delta": 71,
+      "avg_delta_per_trigger": 0.006,
+      "strategies_using": {
+        "tempo": 2232,
+        "warrior": 1992,
+        "evolver": 1915,
+        "balancer": 1692,
+        "rare_hunter": 1679,
+        "economist": 1565,
+        "random": 473,
+        "builder": 187
+      }
+    },
+    {
+      "card": "DNA",
+      "total_triggers": 11439,
+      "triggers_by_type": {
+        "pre_combat": 2593,
+        "income": 2423,
+        "market_refresh": 2423,
+        "card_buy": 2406,
+        "combat_win": 821,
+        "combat_lose": 541,
+        "card_killed": 169,
+        "copy_2": 63
+      },
+      "total_delta": 63,
+      "avg_delta_per_trigger": 0.006,
+      "strategies_using": {
+        "tempo": 2431,
+        "rare_hunter": 2236,
+        "evolver": 2102,
+        "warrior": 1452,
+        "balancer": 1074,
+        "random": 958,
+        "builder": 657,
+        "economist": 529
+      }
+    },
+    {
+      "card": "Nikola Tesla",
+      "total_triggers": 11303,
+      "triggers_by_type": {
+        "pre_combat": 2538,
+        "income": 2446,
+        "market_refresh": 2446,
+        "card_buy": 2434,
+        "combat_win": 1072,
+        "combat_lose": 266,
+        "copy_2": 54,
+        "card_killed": 47
+      },
+      "total_delta": 0,
+      "avg_delta_per_trigger": 0.0,
+      "strategies_using": {
+        "tempo": 2272,
+        "balancer": 1983,
+        "rare_hunter": 1835,
+        "economist": 1737,
+        "warrior": 1671,
+        "evolver": 1315,
+        "random": 431,
+        "builder": 59
+      }
+    },
+    {
+      "card": "Sparta",
+      "total_triggers": 11299,
+      "triggers_by_type": {
+        "pre_combat": 2621,
+        "income": 2406,
+        "market_refresh": 2406,
+        "card_buy": 2394,
+        "combat_lose": 910,
+        "combat_win": 290,
+        "card_killed": 216,
+        "copy_2": 51,
+        "copy_3": 5
+      },
+      "total_delta": 0,
+      "avg_delta_per_trigger": 0.0,
+      "strategies_using": {
+        "builder": 2987,
+        "rare_hunter": 1843,
+        "balancer": 1519,
+        "evolver": 1355,
+        "warrior": 1247,
+        "tempo": 1171,
+        "random": 737,
+        "economist": 440
+      }
+    },
+    {
+      "card": "Nebula",
+      "total_triggers": 11274,
+      "triggers_by_type": {
+        "pre_combat": 2557,
+        "income": 2360,
+        "market_refresh": 2360,
+        "card_buy": 2339,
+        "combat_win": 808,
+        "combat_lose": 576,
+        "card_killed": 198,
+        "copy_2": 73,
+        "copy_3": 3
+      },
+      "total_delta": 0,
+      "avg_delta_per_trigger": 0.0,
+      "strategies_using": {
+        "balancer": 2341,
+        "rare_hunter": 2214,
+        "warrior": 1974,
+        "tempo": 1781,
+        "evolver": 1393,
+        "random": 693,
+        "economist": 573,
+        "builder": 305
+      }
+    },
+    {
+      "card": "Turing Machine",
+      "total_triggers": 11271,
+      "triggers_by_type": {
+        "pre_combat": 2544,
+        "income": 2442,
+        "market_refresh": 2442,
+        "card_buy": 2428,
+        "combat_win": 819,
+        "combat_lose": 438,
+        "card_killed": 80,
+        "copy_2": 71,
+        "copy_3": 7
+      },
+      "total_delta": 0,
+      "avg_delta_per_trigger": 0.0,
+      "strategies_using": {
+        "rare_hunter": 2266,
+        "economist": 1989,
+        "tempo": 1742,
+        "warrior": 1627,
+        "balancer": 1524,
+        "evolver": 1518,
+        "random": 605
+      }
+    },
+    {
+      "card": "World War II",
+      "total_triggers": 10988,
+      "triggers_by_type": {
+        "pre_combat": 2490,
+        "income": 2365,
+        "market_refresh": 2365,
+        "card_buy": 2353,
+        "combat_lose": 793,
+        "combat_win": 450,
+        "card_killed": 123,
+        "copy_2": 48,
+        "copy_3": 1
+      },
+      "total_delta": 0,
+      "avg_delta_per_trigger": 0.0,
+      "strategies_using": {
+        "warrior": 1675,
+        "rare_hunter": 1641,
+        "tempo": 1610,
+        "economist": 1555,
+        "builder": 1545,
+        "balancer": 1471,
+        "evolver": 1012,
+        "random": 479
+      }
+    },
+    {
+      "card": "Quasar",
+      "total_triggers": 10955,
+      "triggers_by_type": {
+        "pre_combat": 2474,
+        "income": 2353,
+        "market_refresh": 2353,
+        "card_buy": 2341,
+        "combat_win": 943,
+        "combat_lose": 275,
+        "card_killed": 146,
+        "copy_2": 70
+      },
+      "total_delta": 0,
+      "avg_delta_per_trigger": 0.0,
+      "strategies_using": {
+        "warrior": 1919,
+        "balancer": 1890,
+        "tempo": 1762,
+        "economist": 1566,
+        "rare_hunter": 1474,
+        "evolver": 1460,
+        "random": 731,
+        "builder": 153
+      }
+    },
+    {
+      "card": "Odin",
+      "total_triggers": 10886,
+      "triggers_by_type": {
+        "pre_combat": 2389,
+        "income": 2323,
+        "market_refresh": 2323,
+        "card_buy": 2312,
+        "combat_win": 1114,
+        "combat_lose": 311,
+        "card_killed": 60,
+        "copy_2": 54
+      },
+      "total_delta": 0,
+      "avg_delta_per_trigger": 0.0,
+      "strategies_using": {
+        "warrior": 2193,
+        "tempo": 2013,
+        "economist": 1818,
+        "balancer": 1747,
+        "evolver": 1330,
+        "rare_hunter": 1120,
+        "random": 665
+      }
+    },
+    {
+      "card": "Quantum Mechanics",
+      "total_triggers": 10853,
+      "triggers_by_type": {
+        "pre_combat": 2456,
+        "income": 2364,
+        "market_refresh": 2364,
+        "card_buy": 2346,
+        "combat_win": 667,
+        "combat_lose": 527,
+        "card_killed": 70,
+        "copy_2": 59
+      },
+      "total_delta": 0,
+      "avg_delta_per_trigger": 0.0,
+      "strategies_using": {
+        "balancer": 2239,
+        "rare_hunter": 1976,
+        "warrior": 1886,
+        "tempo": 1444,
+        "evolver": 1404,
+        "economist": 1272,
+        "random": 625,
+        "builder": 7
+      }
+    },
+    {
+      "card": "Minimalism",
+      "total_triggers": 10411,
+      "triggers_by_type": {
+        "pre_combat": 2540,
+        "income": 2220,
+        "market_refresh": 2220,
+        "card_buy": 2182,
+        "combat_lose": 687,
+        "card_killed": 340,
+        "copy_2": 127,
+        "combat_win": 79,
+        "copy_3": 16
+      },
+      "total_delta": 0,
+      "avg_delta_per_trigger": 0.0,
+      "strategies_using": {
+        "builder": 4775,
+        "random": 2253,
+        "economist": 1558,
+        "evolver": 1365,
+        "rare_hunter": 415,
+        "tempo": 45
+      }
+    },
+    {
+      "card": "Graffiti",
+      "total_triggers": 10115,
+      "triggers_by_type": {
+        "pre_combat": 2383,
+        "income": 2193,
+        "market_refresh": 2193,
+        "card_buy": 2184,
+        "combat_lose": 814,
+        "card_killed": 208,
+        "copy_2": 97,
+        "combat_win": 22,
+        "copy_3": 21
+      },
+      "total_delta": 0,
+      "avg_delta_per_trigger": 0.0,
+      "strategies_using": {
+        "builder": 5933,
+        "economist": 2558,
+        "evolver": 816,
+        "rare_hunter": 541,
+        "random": 267
+      }
+    },
+    {
+      "card": "Renaissance",
+      "total_triggers": 10108,
+      "triggers_by_type": {
+        "pre_combat": 2291,
+        "income": 2200,
+        "market_refresh": 2200,
+        "card_buy": 2188,
+        "combat_win": 555,
+        "combat_lose": 534,
+        "card_killed": 77,
+        "copy_2": 61,
+        "copy_3": 2
+      },
+      "total_delta": 0,
+      "avg_delta_per_trigger": 0.0,
+      "strategies_using": {
+        "balancer": 1954,
+        "tempo": 1906,
+        "warrior": 1571,
+        "rare_hunter": 1444,
+        "evolver": 1335,
+        "economist": 1184,
+        "random": 691,
+        "builder": 23
+      }
+    },
+    {
+      "card": "Pop Art",
+      "total_triggers": 9838,
+      "triggers_by_type": {
+        "pre_combat": 2318,
+        "income": 2109,
+        "market_refresh": 2109,
+        "card_buy": 2092,
+        "combat_lose": 834,
+        "card_killed": 213,
+        "copy_2": 102,
+        "combat_win": 40,
+        "copy_3": 21
+      },
+      "total_delta": 0,
+      "avg_delta_per_trigger": 0.0,
+      "strategies_using": {
+        "builder": 5000,
+        "economist": 2511,
+        "evolver": 1331,
+        "rare_hunter": 631,
+        "random": 340,
+        "tempo": 25
+      }
+    },
+    {
+      "card": "Black Death",
+      "total_triggers": 9728,
+      "triggers_by_type": {
+        "pre_combat": 2167,
+        "income": 2071,
+        "market_refresh": 2071,
+        "card_buy": 2060,
+        "combat_win": 919,
+        "combat_lose": 299,
+        "copy_2": 73,
+        "card_killed": 65,
+        "copy_3": 3
+      },
+      "total_delta": 0,
+      "avg_delta_per_trigger": 0.0,
+      "strategies_using": {
+        "rare_hunter": 1893,
+        "warrior": 1612,
+        "evolver": 1592,
+        "balancer": 1440,
+        "tempo": 1191,
+        "economist": 1104,
+        "builder": 533,
+        "random": 363
+      }
+    },
+    {
+      "card": "Gravity",
+      "total_triggers": 9679,
+      "triggers_by_type": {
+        "pre_combat": 2190,
+        "income": 2075,
+        "market_refresh": 2075,
+        "card_buy": 2065,
+        "combat_lose": 573,
+        "combat_win": 521,
+        "card_killed": 131,
+        "copy_2": 45,
+        "copy_3": 4
+      },
+      "total_delta": 0,
+      "avg_delta_per_trigger": 0.0,
+      "strategies_using": {
+        "warrior": 1650,
+        "rare_hunter": 1546,
+        "tempo": 1367,
+        "builder": 1359,
+        "balancer": 1303,
+        "random": 1150,
+        "evolver": 907,
+        "economist": 397
+      }
+    },
+    {
+      "card": "Surrealism",
+      "total_triggers": 9609,
+      "triggers_by_type": {
+        "pre_combat": 2250,
+        "income": 2030,
+        "market_refresh": 2030,
+        "card_buy": 2017,
+        "combat_lose": 625,
+        "combat_win": 393,
+        "card_killed": 202,
+        "copy_2": 59,
+        "copy_3": 3
+      },
+      "total_delta": 0,
+      "avg_delta_per_trigger": 0.0,
+      "strategies_using": {
+        "warrior": 1925,
+        "rare_hunter": 1887,
+        "tempo": 1666,
+        "balancer": 1193,
+        "evolver": 1097,
+        "random": 849,
+        "economist": 700,
+        "builder": 292
+      }
+    },
+    {
+      "card": "Blue Whale",
+      "total_triggers": 9349,
+      "triggers_by_type": {
+        "pre_combat": 2131,
+        "income": 2000,
+        "market_refresh": 2000,
+        "card_buy": 1992,
+        "combat_lose": 635,
+        "combat_win": 416,
+        "card_killed": 111,
+        "copy_2": 60,
+        "copy_3": 4
+      },
+      "total_delta": 0,
+      "avg_delta_per_trigger": 0.0,
+      "strategies_using": {
+        "builder": 1405,
+        "tempo": 1357,
+        "rare_hunter": 1347,
+        "economist": 1287,
+        "balancer": 1044,
+        "warrior": 1037,
+        "evolver": 1013,
+        "random": 859
+      }
+    },
+    {
+      "card": "Albert Einstein",
+      "total_triggers": 9305,
+      "triggers_by_type": {
+        "pre_combat": 2089,
+        "income": 2025,
+        "market_refresh": 2025,
+        "card_buy": 2014,
+        "combat_win": 898,
+        "combat_lose": 157,
+        "copy_2": 76,
+        "card_killed": 15,
+        "copy_3": 6
+      },
+      "total_delta": 0,
+      "avg_delta_per_trigger": 0.0,
+      "strategies_using": {
+        "warrior": 1824,
+        "tempo": 1713,
+        "economist": 1447,
+        "balancer": 1443,
+        "rare_hunter": 1307,
+        "evolver": 1051,
+        "random": 474,
+        "builder": 46
+      }
+    },
+    {
+      "card": "Quetzalcoatl",
+      "total_triggers": 9278,
+      "triggers_by_type": {
+        "pre_combat": 2077,
+        "income": 1991,
+        "market_refresh": 1991,
+        "card_buy": 1986,
+        "combat_win": 565,
+        "combat_lose": 517,
+        "card_killed": 89,
+        "copy_2": 59,
+        "copy_3": 3
+      },
+      "total_delta": 0,
+      "avg_delta_per_trigger": 0.0,
+      "strategies_using": {
+        "tempo": 1782,
+        "economist": 1517,
+        "balancer": 1419,
+        "warrior": 1350,
+        "rare_hunter": 1334,
+        "evolver": 1291,
+        "random": 560,
+        "builder": 25
+      }
+    },
+    {
+      "card": "Shadow Puppetry",
+      "total_triggers": 9192,
+      "triggers_by_type": {
+        "pre_combat": 2167,
+        "income": 1973,
+        "market_refresh": 1973,
+        "card_buy": 1957,
+        "combat_lose": 789,
+        "card_killed": 198,
+        "copy_2": 78,
+        "combat_win": 45,
+        "copy_3": 12
+      },
+      "total_delta": 0,
+      "avg_delta_per_trigger": 0.0,
+      "strategies_using": {
+        "builder": 5237,
+        "economist": 2153,
+        "evolver": 731,
+        "rare_hunter": 666,
+        "random": 405
+      }
+    },
+    {
+      "card": "E = mc²",
+      "total_triggers": 8922,
+      "triggers_by_type": {
+        "pre_combat": 1996,
+        "income": 1919,
+        "market_refresh": 1919,
+        "card_buy": 1909,
+        "combat_win": 878,
+        "combat_lose": 177,
+        "copy_2": 83,
+        "card_killed": 35,
+        "copy_3": 6
+      },
+      "total_delta": 0,
+      "avg_delta_per_trigger": 0.0,
+      "strategies_using": {
+        "rare_hunter": 1642,
+        "warrior": 1522,
+        "evolver": 1487,
+        "economist": 1424,
+        "balancer": 1323,
+        "tempo": 1089,
+        "random": 398,
+        "builder": 37
+      }
+    },
+    {
+      "card": "Yggdrasil",
+      "total_triggers": 8888,
+      "triggers_by_type": {
+        "pre_combat": 1995,
+        "income": 1915,
+        "market_refresh": 1915,
+        "card_buy": 1906,
+        "combat_win": 831,
+        "combat_lose": 220,
+        "copy_2": 71,
+        "card_killed": 30,
+        "copy_3": 5
+      },
+      "total_delta": 0,
+      "avg_delta_per_trigger": 0.0,
+      "strategies_using": {
+        "rare_hunter": 1588,
+        "evolver": 1570,
+        "warrior": 1560,
+        "balancer": 1488,
+        "economist": 1122,
+        "tempo": 1056,
+        "random": 333,
+        "builder": 171
+      }
+    },
+    {
+      "card": "Supernova",
+      "total_triggers": 8838,
+      "triggers_by_type": {
+        "pre_combat": 2000,
+        "income": 1858,
+        "market_refresh": 1858,
+        "card_buy": 1849,
+        "combat_win": 572,
+        "combat_lose": 513,
+        "card_killed": 152,
+        "copy_2": 35,
+        "copy_3": 1
+      },
+      "total_delta": 0,
+      "avg_delta_per_trigger": 0.0,
+      "strategies_using": {
+        "balancer": 1443,
+        "economist": 1441,
+        "tempo": 1265,
+        "warrior": 1241,
+        "rare_hunter": 1238,
+        "builder": 956,
+        "evolver": 772,
+        "random": 482
+      }
+    },
+    {
+      "card": "Entropy",
+      "total_triggers": 8820,
+      "triggers_by_type": {
+        "pre_combat": 1999,
+        "income": 1874,
+        "market_refresh": 1874,
+        "card_buy": 1865,
+        "combat_lose": 556,
+        "combat_win": 478,
+        "card_killed": 130,
+        "copy_2": 41,
+        "copy_3": 3
+      },
+      "total_delta": 0,
+      "avg_delta_per_trigger": 0.0,
+      "strategies_using": {
+        "warrior": 1766,
+        "tempo": 1634,
+        "random": 1491,
+        "rare_hunter": 1238,
+        "evolver": 966,
+        "builder": 635,
+        "balancer": 565,
+        "economist": 525
+      }
+    },
+    {
+      "card": "Asteroid Belt",
+      "total_triggers": 8726,
+      "triggers_by_type": {
+        "pre_combat": 2045,
+        "income": 1936,
+        "market_refresh": 1936,
+        "card_buy": 1936,
+        "combat_lose": 549,
+        "card_killed": 123,
+        "combat_win": 98,
+        "copy_2": 73,
+        "copy_3": 30
+      },
+      "total_delta": 0,
+      "avg_delta_per_trigger": 0.0,
+      "strategies_using": {
+        "builder": 6445,
+        "random": 1499,
+        "economist": 426,
+        "tempo": 142,
+        "balancer": 132,
+        "evolver": 47,
+        "warrior": 35
+      }
+    },
+    {
+      "card": "Industrial Revolution",
+      "total_triggers": 8599,
+      "triggers_by_type": {
+        "pre_combat": 2000,
+        "income": 1867,
+        "market_refresh": 1867,
+        "card_buy": 1865,
+        "combat_lose": 612,
+        "combat_win": 186,
+        "card_killed": 141,
+        "copy_2": 51,
+        "copy_3": 10
+      },
+      "total_delta": 0,
+      "avg_delta_per_trigger": 0.0,
+      "strategies_using": {
+        "builder": 3878,
+        "random": 1221,
+        "warrior": 879,
+        "evolver": 732,
+        "balancer": 723,
+        "tempo": 643,
+        "rare_hunter": 454,
+        "economist": 69
+      }
+    },
+    {
+      "card": "Gothic Architecture",
+      "total_triggers": 8546,
+      "triggers_by_type": {
+        "pre_combat": 1928,
+        "income": 1820,
+        "market_refresh": 1820,
+        "card_buy": 1815,
+        "combat_lose": 717,
+        "combat_win": 274,
+        "card_killed": 133,
+        "copy_2": 39
+      },
+      "total_delta": 0,
+      "avg_delta_per_trigger": 0.0,
+      "strategies_using": {
+        "builder": 1451,
+        "tempo": 1190,
+        "rare_hunter": 1181,
+        "random": 1175,
+        "balancer": 1009,
+        "evolver": 1005,
+        "warrior": 1002,
+        "economist": 533
+      }
+    },
+    {
+      "card": "Bioluminescence",
+      "total_triggers": 8502,
+      "triggers_by_type": {
+        "pre_combat": 1942,
+        "income": 1819,
+        "market_refresh": 1819,
+        "card_buy": 1807,
+        "combat_win": 484,
+        "combat_lose": 461,
+        "card_killed": 130,
+        "copy_2": 40
+      },
+      "total_delta": 0,
+      "avg_delta_per_trigger": 0.0,
+      "strategies_using": {
+        "warrior": 1669,
+        "tempo": 1558,
+        "rare_hunter": 1300,
+        "random": 1212,
+        "balancer": 1178,
+        "evolver": 1112,
+        "economist": 460,
+        "builder": 13
+      }
+    },
+    {
+      "card": "Komodo Dragon",
+      "total_triggers": 8427,
+      "triggers_by_type": {
+        "pre_combat": 1956,
+        "income": 1809,
+        "market_refresh": 1809,
+        "card_buy": 1806,
+        "combat_lose": 709,
+        "combat_win": 169,
+        "card_killed": 125,
+        "copy_2": 38,
+        "copy_3": 6
+      },
+      "total_delta": 0,
+      "avg_delta_per_trigger": 0.0,
+      "strategies_using": {
+        "builder": 3472,
+        "random": 1410,
+        "rare_hunter": 798,
+        "balancer": 669,
+        "warrior": 661,
+        "tempo": 654,
+        "evolver": 507,
+        "economist": 256
+      }
+    },
+    {
+      "card": "Babylon",
+      "total_triggers": 8220,
+      "triggers_by_type": {
+        "pre_combat": 1915,
+        "income": 1785,
+        "market_refresh": 1785,
+        "card_buy": 1784,
+        "combat_lose": 660,
+        "combat_win": 137,
+        "card_killed": 117,
+        "copy_2": 32,
+        "copy_3": 5
+      },
+      "total_delta": 0,
+      "avg_delta_per_trigger": 0.0,
+      "strategies_using": {
+        "builder": 3389,
+        "random": 1198,
+        "economist": 1046,
+        "warrior": 975,
+        "tempo": 749,
+        "balancer": 504,
+        "evolver": 359
+      }
+    },
+    {
+      "card": "Black Hole",
+      "total_triggers": 8177,
+      "triggers_by_type": {
+        "pre_combat": 1847,
+        "income": 1735,
+        "market_refresh": 1735,
+        "card_buy": 1728,
+        "combat_win": 904,
+        "combat_lose": 124,
+        "copy_2": 56,
+        "card_killed": 39,
+        "copy_3": 9
+      },
+      "total_delta": 0,
+      "avg_delta_per_trigger": 0.0,
+      "strategies_using": {
+        "rare_hunter": 1557,
+        "tempo": 1464,
+        "balancer": 1379,
+        "evolver": 1216,
+        "warrior": 1172,
+        "economist": 895,
+        "random": 256,
+        "builder": 238
+      }
+    },
+    {
+      "card": "Minotaur",
+      "total_triggers": 8104,
+      "triggers_by_type": {
+        "pre_combat": 1875,
+        "income": 1800,
+        "market_refresh": 1800,
+        "card_buy": 1800,
+        "combat_lose": 618,
+        "card_killed": 66,
+        "copy_2": 64,
+        "combat_win": 55,
+        "copy_3": 26
+      },
+      "total_delta": 429,
+      "avg_delta_per_trigger": 0.053,
+      "strategies_using": {
+        "builder": 6084,
+        "random": 1822,
+        "economist": 165,
+        "balancer": 33
+      }
+    },
+    {
+      "card": "Charles Darwin",
+      "total_triggers": 7974,
+      "triggers_by_type": {
+        "pre_combat": 1835,
+        "income": 1699,
+        "market_refresh": 1699,
+        "card_buy": 1685,
+        "combat_lose": 583,
+        "combat_win": 291,
+        "card_killed": 134,
+        "copy_2": 45,
+        "copy_3": 3
+      },
+      "total_delta": 48,
+      "avg_delta_per_trigger": 0.006,
+      "strategies_using": {
+        "balancer": 2150,
+        "warrior": 1607,
+        "rare_hunter": 1143,
+        "random": 1125,
+        "evolver": 746,
+        "tempo": 660,
+        "economist": 543
+      }
+    },
+    {
+      "card": "Rainforest",
+      "total_triggers": 7625,
+      "triggers_by_type": {
+        "pre_combat": 1741,
+        "income": 1633,
+        "market_refresh": 1633,
+        "card_buy": 1621,
+        "combat_lose": 544,
+        "combat_win": 279,
+        "card_killed": 130,
+        "copy_2": 44
+      },
+      "total_delta": 0,
+      "avg_delta_per_trigger": 0.0,
+      "strategies_using": {
+        "balancer": 2399,
+        "random": 1271,
+        "tempo": 907,
+        "rare_hunter": 881,
+        "warrior": 653,
+        "evolver": 580,
+        "builder": 541,
+        "economist": 393
+      }
+    },
+    {
+      "card": "Coral Reef",
+      "total_triggers": 7413,
+      "triggers_by_type": {
+        "pre_combat": 1694,
+        "income": 1561,
+        "market_refresh": 1561,
+        "card_buy": 1553,
+        "combat_lose": 553,
+        "combat_win": 302,
+        "card_killed": 138,
+        "copy_2": 47,
+        "copy_3": 4
+      },
+      "total_delta": 0,
+      "avg_delta_per_trigger": 0.0,
+      "strategies_using": {
+        "balancer": 2368,
+        "rare_hunter": 1236,
+        "tempo": 890,
+        "random": 826,
+        "evolver": 693,
+        "builder": 633,
+        "warrior": 483,
+        "economist": 284
+      }
+    },
+    {
+      "card": "Coelacanth",
+      "total_triggers": 7318,
+      "triggers_by_type": {
+        "pre_combat": 1625,
+        "income": 1546,
+        "market_refresh": 1546,
+        "card_buy": 1544,
+        "combat_win": 541,
+        "combat_lose": 405,
+        "card_killed": 61,
+        "copy_2": 48,
+        "copy_3": 2
+      },
+      "total_delta": 100,
+      "avg_delta_per_trigger": 0.014,
+      "strategies_using": {
+        "builder": 1404,
+        "balancer": 1203,
+        "warrior": 1090,
+        "evolver": 1013,
+        "rare_hunter": 875,
+        "tempo": 863,
+        "economist": 751,
+        "random": 119
+      }
+    },
+    {
+      "card": "Printing Press",
+      "total_triggers": 6827,
+      "triggers_by_type": {
+        "pre_combat": 1577,
+        "income": 1453,
+        "market_refresh": 1453,
+        "card_buy": 1450,
+        "combat_lose": 577,
+        "combat_win": 143,
+        "card_killed": 135,
+        "copy_2": 36,
+        "copy_3": 3
+      },
+      "total_delta": 0,
+      "avg_delta_per_trigger": 0.0,
+      "strategies_using": {
+        "balancer": 1633,
+        "random": 1567,
+        "economist": 1413,
+        "tempo": 735,
+        "warrior": 615,
+        "builder": 469,
+        "evolver": 395
+      }
+    },
+    {
+      "card": "Baobab",
+      "total_triggers": 6741,
+      "triggers_by_type": {
+        "pre_combat": 1523,
+        "income": 1425,
+        "market_refresh": 1425,
+        "card_buy": 1414,
+        "combat_lose": 618,
+        "combat_win": 199,
+        "card_killed": 104,
+        "copy_2": 29,
+        "copy_3": 4
+      },
+      "total_delta": 0,
+      "avg_delta_per_trigger": 0.0,
+      "strategies_using": {
+        "builder": 1404,
+        "random": 1192,
+        "evolver": 943,
+        "tempo": 848,
+        "rare_hunter": 771,
+        "balancer": 676,
+        "warrior": 602,
+        "economist": 305
+      }
+    },
+    {
+      "card": "Phoenix",
+      "total_triggers": 6665,
+      "triggers_by_type": {
+        "pre_combat": 1486,
+        "income": 1408,
+        "market_refresh": 1408,
+        "card_buy": 1402,
+        "combat_lose": 439,
+        "combat_win": 382,
+        "card_killed": 93,
+        "copy_2": 47
+      },
+      "total_delta": -264,
+      "avg_delta_per_trigger": -0.04,
+      "strategies_using": {
+        "balancer": 1164,
+        "tempo": 1015,
+        "rare_hunter": 967,
+        "evolver": 959,
+        "warrior": 936,
+        "economist": 873,
+        "random": 751
+      }
+    },
+    {
+      "card": "Mantis Karidesi",
+      "total_triggers": 6393,
+      "triggers_by_type": {
+        "pre_combat": 1453,
+        "income": 1317,
+        "market_refresh": 1317,
+        "card_buy": 1311,
+        "combat_lose": 492,
+        "combat_win": 324,
+        "card_killed": 146,
+        "copy_2": 33
+      },
+      "total_delta": 0,
+      "avg_delta_per_trigger": 0.0,
+      "strategies_using": {
+        "warrior": 1111,
+        "tempo": 1099,
+        "balancer": 904,
+        "economist": 854,
+        "rare_hunter": 749,
+        "evolver": 643,
+        "builder": 602,
+        "random": 431
+      }
+    },
+    {
+      "card": "Periodic Table",
+      "total_triggers": 6368,
+      "triggers_by_type": {
+        "pre_combat": 1507,
+        "income": 1326,
+        "market_refresh": 1326,
+        "card_buy": 1311,
+        "combat_lose": 396,
+        "combat_win": 292,
+        "card_killed": 174,
+        "copy_2": 35,
+        "copy_3": 1
+      },
+      "total_delta": 0,
+      "avg_delta_per_trigger": 0.0,
+      "strategies_using": {
+        "random": 1274,
+        "rare_hunter": 1147,
+        "builder": 906,
+        "warrior": 819,
+        "tempo": 767,
+        "evolver": 759,
+        "balancer": 550,
+        "economist": 146
+      }
+    },
+    {
+      "card": "Cerberus",
+      "total_triggers": 6343,
+      "triggers_by_type": {
+        "pre_combat": 1489,
+        "income": 1364,
+        "market_refresh": 1364,
+        "card_buy": 1362,
+        "combat_lose": 516,
+        "card_killed": 116,
+        "combat_win": 77,
+        "copy_2": 48,
+        "copy_3": 7
+      },
+      "total_delta": 0,
+      "avg_delta_per_trigger": 0.0,
+      "strategies_using": {
+        "builder": 3351,
+        "random": 1222,
+        "balancer": 488,
+        "rare_hunter": 480,
+        "evolver": 344,
+        "warrior": 262,
+        "tempo": 154,
+        "economist": 42
+      }
+    },
+    {
+      "card": "Migration",
+      "total_triggers": 6332,
+      "triggers_by_type": {
+        "pre_combat": 1493,
+        "income": 1378,
+        "market_refresh": 1378,
+        "card_buy": 1378,
+        "combat_lose": 495,
+        "card_killed": 91,
+        "combat_win": 69,
+        "copy_2": 43,
+        "copy_3": 7
+      },
+      "total_delta": 0,
+      "avg_delta_per_trigger": 0.0,
+      "strategies_using": {
+        "builder": 2906,
+        "random": 2297,
+        "economist": 560,
+        "balancer": 191,
+        "warrior": 143,
+        "tempo": 140,
+        "evolver": 95
+      }
+    },
+    {
+      "card": "Silk Road",
+      "total_triggers": 6230,
+      "triggers_by_type": {
+        "pre_combat": 1468,
+        "income": 1304,
+        "market_refresh": 1304,
+        "card_buy": 1296,
+        "combat_win": 329,
+        "combat_lose": 327,
+        "card_killed": 161,
+        "copy_2": 39,
+        "copy_3": 2
+      },
+      "total_delta": 0,
+      "avg_delta_per_trigger": 0.0,
+      "strategies_using": {
+        "rare_hunter": 1292,
+        "tempo": 1142,
+        "random": 1049,
+        "warrior": 999,
+        "evolver": 658,
+        "balancer": 606,
+        "economist": 468,
+        "builder": 16
+      }
+    },
+    {
+      "card": "Cold War",
+      "total_triggers": 6182,
+      "triggers_by_type": {
+        "pre_combat": 1439,
+        "income": 1277,
+        "market_refresh": 1277,
+        "card_buy": 1265,
+        "combat_lose": 377,
+        "combat_win": 316,
+        "card_killed": 190,
+        "copy_2": 41
+      },
+      "total_delta": 0,
+      "avg_delta_per_trigger": 0.0,
+      "strategies_using": {
+        "builder": 1089,
+        "warrior": 1010,
+        "rare_hunter": 977,
+        "balancer": 769,
+        "tempo": 766,
+        "evolver": 707,
+        "random": 537,
+        "economist": 327
+      }
+    },
+    {
+      "card": "Code of Hammurabi",
+      "total_triggers": 5958,
+      "triggers_by_type": {
+        "pre_combat": 1420,
+        "income": 1251,
+        "market_refresh": 1251,
+        "card_buy": 1248,
+        "combat_lose": 399,
+        "combat_win": 188,
+        "card_killed": 168,
+        "copy_2": 33
+      },
+      "total_delta": 698,
+      "avg_delta_per_trigger": 0.117,
+      "strategies_using": {
+        "random": 1452,
+        "balancer": 1288,
+        "economist": 1156,
+        "tempo": 796,
+        "warrior": 605,
+        "evolver": 528,
+        "builder": 133
+      }
+    },
+    {
+      "card": "Kraken",
+      "total_triggers": 5827,
+      "triggers_by_type": {
+        "pre_combat": 1329,
+        "income": 1210,
+        "market_refresh": 1210,
+        "card_buy": 1207,
+        "combat_lose": 416,
+        "combat_win": 281,
+        "card_killed": 125,
+        "copy_2": 46,
+        "copy_3": 3
+      },
+      "total_delta": 0,
+      "avg_delta_per_trigger": 0.0,
+      "strategies_using": {
+        "evolver": 912,
+        "economist": 895,
+        "tempo": 862,
+        "rare_hunter": 811,
+        "warrior": 787,
+        "balancer": 678,
+        "random": 544,
+        "builder": 338
+      }
+    },
+    {
+      "card": "Venus Flytrap",
+      "total_triggers": 5498,
+      "triggers_by_type": {
+        "pre_combat": 1279,
+        "income": 1182,
+        "market_refresh": 1182,
+        "card_buy": 1182,
+        "combat_lose": 484,
+        "card_killed": 87,
+        "combat_win": 68,
+        "copy_2": 29,
+        "copy_3": 5
+      },
+      "total_delta": 0,
+      "avg_delta_per_trigger": 0.0,
+      "strategies_using": {
+        "builder": 2415,
+        "random": 1793,
+        "economist": 883,
+        "tempo": 175,
+        "warrior": 173,
+        "balancer": 59
+      }
+    },
+    {
+      "card": "Sirius",
+      "total_triggers": 5338,
+      "triggers_by_type": {
+        "pre_combat": 1276,
+        "income": 1164,
+        "market_refresh": 1164,
+        "card_buy": 1164,
+        "combat_lose": 340,
+        "card_killed": 91,
+        "combat_win": 78,
+        "copy_2": 51,
+        "copy_3": 10
+      },
+      "total_delta": 70,
+      "avg_delta_per_trigger": 0.013,
+      "strategies_using": {
+        "builder": 2246,
+        "random": 2196,
+        "economist": 496,
+        "evolver": 207,
+        "warrior": 145,
+        "tempo": 48
+      }
+    },
+    {
+      "card": "Cordyceps",
+      "total_triggers": 5245,
+      "triggers_by_type": {
+        "pre_combat": 1199,
+        "income": 1072,
+        "market_refresh": 1072,
+        "card_buy": 1069,
+        "combat_win": 396,
+        "combat_lose": 273,
+        "card_killed": 132,
+        "copy_2": 32
+      },
+      "total_delta": 0,
+      "avg_delta_per_trigger": 0.0,
+      "strategies_using": {
+        "warrior": 999,
+        "tempo": 884,
+        "rare_hunter": 882,
+        "economist": 730,
+        "balancer": 694,
+        "evolver": 593,
+        "random": 463
+      }
+    },
+    {
+      "card": "Camouflage",
+      "total_triggers": 5090,
+      "triggers_by_type": {
+        "pre_combat": 1220,
+        "income": 1092,
+        "market_refresh": 1092,
+        "card_buy": 1092,
+        "combat_lose": 345,
+        "card_killed": 119,
+        "combat_win": 101,
+        "copy_2": 29
+      },
+      "total_delta": 0,
+      "avg_delta_per_trigger": 0.0,
+      "strategies_using": {
+        "builder": 1329,
+        "random": 1090,
+        "economist": 761,
+        "evolver": 560,
+        "tempo": 518,
+        "warrior": 465,
+        "balancer": 367
+      }
+    },
+    {
+      "card": "Athena",
+      "total_triggers": 5071,
+      "triggers_by_type": {
+        "pre_combat": 1179,
+        "income": 1079,
+        "market_refresh": 1079,
+        "card_buy": 1064,
+        "combat_lose": 301,
+        "combat_win": 239,
+        "card_killed": 94,
+        "copy_2": 33,
+        "copy_3": 3
+      },
+      "total_delta": 0,
+      "avg_delta_per_trigger": 0.0,
+      "strategies_using": {
+        "random": 1407,
+        "balancer": 1081,
+        "rare_hunter": 744,
+        "warrior": 743,
+        "evolver": 622,
+        "tempo": 468,
+        "economist": 6
+      }
+    },
+    {
+      "card": "Tardigrade",
+      "total_triggers": 4755,
+      "triggers_by_type": {
+        "pre_combat": 1112,
+        "income": 1020,
+        "market_refresh": 1020,
+        "card_buy": 1017,
+        "combat_lose": 370,
+        "card_killed": 99,
+        "combat_win": 55,
+        "copy_2": 50,
+        "copy_3": 12
+      },
+      "total_delta": 0,
+      "avg_delta_per_trigger": 0.0,
+      "strategies_using": {
+        "builder": 2930,
+        "random": 1116,
+        "rare_hunter": 361,
+        "evolver": 274,
+        "tempo": 61,
+        "balancer": 13
+      }
+    },
+    {
+      "card": "The Persistence of Memory",
+      "total_triggers": 4702,
+      "triggers_by_type": {
+        "pre_combat": 1079,
+        "income": 981,
+        "market_refresh": 981,
+        "card_buy": 978,
+        "combat_lose": 354,
+        "combat_win": 191,
+        "card_killed": 115,
+        "copy_2": 23
+      },
+      "total_delta": 0,
+      "avg_delta_per_trigger": 0.0,
+      "strategies_using": {
+        "balancer": 1332,
+        "warrior": 866,
+        "random": 784,
+        "rare_hunter": 580,
+        "tempo": 575,
+        "evolver": 427,
+        "economist": 138
+      }
+    },
+    {
+      "card": "Narwhal",
+      "total_triggers": 4587,
+      "triggers_by_type": {
+        "pre_combat": 1079,
+        "income": 1005,
+        "market_refresh": 1005,
+        "card_buy": 1005,
+        "combat_lose": 342,
+        "card_killed": 77,
+        "combat_win": 36,
+        "copy_2": 32,
+        "copy_3": 6
+      },
+      "total_delta": 36,
+      "avg_delta_per_trigger": 0.008,
+      "strategies_using": {
+        "builder": 2682,
+        "random": 1169,
+        "economist": 559,
+        "balancer": 81,
+        "tempo": 70,
+        "warrior": 26
+      }
+    },
+    {
+      "card": "Baroque",
+      "total_triggers": 4577,
+      "triggers_by_type": {
+        "pre_combat": 1097,
+        "income": 1035,
+        "market_refresh": 1035,
+        "card_buy": 1035,
+        "combat_lose": 213,
+        "combat_win": 84,
+        "card_killed": 58,
+        "copy_2": 18,
+        "copy_3": 2
+      },
+      "total_delta": 0,
+      "avg_delta_per_trigger": 0.0,
+      "strategies_using": {
+        "random": 1942,
+        "builder": 1629,
+        "economist": 429,
+        "balancer": 264,
+        "warrior": 173,
+        "tempo": 140
+      }
+    },
+    {
+      "card": "Pandora'nın Kutusu",
+      "total_triggers": 4270,
+      "triggers_by_type": {
+        "pre_combat": 1004,
+        "income": 877,
+        "market_refresh": 877,
+        "card_buy": 867,
+        "combat_lose": 246,
+        "combat_win": 238,
+        "card_killed": 126,
+        "copy_2": 33,
+        "copy_3": 2
+      },
+      "total_delta": 0,
+      "avg_delta_per_trigger": 0.0,
+      "strategies_using": {
+        "random": 1112,
+        "rare_hunter": 902,
+        "tempo": 750,
+        "warrior": 568,
+        "balancer": 511,
+        "evolver": 395,
+        "economist": 32
+      }
+    },
+    {
+      "card": "Truva Atı",
+      "total_triggers": 4194,
+      "triggers_by_type": {
+        "pre_combat": 998,
+        "income": 935,
+        "market_refresh": 935,
+        "card_buy": 935,
+        "combat_lose": 238,
+        "card_killed": 76,
+        "combat_win": 47,
+        "copy_2": 26,
+        "copy_3": 4
+      },
+      "total_delta": 0,
+      "avg_delta_per_trigger": 0.0,
+      "strategies_using": {
+        "builder": 1924,
+        "random": 1550,
+        "economist": 283,
+        "warrior": 256,
+        "balancer": 115,
+        "tempo": 42,
+        "evolver": 24
+      }
+    },
+    {
+      "card": "Loki",
+      "total_triggers": 3988,
+      "triggers_by_type": {
+        "pre_combat": 930,
+        "income": 842,
+        "market_refresh": 842,
+        "card_buy": 840,
+        "combat_lose": 260,
+        "combat_win": 166,
+        "card_killed": 87,
+        "copy_2": 21
+      },
+      "total_delta": 0,
+      "avg_delta_per_trigger": 0.0,
+      "strategies_using": {
+        "random": 1065,
+        "warrior": 731,
+        "tempo": 652,
+        "balancer": 607,
+        "rare_hunter": 419,
+        "evolver": 282,
+        "economist": 232
+      }
+    },
+    {
+      "card": "Cubism",
+      "total_triggers": 3730,
+      "triggers_by_type": {
+        "pre_combat": 858,
+        "income": 814,
+        "market_refresh": 814,
+        "card_buy": 814,
+        "combat_lose": 306,
+        "card_killed": 55,
+        "combat_win": 51,
+        "copy_2": 18
+      },
+      "total_delta": 0,
+      "avg_delta_per_trigger": 0.0,
+      "strategies_using": {
+        "random": 1726,
+        "builder": 729,
+        "balancer": 529,
+        "economist": 439,
+        "warrior": 156,
+        "evolver": 111,
+        "tempo": 40
+      }
+    },
+    {
+      "card": "Anubis",
+      "total_triggers": 3664,
+      "triggers_by_type": {
+        "pre_combat": 852,
+        "income": 778,
+        "market_refresh": 778,
+        "card_buy": 775,
+        "combat_lose": 257,
+        "combat_win": 123,
+        "card_killed": 80,
+        "copy_2": 19,
+        "copy_3": 2
+      },
+      "total_delta": 80,
+      "avg_delta_per_trigger": 0.022,
+      "strategies_using": {
+        "random": 1050,
+        "evolver": 776,
+        "warrior": 580,
+        "tempo": 546,
+        "rare_hunter": 400,
+        "balancer": 234,
+        "economist": 57,
+        "builder": 21
+      }
+    },
+    {
+      "card": "Medusa",
+      "total_triggers": 3580,
+      "triggers_by_type": {
+        "pre_combat": 819,
+        "income": 765,
+        "market_refresh": 765,
+        "card_buy": 764,
+        "combat_win": 250,
+        "combat_lose": 132,
+        "card_killed": 65,
+        "copy_2": 20
+      },
+      "total_delta": 0,
+      "avg_delta_per_trigger": 0.0,
+      "strategies_using": {
+        "random": 962,
+        "tempo": 882,
+        "warrior": 494,
+        "balancer": 468,
+        "rare_hunter": 429,
+        "evolver": 337,
+        "economist": 8
+      }
+    },
+    {
+      "card": "Ballet",
+      "total_triggers": 3452,
+      "triggers_by_type": {
+        "pre_combat": 825,
+        "income": 764,
+        "market_refresh": 764,
+        "card_buy": 764,
+        "combat_lose": 191,
+        "combat_win": 68,
+        "card_killed": 58,
+        "copy_2": 18
+      },
+      "total_delta": 0,
+      "avg_delta_per_trigger": 0.0,
+      "strategies_using": {
+        "random": 1622,
+        "builder": 900,
+        "economist": 375,
+        "tempo": 198,
+        "warrior": 131,
+        "balancer": 119,
+        "evolver": 107
+      }
+    },
+    {
+      "card": "Fungus",
+      "total_triggers": 3373,
+      "triggers_by_type": {
+        "pre_combat": 783,
+        "income": 746,
+        "market_refresh": 746,
+        "card_buy": 745,
+        "combat_lose": 230,
+        "card_killed": 57,
+        "combat_win": 43,
+        "copy_2": 21,
+        "copy_3": 2
+      },
+      "total_delta": 0,
+      "avg_delta_per_trigger": 0.0,
+      "strategies_using": {
+        "random": 2176,
+        "builder": 448,
+        "economist": 280,
+        "warrior": 238,
+        "tempo": 135,
+        "evolver": 52,
+        "balancer": 44
+      }
+    },
+    {
+      "card": "Jazz",
+      "total_triggers": 3097,
+      "triggers_by_type": {
+        "pre_combat": 732,
+        "income": 683,
+        "market_refresh": 683,
+        "card_buy": 683,
+        "combat_lose": 190,
+        "card_killed": 62,
+        "combat_win": 51,
+        "copy_2": 10,
+        "copy_3": 3
+      },
+      "total_delta": 0,
+      "avg_delta_per_trigger": 0.0,
+      "strategies_using": {
+        "random": 1590,
+        "builder": 858,
+        "economist": 291,
+        "warrior": 125,
+        "evolver": 123,
+        "balancer": 69,
+        "tempo": 41
+      }
+    },
+    {
+      "card": "Europa",
+      "total_triggers": 3031,
+      "triggers_by_type": {
+        "pre_combat": 731,
+        "income": 684,
+        "market_refresh": 684,
+        "card_buy": 684,
+        "combat_lose": 117,
+        "card_killed": 58,
+        "combat_win": 56,
+        "copy_2": 17
+      },
+      "total_delta": 0,
+      "avg_delta_per_trigger": 0.0,
+      "strategies_using": {
+        "random": 2282,
+        "builder": 282,
+        "economist": 205,
+        "tempo": 138,
+        "evolver": 71,
+        "balancer": 53
+      }
+    },
+    {
+      "card": "Impressionism",
+      "total_triggers": 2949,
+      "triggers_by_type": {
+        "pre_combat": 705,
+        "income": 650,
+        "market_refresh": 650,
+        "card_buy": 650,
+        "combat_lose": 174,
+        "card_killed": 60,
+        "combat_win": 46,
+        "copy_2": 11,
+        "copy_3": 3
+      },
+      "total_delta": 0,
+      "avg_delta_per_trigger": 0.0,
+      "strategies_using": {
+        "random": 1489,
+        "builder": 482,
+        "economist": 395,
+        "warrior": 256,
+        "balancer": 183,
+        "tempo": 144
+      }
+    },
+    {
+      "card": "Midas Dokunuşu",
+      "total_triggers": 2796,
+      "triggers_by_type": {
+        "pre_combat": 638,
+        "income": 602,
+        "market_refresh": 602,
+        "card_buy": 601,
+        "combat_lose": 205,
+        "combat_win": 88,
+        "card_killed": 44,
+        "copy_2": 14,
+        "copy_3": 2
+      },
+      "total_delta": 0,
+      "avg_delta_per_trigger": 0.0,
+      "strategies_using": {
+        "random": 1282,
+        "economist": 754,
+        "balancer": 269,
+        "tempo": 210,
+        "warrior": 134,
+        "builder": 113,
+        "evolver": 34
+      }
+    },
+    {
+      "card": "Algorithm",
+      "total_triggers": 2723,
+      "triggers_by_type": {
+        "pre_combat": 643,
+        "income": 595,
+        "market_refresh": 595,
+        "card_buy": 595,
+        "combat_lose": 188,
+        "card_killed": 58,
+        "combat_win": 31,
+        "copy_2": 18
+      },
+      "total_delta": 0,
+      "avg_delta_per_trigger": 0.0,
+      "strategies_using": {
+        "random": 1606,
+        "balancer": 460,
+        "economist": 281,
+        "tempo": 200,
+        "warrior": 116,
+        "evolver": 60
+      }
+    },
+    {
+      "card": "Flamenco",
+      "total_triggers": 2684,
+      "triggers_by_type": {
+        "pre_combat": 653,
+        "income": 597,
+        "market_refresh": 597,
+        "card_buy": 597,
+        "combat_lose": 128,
+        "card_killed": 63,
+        "combat_win": 35,
+        "copy_2": 14
+      },
+      "total_delta": 0,
+      "avg_delta_per_trigger": 0.0,
+      "strategies_using": {
+        "random": 1786,
+        "builder": 430,
+        "economist": 191,
+        "warrior": 147,
+        "tempo": 59,
+        "evolver": 39,
+        "balancer": 32
+      }
+    },
+    {
+      "card": "Fibonacci Sequence",
+      "total_triggers": 2639,
+      "triggers_by_type": {
+        "pre_combat": 623,
+        "income": 583,
+        "market_refresh": 583,
+        "card_buy": 583,
+        "combat_lose": 163,
+        "card_killed": 49,
+        "combat_win": 43,
+        "copy_2": 12
+      },
+      "total_delta": 0,
+      "avg_delta_per_trigger": 0.0,
+      "strategies_using": {
+        "random": 1632,
+        "economist": 459,
+        "builder": 223,
+        "tempo": 136,
+        "evolver": 82,
+        "balancer": 60,
+        "warrior": 47
+      }
+    },
+    {
+      "card": "Opera",
+      "total_triggers": 2497,
+      "triggers_by_type": {
+        "pre_combat": 577,
+        "income": 544,
+        "market_refresh": 544,
+        "card_buy": 544,
+        "combat_lose": 184,
+        "card_killed": 50,
+        "combat_win": 41,
+        "copy_2": 12,
+        "copy_3": 1
+      },
+      "total_delta": 0,
+      "avg_delta_per_trigger": 0.0,
+      "strategies_using": {
+        "random": 1506,
+        "builder": 409,
+        "economist": 195,
+        "tempo": 181,
+        "warrior": 113,
+        "balancer": 85,
+        "evolver": 8
+      }
+    },
+    {
+      "card": "Axolotl",
+      "total_triggers": 2405,
+      "triggers_by_type": {
+        "pre_combat": 585,
+        "income": 523,
+        "market_refresh": 523,
+        "card_buy": 523,
+        "combat_lose": 129,
+        "card_killed": 60,
+        "combat_win": 52,
+        "copy_2": 10
+      },
+      "total_delta": -415,
+      "avg_delta_per_trigger": -0.173,
+      "strategies_using": {
+        "random": 1471,
+        "builder": 313,
+        "economist": 293,
+        "tempo": 122,
+        "warrior": 106,
+        "balancer": 52,
+        "evolver": 48
+      }
+    },
+    {
+      "card": "Exoplanet",
+      "total_triggers": 2213,
+      "triggers_by_type": {
+        "pre_combat": 527,
+        "income": 484,
+        "market_refresh": 484,
+        "card_buy": 484,
+        "combat_lose": 109,
+        "card_killed": 54,
+        "combat_win": 52,
+        "copy_2": 14,
+        "copy_3": 5
+      },
+      "total_delta": 0,
+      "avg_delta_per_trigger": 0.0,
+      "strategies_using": {
+        "random": 1643,
+        "economist": 185,
+        "builder": 135,
+        "balancer": 97,
+        "tempo": 92,
+        "warrior": 37,
+        "evolver": 24
+      }
+    },
+    {
+      "card": "Evolved Pop Art",
+      "total_triggers": 1308,
+      "triggers_by_type": {
+        "pre_combat": 300,
+        "income": 279,
+        "market_refresh": 279,
+        "card_buy": 279,
+        "combat_lose": 94,
+        "combat_win": 58,
+        "card_killed": 19
+      },
+      "total_delta": 0,
+      "avg_delta_per_trigger": 0.0,
+      "strategies_using": {
+        "evolver": 1308
+      }
+    },
+    {
+      "card": "Evolved Shadow Puppetry",
+      "total_triggers": 1296,
+      "triggers_by_type": {
+        "pre_combat": 290,
+        "income": 265,
+        "market_refresh": 265,
+        "card_buy": 265,
+        "combat_win": 95,
+        "combat_lose": 91,
+        "card_killed": 25
+      },
+      "total_delta": 0,
+      "avg_delta_per_trigger": 0.0,
+      "strategies_using": {
+        "evolver": 1296
+      }
+    },
+    {
+      "card": "Evolved Graffiti",
+      "total_triggers": 939,
+      "triggers_by_type": {
+        "income": 204,
+        "market_refresh": 204,
+        "card_buy": 204,
+        "pre_combat": 202,
+        "combat_lose": 65,
+        "combat_win": 47,
+        "card_killed": 13
+      },
+      "total_delta": 0,
+      "avg_delta_per_trigger": 0.0,
+      "strategies_using": {
+        "evolver": 939
+      }
+    },
+    {
+      "card": "Evolved Minimalism",
+      "total_triggers": 892,
+      "triggers_by_type": {
+        "pre_combat": 196,
+        "income": 184,
+        "market_refresh": 184,
+        "card_buy": 184,
+        "combat_win": 74,
+        "combat_lose": 47,
+        "card_killed": 23
+      },
+      "total_delta": 0,
+      "avg_delta_per_trigger": 0.0,
+      "strategies_using": {
+        "evolver": 892
+      }
+    },
+    {
+      "card": "Evolved Platypus",
+      "total_triggers": 727,
+      "triggers_by_type": {
+        "pre_combat": 157,
+        "income": 148,
+        "market_refresh": 148,
+        "card_buy": 148,
+        "combat_win": 67,
+        "combat_lose": 47,
+        "card_killed": 12
+      },
+      "total_delta": 0,
+      "avg_delta_per_trigger": 0.0,
+      "strategies_using": {
+        "evolver": 727
+      }
+    },
+    {
+      "card": "Evolved Camouflage",
+      "total_triggers": 197,
+      "triggers_by_type": {
+        "income": 44,
+        "market_refresh": 44,
+        "card_buy": 44,
+        "pre_combat": 43,
+        "combat_win": 19,
+        "combat_lose": 2,
+        "card_killed": 1
+      },
+      "total_delta": 0,
+      "avg_delta_per_trigger": 0.0,
+      "strategies_using": {
+        "evolver": 197
+      }
+    },
+    {
+      "card": "Evolved Anubis",
+      "total_triggers": 179,
+      "triggers_by_type": {
+        "pre_combat": 40,
+        "income": 40,
+        "market_refresh": 40,
+        "card_buy": 40,
+        "combat_win": 18,
+        "combat_lose": 1
+      },
+      "total_delta": 0,
+      "avg_delta_per_trigger": 0.0,
+      "strategies_using": {
+        "evolver": 179
+      }
+    },
+    {
+      "card": "Evolved Surrealism",
+      "total_triggers": 164,
+      "triggers_by_type": {
+        "pre_combat": 37,
+        "income": 36,
+        "market_refresh": 36,
+        "card_buy": 36,
+        "combat_win": 15,
+        "combat_lose": 3,
+        "card_killed": 1
+      },
+      "total_delta": 0,
+      "avg_delta_per_trigger": 0.0,
+      "strategies_using": {
+        "evolver": 164
+      }
+    },
+    {
+      "card": "Evolved Athena",
+      "total_triggers": 111,
+      "triggers_by_type": {
+        "pre_combat": 24,
+        "income": 23,
+        "market_refresh": 23,
+        "card_buy": 23,
+        "combat_win": 18
+      },
+      "total_delta": 0,
+      "avg_delta_per_trigger": 0.0,
+      "strategies_using": {
+        "evolver": 111
+      }
+    },
+    {
+      "card": "Evolved Isaac Newton",
+      "total_triggers": 96,
+      "triggers_by_type": {
+        "pre_combat": 22,
+        "income": 21,
+        "market_refresh": 21,
+        "card_buy": 21,
+        "combat_win": 11
+      },
+      "total_delta": 0,
+      "avg_delta_per_trigger": 0.0,
+      "strategies_using": {
+        "evolver": 96
+      }
+    },
+    {
+      "card": "Evolved Ballet",
+      "total_triggers": 95,
+      "triggers_by_type": {
+        "pre_combat": 21,
+        "income": 21,
+        "market_refresh": 21,
+        "card_buy": 21,
+        "combat_win": 10,
+        "combat_lose": 1
+      },
+      "total_delta": 0,
+      "avg_delta_per_trigger": 0.0,
+      "strategies_using": {
+        "evolver": 95
+      }
+    },
+    {
+      "card": "Evolved Frida Kahlo",
+      "total_triggers": 94,
+      "triggers_by_type": {
+        "pre_combat": 21,
+        "income": 19,
+        "market_refresh": 19,
+        "card_buy": 19,
+        "combat_win": 14,
+        "combat_lose": 2
+      },
+      "total_delta": 0,
+      "avg_delta_per_trigger": 0.0,
+      "strategies_using": {
+        "evolver": 94
+      }
+    },
+    {
+      "card": "Evolved Cold War",
+      "total_triggers": 87,
+      "triggers_by_type": {
+        "income": 22,
+        "market_refresh": 22,
+        "card_buy": 22,
+        "pre_combat": 14,
+        "combat_win": 7
+      },
+      "total_delta": 0,
+      "avg_delta_per_trigger": 0.0,
+      "strategies_using": {
+        "evolver": 87
+      }
+    },
+    {
+      "card": "Evolved Blue Whale",
+      "total_triggers": 85,
+      "triggers_by_type": {
+        "income": 20,
+        "market_refresh": 20,
+        "card_buy": 20,
+        "pre_combat": 19,
+        "combat_win": 6
+      },
+      "total_delta": 0,
+      "avg_delta_per_trigger": 0.0,
+      "strategies_using": {
+        "evolver": 85
+      }
+    },
+    {
+      "card": "Evolved DNA",
+      "total_triggers": 80,
+      "triggers_by_type": {
+        "pre_combat": 17,
+        "income": 17,
+        "market_refresh": 17,
+        "card_buy": 17,
+        "combat_win": 12
+      },
+      "total_delta": 0,
+      "avg_delta_per_trigger": 0.0,
+      "strategies_using": {
+        "evolver": 80
+      }
+    },
+    {
+      "card": "Evolved Babylon",
+      "total_triggers": 73,
+      "triggers_by_type": {
+        "pre_combat": 16,
+        "income": 15,
+        "market_refresh": 15,
+        "card_buy": 15,
+        "combat_win": 6,
+        "combat_lose": 5,
+        "card_killed": 1
+      },
+      "total_delta": 0,
+      "avg_delta_per_trigger": 0.0,
+      "strategies_using": {
+        "evolver": 73
+      }
+    },
+    {
+      "card": "Evolved π (Pi)",
+      "total_triggers": 71,
+      "triggers_by_type": {
+        "pre_combat": 16,
+        "income": 15,
+        "market_refresh": 15,
+        "card_buy": 15,
+        "combat_win": 9,
+        "combat_lose": 1
+      },
+      "total_delta": 0,
+      "avg_delta_per_trigger": 0.0,
+      "strategies_using": {
+        "evolver": 71
+      }
+    },
+    {
+      "card": "Evolved Olympus",
+      "total_triggers": 71,
+      "triggers_by_type": {
+        "income": 16,
+        "market_refresh": 16,
+        "card_buy": 16,
+        "pre_combat": 14,
+        "combat_win": 7,
+        "combat_lose": 1,
+        "card_killed": 1
+      },
+      "total_delta": 0,
+      "avg_delta_per_trigger": 0.0,
+      "strategies_using": {
+        "evolver": 71
+      }
+    },
+    {
+      "card": "Evolved Age of Discovery",
+      "total_triggers": 68,
+      "triggers_by_type": {
+        "pre_combat": 15,
+        "income": 14,
+        "market_refresh": 14,
+        "card_buy": 14,
+        "combat_win": 11
+      },
+      "total_delta": 0,
+      "avg_delta_per_trigger": 0.0,
+      "strategies_using": {
+        "evolver": 68
+      }
+    },
+    {
+      "card": "Evolved Charles Darwin",
+      "total_triggers": 66,
+      "triggers_by_type": {
+        "pre_combat": 14,
+        "income": 13,
+        "market_refresh": 13,
+        "card_buy": 13,
+        "combat_win": 11,
+        "combat_lose": 1,
+        "card_killed": 1
+      },
+      "total_delta": 0,
+      "avg_delta_per_trigger": 0.0,
+      "strategies_using": {
+        "evolver": 66
+      }
+    },
+    {
+      "card": "Evolved Betelgeuse",
+      "total_triggers": 62,
+      "triggers_by_type": {
+        "pre_combat": 14,
+        "income": 14,
+        "market_refresh": 14,
+        "card_buy": 14,
+        "combat_win": 6
+      },
+      "total_delta": 0,
+      "avg_delta_per_trigger": 0.0,
+      "strategies_using": {
+        "evolver": 62
+      }
+    },
+    {
+      "card": "Evolved Quetzalcoatl",
+      "total_triggers": 62,
+      "triggers_by_type": {
+        "pre_combat": 14,
+        "income": 13,
+        "market_refresh": 13,
+        "card_buy": 13,
+        "combat_win": 9
+      },
+      "total_delta": 0,
+      "avg_delta_per_trigger": 0.0,
+      "strategies_using": {
+        "evolver": 62
+      }
+    },
+    {
+      "card": "Evolved Code of Hammurabi",
+      "total_triggers": 61,
+      "triggers_by_type": {
+        "pre_combat": 14,
+        "income": 13,
+        "market_refresh": 13,
+        "card_buy": 13,
+        "combat_win": 6,
+        "combat_lose": 2
+      },
+      "total_delta": 0,
+      "avg_delta_per_trigger": 0.0,
+      "strategies_using": {
+        "evolver": 61
+      }
+    },
+    {
+      "card": "Evolved Printing Press",
+      "total_triggers": 56,
+      "triggers_by_type": {
+        "pre_combat": 14,
+        "income": 12,
+        "market_refresh": 12,
+        "card_buy": 12,
+        "combat_lose": 4,
+        "combat_win": 1,
+        "card_killed": 1
+      },
+      "total_delta": 0,
+      "avg_delta_per_trigger": 0.0,
+      "strategies_using": {
+        "evolver": 56
+      }
+    },
+    {
+      "card": "Evolved Dark Matter",
+      "total_triggers": 55,
+      "triggers_by_type": {
+        "income": 12,
+        "market_refresh": 12,
+        "card_buy": 12,
+        "pre_combat": 10,
+        "combat_win": 9
+      },
+      "total_delta": 0,
+      "avg_delta_per_trigger": 0.0,
+      "strategies_using": {
+        "evolver": 55
+      }
+    },
+    {
+      "card": "Evolved Marie Curie",
+      "total_triggers": 52,
+      "triggers_by_type": {
+        "pre_combat": 13,
+        "income": 12,
+        "market_refresh": 12,
+        "card_buy": 12,
+        "combat_win": 3
+      },
+      "total_delta": 0,
+      "avg_delta_per_trigger": 0.0,
+      "strategies_using": {
+        "evolver": 52
+      }
+    },
+    {
+      "card": "Evolved Silk Road",
+      "total_triggers": 51,
+      "triggers_by_type": {
+        "pre_combat": 11,
+        "income": 10,
+        "market_refresh": 10,
+        "card_buy": 10,
+        "combat_win": 9,
+        "combat_lose": 1
+      },
+      "total_delta": 0,
+      "avg_delta_per_trigger": 0.0,
+      "strategies_using": {
+        "evolver": 51
+      }
+    },
+    {
+      "card": "Evolved Entropy",
+      "total_triggers": 50,
+      "triggers_by_type": {
+        "income": 11,
+        "market_refresh": 11,
+        "card_buy": 11,
+        "pre_combat": 9,
+        "combat_win": 8
+      },
+      "total_delta": 0,
+      "avg_delta_per_trigger": 0.0,
+      "strategies_using": {
+        "evolver": 50
+      }
+    },
+    {
+      "card": "Evolved Periodic Table",
+      "total_triggers": 48,
+      "triggers_by_type": {
+        "income": 11,
+        "market_refresh": 11,
+        "card_buy": 11,
+        "pre_combat": 9,
+        "combat_win": 4,
+        "combat_lose": 1,
+        "card_killed": 1
+      },
+      "total_delta": 0,
+      "avg_delta_per_trigger": 0.0,
+      "strategies_using": {
+        "evolver": 48
+      }
+    },
+    {
+      "card": "Evolved Gravity",
+      "total_triggers": 47,
+      "triggers_by_type": {
+        "pre_combat": 12,
+        "income": 9,
+        "market_refresh": 9,
+        "card_buy": 9,
+        "combat_win": 6,
+        "combat_lose": 2
+      },
+      "total_delta": 0,
+      "avg_delta_per_trigger": 0.0,
+      "strategies_using": {
+        "evolver": 47
+      }
+    },
+    {
+      "card": "Evolved Nebula",
+      "total_triggers": 41,
+      "triggers_by_type": {
+        "pre_combat": 10,
+        "income": 9,
+        "market_refresh": 9,
+        "card_buy": 9,
+        "combat_win": 4
+      },
+      "total_delta": 0,
+      "avg_delta_per_trigger": 0.0,
+      "strategies_using": {
+        "evolver": 41
+      }
+    },
+    {
+      "card": "Evolved Bioluminescence",
+      "total_triggers": 40,
+      "triggers_by_type": {
+        "pre_combat": 9,
+        "income": 8,
+        "market_refresh": 8,
+        "card_buy": 8,
+        "combat_win": 7
+      },
+      "total_delta": 0,
+      "avg_delta_per_trigger": 0.0,
+      "strategies_using": {
+        "evolver": 40
+      }
+    },
+    {
+      "card": "Evolved Fibonacci Sequence",
+      "total_triggers": 40,
+      "triggers_by_type": {
+        "pre_combat": 9,
+        "income": 8,
+        "market_refresh": 8,
+        "card_buy": 8,
+        "combat_win": 4,
+        "combat_lose": 2,
+        "card_killed": 1
+      },
+      "total_delta": 0,
+      "avg_delta_per_trigger": 0.0,
+      "strategies_using": {
+        "evolver": 40
+      }
+    },
+    {
+      "card": "Evolved Valhalla",
+      "total_triggers": 35,
+      "triggers_by_type": {
+        "income": 8,
+        "market_refresh": 8,
+        "card_buy": 8,
+        "pre_combat": 7,
+        "combat_win": 4
+      },
+      "total_delta": 0,
+      "avg_delta_per_trigger": 0.0,
+      "strategies_using": {
+        "evolver": 35
+      }
+    },
+    {
+      "card": "Evolved Milky Way",
+      "total_triggers": 30,
+      "triggers_by_type": {
+        "income": 7,
+        "market_refresh": 7,
+        "card_buy": 7,
+        "pre_combat": 5,
+        "combat_win": 4
+      },
+      "total_delta": 0,
+      "avg_delta_per_trigger": 0.0,
+      "strategies_using": {
+        "evolver": 30
+      }
+    },
+    {
+      "card": "Evolved Moon Landing",
+      "total_triggers": 30,
+      "triggers_by_type": {
+        "income": 7,
+        "market_refresh": 7,
+        "card_buy": 7,
+        "pre_combat": 6,
+        "combat_win": 3
+      },
+      "total_delta": 0,
+      "avg_delta_per_trigger": 0.0,
+      "strategies_using": {
+        "evolver": 30
+      }
+    },
+    {
+      "card": "Evolved Yggdrasil",
+      "total_triggers": 30,
+      "triggers_by_type": {
+        "income": 7,
+        "market_refresh": 7,
+        "card_buy": 7,
+        "pre_combat": 5,
+        "combat_win": 4
+      },
+      "total_delta": 0,
+      "avg_delta_per_trigger": 0.0,
+      "strategies_using": {
+        "evolver": 30
+      }
+    },
+    {
+      "card": "Evolved Quantum Mechanics",
+      "total_triggers": 29,
+      "triggers_by_type": {
+        "pre_combat": 7,
+        "income": 7,
+        "market_refresh": 7,
+        "card_buy": 7,
+        "combat_win": 1
+      },
+      "total_delta": 0,
+      "avg_delta_per_trigger": 0.0,
+      "strategies_using": {
+        "evolver": 29
+      }
+    },
+    {
+      "card": "Evolved Baobab",
+      "total_triggers": 29,
+      "triggers_by_type": {
+        "pre_combat": 7,
+        "income": 6,
+        "market_refresh": 6,
+        "card_buy": 6,
+        "combat_win": 4
+      },
+      "total_delta": 0,
+      "avg_delta_per_trigger": 0.0,
+      "strategies_using": {
+        "evolver": 29
+      }
+    },
+    {
+      "card": "Evolved Medusa",
+      "total_triggers": 27,
+      "triggers_by_type": {
+        "income": 6,
+        "market_refresh": 6,
+        "card_buy": 6,
+        "pre_combat": 5,
+        "combat_win": 4
+      },
+      "total_delta": 0,
+      "avg_delta_per_trigger": 0.0,
+      "strategies_using": {
+        "evolver": 27
+      }
+    },
+    {
+      "card": "Evolved French Revolution",
+      "total_triggers": 26,
+      "triggers_by_type": {
+        "pre_combat": 6,
+        "combat_win": 5,
+        "income": 5,
+        "market_refresh": 5,
+        "card_buy": 5
+      },
+      "total_delta": 0,
+      "avg_delta_per_trigger": 0.0,
+      "strategies_using": {
+        "evolver": 26
+      }
+    },
+    {
+      "card": "Evolved Coral Reef",
+      "total_triggers": 18,
+      "triggers_by_type": {
+        "pre_combat": 4,
+        "income": 4,
+        "market_refresh": 4,
+        "card_buy": 4,
+        "combat_win": 2
+      },
+      "total_delta": 0,
+      "avg_delta_per_trigger": 0.0,
+      "strategies_using": {
+        "evolver": 18
+      }
+    },
+    {
+      "card": "Evolved Ragnarök",
+      "total_triggers": 6,
+      "triggers_by_type": {
+        "pre_combat": 2,
+        "combat_win": 1,
+        "income": 1,
+        "market_refresh": 1,
+        "card_buy": 1
+      },
+      "total_delta": 0,
+      "avg_delta_per_trigger": 0.0,
+      "strategies_using": {
+        "evolver": 6
+      }
+    },
+    {
+      "card": "Evolved Algorithm",
+      "total_triggers": 2,
+      "triggers_by_type": {
+        "pre_combat": 1,
+        "combat_lose": 1
+      },
+      "total_delta": 0,
+      "avg_delta_per_trigger": 0.0,
+      "strategies_using": {
+        "evolver": 2
+      }
+    },
+    {
+      "card": "Evolved Cerberus",
+      "total_triggers": 2,
+      "triggers_by_type": {
+        "pre_combat": 1,
+        "combat_win": 1
+      },
+      "total_delta": 0,
+      "avg_delta_per_trigger": 0.0,
+      "strategies_using": {
+        "evolver": 2
+      }
+    },
+    {
+      "card": "Evolved Andromeda Galaxy",
+      "total_triggers": 1,
+      "triggers_by_type": {
+        "pre_combat": 1
+      },
+      "total_delta": 0,
+      "avg_delta_per_trigger": 0.0,
+      "strategies_using": {
+        "evolver": 1
+      }
+    }
+  ]
+}

@@ -1,0 +1,96 @@
+{
+  "safe_to_delete": [
+    {
+      "path": "analyze_references.py",
+      "size": 8861,
+      "modified": "2026-03-28T22:22:51.966994",
+      "usage_count": 0,
+      "reason": "Temporary/one-time script",
+      "safe_to_delete": true
+    },
+    {
+      "path": "analyze_unused_files.py",
+      "size": 8455,
+      "modified": "2026-03-28T22:23:48.553169",
+      "usage_count": 0,
+      "reason": "Temporary/one-time script",
+      "safe_to_delete": true
+    },
+    {
+      "path": "fix_imports.py",
+      "size": 5102,
+      "modified": "2026-03-28T21:45:10.822263",
+      "usage_count": 0,
+      "reason": "Temporary/one-time script",
+      "safe_to_delete": true
+    },
+    {
+      "path": "hybrid_backup_20260328_214851.tar.gz",
+      "size": 1202562696,
+      "modified": "2026-03-28T21:54:16.447558",
+      "usage_count": 0,
+      "reason": "Temporary/one-time script",
+      "safe_to_delete": true
+    },
+    {
+      "path": "__pycache__",
+      "size": 454675,
+      "modified": "2026-03-24T19:06:56.660606",
+      "usage_count": 0,
+      "reason": "Python cache directory",
+      "safe_to_delete": true,
+      "is_directory": true
+    },
+    {
+      "path": "engine_core\\__pycache__",
+      "size": 140425,
+      "modified": "2026-03-28T22:18:45.689406",
+      "usage_count": 0,
+      "reason": "Python cache directory",
+      "safe_to_delete": true,
+      "is_directory": true
+    },
+    {
+      "path": "tests\\__pycache__",
+      "size": 363044,
+      "modified": "2026-03-28T05:32:50.288123",
+      "usage_count": 0,
+      "reason": "Python cache directory",
+      "safe_to_delete": true,
+      "is_directory": true
+    },
+    {
+      "path": "tools\\__pycache__",
+      "size": 23594,
+      "modified": "2026-03-25T00:14:59.780631",
+      "usage_count": 0,
+      "reason": "Python cache directory",
+      "safe_to_delete": true,
+      "is_directory": true
+    }
+  ],
+  "manual_review": [
+    {
+      "path": "hybrid_backup_20260328_214851.tar.gz",
+      "size": 1202562696,
+      "modified": "2026-03-28T21:54:16.447558",
+      "usage_count": 0,
+      "reason": "Backup file (keep latest only)",
+      "safe_to_delete": false
+    },
+    {
+      "path": "hybrid_backup_20260328_214851.tar.gz",
+      "size": 1202562696,
+      "modified": "2026-03-28T21:54:16.447558",
+      "usage_count": 0,
+      "reason": "Backup file (keep latest only)",
+      "safe_to_delete": false
+    }
+  ],
+  "total_size_bytes": 1203566852,
+  "total_size_mb": 1147.8107948303223,
+  "stats": {
+    "safe_count": 8,
+    "review_count": 2
+  }
+}

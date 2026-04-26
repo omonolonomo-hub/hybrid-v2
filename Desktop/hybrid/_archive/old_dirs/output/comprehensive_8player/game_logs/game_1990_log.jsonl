@@ -1,0 +1,277 @@
+{"game_id": 1990, "turn": 1, "action_type": "shop_roll", "player_id": 0, "timestamp": 0, "details": {"gold": 0, "turn": 1}}
+{"game_id": 1990, "turn": 1, "action_type": "shop_roll", "player_id": 1, "timestamp": 1, "details": {"gold": 0, "turn": 1}}
+{"game_id": 1990, "turn": 1, "action_type": "shop_roll", "player_id": 2, "timestamp": 2, "details": {"gold": 0, "turn": 1}}
+{"game_id": 1990, "turn": 1, "action_type": "shop_roll", "player_id": 3, "timestamp": 3, "details": {"gold": 0, "turn": 1}}
+{"game_id": 1990, "turn": 1, "action_type": "shop_roll", "player_id": 4, "timestamp": 4, "details": {"gold": 0, "turn": 1}}
+{"game_id": 1990, "turn": 1, "action_type": "shop_roll", "player_id": 5, "timestamp": 5, "details": {"gold": 0, "turn": 1}}
+{"game_id": 1990, "turn": 1, "action_type": "shop_roll", "player_id": 6, "timestamp": 6, "details": {"gold": 0, "turn": 1}}
+{"game_id": 1990, "turn": 1, "action_type": "shop_roll", "player_id": 7, "timestamp": 7, "details": {"gold": 0, "turn": 1}}
+{"game_id": 1990, "turn": 1, "action_type": "combat_start", "player_id": 5, "timestamp": 8, "details": {"opponent": 7, "hp_a": 150, "hp_b": 150, "board_size_a": 1, "board_size_b": 1}}
+{"game_id": 1990, "turn": 1, "action_type": "combat_start", "player_id": 4, "timestamp": 9, "details": {"opponent": 1, "hp_a": 150, "hp_b": 150, "board_size_a": 1, "board_size_b": 1}}
+{"game_id": 1990, "turn": 1, "action_type": "combat_start", "player_id": 0, "timestamp": 10, "details": {"opponent": 6, "hp_a": 150, "hp_b": 150, "board_size_a": 1, "board_size_b": 0}}
+{"game_id": 1990, "turn": 1, "action_type": "combat_start", "player_id": 2, "timestamp": 11, "details": {"opponent": 3, "hp_a": 150, "hp_b": 150, "board_size_a": 1, "board_size_b": 1}}
+{"game_id": 1990, "turn": 2, "action_type": "shop_roll", "player_id": 0, "timestamp": 12, "details": {"gold": 0, "turn": 2}}
+{"game_id": 1990, "turn": 2, "action_type": "shop_roll", "player_id": 1, "timestamp": 13, "details": {"gold": 1, "turn": 2}}
+{"game_id": 1990, "turn": 2, "action_type": "shop_roll", "player_id": 2, "timestamp": 14, "details": {"gold": 0, "turn": 2}}
+{"game_id": 1990, "turn": 2, "action_type": "shop_roll", "player_id": 3, "timestamp": 15, "details": {"gold": 1, "turn": 2}}
+{"game_id": 1990, "turn": 2, "action_type": "shop_roll", "player_id": 4, "timestamp": 16, "details": {"gold": 0, "turn": 2}}
+{"game_id": 1990, "turn": 2, "action_type": "shop_roll", "player_id": 5, "timestamp": 17, "details": {"gold": 0, "turn": 2}}
+{"game_id": 1990, "turn": 2, "action_type": "shop_roll", "player_id": 6, "timestamp": 18, "details": {"gold": 4, "turn": 2}}
+{"game_id": 1990, "turn": 2, "action_type": "shop_roll", "player_id": 7, "timestamp": 19, "details": {"gold": 0, "turn": 2}}
+{"game_id": 1990, "turn": 2, "action_type": "combat_start", "player_id": 3, "timestamp": 20, "details": {"opponent": 5, "hp_a": 150, "hp_b": 150, "board_size_a": 2, "board_size_b": 2}}
+{"game_id": 1990, "turn": 2, "action_type": "combat_start", "player_id": 7, "timestamp": 21, "details": {"opponent": 1, "hp_a": 150, "hp_b": 150, "board_size_a": 2, "board_size_b": 2}}
+{"game_id": 1990, "turn": 2, "action_type": "combat_start", "player_id": 4, "timestamp": 22, "details": {"opponent": 2, "hp_a": 150, "hp_b": 149, "board_size_a": 2, "board_size_b": 2}}
+{"game_id": 1990, "turn": 2, "action_type": "combat_start", "player_id": 0, "timestamp": 23, "details": {"opponent": 6, "hp_a": 149, "hp_b": 148, "board_size_a": 2, "board_size_b": 1}}
+{"game_id": 1990, "turn": 3, "action_type": "shop_roll", "player_id": 0, "timestamp": 24, "details": {"gold": 3, "turn": 3}}
+{"game_id": 1990, "turn": 3, "action_type": "shop_roll", "player_id": 1, "timestamp": 25, "details": {"gold": 2, "turn": 3}}
+{"game_id": 1990, "turn": 3, "action_type": "shop_roll", "player_id": 2, "timestamp": 26, "details": {"gold": 1, "turn": 3}}
+{"game_id": 1990, "turn": 3, "action_type": "shop_roll", "player_id": 3, "timestamp": 27, "details": {"gold": 1, "turn": 3}}
+{"game_id": 1990, "turn": 3, "action_type": "shop_roll", "player_id": 4, "timestamp": 28, "details": {"gold": 1, "turn": 3}}
+{"game_id": 1990, "turn": 3, "action_type": "shop_roll", "player_id": 5, "timestamp": 29, "details": {"gold": 1, "turn": 3}}
+{"game_id": 1990, "turn": 3, "action_type": "shop_roll", "player_id": 6, "timestamp": 30, "details": {"gold": 6, "turn": 3}}
+{"game_id": 1990, "turn": 3, "action_type": "shop_roll", "player_id": 7, "timestamp": 31, "details": {"gold": 0, "turn": 3}}
+{"game_id": 1990, "turn": 3, "action_type": "combat_start", "player_id": 5, "timestamp": 32, "details": {"opponent": 7, "hp_a": 150, "hp_b": 150, "board_size_a": 3, "board_size_b": 3}}
+{"game_id": 1990, "turn": 3, "action_type": "combat_start", "player_id": 4, "timestamp": 33, "details": {"opponent": 1, "hp_a": 150, "hp_b": 150, "board_size_a": 3, "board_size_b": 3}}
+{"game_id": 1990, "turn": 3, "action_type": "combat_start", "player_id": 0, "timestamp": 34, "details": {"opponent": 2, "hp_a": 149, "hp_b": 149, "board_size_a": 3, "board_size_b": 3}}
+{"game_id": 1990, "turn": 3, "action_type": "combat_start", "player_id": 3, "timestamp": 35, "details": {"opponent": 6, "hp_a": 146, "hp_b": 141, "board_size_a": 3, "board_size_b": 2}}
+{"game_id": 1990, "turn": 4, "action_type": "shop_roll", "player_id": 0, "timestamp": 36, "details": {"gold": 1, "turn": 4}}
+{"game_id": 1990, "turn": 4, "action_type": "shop_roll", "player_id": 1, "timestamp": 37, "details": {"gold": 0, "turn": 4}}
+{"game_id": 1990, "turn": 4, "action_type": "shop_roll", "player_id": 2, "timestamp": 38, "details": {"gold": 1, "turn": 4}}
+{"game_id": 1990, "turn": 4, "action_type": "shop_roll", "player_id": 3, "timestamp": 39, "details": {"gold": 1, "turn": 4}}
+{"game_id": 1990, "turn": 4, "action_type": "shop_roll", "player_id": 4, "timestamp": 40, "details": {"gold": 2, "turn": 4}}
+{"game_id": 1990, "turn": 4, "action_type": "shop_roll", "player_id": 5, "timestamp": 41, "details": {"gold": 1, "turn": 4}}
+{"game_id": 1990, "turn": 4, "action_type": "shop_roll", "player_id": 6, "timestamp": 42, "details": {"gold": 7, "turn": 4}}
+{"game_id": 1990, "turn": 4, "action_type": "shop_roll", "player_id": 7, "timestamp": 43, "details": {"gold": 1, "turn": 4}}
+{"game_id": 1990, "turn": 4, "action_type": "combat_start", "player_id": 5, "timestamp": 44, "details": {"opponent": 7, "hp_a": 150, "hp_b": 150, "board_size_a": 4, "board_size_b": 4}}
+{"game_id": 1990, "turn": 4, "action_type": "combat_start", "player_id": 2, "timestamp": 45, "details": {"opponent": 3, "hp_a": 149, "hp_b": 146, "board_size_a": 4, "board_size_b": 4}}
+{"game_id": 1990, "turn": 4, "action_type": "combat_start", "player_id": 1, "timestamp": 46, "details": {"opponent": 0, "hp_a": 134, "hp_b": 132, "board_size_a": 4, "board_size_b": 4}}
+{"game_id": 1990, "turn": 4, "action_type": "combat_start", "player_id": 6, "timestamp": 47, "details": {"opponent": 4, "hp_a": 132, "hp_b": 127, "board_size_a": 3, "board_size_b": 4}}
+{"game_id": 1990, "turn": 5, "action_type": "shop_roll", "player_id": 0, "timestamp": 48, "details": {"gold": 1, "turn": 5}}
+{"game_id": 1990, "turn": 5, "action_type": "shop_roll", "player_id": 1, "timestamp": 49, "details": {"gold": 1, "turn": 5}}
+{"game_id": 1990, "turn": 5, "action_type": "shop_roll", "player_id": 2, "timestamp": 50, "details": {"gold": 1, "turn": 5}}
+{"game_id": 1990, "turn": 5, "action_type": "shop_roll", "player_id": 3, "timestamp": 51, "details": {"gold": 1, "turn": 5}}
+{"game_id": 1990, "turn": 5, "action_type": "shop_roll", "player_id": 4, "timestamp": 52, "details": {"gold": 0, "turn": 5}}
+{"game_id": 1990, "turn": 5, "action_type": "shop_roll", "player_id": 5, "timestamp": 53, "details": {"gold": 1, "turn": 5}}
+{"game_id": 1990, "turn": 5, "action_type": "shop_roll", "player_id": 6, "timestamp": 54, "details": {"gold": 8, "turn": 5}}
+{"game_id": 1990, "turn": 5, "action_type": "shop_roll", "player_id": 7, "timestamp": 55, "details": {"gold": 1, "turn": 5}}
+{"game_id": 1990, "turn": 5, "action_type": "combat_start", "player_id": 7, "timestamp": 56, "details": {"opponent": 3, "hp_a": 150, "hp_b": 146, "board_size_a": 5, "board_size_b": 5}}
+{"game_id": 1990, "turn": 5, "action_type": "combat_start", "player_id": 2, "timestamp": 57, "details": {"opponent": 5, "hp_a": 143, "hp_b": 140, "board_size_a": 5, "board_size_b": 5}}
+{"game_id": 1990, "turn": 5, "action_type": "combat_start", "player_id": 1, "timestamp": 58, "details": {"opponent": 0, "hp_a": 134, "hp_b": 132, "board_size_a": 5, "board_size_b": 5}}
+{"game_id": 1990, "turn": 5, "action_type": "combat_start", "player_id": 6, "timestamp": 59, "details": {"opponent": 4, "hp_a": 129, "hp_b": 123, "board_size_a": 4, "board_size_b": 5}}
+{"game_id": 1990, "turn": 6, "action_type": "shop_roll", "player_id": 0, "timestamp": 60, "details": {"gold": 1, "turn": 6}}
+{"game_id": 1990, "turn": 6, "action_type": "shop_roll", "player_id": 1, "timestamp": 61, "details": {"gold": 1, "turn": 6}}
+{"game_id": 1990, "turn": 6, "action_type": "shop_roll", "player_id": 2, "timestamp": 62, "details": {"gold": 2, "turn": 6}}
+{"game_id": 1990, "turn": 6, "action_type": "shop_roll", "player_id": 3, "timestamp": 63, "details": {"gold": 1, "turn": 6}}
+{"game_id": 1990, "turn": 6, "action_type": "shop_roll", "player_id": 4, "timestamp": 64, "details": {"gold": 0, "turn": 6}}
+{"game_id": 1990, "turn": 6, "action_type": "shop_roll", "player_id": 5, "timestamp": 65, "details": {"gold": 1, "turn": 6}}
+{"game_id": 1990, "turn": 6, "action_type": "shop_roll", "player_id": 6, "timestamp": 66, "details": {"gold": 9, "turn": 6}}
+{"game_id": 1990, "turn": 6, "action_type": "shop_roll", "player_id": 7, "timestamp": 67, "details": {"gold": 1, "turn": 6}}
+{"game_id": 1990, "turn": 6, "action_type": "combat_start", "player_id": 7, "timestamp": 68, "details": {"opponent": 2, "hp_a": 150, "hp_b": 143, "board_size_a": 6, "board_size_b": 6}}
+{"game_id": 1990, "turn": 6, "action_type": "combat_start", "player_id": 3, "timestamp": 69, "details": {"opponent": 1, "hp_a": 139, "hp_b": 134, "board_size_a": 6, "board_size_b": 6}}
+{"game_id": 1990, "turn": 6, "action_type": "combat_start", "player_id": 0, "timestamp": 70, "details": {"opponent": 6, "hp_a": 127, "hp_b": 126, "board_size_a": 6, "board_size_b": 5}}
+{"game_id": 1990, "turn": 6, "action_type": "combat_start", "player_id": 4, "timestamp": 71, "details": {"opponent": 5, "hp_a": 123, "hp_b": 97, "board_size_a": 6, "board_size_b": 6}}
+{"game_id": 1990, "turn": 7, "action_type": "shop_roll", "player_id": 0, "timestamp": 72, "details": {"gold": 0, "turn": 7}}
+{"game_id": 1990, "turn": 7, "action_type": "shop_roll", "player_id": 1, "timestamp": 73, "details": {"gold": 1, "turn": 7}}
+{"game_id": 1990, "turn": 7, "action_type": "shop_roll", "player_id": 2, "timestamp": 74, "details": {"gold": 3, "turn": 7}}
+{"game_id": 1990, "turn": 7, "action_type": "shop_roll", "player_id": 3, "timestamp": 75, "details": {"gold": 0, "turn": 7}}
+{"game_id": 1990, "turn": 7, "action_type": "shop_roll", "player_id": 4, "timestamp": 76, "details": {"gold": 0, "turn": 7}}
+{"game_id": 1990, "turn": 7, "action_type": "shop_roll", "player_id": 5, "timestamp": 77, "details": {"gold": 1, "turn": 7}}
+{"game_id": 1990, "turn": 7, "action_type": "shop_roll", "player_id": 6, "timestamp": 78, "details": {"gold": 10, "turn": 7}}
+{"game_id": 1990, "turn": 7, "action_type": "shop_roll", "player_id": 7, "timestamp": 79, "details": {"gold": 1, "turn": 7}}
+{"game_id": 1990, "turn": 7, "action_type": "combat_start", "player_id": 7, "timestamp": 80, "details": {"opponent": 1, "hp_a": 150, "hp_b": 134, "board_size_a": 7, "board_size_b": 7}}
+{"game_id": 1990, "turn": 7, "action_type": "combat_start", "player_id": 3, "timestamp": 81, "details": {"opponent": 0, "hp_a": 128, "hp_b": 127, "board_size_a": 7, "board_size_b": 7}}
+{"game_id": 1990, "turn": 7, "action_type": "combat_start", "player_id": 6, "timestamp": 82, "details": {"opponent": 4, "hp_a": 121, "hp_b": 114, "board_size_a": 6, "board_size_b": 6}}
+{"game_id": 1990, "turn": 7, "action_type": "combat_start", "player_id": 5, "timestamp": 83, "details": {"opponent": 2, "hp_a": 97, "hp_b": 84, "board_size_a": 7, "board_size_b": 7}}
+{"game_id": 1990, "turn": 8, "action_type": "shop_roll", "player_id": 0, "timestamp": 84, "details": {"gold": 0, "turn": 8}}
+{"game_id": 1990, "turn": 8, "action_type": "shop_roll", "player_id": 1, "timestamp": 85, "details": {"gold": 0, "turn": 8}}
+{"game_id": 1990, "turn": 8, "action_type": "shop_roll", "player_id": 2, "timestamp": 86, "details": {"gold": 1, "turn": 8}}
+{"game_id": 1990, "turn": 8, "action_type": "shop_roll", "player_id": 3, "timestamp": 87, "details": {"gold": 1, "turn": 8}}
+{"game_id": 1990, "turn": 8, "action_type": "shop_roll", "player_id": 4, "timestamp": 88, "details": {"gold": 0, "turn": 8}}
+{"game_id": 1990, "turn": 8, "action_type": "shop_roll", "player_id": 5, "timestamp": 89, "details": {"gold": 1, "turn": 8}}
+{"game_id": 1990, "turn": 8, "action_type": "shop_roll", "player_id": 6, "timestamp": 90, "details": {"gold": 12, "turn": 8}}
+{"game_id": 1990, "turn": 8, "action_type": "shop_roll", "player_id": 7, "timestamp": 91, "details": {"gold": 2, "turn": 8}}
+{"game_id": 1990, "turn": 8, "action_type": "combat_start", "player_id": 7, "timestamp": 92, "details": {"opponent": 1, "hp_a": 138, "hp_b": 134, "board_size_a": 8, "board_size_b": 8}}
+{"game_id": 1990, "turn": 8, "action_type": "combat_start", "player_id": 0, "timestamp": 93, "details": {"opponent": 3, "hp_a": 127, "hp_b": 123, "board_size_a": 8, "board_size_b": 8}}
+{"game_id": 1990, "turn": 8, "action_type": "combat_start", "player_id": 6, "timestamp": 94, "details": {"opponent": 5, "hp_a": 121, "hp_b": 97, "board_size_a": 7, "board_size_b": 8}}
+{"game_id": 1990, "turn": 8, "action_type": "combat_start", "player_id": 2, "timestamp": 95, "details": {"opponent": 4, "hp_a": 68, "hp_b": 66, "board_size_a": 7, "board_size_b": 7}}
+{"game_id": 1990, "turn": 9, "action_type": "shop_roll", "player_id": 0, "timestamp": 96, "details": {"gold": 0, "turn": 9}}
+{"game_id": 1990, "turn": 9, "action_type": "shop_roll", "player_id": 1, "timestamp": 97, "details": {"gold": 2, "turn": 9}}
+{"game_id": 1990, "turn": 9, "action_type": "shop_roll", "player_id": 2, "timestamp": 98, "details": {"gold": 3, "turn": 9}}
+{"game_id": 1990, "turn": 9, "action_type": "shop_roll", "player_id": 3, "timestamp": 99, "details": {"gold": 1, "turn": 9}}
+{"game_id": 1990, "turn": 9, "action_type": "shop_roll", "player_id": 4, "timestamp": 100, "details": {"gold": 1, "turn": 9}}
+{"game_id": 1990, "turn": 9, "action_type": "shop_roll", "player_id": 5, "timestamp": 101, "details": {"gold": 3, "turn": 9}}
+{"game_id": 1990, "turn": 9, "action_type": "shop_roll", "player_id": 6, "timestamp": 102, "details": {"gold": 14, "turn": 9}}
+{"game_id": 1990, "turn": 9, "action_type": "shop_roll", "player_id": 7, "timestamp": 103, "details": {"gold": 1, "turn": 9}}
+{"game_id": 1990, "turn": 9, "action_type": "combat_start", "player_id": 1, "timestamp": 104, "details": {"opponent": 0, "hp_a": 134, "hp_b": 127, "board_size_a": 9, "board_size_b": 9}}
+{"game_id": 1990, "turn": 9, "action_type": "combat_start", "player_id": 3, "timestamp": 105, "details": {"opponent": 6, "hp_a": 116, "hp_b": 115, "board_size_a": 9, "board_size_b": 8}}
+{"game_id": 1990, "turn": 9, "action_type": "combat_start", "player_id": 7, "timestamp": 106, "details": {"opponent": 5, "hp_a": 113, "hp_b": 97, "board_size_a": 8, "board_size_b": 9}}
+{"game_id": 1990, "turn": 9, "action_type": "combat_start", "player_id": 4, "timestamp": 107, "details": {"opponent": 2, "hp_a": 66, "hp_b": 58, "board_size_a": 8, "board_size_b": 8}}
+{"game_id": 1990, "turn": 10, "action_type": "shop_roll", "player_id": 0, "timestamp": 108, "details": {"gold": 1, "turn": 10}}
+{"game_id": 1990, "turn": 10, "action_type": "shop_roll", "player_id": 1, "timestamp": 109, "details": {"gold": 3, "turn": 10}}
+{"game_id": 1990, "turn": 10, "action_type": "shop_roll", "player_id": 2, "timestamp": 110, "details": {"gold": 2, "turn": 10}}
+{"game_id": 1990, "turn": 10, "action_type": "shop_roll", "player_id": 3, "timestamp": 111, "details": {"gold": 0, "turn": 10}}
+{"game_id": 1990, "turn": 10, "action_type": "shop_roll", "player_id": 4, "timestamp": 112, "details": {"gold": 2, "turn": 10}}
+{"game_id": 1990, "turn": 10, "action_type": "shop_roll", "player_id": 5, "timestamp": 113, "details": {"gold": 4, "turn": 10}}
+{"game_id": 1990, "turn": 10, "action_type": "shop_roll", "player_id": 6, "timestamp": 114, "details": {"gold": 16, "turn": 10}}
+{"game_id": 1990, "turn": 10, "action_type": "shop_roll", "player_id": 7, "timestamp": 115, "details": {"gold": 0, "turn": 10}}
+{"game_id": 1990, "turn": 10, "action_type": "combat_start", "player_id": 1, "timestamp": 116, "details": {"opponent": 3, "hp_a": 134, "hp_b": 116, "board_size_a": 10, "board_size_b": 10}}
+{"game_id": 1990, "turn": 10, "action_type": "combat_start", "player_id": 0, "timestamp": 117, "details": {"opponent": 6, "hp_a": 114, "hp_b": 110, "board_size_a": 10, "board_size_b": 9}}
+{"game_id": 1990, "turn": 10, "action_type": "combat_start", "player_id": 7, "timestamp": 118, "details": {"opponent": 5, "hp_a": 107, "hp_b": 97, "board_size_a": 9, "board_size_b": 10}}
+{"game_id": 1990, "turn": 10, "action_type": "combat_start", "player_id": 4, "timestamp": 119, "details": {"opponent": 2, "hp_a": 66, "hp_b": 49, "board_size_a": 9, "board_size_b": 9}}
+{"game_id": 1990, "turn": 11, "action_type": "shop_roll", "player_id": 0, "timestamp": 120, "details": {"gold": 1, "turn": 11}}
+{"game_id": 1990, "turn": 11, "action_type": "shop_roll", "player_id": 1, "timestamp": 121, "details": {"gold": 5, "turn": 11}}
+{"game_id": 1990, "turn": 11, "action_type": "shop_roll", "player_id": 2, "timestamp": 122, "details": {"gold": 1, "turn": 11}}
+{"game_id": 1990, "turn": 11, "action_type": "shop_roll", "player_id": 3, "timestamp": 123, "details": {"gold": 0, "turn": 11}}
+{"game_id": 1990, "turn": 11, "action_type": "shop_roll", "player_id": 4, "timestamp": 124, "details": {"gold": 3, "turn": 11}}
+{"game_id": 1990, "turn": 11, "action_type": "shop_roll", "player_id": 5, "timestamp": 125, "details": {"gold": 5, "turn": 11}}
+{"game_id": 1990, "turn": 11, "action_type": "shop_roll", "player_id": 6, "timestamp": 126, "details": {"gold": 18, "turn": 11}}
+{"game_id": 1990, "turn": 11, "action_type": "shop_roll", "player_id": 7, "timestamp": 127, "details": {"gold": 1, "turn": 11}}
+{"game_id": 1990, "turn": 11, "action_type": "combat_start", "player_id": 1, "timestamp": 128, "details": {"opponent": 0, "hp_a": 134, "hp_b": 114, "board_size_a": 11, "board_size_b": 11}}
+{"game_id": 1990, "turn": 11, "action_type": "combat_start", "player_id": 7, "timestamp": 129, "details": {"opponent": 6, "hp_a": 107, "hp_b": 103, "board_size_a": 10, "board_size_b": 10}}
+{"game_id": 1990, "turn": 11, "action_type": "combat_start", "player_id": 3, "timestamp": 130, "details": {"opponent": 5, "hp_a": 86, "hp_b": 85, "board_size_a": 10, "board_size_b": 10}}
+{"game_id": 1990, "turn": 11, "action_type": "combat_start", "player_id": 4, "timestamp": 131, "details": {"opponent": 2, "hp_a": 66, "hp_b": 37, "board_size_a": 10, "board_size_b": 10}}
+{"game_id": 1990, "turn": 12, "action_type": "shop_roll", "player_id": 0, "timestamp": 132, "details": {"gold": 4, "turn": 12}}
+{"game_id": 1990, "turn": 12, "action_type": "shop_roll", "player_id": 1, "timestamp": 133, "details": {"gold": 5, "turn": 12}}
+{"game_id": 1990, "turn": 12, "action_type": "shop_roll", "player_id": 2, "timestamp": 134, "details": {"gold": 4, "turn": 12}}
+{"game_id": 1990, "turn": 12, "action_type": "shop_roll", "player_id": 3, "timestamp": 135, "details": {"gold": 1, "turn": 12}}
+{"game_id": 1990, "turn": 12, "action_type": "shop_roll", "player_id": 4, "timestamp": 136, "details": {"gold": 6, "turn": 12}}
+{"game_id": 1990, "turn": 12, "action_type": "shop_roll", "player_id": 5, "timestamp": 137, "details": {"gold": 3, "turn": 12}}
+{"game_id": 1990, "turn": 12, "action_type": "shop_roll", "player_id": 6, "timestamp": 138, "details": {"gold": 20, "turn": 12}}
+{"game_id": 1990, "turn": 12, "action_type": "shop_roll", "player_id": 7, "timestamp": 139, "details": {"gold": 0, "turn": 12}}
+{"game_id": 1990, "turn": 12, "action_type": "combat_start", "player_id": 1, "timestamp": 140, "details": {"opponent": 6, "hp_a": 134, "hp_b": 103, "board_size_a": 12, "board_size_b": 11}}
+{"game_id": 1990, "turn": 12, "action_type": "combat_start", "player_id": 7, "timestamp": 141, "details": {"opponent": 0, "hp_a": 97, "hp_b": 95, "board_size_a": 11, "board_size_b": 11}}
+{"game_id": 1990, "turn": 12, "action_type": "combat_start", "player_id": 3, "timestamp": 142, "details": {"opponent": 5, "hp_a": 86, "hp_b": 79, "board_size_a": 11, "board_size_b": 11}}
+{"game_id": 1990, "turn": 12, "action_type": "combat_start", "player_id": 4, "timestamp": 143, "details": {"opponent": 2, "hp_a": 66, "hp_b": 32, "board_size_a": 10, "board_size_b": 11}}
+{"game_id": 1990, "turn": 13, "action_type": "shop_roll", "player_id": 0, "timestamp": 144, "details": {"gold": 2, "turn": 13}}
+{"game_id": 1990, "turn": 13, "action_type": "shop_roll", "player_id": 1, "timestamp": 145, "details": {"gold": 5, "turn": 13}}
+{"game_id": 1990, "turn": 13, "action_type": "shop_roll", "player_id": 2, "timestamp": 146, "details": {"gold": 7, "turn": 13}}
+{"game_id": 1990, "turn": 13, "action_type": "shop_roll", "player_id": 3, "timestamp": 147, "details": {"gold": 1, "turn": 13}}
+{"game_id": 1990, "turn": 13, "action_type": "shop_roll", "player_id": 4, "timestamp": 148, "details": {"gold": 8, "turn": 13}}
+{"game_id": 1990, "turn": 13, "action_type": "shop_roll", "player_id": 5, "timestamp": 149, "details": {"gold": 1, "turn": 13}}
+{"game_id": 1990, "turn": 13, "action_type": "shop_roll", "player_id": 6, "timestamp": 150, "details": {"gold": 24, "turn": 13}}
+{"game_id": 1990, "turn": 13, "action_type": "shop_roll", "player_id": 7, "timestamp": 151, "details": {"gold": 1, "turn": 13}}
+{"game_id": 1990, "turn": 13, "action_type": "combat_start", "player_id": 1, "timestamp": 152, "details": {"opponent": 7, "hp_a": 134, "hp_b": 97, "board_size_a": 13, "board_size_b": 12}}
+{"game_id": 1990, "turn": 13, "action_type": "combat_start", "player_id": 6, "timestamp": 153, "details": {"opponent": 3, "hp_a": 92, "hp_b": 86, "board_size_a": 12, "board_size_b": 12}}
+{"game_id": 1990, "turn": 13, "action_type": "combat_start", "player_id": 0, "timestamp": 154, "details": {"opponent": 5, "hp_a": 83, "hp_b": 72, "board_size_a": 11, "board_size_b": 12}}
+{"game_id": 1990, "turn": 13, "action_type": "combat_start", "player_id": 4, "timestamp": 155, "details": {"opponent": 2, "hp_a": 66, "hp_b": 16, "board_size_a": 11, "board_size_b": 12}}
+{"game_id": 1990, "turn": 14, "action_type": "shop_roll", "player_id": 0, "timestamp": 156, "details": {"gold": 0, "turn": 14}}
+{"game_id": 1990, "turn": 14, "action_type": "shop_roll", "player_id": 1, "timestamp": 157, "details": {"gold": 6, "turn": 14}}
+{"game_id": 1990, "turn": 14, "action_type": "shop_roll", "player_id": 3, "timestamp": 158, "details": {"gold": 0, "turn": 14}}
+{"game_id": 1990, "turn": 14, "action_type": "shop_roll", "player_id": 4, "timestamp": 159, "details": {"gold": 8, "turn": 14}}
+{"game_id": 1990, "turn": 14, "action_type": "shop_roll", "player_id": 5, "timestamp": 160, "details": {"gold": 2, "turn": 14}}
+{"game_id": 1990, "turn": 14, "action_type": "shop_roll", "player_id": 6, "timestamp": 161, "details": {"gold": 28, "turn": 14}}
+{"game_id": 1990, "turn": 14, "action_type": "shop_roll", "player_id": 7, "timestamp": 162, "details": {"gold": 0, "turn": 14}}
+{"game_id": 1990, "turn": 14, "action_type": "combat_start", "player_id": 1, "timestamp": 163, "details": {"opponent": 3, "hp_a": 134, "hp_b": 86, "board_size_a": 14, "board_size_b": 13}}
+{"game_id": 1990, "turn": 14, "action_type": "combat_start", "player_id": 0, "timestamp": 164, "details": {"opponent": 7, "hp_a": 83, "hp_b": 80, "board_size_a": 12, "board_size_b": 13}}
+{"game_id": 1990, "turn": 14, "action_type": "combat_start", "player_id": 6, "timestamp": 165, "details": {"opponent": 5, "hp_a": 77, "hp_b": 66, "board_size_a": 12, "board_size_b": 13}}
+{"game_id": 1990, "turn": 15, "action_type": "shop_roll", "player_id": 0, "timestamp": 166, "details": {"gold": 0, "turn": 15}}
+{"game_id": 1990, "turn": 15, "action_type": "shop_roll", "player_id": 1, "timestamp": 167, "details": {"gold": 5, "turn": 15}}
+{"game_id": 1990, "turn": 15, "action_type": "shop_roll", "player_id": 3, "timestamp": 168, "details": {"gold": 3, "turn": 15}}
+{"game_id": 1990, "turn": 15, "action_type": "shop_roll", "player_id": 4, "timestamp": 169, "details": {"gold": 13, "turn": 15}}
+{"game_id": 1990, "turn": 15, "action_type": "shop_roll", "player_id": 5, "timestamp": 170, "details": {"gold": 3, "turn": 15}}
+{"game_id": 1990, "turn": 15, "action_type": "shop_roll", "player_id": 6, "timestamp": 171, "details": {"gold": 30, "turn": 15}}
+{"game_id": 1990, "turn": 15, "action_type": "shop_roll", "player_id": 7, "timestamp": 172, "details": {"gold": 1, "turn": 15}}
+{"game_id": 1990, "turn": 15, "action_type": "combat_start", "player_id": 1, "timestamp": 173, "details": {"opponent": 0, "hp_a": 134, "hp_b": 83, "board_size_a": 15, "board_size_b": 13}}
+{"game_id": 1990, "turn": 15, "action_type": "combat_start", "player_id": 3, "timestamp": 174, "details": {"opponent": 7, "hp_a": 72, "hp_b": 68, "board_size_a": 14, "board_size_b": 14}}
+{"game_id": 1990, "turn": 15, "action_type": "combat_start", "player_id": 4, "timestamp": 175, "details": {"opponent": 5, "hp_a": 66, "hp_b": 66, "board_size_a": 13, "board_size_b": 14}}
+{"game_id": 1990, "turn": 16, "action_type": "shop_roll", "player_id": 0, "timestamp": 176, "details": {"gold": 0, "turn": 16}}
+{"game_id": 1990, "turn": 16, "action_type": "shop_roll", "player_id": 1, "timestamp": 177, "details": {"gold": 6, "turn": 16}}
+{"game_id": 1990, "turn": 16, "action_type": "shop_roll", "player_id": 3, "timestamp": 178, "details": {"gold": 3, "turn": 16}}
+{"game_id": 1990, "turn": 16, "action_type": "shop_roll", "player_id": 4, "timestamp": 179, "details": {"gold": 19, "turn": 16}}
+{"game_id": 1990, "turn": 16, "action_type": "shop_roll", "player_id": 5, "timestamp": 180, "details": {"gold": 2, "turn": 16}}
+{"game_id": 1990, "turn": 16, "action_type": "shop_roll", "player_id": 6, "timestamp": 181, "details": {"gold": 33, "turn": 16}}
+{"game_id": 1990, "turn": 16, "action_type": "shop_roll", "player_id": 7, "timestamp": 182, "details": {"gold": 1, "turn": 16}}
+{"game_id": 1990, "turn": 16, "action_type": "combat_start", "player_id": 1, "timestamp": 183, "details": {"opponent": 0, "hp_a": 115, "hp_b": 83, "board_size_a": 14, "board_size_b": 14}}
+{"game_id": 1990, "turn": 16, "action_type": "combat_start", "player_id": 7, "timestamp": 184, "details": {"opponent": 4, "hp_a": 68, "hp_b": 66, "board_size_a": 15, "board_size_b": 13}}
+{"game_id": 1990, "turn": 16, "action_type": "combat_start", "player_id": 3, "timestamp": 185, "details": {"opponent": 6, "hp_a": 64, "hp_b": 56, "board_size_a": 15, "board_size_b": 14}}
+{"game_id": 1990, "turn": 17, "action_type": "shop_roll", "player_id": 0, "timestamp": 186, "details": {"gold": 1, "turn": 17}}
+{"game_id": 1990, "turn": 17, "action_type": "shop_roll", "player_id": 1, "timestamp": 187, "details": {"gold": 2, "turn": 17}}
+{"game_id": 1990, "turn": 17, "action_type": "shop_roll", "player_id": 3, "timestamp": 188, "details": {"gold": 2, "turn": 17}}
+{"game_id": 1990, "turn": 17, "action_type": "shop_roll", "player_id": 4, "timestamp": 189, "details": {"gold": 25, "turn": 17}}
+{"game_id": 1990, "turn": 17, "action_type": "shop_roll", "player_id": 5, "timestamp": 190, "details": {"gold": 1, "turn": 17}}
+{"game_id": 1990, "turn": 17, "action_type": "shop_roll", "player_id": 6, "timestamp": 191, "details": {"gold": 37, "turn": 17}}
+{"game_id": 1990, "turn": 17, "action_type": "shop_roll", "player_id": 7, "timestamp": 192, "details": {"gold": 1, "turn": 17}}
+{"game_id": 1990, "turn": 17, "action_type": "combat_start", "player_id": 1, "timestamp": 193, "details": {"opponent": 0, "hp_a": 115, "hp_b": 69, "board_size_a": 15, "board_size_b": 14}}
+{"game_id": 1990, "turn": 17, "action_type": "combat_start", "player_id": 4, "timestamp": 194, "details": {"opponent": 3, "hp_a": 66, "hp_b": 64, "board_size_a": 14, "board_size_b": 16}}
+{"game_id": 1990, "turn": 17, "action_type": "combat_start", "player_id": 5, "timestamp": 195, "details": {"opponent": 7, "hp_a": 41, "hp_b": 34, "board_size_a": 13, "board_size_b": 15}}
+{"game_id": 1990, "turn": 18, "action_type": "shop_roll", "player_id": 0, "timestamp": 196, "details": {"gold": 2, "turn": 18}}
+{"game_id": 1990, "turn": 18, "action_type": "shop_roll", "player_id": 1, "timestamp": 197, "details": {"gold": 2, "turn": 18}}
+{"game_id": 1990, "turn": 18, "action_type": "shop_roll", "player_id": 3, "timestamp": 198, "details": {"gold": 2, "turn": 18}}
+{"game_id": 1990, "turn": 18, "action_type": "shop_roll", "player_id": 4, "timestamp": 199, "details": {"gold": 30, "turn": 18}}
+{"game_id": 1990, "turn": 18, "action_type": "shop_roll", "player_id": 5, "timestamp": 200, "details": {"gold": 2, "turn": 18}}
+{"game_id": 1990, "turn": 18, "action_type": "shop_roll", "player_id": 6, "timestamp": 201, "details": {"gold": 43, "turn": 18}}
+{"game_id": 1990, "turn": 18, "action_type": "shop_roll", "player_id": 7, "timestamp": 202, "details": {"gold": 5, "turn": 18}}
+{"game_id": 1990, "turn": 18, "action_type": "combat_start", "player_id": 1, "timestamp": 203, "details": {"opponent": 4, "hp_a": 115, "hp_b": 66, "board_size_a": 16, "board_size_b": 15}}
+{"game_id": 1990, "turn": 18, "action_type": "combat_start", "player_id": 0, "timestamp": 204, "details": {"opponent": 5, "hp_a": 60, "hp_b": 41, "board_size_a": 15, "board_size_b": 14}}
+{"game_id": 1990, "turn": 18, "action_type": "combat_start", "player_id": 3, "timestamp": 205, "details": {"opponent": 6, "hp_a": 31, "hp_b": 29, "board_size_a": 16, "board_size_b": 14}}
+{"game_id": 1990, "turn": 19, "action_type": "shop_roll", "player_id": 0, "timestamp": 206, "details": {"gold": 3, "turn": 19}}
+{"game_id": 1990, "turn": 19, "action_type": "shop_roll", "player_id": 1, "timestamp": 207, "details": {"gold": 0, "turn": 19}}
+{"game_id": 1990, "turn": 19, "action_type": "shop_roll", "player_id": 3, "timestamp": 208, "details": {"gold": 7, "turn": 19}}
+{"game_id": 1990, "turn": 19, "action_type": "shop_roll", "player_id": 4, "timestamp": 209, "details": {"gold": 38, "turn": 19}}
+{"game_id": 1990, "turn": 19, "action_type": "shop_roll", "player_id": 5, "timestamp": 210, "details": {"gold": 3, "turn": 19}}
+{"game_id": 1990, "turn": 19, "action_type": "shop_roll", "player_id": 6, "timestamp": 211, "details": {"gold": 51, "turn": 19}}
+{"game_id": 1990, "turn": 19, "action_type": "shop_roll", "player_id": 7, "timestamp": 212, "details": {"gold": 7, "turn": 19}}
+{"game_id": 1990, "turn": 19, "action_type": "combat_start", "player_id": 1, "timestamp": 213, "details": {"opponent": 4, "hp_a": 102, "hp_b": 66, "board_size_a": 17, "board_size_b": 16}}
+{"game_id": 1990, "turn": 19, "action_type": "combat_start", "player_id": 0, "timestamp": 214, "details": {"opponent": 3, "hp_a": 60, "hp_b": 31, "board_size_a": 16, "board_size_b": 16}}
+{"game_id": 1990, "turn": 19, "action_type": "combat_start", "player_id": 7, "timestamp": 215, "details": {"opponent": 5, "hp_a": 27, "hp_b": 21, "board_size_a": 17, "board_size_b": 15}}
+{"game_id": 1990, "turn": 20, "action_type": "shop_roll", "player_id": 0, "timestamp": 216, "details": {"gold": 2, "turn": 20}}
+{"game_id": 1990, "turn": 20, "action_type": "shop_roll", "player_id": 1, "timestamp": 217, "details": {"gold": 1, "turn": 20}}
+{"game_id": 1990, "turn": 20, "action_type": "shop_roll", "player_id": 3, "timestamp": 218, "details": {"gold": 9, "turn": 20}}
+{"game_id": 1990, "turn": 20, "action_type": "shop_roll", "player_id": 4, "timestamp": 219, "details": {"gold": 46, "turn": 20}}
+{"game_id": 1990, "turn": 20, "action_type": "shop_roll", "player_id": 5, "timestamp": 220, "details": {"gold": 4, "turn": 20}}
+{"game_id": 1990, "turn": 20, "action_type": "shop_roll", "player_id": 6, "timestamp": 221, "details": {"gold": 62, "turn": 20}}
+{"game_id": 1990, "turn": 20, "action_type": "shop_roll", "player_id": 7, "timestamp": 222, "details": {"gold": 12, "turn": 20}}
+{"game_id": 1990, "turn": 20, "action_type": "combat_start", "player_id": 1, "timestamp": 223, "details": {"opponent": 4, "hp_a": 102, "hp_b": 66, "board_size_a": 18, "board_size_b": 17}}
+{"game_id": 1990, "turn": 20, "action_type": "combat_start", "player_id": 0, "timestamp": 224, "details": {"opponent": 7, "hp_a": 60, "hp_b": 27, "board_size_a": 17, "board_size_b": 17}}
+{"game_id": 1990, "turn": 20, "action_type": "combat_start", "player_id": 3, "timestamp": 225, "details": {"opponent": 6, "hp_a": 20, "hp_b": 11, "board_size_a": 17, "board_size_b": 15}}
+{"game_id": 1990, "turn": 21, "action_type": "shop_roll", "player_id": 0, "timestamp": 226, "details": {"gold": 5, "turn": 21}}
+{"game_id": 1990, "turn": 21, "action_type": "shop_roll", "player_id": 1, "timestamp": 227, "details": {"gold": 4, "turn": 21}}
+{"game_id": 1990, "turn": 21, "action_type": "shop_roll", "player_id": 3, "timestamp": 228, "details": {"gold": 13, "turn": 21}}
+{"game_id": 1990, "turn": 21, "action_type": "shop_roll", "player_id": 4, "timestamp": 229, "details": {"gold": 52, "turn": 21}}
+{"game_id": 1990, "turn": 21, "action_type": "shop_roll", "player_id": 5, "timestamp": 230, "details": {"gold": 3, "turn": 21}}
+{"game_id": 1990, "turn": 21, "action_type": "combat_start", "player_id": 1, "timestamp": 231, "details": {"opponent": 0, "hp_a": 102, "hp_b": 60, "board_size_a": 19, "board_size_b": 18}}
+{"game_id": 1990, "turn": 21, "action_type": "combat_start", "player_id": 4, "timestamp": 232, "details": {"opponent": 3, "hp_a": 54, "hp_b": 20, "board_size_a": 18, "board_size_b": 18}}
+{"game_id": 1990, "turn": 22, "action_type": "shop_roll", "player_id": 0, "timestamp": 233, "details": {"gold": 3, "turn": 22}}
+{"game_id": 1990, "turn": 22, "action_type": "shop_roll", "player_id": 1, "timestamp": 234, "details": {"gold": 2, "turn": 22}}
+{"game_id": 1990, "turn": 22, "action_type": "shop_roll", "player_id": 3, "timestamp": 235, "details": {"gold": 16, "turn": 22}}
+{"game_id": 1990, "turn": 22, "action_type": "shop_roll", "player_id": 4, "timestamp": 236, "details": {"gold": 59, "turn": 22}}
+{"game_id": 1990, "turn": 22, "action_type": "shop_roll", "player_id": 5, "timestamp": 237, "details": {"gold": 4, "turn": 22}}
+{"game_id": 1990, "turn": 22, "action_type": "combat_start", "player_id": 1, "timestamp": 238, "details": {"opponent": 0, "hp_a": 102, "hp_b": 43, "board_size_a": 19, "board_size_b": 19}}
+{"game_id": 1990, "turn": 22, "action_type": "combat_start", "player_id": 4, "timestamp": 239, "details": {"opponent": 3, "hp_a": 34, "hp_b": 20, "board_size_a": 17, "board_size_b": 19}}
+{"game_id": 1990, "turn": 23, "action_type": "shop_roll", "player_id": 0, "timestamp": 240, "details": {"gold": 6, "turn": 23}}
+{"game_id": 1990, "turn": 23, "action_type": "shop_roll", "player_id": 1, "timestamp": 241, "details": {"gold": 4, "turn": 23}}
+{"game_id": 1990, "turn": 23, "action_type": "shop_roll", "player_id": 4, "timestamp": 242, "details": {"gold": 69, "turn": 23}}
+{"game_id": 1990, "turn": 23, "action_type": "shop_roll", "player_id": 5, "timestamp": 243, "details": {"gold": 5, "turn": 23}}
+{"game_id": 1990, "turn": 23, "action_type": "combat_start", "player_id": 1, "timestamp": 244, "details": {"opponent": 4, "hp_a": 102, "hp_b": 34, "board_size_a": 19, "board_size_b": 18}}
+{"game_id": 1990, "turn": 23, "action_type": "combat_start", "player_id": 0, "timestamp": 245, "details": {"opponent": 5, "hp_a": 12, "hp_b": 2, "board_size_a": 18, "board_size_b": 17}}
+{"game_id": 1990, "turn": 24, "action_type": "shop_roll", "player_id": 0, "timestamp": 246, "details": {"gold": 8, "turn": 24}}
+{"game_id": 1990, "turn": 24, "action_type": "shop_roll", "player_id": 1, "timestamp": 247, "details": {"gold": 3, "turn": 24}}
+{"game_id": 1990, "turn": 24, "action_type": "shop_roll", "player_id": 4, "timestamp": 248, "details": {"gold": 80, "turn": 24}}
+{"game_id": 1990, "turn": 24, "action_type": "shop_roll", "player_id": 5, "timestamp": 249, "details": {"gold": 9, "turn": 24}}
+{"game_id": 1990, "turn": 24, "action_type": "combat_start", "player_id": 1, "timestamp": 250, "details": {"opponent": 4, "hp_a": 88, "hp_b": 34, "board_size_a": 20, "board_size_b": 18}}
+{"game_id": 1990, "turn": 24, "action_type": "combat_start", "player_id": 0, "timestamp": 251, "details": {"opponent": 5, "hp_a": 12, "hp_b": 2, "board_size_a": 18, "board_size_b": 17}}
+{"game_id": 1990, "turn": 25, "action_type": "shop_roll", "player_id": 0, "timestamp": 252, "details": {"gold": 11, "turn": 25}}
+{"game_id": 1990, "turn": 25, "action_type": "shop_roll", "player_id": 1, "timestamp": 253, "details": {"gold": 1, "turn": 25}}
+{"game_id": 1990, "turn": 25, "action_type": "shop_roll", "player_id": 4, "timestamp": 254, "details": {"gold": 90, "turn": 25}}
+{"game_id": 1990, "turn": 25, "action_type": "shop_roll", "player_id": 5, "timestamp": 255, "details": {"gold": 13, "turn": 25}}
+{"game_id": 1990, "turn": 25, "action_type": "combat_start", "player_id": 1, "timestamp": 256, "details": {"opponent": 4, "hp_a": 66, "hp_b": 34, "board_size_a": 21, "board_size_b": 19}}
+{"game_id": 1990, "turn": 25, "action_type": "combat_start", "player_id": 0, "timestamp": 257, "details": {"opponent": 5, "hp_a": 3, "hp_b": 2, "board_size_a": 19, "board_size_b": 18}}
+{"game_id": 1990, "turn": 26, "action_type": "shop_roll", "player_id": 0, "timestamp": 258, "details": {"gold": 13, "turn": 26}}
+{"game_id": 1990, "turn": 26, "action_type": "shop_roll", "player_id": 1, "timestamp": 259, "details": {"gold": 4, "turn": 26}}
+{"game_id": 1990, "turn": 26, "action_type": "shop_roll", "player_id": 4, "timestamp": 260, "details": {"gold": 102, "turn": 26}}
+{"game_id": 1990, "turn": 26, "action_type": "combat_start", "player_id": 4, "timestamp": 261, "details": {"opponent": 1, "hp_a": 34, "hp_b": 31, "board_size_a": 20, "board_size_b": 21}}
+{"game_id": 1990, "turn": 27, "action_type": "shop_roll", "player_id": 0, "timestamp": 262, "details": {"gold": 18, "turn": 27}}
+{"game_id": 1990, "turn": 27, "action_type": "shop_roll", "player_id": 1, "timestamp": 263, "details": {"gold": 11, "turn": 27}}
+{"game_id": 1990, "turn": 27, "action_type": "shop_roll", "player_id": 4, "timestamp": 264, "details": {"gold": 113, "turn": 27}}
+{"game_id": 1990, "turn": 27, "action_type": "combat_start", "player_id": 4, "timestamp": 265, "details": {"opponent": 1, "hp_a": 34, "hp_b": 13, "board_size_a": 20, "board_size_b": 22}}
+{"game_id": 1990, "turn": 28, "action_type": "shop_roll", "player_id": 0, "timestamp": 266, "details": {"gold": 18, "turn": 28}}
+{"game_id": 1990, "turn": 28, "action_type": "shop_roll", "player_id": 1, "timestamp": 267, "details": {"gold": 15, "turn": 28}}
+{"game_id": 1990, "turn": 28, "action_type": "shop_roll", "player_id": 4, "timestamp": 268, "details": {"gold": 124, "turn": 28}}
+{"game_id": 1990, "turn": 28, "action_type": "combat_start", "player_id": 4, "timestamp": 269, "details": {"opponent": 0, "hp_a": 34, "hp_b": 3, "board_size_a": 20, "board_size_b": 22}}
+{"game_id": 1990, "turn": 29, "action_type": "shop_roll", "player_id": 0, "timestamp": 270, "details": {"gold": 22, "turn": 29}}
+{"game_id": 1990, "turn": 29, "action_type": "shop_roll", "player_id": 1, "timestamp": 271, "details": {"gold": 15, "turn": 29}}
+{"game_id": 1990, "turn": 29, "action_type": "shop_roll", "player_id": 4, "timestamp": 272, "details": {"gold": 135, "turn": 29}}
+{"game_id": 1990, "turn": 29, "action_type": "combat_start", "player_id": 4, "timestamp": 273, "details": {"opponent": 0, "hp_a": 21, "hp_b": 3, "board_size_a": 17, "board_size_b": 22}}
+{"game_id": 1990, "turn": 30, "action_type": "shop_roll", "player_id": 0, "timestamp": 274, "details": {"gold": 27, "turn": 30}}
+{"game_id": 1990, "turn": 30, "action_type": "shop_roll", "player_id": 1, "timestamp": 275, "details": {"gold": 19, "turn": 30}}
+{"game_id": 1990, "turn": 30, "action_type": "combat_start", "player_id": 0, "timestamp": 276, "details": {"opponent": 1, "hp_a": 3, "hp_b": 2, "board_size_a": 22, "board_size_b": 25}}

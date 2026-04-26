@@ -1,0 +1,24 @@
+================================================================================
+COMPREHENSIVE 8-PLAYER SIMULATION - EXECUTIVE SUMMARY
+================================================================================
+
+Simulation Date: 2026-03-29 14:51:28
+Total Games: 2000
+Players per Game: 8
+Strategies Tested: random, warrior, builder, evolver, economist, balancer, rare_hunter, tempo
+Deterministic Seed: 42
+
+Average Game Length: 25.2 turns
+
+STRATEGY RANKINGS
+--------------------------------------------------------------------------------
+Rank   Strategy        Win %      Top4 %     Avg Place   
+--------------------------------------------------------------------------------
+1      tempo           45.40      65.95      3.26        
+2      builder         33.95      67.30      3.48        
+3      rare_hunter     6.55       43.15      4.87        
+4      warrior         4.40       48.50      4.83        
+5      evolver         3.50       44.15      4.76        
+6      economist       2.90       43.50      4.90        
+7      balancer        2.85       44.40      4.97        
+8      random          0.45       43.05      4.94        

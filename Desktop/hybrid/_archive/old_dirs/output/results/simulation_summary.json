@@ -1,0 +1,24 @@
+{
+  "games": 500,
+  "runtime_seconds": 18.2,
+  "games_per_second": 27.47,
+  "avg_turns": 25.94,
+  "median_turns": 26.0,
+  "fastest_game": 17,
+  "longest_game": 38,
+  "strategy_win_rates": {
+    "random": 3.83,
+    "warrior": 16.67,
+    "builder": 11.95,
+    "evolver": 20.23,
+    "economist": 38.68,
+    "balancer": 14.35,
+    "rare_hunter": 28.0,
+    "tempo": 67.2
+  },
+  "avg_combo": 779.96,
+  "avg_synergy": 321.27,
+  "avg_damage": 560.2,
+  "economy_std": 38.11,
+  "errors": 0
+}

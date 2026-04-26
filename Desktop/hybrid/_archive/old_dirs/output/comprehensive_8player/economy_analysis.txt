@@ -1,0 +1,12 @@
+================================================================================
+ECONOMY ANALYSIS
+================================================================================
+
+random: Avg gold earned = 100.4
+warrior: Avg gold earned = 100.2
+builder: Avg gold earned = 149.9
+evolver: Avg gold earned = 99.0
+economist: Avg gold earned = 184.0
+balancer: Avg gold earned = 97.4
+rare_hunter: Avg gold earned = 99.2
+tempo: Avg gold earned = 123.4

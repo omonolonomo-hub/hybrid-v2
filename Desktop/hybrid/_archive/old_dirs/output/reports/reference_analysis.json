@@ -1,0 +1,121 @@
+{
+  "total_issues": 15,
+  "by_severity": {
+    "MEDIUM": 3,
+    "HIGH": 12
+  },
+  "issues": [
+    {
+      "type": "OLD_ASSET_PATH",
+      "file": "engine_core\\autochess_sim_v06.py",
+      "line": 260,
+      "old": "os.path.join(base_dir, \"..\", \"assets\", \"data\", \"cards.json\")",
+      "new": "\"os.path.join(base_dir, \"assets\", \"data\", \"cards.json\")\"",
+      "severity": "MEDIUM"
+    },
+    {
+      "type": "OLD_ASSET_PATH",
+      "file": "analyze_references.py",
+      "line": 88,
+      "old": "os.path.join(base_dir, \"assets\", \"data\", \"cards.json\")",
+      "new": "\"os.path.join(base_dir, \"assets\", \"data\", \"cards.json\")\"",
+      "severity": "MEDIUM"
+    },
+    {
+      "type": "OLD_ASSET_PATH",
+      "file": "fix_imports.py",
+      "line": 52,
+      "old": "os.path.join(base_dir, \"..\", \"assets\", \"data\", \"cards.json\")",
+      "new": "\"os.path.join(base_dir, \"assets\", \"data\", \"cards.json\")\"",
+      "severity": "MEDIUM"
+    },
+    {
+      "type": "MISSING_FILE",
+      "file": "engine_core\\autochess_sim_v06.py",
+      "line": 2209,
+      "missing": "simulation_log.txt",
+      "severity": "HIGH"
+    },
+    {
+      "type": "MISSING_FILE",
+      "file": "engine_core\\autochess_sim_v06.py",
+      "line": 2236,
+      "missing": "simulation_log.txt",
+      "severity": "HIGH"
+    },
+    {
+      "type": "MISSING_FILE",
+      "file": "engine_core\\autochess_sim_v06.py",
+      "line": 260,
+      "missing": ")\n    with open(json_path, ",
+      "severity": "HIGH"
+    },
+    {
+      "type": "MISSING_FILE",
+      "file": "tools\\parse_other.py",
+      "line": 6,
+      "missing": ")\n\nwith open(os.path.join(DATA_DIR, ",
+      "severity": "HIGH"
+    },
+    {
+      "type": "MISSING_FILE",
+      "file": "tools\\parse_other.py",
+      "line": 17,
+      "missing": "), ",
+      "severity": "HIGH"
+    },
+    {
+      "type": "MISSING_FILE",
+      "file": "scripts\\simulation\\run_simulation.py",
+      "line": 178,
+      "missing": "simulation_errors.log",
+      "severity": "HIGH"
+    },
+    {
+      "type": "MISSING_FILE",
+      "file": "scripts\\simulation\\run_simulation.py",
+      "line": 218,
+      "missing": "simulation_summary.json",
+      "severity": "HIGH"
+    },
+    {
+      "type": "MISSING_FILE",
+      "file": "scripts\\simulation\\run_simulation.py",
+      "line": 222,
+      "missing": "simulation_games.csv",
+      "severity": "HIGH"
+    },
+    {
+      "type": "MISSING_FILE",
+      "file": "analyze_references.py",
+      "line": 88,
+      "missing": ")",
+      "severity": "HIGH"
+    },
+    {
+      "type": "MISSING_FILE",
+      "file": "scripts\\validation\\verify_results.py",
+      "line": 3,
+      "missing": "simulation_summary.json",
+      "severity": "HIGH"
+    },
+    {
+      "type": "MISSING_FILE",
+      "file": "fix_imports.py",
+      "line": 52,
+      "missing": ")",
+      "severity": "HIGH"
+    },
+    {
+      "type": "MISSING_FILE",
+      "file": "scripts\\simulation\\analyze_all_batches.py",
+      "line": 85,
+      "missing": "kpi_logs/OVERALL_SUMMARY.txt",
+      "severity": "HIGH"
+    }
+  ],
+  "stats": {
+    "python_files": 31,
+    "asset_files": 1223
+  }
+}

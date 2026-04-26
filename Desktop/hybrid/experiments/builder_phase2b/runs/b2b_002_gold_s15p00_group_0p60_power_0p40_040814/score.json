@@ -1,0 +1,20 @@
+{
+  "run_id": "b2b_002_gold_s15p00_group_0p60_power_0p40_040814",
+  "fitness": 20.3313,
+  "detail": {
+    "win_rate": 1.7,
+    "avg_kill": 8.56,
+    "avg_hp": 0.39,
+    "gold_efficiency": 0.813,
+    "max_deviation": 10.8,
+    "dominant": "economist",
+    "win_term": 5.1,
+    "kill_term": 12.84,
+    "gold_term": 3.252,
+    "hp_term": 0.312,
+    "dev_penalty": 0.0,
+    "dur_penalty": 1.1728,
+    "elapsed_s": 317.28
+  },
+  "timestamp": "2026-04-06T04:13:31.723337"
+}
