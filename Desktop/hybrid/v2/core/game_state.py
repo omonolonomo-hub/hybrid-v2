@@ -37,15 +37,31 @@ class GameState:
     def hook_engine(self, engine):
         self._adapter = EngineAdapter(engine)
         self._attach_engine_signals()
+        self._attach_board_mutation_callbacks()
 
     def cleanup(self) -> None:
         """Explicitly cleanup resources. Call before discarding GameState instance.
         
         This method is idempotent and can be safely called multiple times.
         """
+        self._detach_board_mutation_callbacks()
         self._detach_engine_signals()
         self._cached_public_state = None
         self._adapter = None
+    
+    def _detach_board_mutation_callbacks(self) -> None:
+        """Unhook Board._mutation_callback to prevent memory leaks."""
+        if not self._adapter:
+            return
+        game = getattr(self._adapter, "_engine", None)
+        if game is None:
+            return
+        
+        # Clear mutation callbacks for all player boards
+        for player in game.players:
+            board = getattr(player, "board", None)
+            if board is not None:
+                board._mutation_callback = None
 
     def _attach_engine_signals(self) -> None:
         """Hook engine signals to invalidate cached public state."""
@@ -84,9 +100,41 @@ class GameState:
         game.signals.turn_started.disconnect(self._on_turn_started)
         game.signals.combat_finished.disconnect(self._invalidate_cache)
 
-    def _attach_board_mutation_hooks(self) -> None:
-        """Deprecated: use _attach_engine_signals instead."""
-        pass
+    def _attach_board_mutation_callbacks(self) -> None:
+        """Hook Board._mutation_callback to invalidate cache on direct board mutations.
+        
+        This ensures that board mutations happening outside GameState APIs
+        (e.g., direct Board.place() or Board.remove() calls) still trigger
+        cache invalidation and signal emission.
+        """
+        if not self._adapter:
+            return
+        game = getattr(self._adapter, "_engine", None)
+        if game is None:
+            return
+        
+        # Hook mutation callback for all player boards
+        for player in game.players:
+            board = getattr(player, "board", None)
+            if board is not None:
+                # Bind callback that emits board_mutated signal
+                board._mutation_callback = lambda pid=player.pid: self._on_direct_board_mutation(pid)
+    
+    def _on_direct_board_mutation(self, pid: int) -> None:
+        """Handle direct board mutations (Board.place/remove called outside GameState).
+        
+        Emits board_mutated signal to ensure cache invalidation and UI updates.
+        """
+        if not self._adapter:
+            return
+        game = getattr(self._adapter, "_engine", None)
+        if game is None or not hasattr(game, "signals"):
+            # Fallback: direct cache invalidation if signals unavailable
+            self._on_board_mutated(pid=pid)
+            return
+        
+        # Emit signal to trigger normal invalidation flow
+        game.signals.board_mutated.emit(pid=pid)
 
     # ------------------------------------------------------------------ cache
     def _on_board_mutated(self, **kwargs) -> None:

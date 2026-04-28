@@ -1,0 +1,3 @@
+"""
+AI strategies package.
+"""

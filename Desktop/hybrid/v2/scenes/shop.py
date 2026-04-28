@@ -2,7 +2,7 @@ import pygame
 from collections import defaultdict
 from typing import Optional, Any
 
-from v2.constants import Colors, Layout, Paths, Screen, GridMath, STAT_TO_GROUP, CameraState
+from v2.constants import Colors, Layout, Paths, Screen, GridMath, STAT_TO_GROUP
 from v2.core.action_result import ActionResult
 from v2.core.exceptions import AutochessException
 from v2.core.game_state import GameState
@@ -13,16 +13,16 @@ from v2.ui.hand_panel import HandPanel
 from v2.ui.info_box import InfoBox
 from v2.ui.lobby_panel import LobbyPanel
 from v2.ui.minimap_hud import MinimapHUD
-from v2.ui.player_hub import PlayerHub, PlayerHubData
+from v2.ui.player_hub import PlayerHub, PlayerHubData, build_hub_data
 from v2.ui.shop_panel import ShopPanel
 from v2.ui.synergy_hud import SynergyHud
 from v2.ui.timer_bar import TimerBar
-from v2.ui.widgets import FloatingTextManager
+from v2.ui.ui_feedback_manager import UIFeedbackManager
+from v2.ui.copy_label_renderer import CopyLabelRenderer
 from v2.assets.loader import AssetLoader
 from v2.ui.background_manager import BackgroundManager
+from v2.ui.hex_math import axial_to_pixel, pixel_to_axial
 from v2.ui.hex_grid import (
-    axial_to_pixel,
-    pixel_to_axial,
     render_ghost_preview,
     render_hex_grid,
     render_hex_grid_cached,
@@ -33,13 +33,15 @@ from v2.ui.hex_grid import (
 from v2.ui.hex_grid_config import HexGridConfig
 from v2.ui.card_flip import CardFlip
 from v2.ui.board_surface_cache import BoardSurfaceCache
+from v2.ui.audio_system import AudioSystem
+from v2.ui.hover_control import HoverControl
+from v2.ui.drag_drop_handler import DragDropHandler
+from v2.ui.camera_controller import CameraController
+from v2.ui.board_renderer import BoardRenderer
 
 
 class ShopScene(Scene):
     _HOVER_DELAY_MS = 150
-    _TIER_SET = frozenset({2, 3, 4, 5, 6})
-    _TIER_COLORS = {"MIND": Colors.MIND, "CONNECTION": Colors.CONNECTION, "EXISTENCE": Colors.EXISTENCE}
-    _TIER_SHORT = {"MIND": "MIND", "CONNECTION": "CONN", "EXISTENCE": "EXST"}
 
     def __init__(self, game_state: Optional[GameState] = None):
         super().__init__()
@@ -52,7 +54,8 @@ class ShopScene(Scene):
         self.lobby_panel = LobbyPanel(player_count=8)
         self.timer_bar = TimerBar()
         self.minimap = MinimapHUD(Screen.W, Screen.H)
-        self.ft_manager = FloatingTextManager()
+        self._feedback = UIFeedbackManager()
+        self._copy_renderer = CopyLabelRenderer()
 
         self.phase_machine = PhaseMachine()
         self.phase_machine.set_callback(self._on_phase_change)
@@ -62,30 +65,21 @@ class ShopScene(Scene):
         self._public_state = None
         # PlayerHub view is derived from PublicState; avoid rebuilding every frame.
         self._hub_last_state = None
-        self.camera = CameraState()
         self._lobby_players = []
         # Snapshot of lobby players as last rendered; used for click hit-testing
         # so UI interactions match what the player actually saw on screen.
         self._rendered_lobby_players = []
         self._income_data = (10, 150, 0, 1.0)
-        self._prev_synergy_total = 0
-        self._prev_group_counts = {"MIND": 0, "CONNECTION": 0, "EXISTENCE": 0}
-        self._seen_copy_milestones = set()
 
-        self.world_drag = {"is_dragging": False, "last_mouse_pos": (0, 0)}
         self._shop_info = InfoBox(self.shop_panel.info_rect)
         self._hand_info = InfoBox(self.hand_panel.info_rect)
-        self._hover = {"panel": None, "slot_idx": -1, "coord": None, "elapsed_ms": 0.0, "active": False}
-        self.drag_state = {
-            "is_dragging": False,
-            "source_panel": None,
-            "source_index": -1,
-            "mouse_pos": (0, 0),
-            "card_rect": None,
-            "rotation": 0,
-            "card_data": None,
-        }
-        self._board_flips = {}
+        
+        # Refactored components
+        self._hover_control = HoverControl(delay_ms=self._HOVER_DELAY_MS)
+        self._audio = AudioSystem()
+        self._drag_handler = DragDropHandler()
+        self.camera = CameraController()
+        self.board_renderer = BoardRenderer()
         # Board render cache (static grid + synergy geometry)
         self._board_cache = BoardSurfaceCache(Screen.W, Screen.H)
         self._hover_coord: tuple[int, int] | None = None
@@ -99,9 +93,6 @@ class ShopScene(Scene):
         self._sidebar_bg = pygame.Surface((Layout.SIDEBAR_LEFT_W, Screen.H), pygame.SRCALPHA).convert_alpha()
         self._sidebar_bg.fill((10, 12, 18, 235))
 
-        # Text surface cache for copy labels — invalidated on sync_view()
-        self._copy_label_cache: dict[tuple[str, int], pygame.Surface] = {}
-
         self.sync_view()
 
     @property
@@ -109,16 +100,19 @@ class ShopScene(Scene):
         return self.phase_machine.current_phase
 
     def on_enter(self) -> None:
+        # Preload audio assets
         try:
+            self._audio.preload(Paths.SFX_BUY)
+            self._audio.preload(Paths.SFX_SELL)
+            self._audio.preload(Paths.SFX_PLACE)
+            self._audio.preload(Paths.SFX_REROLL)
+            self._audio.preload(Paths.SFX_COMBAT_HIT)
+            self._audio.preload(Paths.SFX_COMBAT_WIN)
+            self._audio.preload(Paths.SFX_COMBAT_LOSE)
+            
+            # Music still handled by AssetLoader for now
             self._audio_loader = AssetLoader.get()
             self._audio_loader.preload_scene(
-                Paths.SFX_BUY,
-                Paths.SFX_SELL,
-                Paths.SFX_PLACE,
-                Paths.SFX_REROLL,
-                Paths.SFX_COMBAT_HIT,
-                Paths.SFX_COMBAT_WIN,
-                Paths.SFX_COMBAT_LOSE,
                 Paths.MUSIC_SHOP,
                 Paths.MUSIC_COMBAT,
                 Paths.MUSIC_LOBBY,
@@ -137,6 +131,7 @@ class ShopScene(Scene):
                 game = getattr(self._game_state._adapter, "_engine", None)
                 if game is not None and hasattr(game, "signals"):
                     game.signals.board_mutated.connect(self._on_board_mutated_for_cache)
+                    game.signals.milestone_reached.connect(self._on_milestone_reached)
         except Exception:
             # Signals are optional; cache will still rebuild via key checks.
             pass
@@ -154,6 +149,7 @@ class ShopScene(Scene):
                 game = getattr(self._game_state._adapter, "_engine", None)
                 if game is not None and hasattr(game, "signals"):
                     game.signals.board_mutated.disconnect(self._on_board_mutated_for_cache)
+                    game.signals.milestone_reached.disconnect(self._on_milestone_reached)
         except Exception:
             pass
 
@@ -171,7 +167,6 @@ class ShopScene(Scene):
         
         # Release Pygame Surfaces
         self._sidebar_bg = None
-        self._copy_label_cache.clear()
         
         # Null out UI component references
         self.shop_panel = None
@@ -181,15 +176,17 @@ class ShopScene(Scene):
         self.lobby_panel = None
         self.timer_bar = None
         self.minimap = None
-        self.ft_manager = None
+        self._feedback = None
         
         # Null out overlay references
         self.versus_overlay = None
         self.combat_overlay = None
         self.endgame_overlay = None
         
-        # Clear board flip surfaces (CardFlip objects hold Pygame Surfaces)
-        self._board_flips.clear()
+        # Clear board renderer (CardFlip objects hold Pygame Surfaces)
+        if self.board_renderer:
+            self.board_renderer.clear()
+        self.board_renderer = None
         
         # Null out audio loader reference
         self._audio_loader = None
@@ -235,7 +232,7 @@ class ShopScene(Scene):
 
         if context.removed_coords:
             for coord in context.removed_coords:
-                self._board_flips.pop(coord, None)
+                self.board_renderer.remove(coord)
 
         if new_phase == "STATE_PREPARATION":
             self.versus_overlay = None
@@ -293,38 +290,33 @@ class ShopScene(Scene):
                     self.phase_machine.transition_to("STATE_VERSUS")
                 return
             elif event.key == pygame.K_r:
-                self.camera.offset_x = 0
-                self.camera.offset_y = 0
-                self.camera.zoom = 1.0
+                self.camera.reset()
                 self._board_cache.mark_camera_dirty()
 
         if event.type == pygame.MOUSEWHEEL:
-            self._apply_zoom(0.1 if event.y > 0 else -0.1)
+            if self.camera.handle_scroll(event, pygame.mouse.get_pos(), (GridMath.ORIGIN_X, GridMath.ORIGIN_Y)):
+                self._board_cache.mark_camera_dirty()
             return
 
         if event.type == pygame.MOUSEMOTION:
-            if self.drag_state["is_dragging"]:
-                self.drag_state["mouse_pos"] = event.pos
+            if self._drag_handler.is_active:
+                self._drag_handler.update_position(event.pos)
                 return
-            if self.world_drag["is_dragging"]:
-                dx = event.pos[0] - self.world_drag["last_mouse_pos"][0]
-                dy = event.pos[1] - self.world_drag["last_mouse_pos"][1]
-                self.camera.offset_x += dx
-                self.camera.offset_y += dy
-                self.world_drag["last_mouse_pos"] = event.pos
-                self._board_cache.mark_camera_dirty()
+            if self.camera.is_dragging:
+                if self.camera.handle_drag_move(event.pos):
+                    self._board_cache.mark_camera_dirty()
                 return
             self._handle_hover(event.pos)
 
-        if event.type == pygame.MOUSEBUTTONDOWN and event.button == 3 and self.drag_state["is_dragging"]:
-            self.drag_state["rotation"] = (self.drag_state["rotation"] + 1) % 6
+        if event.type == pygame.MOUSEBUTTONDOWN and event.button == 3 and self._drag_handler.is_active:
+            self._drag_handler.rotate()
             return
 
         if event.type == pygame.MOUSEBUTTONUP and event.button == 1:
-            if self.world_drag["is_dragging"]:
-                self.world_drag["is_dragging"] = False
+            if self.camera.is_dragging:
+                self.camera.handle_drag_end()
                 return
-            if self.drag_state["is_dragging"]:
+            if self._drag_handler.is_active:
                 self._drop_dragged_card()
                 return
 
@@ -344,86 +336,78 @@ class ShopScene(Scene):
             if shop_action.kind == "reroll":
                 if outcome.result == ActionResult.OK:
                     rx, ry = self.shop_panel.reroll_rect.center
-                    self.ft_manager.spawn("-2G", rx, ry - 10, (210, 70, 55), font_size=13, coord_key=("reroll",))
-                    self._play_sfx(Paths.SFX_REROLL)
+                    self._feedback.ft_manager.spawn("-2G", rx, ry - 10, (210, 70, 55), font_size=13, coord_key=("reroll",))
+                    self._audio.play(Paths.SFX_REROLL)
             elif shop_action.kind == "buy" and outcome.result == ActionResult.OK and shop_action.slot_index >= 0 and shop_action.card_name:
                 buy_card = shop_action.card_name
                 buy_slot = shop_action.slot_index
-                self._play_sfx(Paths.SFX_BUY)
+                self._audio.play(Paths.SFX_BUY)
                 count = state.active_player.copies_by_name.get(buy_card, 0)
                 slot_rect = self.shop_panel.card_rects[buy_slot]
                 sx, sy = slot_rect.centerx, slot_rect.top + 12
                 if count == 3:
-                    self.ft_manager.spawn("COPY 3/3", sx, sy, (255, 160, 30), font_size=16, coord_key=(buy_slot, "shop"))
+                    self._feedback.ft_manager.spawn("COPY 3/3", sx, sy, (255, 160, 30), font_size=16, coord_key=(buy_slot, "shop"))
                 elif count == 2:
-                    self.ft_manager.spawn("COPY 2/3", sx, sy, (255, 210, 60), font_size=14, coord_key=(buy_slot, "shop"))
+                    self._feedback.ft_manager.spawn("COPY 2/3", sx, sy, (255, 210, 60), font_size=14, coord_key=(buy_slot, "shop"))
             return
 
         if hasattr(self.hand_panel, "handle_event") and self.hand_panel.handle_event(event):
             return
 
-    def _apply_zoom(self, zoom_delta: float) -> None:
-        old_zoom = self.camera.zoom
-        if zoom_delta > 0:
-            self.camera.zoom = min(self.camera.MAX_ZOOM, old_zoom + zoom_delta)
-        else:
-            self.camera.zoom = max(self.camera.MIN_ZOOM, old_zoom + zoom_delta)
-        new_zoom = self.camera.zoom
-        if old_zoom == new_zoom:
-            return
-
-        mx, my = pygame.mouse.get_pos()
-        rel_x, rel_y = mx - GridMath.ORIGIN_X, my - GridMath.ORIGIN_Y
-        ratio = new_zoom / old_zoom
-        self.camera.offset_x = rel_x - ratio * (rel_x - self.camera.offset_x)
-        self.camera.offset_y = rel_y - ratio * (rel_y - self.camera.offset_y)
-        self._board_cache.mark_camera_dirty()
-
     def _handle_hover(self, mouse_pos: tuple[int, int]) -> None:
         hover_shop_idx = self.shop_panel.handle_hover(mouse_pos)
         hover_hand_idx = self.hand_panel.handle_hover(mouse_pos)
-        hover_board_coord = next((coord for coord, flip in self._board_flips.items() if flip.dest_rect.collidepoint(mouse_pos)), None)
+        hover_board_coord = self.board_renderer.get_hover_coord(mouse_pos)
 
         if hover_shop_idx != -1:
-            if self._hover["panel"] != "shop" or self._hover["slot_idx"] != hover_shop_idx:
-                self._hover.update({"panel": "shop", "slot_idx": hover_shop_idx, "coord": None, "elapsed_ms": 0.0, "active": False})
+            self._hover_control.start("shop", item=hover_shop_idx)
+            if not self._hover_control.is_active():
                 self._shop_info.set_card(None)
             return
 
         if hover_hand_idx != -1:
-            if self._hover["panel"] != "hand" or self._hover["slot_idx"] != hover_hand_idx:
-                self._hover.update({"panel": "hand", "slot_idx": hover_hand_idx, "coord": None, "elapsed_ms": 0.0, "active": False})
+            self._hover_control.start("hand", item=hover_hand_idx)
+            if not self._hover_control.is_active():
                 self._hand_info.set_card(None)
             return
 
         if hover_board_coord is not None:
-            if self._hover["panel"] != "board" or self._hover.get("coord") != hover_board_coord:
-                self._hover.update({"panel": "board", "slot_idx": -1, "coord": hover_board_coord, "elapsed_ms": 0.0, "active": False})
+            self._hover_control.start("board", item=hover_board_coord)
+            if not self._hover_control.is_active():
                 self._hand_info.set_card(None)
             return
 
-        if self._hover["panel"] is not None:
-            self._hover.update({"panel": None, "slot_idx": -1, "coord": None, "elapsed_ms": 0.0, "active": False})
-            self._shop_info.set_card(None)
-            self._hand_info.set_card(None)
+        # No hover target
+        self._hover_control.reset()
+        self._shop_info.set_card(None)
+        self._hand_info.set_card(None)
 
     def _drop_dragged_card(self) -> None:
-        if self.drag_state["source_panel"] != "hand":
-            self.drag_state.update({"is_dragging": False, "source_panel": None, "source_index": -1, "rotation": 0, "card_data": None})
+        # drop() çağrısından ÖNCE mouse_pos'u al
+        drop_pos = self._drag_handler.mouse_pos
+        
+        result = self._drag_handler.drop()
+        if not result:
             return
 
-        src_idx = self.drag_state["source_index"]
-        drop_pos = self.drag_state["mouse_pos"]
-        coord = pixel_to_axial(*drop_pos, self.camera)
+        source_panel, source_idx, rotation, card_data = result
+        
+        if source_panel != "hand":
+            return
+
+        coord = pixel_to_axial(*drop_pos, self.camera.get_state())
         if coord in self._hex_config.valid_coords:
-            outcome = self.controller.place_card_from_hand(src_idx, coord, rotation=self.drag_state["rotation"])
+            outcome = self.controller.place_card_from_hand(source_idx, coord, rotation=rotation)
             if outcome.result == ActionResult.OK:
                 state = self.sync_view(outcome.state)
                 if outcome.placed_card:
-                    self._spawn_placement_float(coord, outcome.placed_card["name"], state.active_player.synergy.total)
-                self._play_sfx(Paths.SFX_PLACE)
-
-        self.drag_state.update({"is_dragging": False, "source_panel": None, "source_index": -1, "rotation": 0, "card_data": None})
+                    self._feedback.spawn_placement(
+                        coord,
+                        outcome.placed_card["name"],
+                        state.active_player.synergy.total,
+                        self.camera.get_state(),
+                    )
+                self._audio.play(Paths.SFX_PLACE)
 
     def _handle_mouse_down(self, event: pygame.event.Event) -> bool:
         on_lobby = self.lobby_panel.rect.collidepoint(event.pos)
@@ -443,7 +427,7 @@ class ShopScene(Scene):
             return True
 
         if not on_ui:
-            self.world_drag.update({"is_dragging": True, "last_mouse_pos": event.pos})
+            self.camera.handle_drag_start(event.pos)
             return True
 
         for idx, slot_rect in enumerate(self.hand_panel.card_rects):
@@ -458,57 +442,35 @@ class ShopScene(Scene):
                     from v2.core.engine_adapter import EngineAdapter
                     card_data = EngineAdapter.get_card_info(card_name)
                 
-                self.drag_state.update(
-                    {
-                        "is_dragging": True,
-                        "source_panel": "hand",
-                        "source_index": idx,
-                        "mouse_pos": event.pos,
-                        "card_rect": pygame.Rect(slot_rect),
-                        "card_data": card_data,
-                    }
+                self._drag_handler.start(
+                    source_panel="hand",
+                    source_index=idx,
+                    mouse_pos=event.pos,
+                    card_rect=pygame.Rect(slot_rect),
+                    card_data=card_data,
                 )
                 return True
 
         return False
 
     def update(self, dt_ms: float):
-        # Sürekli (Continuous) Kamera Kontrolleri
-        keys = pygame.key.get_pressed()
-        dt_sec = dt_ms / 1000.0
-        cam_speed = (1000 / self.camera.zoom) * dt_sec
-        zoom_speed = 1.5 * dt_sec
-
-        old_off = (self.camera.offset_x, self.camera.offset_y)
-        if keys[pygame.K_w]:
-            self.camera.offset_y += cam_speed
-        if keys[pygame.K_s]:
-            self.camera.offset_y -= cam_speed
-        if keys[pygame.K_a]:
-            self.camera.offset_x += cam_speed
-        if keys[pygame.K_d]:
-            self.camera.offset_x -= cam_speed
-        if (self.camera.offset_x, self.camera.offset_y) != old_off:
+        # Continuous camera controls
+        if self.camera.update(dt_ms, pygame.key.get_pressed(), origin=(GridMath.ORIGIN_X, GridMath.ORIGIN_Y)):
             self._board_cache.mark_camera_dirty()
-        
-        if keys[pygame.K_q] or keys[pygame.K_MINUS]: self._apply_zoom(-zoom_speed)
-        if keys[pygame.K_e] or keys[pygame.K_PLUS] or keys[pygame.K_KP_PLUS]: self._apply_zoom(zoom_speed)
 
         # Frame başında cache'i kullan — _refresh_public_state() sadece action sonrası çağrılır.
         state = self._current_public_state()
         active_player = state.active_player
         current_board = active_player.board_cards
+        cam_state = self.camera.get_state()
 
         # Per-frame hover coord for cheap overlay
-        mq, mr = pixel_to_axial(*pygame.mouse.get_pos(), self.camera)
+        mq, mr = pixel_to_axial(*pygame.mouse.get_pos(), cam_state)
         self._hover_coord = (mq, mr) if (mq, mr) in self._hex_config.valid_coords else None
 
-        stale_coords = [coord for coord in self._board_flips if coord not in current_board]
-        for coord in stale_coords:
-            del self._board_flips[coord]
-        for coord in current_board:
-            if coord not in self._board_flips:
-                self._add_board_flip(coord, state, card_data=active_player.board_card_info.get(coord))
+        # Sync and update board renderer
+        self.board_renderer.sync(current_board, state, cam_state)
+        self.board_renderer.update(dt_ms, cam_state, pygame.mouse.get_pos())
 
         phase = self.phase
         if phase == "STATE_VERSUS" and self.versus_overlay:
@@ -521,7 +483,7 @@ class ShopScene(Scene):
                 outcome = self.controller.finish_combat_overlay()
                 self._public_state = outcome.state
                 for coord in outcome.removed_coords:
-                    self._board_flips.pop(coord, None)
+                    self.board_renderer.remove(coord)
                 if outcome.next_phase:
                     self.phase_machine.transition_to(outcome.next_phase)
         elif phase == "STATE_ENDGAME" and self.endgame_overlay:
@@ -535,12 +497,11 @@ class ShopScene(Scene):
         # Only rebuild hub view when PublicState snapshot changes.
         if state is not self._hub_last_state:
             self._hub_last_state = state
-            self.player_hub.update_view(self._build_hub_data(state))
+            self.player_hub.update_view(build_hub_data(state))
         self.synergy_hud.update(dt_ms, active_player.synergy)
         self.minimap.update(dt_ms, active_player.board_cards, pygame.mouse.get_pos())
         self.lobby_panel.update(pygame.mouse.get_pos())
-        self.ft_manager.update(dt_ms)
-        self._check_tier_milestones()
+        self._feedback.update(dt_ms)
 
         self._income_data = (
             active_player.gold,
@@ -550,41 +511,26 @@ class ShopScene(Scene):
         )
         self._lobby_players = list(state.lobby_players)
 
-        if self.drag_state["is_dragging"] and self.drag_state["source_panel"] == "hand":
-            self.hand_panel.handle_hover(self.drag_state["mouse_pos"], ghost_index=self.drag_state["source_index"])
+        if self._drag_handler.is_active and self._drag_handler.source_panel == "hand":
+            self.hand_panel.handle_hover(self._drag_handler.mouse_pos, ghost_index=self._drag_handler.source_index)
 
-        if self._hover["panel"] is not None and not self._hover["active"]:
-            self._hover["elapsed_ms"] += dt_ms
-            if self._hover["elapsed_ms"] >= self._HOVER_DELAY_MS:
-                self._hover["active"] = True
+        # Update hover timer
+        self._hover_control.update(dt_ms)
 
-        if self._hover["active"] and self._hover["panel"] is not None:
-            source = self._hover["panel"]
-            key = self._hover.get("coord") if source == "board" else self._hover["slot_idx"]
+        # Show info box when hover is active
+        if self._hover_control.is_active():
+            source = self._hover_control.get_panel()
+            key = self._hover_control.get_item()
             card_info = active_player.get_card_info(source, key)
             if source == "shop":
                 self._shop_info.set_card(card_info)
             else:
                 self._hand_info.set_card(card_info)
 
-        if self._board_flips:
-            mouse_pos = pygame.mouse.get_pos()
-            zoom = self.camera.zoom
-            for coord, flip in self._board_flips.items():
-                cx, cy = axial_to_pixel(*coord, self.camera)
-                w = int(GridMath.HEX_SIZE * zoom * 1.55)
-                h = int(GridMath.HEX_SIZE * zoom * 1.85)
-                flip.dest_rect.update(int(cx - w // 2), int(cy - h // 2), w, h)
-                if flip.dest_rect.collidepoint(mouse_pos):
-                    flip.hover_start()
-                else:
-                    flip.hover_end()
-                flip.update(dt_ms)
-
     def _cleanup_dead_cards(self):
         outcome = self.controller.cleanup_dead_cards()
         for coord in outcome.removed_coords:
-            self._board_flips.pop(coord, None)
+            self.board_renderer.remove(coord)
         return self.sync_view(outcome.state)
 
     def sync_view(self, state=None):
@@ -593,134 +539,79 @@ class ShopScene(Scene):
         active_player = state.active_player
         self.shop_panel.sync(active_player.shop, gold=active_player.gold, phase=state.phase)
         self.hand_panel.set_hand(active_player.hand.slots)
-        self.player_hub.update_view(self._build_hub_data(state))
+        self.player_hub.update_view(build_hub_data(state))
         self._hub_last_state = state
-        self._board_flips.clear()
-        for coord in active_player.board_cards:
-            self._add_board_flip(coord, state, card_data=active_player.board_card_info.get(coord))
         
-        # Invalidate text surface cache when card names change
-        self._copy_label_cache.clear()
+        # Sync board renderer
+        cam_state = self.camera.get_state()
+        self.board_renderer.clear()
+        self.board_renderer.sync(active_player.board_cards, state, cam_state)
+        
+        # Invalidate copy label cache when card names change
+        self._copy_renderer.invalidate()
         
         return state
-
-    def _add_board_flip(self, coord: tuple[int, int], state=None, card_data=None) -> None:
-        state = state or self._current_public_state()
-        item = state.active_player.board_cards.get(coord)
-        if not item:
-            return
-
-        card_name = item["name"]
-        cx, cy = axial_to_pixel(*coord, self.camera)
-        zoom = self.camera.zoom
-        w = int(GridMath.HEX_SIZE * zoom * 1.55)
-        h = int(GridMath.HEX_SIZE * zoom * 1.85)
-        rect = pygame.Rect(int(cx - w // 2), int(cy - h // 2), w, h)
-
-        try:
-            loader = AssetLoader.get()
-            back = loader.get_card_back(card_name)
-            front = loader.get_card_front(card_name)
-            evolved = bool(card_data and str(getattr(card_data, "rarity", "")).upper() == "E")
-            if not evolved and card_data is None:
-                # Fallback only on cache miss: state snapshot should already include board_card_info.
-                from v2.core.engine_adapter import EngineAdapter
-                snap = EngineAdapter.get_card_info(card_name)
-                evolved = bool(snap and str(getattr(snap, "rarity", "")).upper() == "E")
-        except AutochessException:
-            back = self._fallback_card_surface((38, 42, 62), w, h)
-            front = self._fallback_card_surface((20, 60, 100), w, h)
-            evolved = False
-
-        self._board_flips[coord] = CardFlip(back, front, rect, evolved=evolved, evolved_color=Colors.PLATINUM)
-
-    @staticmethod
-    def _fallback_card_surface(color: tuple[int, int, int], w: int, h: int) -> pygame.Surface:
-        import math
-
-        surf = pygame.Surface((w, h), pygame.SRCALPHA)
-        cx, cy = w // 2, h // 2
-        points = [
-            (
-                cx + h / 2 * math.cos(math.radians(60 * i - 30)),
-                cy + h / 2 * math.sin(math.radians(60 * i - 30)),
-            )
-            for i in range(6)
-        ]
-        pygame.draw.polygon(surf, color, points)
-        return surf.convert_alpha()
-
-    def _build_hub_data(self, state) -> PlayerHubData:
-        hud = state.active_player.hud
-        return PlayerHubData(
-            hp=hud.hp,
-            gold=hud.gold,
-            win_streak=hud.win_streak,
-            total_pts=hud.total_pts,
-            turn=state.turn,
-            next_gold=hud.next_gold,
-            board_used=len(state.active_player.board_cards),
-        )
-
-    def _play_sfx(self, sfx_name: str) -> None:
-        try:
-            if self._audio_loader is None:
-                self._audio_loader = AssetLoader.get()
-            self._audio_loader.get_sfx(sfx_name).play()
-        except AutochessException:
-            pass
 
     def draw(self, surface: pygame.Surface):
         # update() zaten bu frame'de state'i oluşturdu; aynı cache'i kullan.
         state = self._current_public_state()
         active_player = state.active_player
+        cam_state = self.camera.get_state()
 
-        BackgroundManager.get().render(surface, zoom=self.camera.zoom, offset=(self.camera.offset_x, self.camera.offset_y))
+        BackgroundManager.get().render(surface, zoom=cam_state.zoom, offset=(cam_state.offset_x, cam_state.offset_y))
         render_hex_grid_cached(
             surface,
             self._board_cache,
             active_player.board_cards,
             self._hover_coord,
-            self.camera,
+            cam_state,
             self._hex_config,
         )
-        for _, flip in sorted(self._board_flips.items(), key=lambda item: item[1].hover_progress):
-            flip.render(surface)
+        self.board_renderer.draw(surface)
         render_synergy_lines_cached(
             surface,
             self._board_cache,
             list(active_player.adjacency_pairs),
             active_player.board_cards,
-            self.camera,
+            cam_state,
         )
 
-        if self.drag_state["is_dragging"]:
-            src_panel = self.drag_state["source_panel"]
-            src_idx = self.drag_state["source_index"]
-            drag_rot = self.drag_state["rotation"]
-            card_data = self.drag_state["card_data"]
+        if self._drag_handler.is_active:
+            src_panel = self._drag_handler.source_panel
+            src_idx = self._drag_handler.source_index
+            drag_rot = self._drag_handler.rotation
+            card_data = self._drag_handler.card_data
             card_name = self.hand_panel.get_card_name(src_idx) if src_panel == "hand" else self.shop_panel.get_card_name(src_idx)
             
             if card_name:
-                render_ghost_preview(surface, card_name, self.drag_state["mouse_pos"], rotation=drag_rot, card_data=card_data, camera=self.camera)
+                render_ghost_preview(surface, card_name, self._drag_handler.mouse_pos, rotation=drag_rot, card_data=card_data, camera=cam_state)
                 try:
                     render_synergy_preview(
                         surface,
-                        pixel_to_axial(*self.drag_state["mouse_pos"], self.camera),
+                        pixel_to_axial(*self._drag_handler.mouse_pos, cam_state),
                         card_name,
                         active_player.board_card_info, # Use pre-fetched CardData
                         drag_rotation=drag_rot,
                         board_rotations=active_player.board_rotations,
                         card_data=card_data,
-                        camera=self.camera,
+                        camera=cam_state,
                     )
                 except AutochessException:
                     pass
 
-        ghost_idx = self.drag_state["source_index"] if self.drag_state["is_dragging"] and self.drag_state["source_panel"] == "hand" else -1
+        ghost_idx = self._drag_handler.source_index if self._drag_handler.is_active and self._drag_handler.source_panel == "hand" else -1
         self.shop_panel.render(surface)
         self.hand_panel.render(surface, ghost_index=ghost_idx)
-        self._render_copy_labels(surface)
+        
+        # Render copy labels for both shop and hand panels
+        copies_by_name = self._current_public_state().active_player.copies_by_name
+        self._copy_renderer.render(
+            surface,
+            self.shop_panel.card_rects + self.hand_panel.card_rects,
+            self.shop_panel.get_card_names() + self.hand_panel.get_card_names(),
+            copies_by_name
+        )
+        
         self._shop_info.render(surface)
         self._hand_info.render(surface)
 
@@ -734,11 +625,11 @@ class ShopScene(Scene):
         self.lobby_panel.render(surface, self._rendered_lobby_players)
 
         self.timer_bar.render(surface, ratio=0.65)
-        self.ft_manager.render(surface)
+        self._feedback.render(surface)
 
-        if self.drag_state["is_dragging"]:
-            idx = self.drag_state["source_index"]
-            pos = self.drag_state["mouse_pos"]
+        if self._drag_handler.is_active:
+            idx = self._drag_handler.source_index
+            pos = self._drag_handler.mouse_pos
             flip = self.hand_panel.get_flip(idx)
             if flip:
                 old_center = flip.dest_rect.center
@@ -753,104 +644,9 @@ class ShopScene(Scene):
         elif self.phase == "STATE_ENDGAME" and self.endgame_overlay:
             self.endgame_overlay.render(surface)
 
-    def _spawn_placement_float(self, coord: tuple[int, int], card_name: str, new_synergy_total: int | None = None) -> None:
-        from v2.core.engine_adapter import EngineAdapter
-        from v2.ui.hex_grid import axial_to_pixel
-
-        dom_grp = "EXISTENCE"
-        try:
-            card_data = EngineAdapter.get_card_info(card_name)
-            if card_data:
-                counts = defaultdict(int)
-                for stat, value in card_data.stats.items():
-                    if value > 0:
-                        group = STAT_TO_GROUP.get(stat)
-                        if group:
-                            counts[group] += 1
-                if counts:
-                    dom_grp = max(counts, key=counts.get)
-        except AutochessException:
-            pass
-
-        color = {"MIND": Colors.MIND, "CONNECTION": Colors.CONNECTION, "EXISTENCE": Colors.EXISTENCE}.get(dom_grp, Colors.GOLD_TEXT)
-        new_syn = new_synergy_total if new_synergy_total is not None else self._current_public_state().active_player.synergy.total
-        delta = new_syn - self._prev_synergy_total
-        self._prev_synergy_total = new_syn
-        text = f"+{delta} SYN" if delta > 0 else "PLACED"
-        cx, cy = axial_to_pixel(*coord, self.camera)
-        self.ft_manager.spawn(text, cx, cy - 50, color, font_size=14, coord_key=coord)
-
-    def _check_tier_milestones(self) -> None:
-        for group_state in self._current_public_state().active_player.synergy.groups:
-            group = group_state.key
-            count = group_state.count
-            prev = self._prev_group_counts.get(group, 0)
-            if count > prev and count in self._TIER_SET:
-                text = f"{self._TIER_SHORT.get(group, group)} +{group_state.bonus}pts UP"
-                x = GridMath.ORIGIN_X + self.camera.offset_x
-                y = GridMath.ORIGIN_Y + self.camera.offset_y - 120
-                self.ft_manager.spawn(text, x, y, self._TIER_COLORS.get(group, Colors.GOLD_TEXT), font_size=13, coord_key=("board_center",))
-            self._prev_group_counts[group] = count
-
-        try:
-            milestones = self._current_public_state().active_player.copy_milestones
-            for milestone in milestones:
-                key = (milestone.get("trigger", ""), milestone.get("card", ""))
-                if key in self._seen_copy_milestones:
-                    continue
-                self._seen_copy_milestones.add(key)
-                title = "3-COPY POWER UP" if milestone.get("trigger") == "copy_3" else "2-COPY POWER UP"
-                x = GridMath.ORIGIN_X + self.camera.offset_x
-                y = GridMath.ORIGIN_Y + self.camera.offset_y - 90
-                self.ft_manager.spawn(title, x, y, Colors.PLATINUM, font_size=15, coord_key=("copy_strengthen", milestone.get("card")))
-        except AutochessException:
-            pass
-
-    def _render_copy_labels(self, surface: pygame.Surface) -> None:
-        from v2.ui import font_cache
-
-        font = font_cache.mono(9)
-        copies_by_name = self._current_public_state().active_player.copies_by_name
-        
-        # Render shop copy labels
-        for slot_rect, name in zip(self.shop_panel.card_rects, self.shop_panel.get_card_names()):
-            if name:
-                count = copies_by_name.get(name, 0)
-                cache_key = (name, count)
-                
-                # Check cache first
-                if cache_key not in self._copy_label_cache:
-                    # Render to cache
-                    text = f"Copies: {count}/3"
-                    color = Colors.GOLD_TEXT if count >= 3 else (200, 205, 230)
-                    self._copy_label_cache[cache_key] = font.render(text, True, color)
-                
-                # Blit cached surface
-                text_surf = self._copy_label_cache[cache_key]
-                tw, th = text_surf.get_size()
-                x = slot_rect.x + (slot_rect.w - tw) // 2
-                y = slot_rect.bottom - 16 + (14 - th) // 2
-                surface.blit(text_surf, (x, y))
-        
-        # Render hand copy labels
-        for slot_rect, name in zip(self.hand_panel.card_rects, self.hand_panel.get_card_names()):
-            if name:
-                count = copies_by_name.get(name, 0)
-                cache_key = (name, count)
-                
-                # Check cache first
-                if cache_key not in self._copy_label_cache:
-                    # Render to cache
-                    text = f"Copies: {count}/3"
-                    color = Colors.GOLD_TEXT if count >= 3 else (200, 205, 230)
-                    self._copy_label_cache[cache_key] = font.render(text, True, color)
-                
-                # Blit cached surface
-                text_surf = self._copy_label_cache[cache_key]
-                tw, th = text_surf.get_size()
-                x = slot_rect.x + (slot_rect.w - tw) // 2
-                y = slot_rect.bottom - 16 + (14 - th) // 2
-                surface.blit(text_surf, (x, y))
+    def _on_milestone_reached(self, **kwargs) -> None:
+        """Signal handler — milestone_reached sinyalini UIFeedbackManager'a delege eder."""
+        self._feedback.on_milestone(self.camera.get_state(), **kwargs)
 
     def render(self, surface: pygame.Surface) -> None:
         self.draw(surface)

@@ -26,10 +26,68 @@ class ShopControllerResult:
 
 
 class ShopController:
+    _TIER_SET = frozenset({2, 3, 4, 5, 6})
+    _TIER_COLORS = {"MIND": "MIND", "CONNECTION": "CONNECTION", "EXISTENCE": "EXISTENCE"}
+    _TIER_SHORT = {"MIND": "MIND", "CONNECTION": "CONN", "EXISTENCE": "EXST"}
+
     def __init__(self, game_state: Optional[GameState] = None):
         if game_state is None:
              raise ValueError("ShopController requires a GameState instance.")
         self._game_state = game_state
+        self._prev_group_counts: dict[str, int] = {}
+        self._seen_copy_milestones: set[tuple[str, str]] = set()
+
+    def _check_and_emit_milestones(self) -> None:
+        """Check for tier and copy milestones and emit signals when reached.
+        
+        This method compares current synergy state to previous state and detects:
+        - Tier milestones: 2, 3, 4, 5, 6 cards of same group
+        - Copy milestones: 2-copy or 3-copy power-ups
+        
+        Emits milestone_reached signal through SignalBus with milestone data.
+        """
+        try:
+            state = self._game_state.get_public_state()
+            active_player = state.active_player
+            
+            # Check tier milestones
+            for group_state in active_player.synergy.groups:
+                group = group_state.key
+                count = group_state.count
+                prev = self._prev_group_counts.get(group, 0)
+                
+                if count > prev and count in self._TIER_SET:
+                    # Emit milestone_reached signal
+                    self._game_state._adapter._engine.signals.milestone_reached.emit(
+                        milestone_type="tier",
+                        group=group,
+                        count=count,
+                        bonus=group_state.bonus,
+                        tier_short=self._TIER_SHORT.get(group, group),
+                        tier_color=self._TIER_COLORS.get(group, "GOLD"),
+                    )
+                
+                self._prev_group_counts[group] = count
+            
+            # Check copy milestones
+            milestones = active_player.copy_milestones
+            for milestone in milestones:
+                key = (milestone.get("trigger", ""), milestone.get("card", ""))
+                if key in self._seen_copy_milestones:
+                    continue
+                
+                self._seen_copy_milestones.add(key)
+                
+                # Emit milestone_reached signal
+                self._game_state._adapter._engine.signals.milestone_reached.emit(
+                    milestone_type="copy",
+                    trigger=milestone.get("trigger"),
+                    card=milestone.get("card"),
+                )
+        except Exception:
+            # Silently fail if milestone checking encounters errors
+            # (e.g., missing attributes, signal bus not available)
+            pass
 
     def refresh_public_state(self) -> PublicState:
         return self._game_state.get_public_state()
@@ -140,6 +198,8 @@ class ShopController:
 
         if action.kind == "buy":
             result = self._game_state.buy_card_from_slot(player_index=0, slot_index=action.slot_index)
+            if result == ActionResult.OK:
+                self._check_and_emit_milestones()
             return ShopControllerResult(
                 state=self.refresh_public_state(),
                 result=result,
@@ -155,6 +215,8 @@ class ShopController:
         rotation: int = 0,
     ) -> ShopControllerResult:
         result = self._game_state.place_card(hand_index, coord, rotation=rotation)
+        if result == ActionResult.OK:
+            self._check_and_emit_milestones()
         state = self.refresh_public_state()
         placed_card = state.active_player.board_cards.get(coord) if result == ActionResult.OK else None
         return ShopControllerResult(

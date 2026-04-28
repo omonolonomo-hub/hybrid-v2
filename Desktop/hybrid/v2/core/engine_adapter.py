@@ -15,6 +15,17 @@ from engine_core.card import Card
 from engine_core.synergy import tier_bonus as _engine_tier_bonus
 from engine_core.board import hex_coords as _engine_hex_coords
 from v2.core.action_result import ActionResult
+from v2.core.exceptions import (
+    EngineAdapterError,
+    PlayerNotFoundError,
+    MarketNotAvailableError,
+    InvalidSlotError,
+    InvalidCoordinateError,
+    InsufficientResourcesError,
+    PlayerDeadError,
+    InvalidGameStateError,
+    CardDataError,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -59,28 +70,70 @@ class EngineAdapter:
         return float(value) if isinstance(value, (int, float)) else default
 
     def get_player(self, index: int):
+        """Get player by index.
+        
+        Raises:
+            PlayerNotFoundError: If index is out of bounds or players list is invalid.
+        """
         try:
-            return self._engine.players[index]
-        except (IndexError, AttributeError):
-            logger.warning("EngineAdapter.get_player failed for index=%s", index)
-            return None
+            players = self._engine.players
+            if not players:
+                raise PlayerNotFoundError(index, 0)
+            if index < 0 or index >= len(players):
+                raise PlayerNotFoundError(index, len(players))
+            return players[index]
+        except (AttributeError, TypeError) as e:
+            logger.error("EngineAdapter.get_player: engine.players is invalid: %s", e)
+            raise InvalidGameStateError("Engine players list is corrupted or missing") from e
 
     def get_market(self):
+        """Get market instance, or None if unavailable.
+        
+        Returns None if market is not initialized or missing required methods.
+        Use get_market_or_raise() when you need to guarantee a valid market.
+        """
         market = getattr(self._engine, "market", None)
-        return market if hasattr(market, "get_window") else None
+        if market is None or not hasattr(market, "get_window"):
+            return None
+        return market
+
+    def get_market_or_raise(self):
+        """Get market instance, raising if unavailable.
+        
+        Raises:
+            MarketNotAvailableError: If market is not initialized or invalid.
+        """
+        market = getattr(self._engine, "market", None)
+        if market is None:
+            raise MarketNotAvailableError("Market not initialized in engine")
+        if not hasattr(market, "get_window"):
+            raise MarketNotAvailableError("Market missing required methods")
+        return market
 
     def get_shop_window(self, player_index: int) -> List[Optional[str]]:
-        """Return the 5-slot market window as card name strings (or None)."""
+        """Return the 5-slot market window as card name strings (or None).
+        
+        Returns [None]*5 if market is unavailable (e.g. mock engines in tests).
+        
+        Raises:
+            PlayerNotFoundError: If player_index is invalid.
+        """
         try:
-            if player_index >= len(self._engine.players):
-                return [None] * 5
-            pid = self._engine.players[player_index].pid
-            market = getattr(self._engine, "market", None)
-            player_windows = getattr(market, "_player_windows", {}) if market is not None else {}
+            player = self.get_player(player_index)  # Raises PlayerNotFoundError
+        except PlayerNotFoundError:
+            raise
+
+        try:
+            market = self.get_market()  # Raises MarketNotAvailableError
+            pid = player.pid
+            player_windows = getattr(market, "_player_windows", {})
             window = player_windows.get(pid, [])
             names = [c.name if c is not None else None for c in window]
             return names + [None] * (5 - len(names))
-        except Exception:
+        except MarketNotAvailableError:
+            logger.debug("get_shop_window: market not available for player_index=%s, returning empty slots", player_index)
+            return [None] * 5
+        except Exception as e:
             logger.exception("EngineAdapter.get_shop_window failed for player_index=%s", player_index)
             return [None] * 5
 
@@ -89,17 +142,21 @@ class EngineAdapter:
             self._engine.action_log.record(action_type, params, turn=self._engine.turn)
 
     def perform_buy_card(self, player_index: int, slot_index: int) -> ActionResult:
-        player = self.get_player(player_index)
-        if not player or not player.alive:
-            return ActionResult.ERR_NOT_IN_PREP_PHASE
-
-        market = self.get_market()
-        if not market:
-            return ActionResult.ERR_ENGINE_EXCEPTION
-
+        """Purchase a card from the shop."""
         try:
+            player = self.get_player(player_index)
+            if not player.alive:
+                return ActionResult.ERR_NOT_IN_PREP_PHASE
+
+            market = self.get_market()
+            if not market:
+                return ActionResult.ERR_ENGINE_EXCEPTION
+
             window = market.get_window(player.pid)
-            if slot_index >= len(window) or window[slot_index] is None:
+            
+            if slot_index < 0 or slot_index >= len(window):
+                return ActionResult.ERR_POOL_EMPTY
+            if window[slot_index] is None:
                 return ActionResult.ERR_POOL_EMPTY
 
             card = window[slot_index]
@@ -116,15 +173,15 @@ class EngineAdapter:
             )
             market.clear_slot(player.pid, slot_index)
             
-            # Record action
             self._record_action("buy_card", {"pid": player.pid, "slot": slot_index, "card": card.name})
-            
             return ActionResult.OK
+        except PlayerNotFoundError:
+            logger.error("perform_buy_card: player_index=%s not found", player_index)
+            return ActionResult.ERR_ENGINE_EXCEPTION
         except Exception:
             logger.exception(
                 "EngineAdapter.perform_buy_card failed player_index=%s slot_index=%s",
-                player_index,
-                slot_index,
+                player_index, slot_index,
             )
             return ActionResult.ERR_ENGINE_EXCEPTION
 
@@ -132,32 +189,35 @@ class EngineAdapter:
         """Spend 2 gold to refresh the market window. Returns True on success."""
         try:
             player = self.get_player(player_index)
-            if not player:
-                return False
             
-            # Use formal economy API to spend gold (SSoT)
             economy = getattr(player, "economy", None)
             if economy is None or not economy.spend_gold(2):
                 return False
             
-            # Track stats for analytics (consistent with buy_card pattern)
             player.stats["gold_spent"] = player.stats.get("gold_spent", 0) + 2
-                
-            self._engine.market.deal_market_window(player, 5)
             
-            # Record action
+            market = self.get_market()
+            if not market:
+                return False
+            market.deal_market_window(player, 5)
+            
             self._record_action("reroll", {"pid": player.pid, "cost": 2})
-            
             return True
+        except PlayerNotFoundError:
+            logger.error("perform_reroll: player_index=%s not found", player_index)
+            return False
         except Exception:
             logger.exception("EngineAdapter.perform_reroll failed for player_index=%s", player_index)
             return False
 
     def perform_placement(self, player_index: int, hand_index: int, coord: Tuple[int, int], rotation: int) -> ActionResult:
+        """Place a card from hand onto the board.
+        
+        Returns ActionResult enum for backward compatibility with existing callers.
+        Logs exceptions but doesn't raise them to maintain current error handling flow.
+        """
         try:
             player = self.get_player(player_index)
-            if not player:
-                return ActionResult.ERR_ENGINE_EXCEPTION
 
             board = getattr(player, "board", None)
             if board is None:
@@ -209,6 +269,9 @@ class EngineAdapter:
             })
 
             return ActionResult.OK
+        except PlayerNotFoundError:
+            logger.error("perform_placement: player_index=%s not found", player_index)
+            return ActionResult.ERR_ENGINE_EXCEPTION
         except Exception:
             logger.exception(
                 "EngineAdapter.perform_placement failed player_index=%s hand_index=%s coord=%s rotation=%s",
@@ -223,16 +286,26 @@ class EngineAdapter:
         return self._coerce_int(getattr(self._engine, "turn", 0), default=0)
 
     def get_player_hp(self, index: int) -> int:
-        if hasattr(self._engine, "get_hp"):
-            hp = self._engine.get_hp(index)
-            if isinstance(hp, (int, float)):
-                return int(hp)
-        player = self.get_player(index)
-        return self._coerce_int(getattr(player, "hp", 0), default=0)
+        """Get player HP, with fallback to 0 for backward compatibility."""
+        try:
+            if hasattr(self._engine, "get_hp"):
+                hp = self._engine.get_hp(index)
+                if isinstance(hp, (int, float)):
+                    return int(hp)
+            player = self.get_player(index)
+            return self._coerce_int(getattr(player, "hp", 0), default=0)
+        except PlayerNotFoundError:
+            logger.warning("get_player_hp: player_index=%s not found, returning 0", index)
+            return 0
 
     def get_player_gold(self, index: int) -> int:
-        player = self.get_player(index)
-        return self._coerce_int(getattr(player, "gold", 0), default=0)
+        """Get player gold, with fallback to 0 for backward compatibility."""
+        try:
+            player = self.get_player(index)
+            return self._coerce_int(getattr(player, "gold", 0), default=0)
+        except PlayerNotFoundError:
+            logger.warning("get_player_gold: player_index=%s not found, returning 0", index)
+            return 0
 
     def get_alive_players(self) -> List[Any]:
         return [player for player in self._engine.players if player.alive]
@@ -245,21 +318,31 @@ class EngineAdapter:
         return results if isinstance(results, list) else []
 
     def get_pool_copies(self) -> Dict[str, int]:
+        """Get pool copies from market, with fallback to empty dict."""
         market = self.get_market()
-        return dict(market.pool_copies) if market else {}
+        if market is None:
+            return {}
+        return dict(market.pool_copies)
 
     def toggle_lock_shop(self, player_index: int) -> None:
-        """Directly toggle shop_locked on the player — no longer delegates to Game."""
-        player = self.get_player(player_index)
-        if player is None:
-            return
-        player.shop_locked = not getattr(player, "shop_locked", False)
+        """Directly toggle shop_locked on the player — no longer delegates to Game.
+        
+        Silently fails if player not found (for backward compatibility).
+        """
+        try:
+            player = self.get_player(player_index)
+            player.shop_locked = not getattr(player, "shop_locked", False)
+        except PlayerNotFoundError:
+            logger.warning("toggle_lock_shop: player_index=%s not found", player_index)
 
     def is_shop_locked(self, player_index: int) -> bool:
-        player = self.get_player(player_index)
-        if player is None:
+        """Check if shop is locked, with fallback to False."""
+        try:
+            player = self.get_player(player_index)
+            return bool(getattr(player, "shop_locked", False))
+        except PlayerNotFoundError:
+            logger.warning("is_shop_locked: player_index=%s not found, returning False", player_index)
             return False
-        return bool(getattr(player, "shop_locked", False))
 
     def commit_turn(self):
         try:
@@ -283,28 +366,41 @@ class EngineAdapter:
             self._engine.combat_phase()
 
     def remove_eliminated_cards(self, player_index: int, coords: list) -> None:
-        player = self.get_player(player_index)
-        board = getattr(player, "board", None) if player is not None else None
-        if board is None or not hasattr(board, "remove"):
-            return
-        for coord in coords:
-            board.remove(coord)
+        """Remove eliminated cards from board, silently fails if player not found."""
+        try:
+            player = self.get_player(player_index)
+            board = getattr(player, "board", None)
+            if board is None or not hasattr(board, "remove"):
+                return
+            for coord in coords:
+                board.remove(coord)
+        except PlayerNotFoundError:
+            logger.warning("remove_eliminated_cards: player_index=%s not found", player_index)
 
     def get_eliminated_coords(self, player_index: int) -> list:
-        player = self.get_player(player_index)
-        board = getattr(player, "board", None) if player is not None else None
-        grid = getattr(board, "grid", None)
-        if not isinstance(grid, dict):
+        """Get coordinates of eliminated cards, with fallback to empty list."""
+        try:
+            player = self.get_player(player_index)
+            board = getattr(player, "board", None)
+            grid = getattr(board, "grid", None)
+            if not isinstance(grid, dict):
+                return []
+            return [coord for coord, card in grid.items() if hasattr(card, "is_eliminated") and card.is_eliminated()]
+        except PlayerNotFoundError:
+            logger.warning("get_eliminated_coords: player_index=%s not found, returning []", player_index)
             return []
-        return [coord for coord, card in grid.items() if hasattr(card, "is_eliminated") and card.is_eliminated()]
 
     def get_passive_buff_log(self, player_index: int) -> list:
-        player = self.get_player(player_index)
-        if player is None:
+        """Get passive buff log, with fallback to empty list."""
+        try:
+            player = self.get_player(player_index)
+            return list(getattr(player, "passive_buff_log", []))
+        except PlayerNotFoundError:
+            logger.warning("get_passive_buff_log: player_index=%s not found, returning []", player_index)
             return []
-        return list(getattr(player, "passive_buff_log", []))
 
     def get_rarity_weight(self, rarity: str, turn: int) -> float:
+        """Get rarity weight from market, with fallback to 0.0."""
         market = self.get_market()
         if market is None:
             return 0.0
@@ -318,10 +414,12 @@ class EngineAdapter:
 
         H3-2 düzeltmesi: Eskiden None slotları filtreleyip trailing None ekliyordu,
         bu da orta boşluklarda indeks kaymasına neden oluyordu.
+        
+        Raises:
+            PlayerNotFoundError: If player_index is invalid.
         """
-        if player_index >= len(self._engine.players):
-            return [None] * 6
-        hand = self._engine.players[player_index].hand
+        player = self.get_player(player_index)  # Now raises PlayerNotFoundError
+        hand = player.hand
         # None dahil tüm slotları koru; position integrity bozulmasın
         result = [
             (c.name if hasattr(c, "name") else str(c)) if c is not None else None

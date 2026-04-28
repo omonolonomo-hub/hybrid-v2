@@ -75,6 +75,30 @@ class LobbyScene(Scene):
         
         # Audio loader - kept for compatibility with existing audio cleanup logic
         self._audio_loader = None
+        
+        # Performance: Cache background to avoid redrawing every frame
+        self._background_cache = None
+        
+        # Interactive button state
+        self._btn_hovered = False
+        self._btn_pressed = False
+        self._btn_scale = 1.0  # Scale animation
+    
+    def update(self, dt_ms: float) -> None:
+        """Update button animations."""
+        # Check mouse position for hover effect
+        mouse_pos = pygame.mouse.get_pos()
+        if self._btn_rect is not None:
+            self._btn_hovered = self._btn_rect.collidepoint(mouse_pos)
+        
+        # Smooth scale animation
+        target_scale = 1.06 if self._btn_hovered else 1.0
+        if self._btn_pressed:
+            target_scale = 0.96
+        
+        # Lerp towards target scale
+        lerp_speed = 0.3
+        self._btn_scale += (target_scale - self._btn_scale) * lerp_speed
     
     def _init_fonts(self) -> None:
         """Initialize fonts lazily (only after pygame.init() is called).
@@ -106,25 +130,11 @@ class LobbyScene(Scene):
         """
         self._audio_loader = None
     
-    def draw(self, surface: pygame.Surface) -> None:
-        """Draw the lobby screen with player list and start button.
-        
-        Layout:
-        - Gradient background with hex pattern
-        - "LOBİ" title at (40, 30)
-        - 7 AI rows: "AI {i+1} — {strategy}" with strategy-specific colors
-        - 8th row: "► SEN — {_human_name}" in CYAN
-        - "OYUNA BAŞLA" button at bottom-right with glow effect
-        - Info text at bottom
-        
-        Validates: Requirements 4.1, 4.2, 4.3, 4.4, 4.5, 4.6
-        """
-        # Initialize fonts if needed
-        self._init_fonts()
-        
-        # Get screen dimensions
+    def _render_background(self) -> pygame.Surface:
+        """Render background once and cache it for performance."""
         W = Screen.W
         H = Screen.H
+        bg = pygame.Surface((W, H))
         
         # Gradient arka plan (üstten alta)
         for y in range(H):
@@ -132,7 +142,7 @@ class LobbyScene(Scene):
             r = int(BG_GRADIENT_TOP[0] * (1 - ratio) + BG_GRADIENT_BOTTOM[0] * ratio)
             g = int(BG_GRADIENT_TOP[1] * (1 - ratio) + BG_GRADIENT_BOTTOM[1] * ratio)
             b = int(BG_GRADIENT_TOP[2] * (1 - ratio) + BG_GRADIENT_BOTTOM[2] * ratio)
-            pygame.draw.line(surface, (r, g, b), (0, y), (W, y))
+            pygame.draw.line(bg, (r, g, b), (0, y), (W, y))
         
         # Dekoratif hex pattern (arka planda, ShopScene tarzı)
         import math
@@ -156,7 +166,7 @@ class LobbyScene(Scene):
                     hex_surf = pygame.Surface((hex_size * 2, hex_size * 2), pygame.SRCALPHA)
                     offset_points = [(px - x + hex_size, py - y + hex_size) for px, py in points]
                     pygame.draw.polygon(hex_surf, (*Colors.CONNECTION, hex_alpha), offset_points, width=1)
-                    surface.blit(hex_surf, (x - hex_size, y - hex_size))
+                    bg.blit(hex_surf, (x - hex_size, y - hex_size))
         
         # Dekoratif synergy renk çizgileri (solda)
         stripe_width = 6
@@ -164,7 +174,36 @@ class LobbyScene(Scene):
         for i, color in enumerate(synergy_colors):
             y_start = (H // len(synergy_colors)) * i
             y_end = (H // len(synergy_colors)) * (i + 1)
-            pygame.draw.rect(surface, color, (0, y_start, stripe_width, y_end - y_start))
+            pygame.draw.rect(bg, color, (0, y_start, stripe_width, y_end - y_start))
+        
+        return bg
+    
+    def draw(self, surface: pygame.Surface) -> None:
+        """Draw the lobby screen with player list and start button.
+        
+        Layout:
+        - Gradient background with hex pattern
+        - "LOBİ" title at (40, 30)
+        - 7 AI rows: "AI {i+1} — {strategy}" with strategy-specific colors
+        - 8th row: "► SEN — {_human_name}" in CYAN
+        - "OYUNA BAŞLA" button at bottom-right with glow effect
+        - Info text at bottom
+        
+        Validates: Requirements 4.1, 4.2, 4.3, 4.4, 4.5, 4.6
+        """
+        # Initialize fonts if needed
+        self._init_fonts()
+        
+        # Get screen dimensions
+        W = Screen.W
+        H = Screen.H
+        
+        # Use cached background or render it once
+        if self._background_cache is None:
+            self._background_cache = self._render_background()
+        
+        # Blit cached background (much faster than redrawing)
+        surface.blit(self._background_cache, (0, 0))
         
         # Draw title "LOBİ" at Golden Ratio position with glow
         title_text = "LOBİ"
@@ -274,32 +313,46 @@ class LobbyScene(Scene):
         # Update button rect for click detection
         self._btn_rect = pygame.Rect(btn_x, btn_y, btn_w, btn_h)
         
-        # Buton glow efekti (ShopScene tarzı çok katmanlı)
+        # Apply scale animation
+        scaled_w = int(btn_w * self._btn_scale)
+        scaled_h = int(btn_h * self._btn_scale)
+        scaled_rect = pygame.Rect(
+            btn_x + (btn_w - scaled_w) // 2,
+            btn_y + (btn_h - scaled_h) // 2,
+            scaled_w,
+            scaled_h
+        )
+        
+        # Buton glow efekti (daha güçlü hover'da)
+        glow_intensity = 1.6 if self._btn_hovered else 1.0
         for i in range(3):
-            glow_inflate = 12 - i * 4
-            glow_rect = self._btn_rect.inflate(glow_inflate, glow_inflate)
-            glow_alpha = 40 + i * 20
+            glow_inflate = int((12 - i * 4) * glow_intensity)
+            glow_rect = scaled_rect.inflate(glow_inflate, glow_inflate)
+            glow_alpha = int((40 + i * 20) * glow_intensity)
             glow_surf = pygame.Surface((glow_rect.width, glow_rect.height), pygame.SRCALPHA)
-            pygame.draw.rect(glow_surf, (*Colors.CONNECTION, glow_alpha), 
+            pygame.draw.rect(glow_surf, (*Colors.CONNECTION, min(glow_alpha, 255)), 
                            glow_surf.get_rect(), border_radius=12)
             surface.blit(glow_surf, glow_rect.topleft)
         
-        # Buton arka planı (gradient)
-        btn_surf = pygame.Surface((btn_w, btn_h), pygame.SRCALPHA)
-        for y in range(btn_h):
-            ratio = y / btn_h
-            r = int(Colors.CONNECTION[0] * (1 - ratio * 0.3))
-            g = int(Colors.CONNECTION[1] * (1 - ratio * 0.3))
-            b = int(Colors.CONNECTION[2] * (1 - ratio * 0.3))
-            pygame.draw.line(btn_surf, (r, g, b), (0, y), (btn_w, y))
+        # Buton arka planı (gradient - daha parlak hover'da)
+        btn_surf = pygame.Surface((scaled_w, scaled_h), pygame.SRCALPHA)
+        brightness_boost = 1.2 if self._btn_hovered else 1.0
+        for y in range(scaled_h):
+            ratio = y / scaled_h
+            r = int(Colors.CONNECTION[0] * (1 - ratio * 0.3) * brightness_boost)
+            g = int(Colors.CONNECTION[1] * (1 - ratio * 0.3) * brightness_boost)
+            b = int(Colors.CONNECTION[2] * (1 - ratio * 0.3) * brightness_boost)
+            pygame.draw.line(btn_surf, (min(r, 255), min(g, 255), min(b, 255)), (0, y), (scaled_w, y))
         
-        # Buton border
-        pygame.draw.rect(btn_surf, WHITE, btn_surf.get_rect(), width=3, border_radius=10)
-        surface.blit(btn_surf, self._btn_rect.topleft)
+        # Buton border (hover'da daha kalın)
+        border_width = 4 if self._btn_hovered else 3
+        border_color = (255, 255, 255) if self._btn_hovered else WHITE
+        pygame.draw.rect(btn_surf, border_color, btn_surf.get_rect(), width=border_width, border_radius=10)
+        surface.blit(btn_surf, scaled_rect.topleft)
         
         # Buton metni (beyaz, kalın)
         btn_text_surf = self._font_button.render("OYUNA BAŞLA", True, WHITE)
-        btn_text_rect = btn_text_surf.get_rect(center=self._btn_rect.center)
+        btn_text_rect = btn_text_surf.get_rect(center=scaled_rect.center)
         surface.blit(btn_text_surf, btn_text_rect)
         
         # Alt bilgi metni (ShopScene tarzı küçük detay)
@@ -331,8 +384,14 @@ class LobbyScene(Scene):
         
         Validates: Requirements 5.1, 5.2, 5.3, 5.4, 5.5, 6.1, 6.2, 6.3, 6.4, 6.5, 6.6
         """
-        # Only handle left mouse button clicks
+        # Mouse button down - start press animation
         if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+            if self._btn_rect is not None and self._btn_rect.collidepoint(event.pos):
+                self._btn_pressed = True
+        
+        # Mouse button up - trigger transition
+        elif event.type == pygame.MOUSEBUTTONUP and event.button == 1:
+            self._btn_pressed = False
             # Guard clause: ensure button rect is initialized
             if self._btn_rect is not None and self._btn_rect.collidepoint(event.pos):
                 # Lazy import to avoid circular dependencies

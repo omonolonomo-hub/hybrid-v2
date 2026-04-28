@@ -1,7 +1,10 @@
 import pytest
 import math
-from v2.constants import Layout, GridMath, Screen
-from v2.ui.hex_grid import axial_to_pixel, VALID_HEX_COORDS
+from v2.constants import Layout, GridMath, Screen, CameraState
+from v2.ui.hex_grid import VALID_HEX_COORDS
+from v2.ui.hex_math import axial_to_pixel
+
+DEFAULT_CAMERA = CameraState(zoom=1.0, offset_x=0.0, offset_y=0.0)
 
 def test_hexgrid_fully_fits_inside_center_panel_no_overlaps():
     """Hexagonal Grid'in ekranda taşmadığını ve UI panelleriyle çakışmadığını garanti eder."""
@@ -12,7 +15,7 @@ def test_hexgrid_fully_fits_inside_center_panel_no_overlaps():
     hex_h_radius = GridMath.HEX_SIZE
 
     for q, r in VALID_HEX_COORDS:
-        px, py = axial_to_pixel(q, r)
+        px, py = axial_to_pixel(q, r, DEFAULT_CAMERA)
         
         left_edge = px - hex_w / 2
         right_edge = px + hex_w / 2

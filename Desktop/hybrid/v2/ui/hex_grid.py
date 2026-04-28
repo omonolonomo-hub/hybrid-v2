@@ -10,6 +10,7 @@ from v2.core.card_database import CardDatabase, CATEGORY_TO_SYNERGY
 from v2.core.exceptions import AutochessException
 from v2.ui import font_cache
 from v2.ui.hex_grid_config import HexGridConfig, get_default_config
+from v2.ui.hex_math import axial_to_pixel, pixel_to_axial, hex_distance  # noqa: F401 (re-exported)
 
 # Backward compatibility: module-level __getattr__ for lazy loading
 # This allows existing code to use "from v2.ui.hex_grid import VALID_HEX_COORDS"
@@ -279,26 +280,50 @@ def render_synergy_preview(
 
     surface.set_clip(old_clip)
 
-_GHOST_TXT_CACHE: dict[tuple, pygame.Surface] = {}
-_GHOST_TXT_CACHE_MAX = 256  # Hard cap to prevent unbounded growth
+class _GhostTextCache:
+    """Bounded LRU-style cache for rendered ghost-text surfaces.
+
+    Keeping state on an instance (self._ghost_cache) instead of a module-level
+    dict means each test can create a fresh instance and there is no shared
+    mutable state that leaks between test runs.
+    """
+
+    _CACHE_MAX = 256  # Hard cap to prevent unbounded growth
+
+    def __init__(self) -> None:
+        self._ghost_cache: dict[tuple, pygame.Surface] = {}
+
+    def get(self, txt: str, color: tuple, font_size: int, font) -> pygame.Surface:
+        """Return a cached surface, rendering and storing it on first access.
+
+        When the cache exceeds *_CACHE_MAX* entries the oldest half is evicted
+        (simple FIFO-style) to keep memory bounded.
+        """
+        key = (txt, color, font_size)
+
+        if key not in self._ghost_cache:
+            # Cache full → evict half the entries
+            if len(self._ghost_cache) >= self._CACHE_MAX:
+                keys = list(self._ghost_cache.keys())
+                for k in keys[: len(keys) // 2]:
+                    del self._ghost_cache[k]
+
+            self._ghost_cache[key] = font.render(txt, True, color)
+
+        return self._ghost_cache[key]
+
+    def clear(self) -> None:
+        """Discard all cached surfaces (useful in tests and on scene teardown)."""
+        self._ghost_cache.clear()
+
+
+# Module-level singleton — production code uses this; tests instantiate their own.
+_ghost_text_cache = _GhostTextCache()
+
 
 def _get_cached_ghost_text(txt: str, color: tuple, font_size: int, font) -> pygame.Surface:
-    """
-    Get or create cached text surface with bounded cache size.
-    When cache exceeds max size, evict half the entries (simple FIFO-style).
-    """
-    key = (txt, color, font_size)
-    
-    if key not in _GHOST_TXT_CACHE:
-        # Cache full → evict half the entries
-        if len(_GHOST_TXT_CACHE) >= _GHOST_TXT_CACHE_MAX:
-            keys = list(_GHOST_TXT_CACHE.keys())
-            for k in keys[:len(keys) // 2]:
-                del _GHOST_TXT_CACHE[k]
-        
-        _GHOST_TXT_CACHE[key] = font.render(txt, True, color)
-    
-    return _GHOST_TXT_CACHE[key]
+    """Thin wrapper kept for backward compatibility; delegates to the singleton."""
+    return _ghost_text_cache.get(txt, color, font_size, font)
 
 def render_ghost_preview(
     surface: pygame.Surface, 
@@ -405,6 +430,11 @@ def render_hex_grid(surface: pygame.Surface, board_cards: dict | None = None, ca
     """
     Board üzerindeki aktif (board) hücreleri "DCI Premium" stiliyle çizer.
     Glow, Depth ve Breathing efektleri içerir.
+    İyileştirilmiş izometrik render kalitesi:
+    - Çoklu katman derinlik efekti
+    - Gelişmiş anti-aliasing
+    - İzometrik gölge ve highlight
+    - Yumuşak gradient geçişleri
     config: HexGridConfig instance (defaults to engine config)
     """
     if board_cards is None:
@@ -449,91 +479,95 @@ def render_hex_grid(surface: pygame.Surface, board_cards: dict | None = None, ca
         breath_val = 0.97 + 0.03 * math.sin(t * 1.5 + q*0.4 + r*0.4)
         radius = base_radius * breath_val if not is_filled else base_radius
         
-        # 4. Geometri Hazırlığı
+        # 4. Geometri Hazırlığı - Çoklu Katman
         points = []
         inner_points = []
+        shadow_points = []
+        highlight_points = []
+        
         for i in range(6):
             angle = math.radians(60 * i - 30)
+            cos_a = math.cos(angle)
+            sin_a = math.sin(angle)
+            
             # Dış Sınır
-            px = cx + radius * math.cos(angle)
-            py = cy + radius * math.sin(angle)
+            px = cx + radius * cos_a
+            py = cy + radius * sin_a
             points.append((int(px), int(py)))
+            
             # İç Sınır (Highlight için)
-            ix = cx + (radius * 0.85) * math.cos(angle)
-            iy = cy + (radius * 0.85) * math.sin(angle)
+            ix = cx + (radius * 0.85) * cos_a
+            iy = cy + (radius * 0.85) * sin_a
             inner_points.append((int(ix), int(iy)))
+            
+            # Gölge katmanı (izometrik derinlik için)
+            sx = cx + (radius * 0.95) * cos_a
+            sy = cy + (radius * 0.95) * sin_a + (2 * zoom)  # Hafif aşağı kaydırma
+            shadow_points.append((int(sx), int(sy)))
+            
+            # Üst highlight (ışık kaynağı sol-üst)
+            hx = cx + (radius * 0.92) * cos_a
+            hy = cy + (radius * 0.92) * sin_a - (1 * zoom)  # Hafif yukarı
+            highlight_points.append((int(hx), int(hy)))
 
-        # 5. [LAYER 1] Outer Glow (KALDIRILDI)
+        # 5. [LAYER 1] İzometrik Gölge (Derinlik hissi)
+        shadow_alpha = 60 if is_filled else 15
+        shadow_col = (8, 6, 10, shadow_alpha)
+        pygame.gfxdraw.filled_polygon(surface, shadow_points, shadow_col)
+        pygame.gfxdraw.aapolygon(surface, shadow_points, shadow_col)
         
-        # 6. [LAYER 2] Glass Body (Gövde Derinliği - Dengeli Karbon-Mor)
+        # 6. [LAYER 2] Ana Gövde - Gradient Simülasyonu
         # Karbon ve mor arası dengeli ton
         base_alpha = 140 if is_filled else 30
         body_col = (16, 13, 20, base_alpha)  # Karbon-mor dengeli
-            
-        pygame.draw.polygon(surface, body_col, points)
-        # Inner Gradient/Highlight Simülasyonu
-        inner_alpha = 80 if is_filled else 20
-        inner_col = (25, 21, 31, inner_alpha)  # Dengeli highlight
-        pygame.draw.polygon(surface, inner_col, inner_points)
+        
+        # Ana dolgu
+        pygame.gfxdraw.filled_polygon(surface, points, body_col)
+        pygame.gfxdraw.aapolygon(surface, points, body_col)
+        
+        # Orta katman (gradient efekti için)
+        mid_alpha = 95 if is_filled else 22
+        mid_col = (20, 17, 25, mid_alpha)
+        pygame.gfxdraw.filled_polygon(surface, inner_points, mid_col)
+        pygame.gfxdraw.aapolygon(surface, inner_points, mid_col)
+        
+        # 7. [LAYER 3] Üst Highlight (İzometrik ışık)
+        if is_filled or is_hover:
+            highlight_alpha = 45 if is_filled else 25
+            highlight_col = (35, 28, 42, highlight_alpha)
+            pygame.gfxdraw.filled_polygon(surface, highlight_points, highlight_col)
+            pygame.gfxdraw.aapolygon(surface, highlight_points, highlight_col)
 
-        # 7. [LAYER 3] Tactical Borders (Kenarlıklar - Dengeli Neon)
-        # Hover durumunda dengeli mor-gri neon
+        # 8. [LAYER 4] Tactical Borders - Çift Katman
+        # Dış kenarlık (ana)
         border_col = (105, 78, 135, 180) if is_hover else (50, 41, 61, 100)  # Orta ton
         border_w = max(1, int(2 * zoom))
         
-        # Dış Neon
-        pygame.draw.polygon(surface, border_col, points, border_w)
-        # İç Highlight (Rim Light - Dengeli)
+        # Anti-aliased polygon border
+        pygame.gfxdraw.aapolygon(surface, points, border_col)
+        if border_w > 1:
+            pygame.draw.polygon(surface, border_col, points, border_w)
+        
+        # İç Rim Light (Dengeli)
         if is_hover or is_filled:
-            pygame.draw.polygon(surface, (145, 120, 175, 100), inner_points, 1)  # Dengeli highlight
+            rim_col = (145, 120, 175, 100)
+            pygame.gfxdraw.aapolygon(surface, inner_points, rim_col)
+            
+        # 9. [LAYER 5] Ekstra Detay - Köşe Vurguları (sadece filled için)
+        if is_filled:
+            for i in range(6):
+                angle = math.radians(60 * i - 30)
+                # Köşe noktalarında küçük highlight
+                corner_x = int(cx + radius * 0.88 * math.cos(angle))
+                corner_y = int(cy + radius * 0.88 * math.sin(angle) - 1)
+                corner_size = max(1, int(2 * zoom))
+                pygame.gfxdraw.filled_circle(surface, corner_x, corner_y, corner_size, (55, 45, 65, 80))
+                pygame.gfxdraw.aacircle(surface, corner_x, corner_y, corner_size, (55, 45, 65, 80))
 
     surface.set_clip(old_clip)
 
-def axial_to_pixel(q: int, r: int, camera: CameraState) -> tuple[float, float]:
-    """Converts coordinate from Axial to center pixel rendering location with camera support."""
-    zoom = camera.zoom
-    off_x = camera.offset_x
-    off_y = camera.offset_y
-    
-    # Base unscaled position
-    base_x = GridMath.HEX_SIZE * (math.sqrt(3) * q + math.sqrt(3) / 2 * r)
-    base_y = GridMath.HEX_SIZE * (3 / 2 * r)
-    
-    # Apply zoom and offset
-    x = (base_x * zoom) + GridMath.ORIGIN_X + off_x
-    y = (base_y * zoom) + GridMath.ORIGIN_Y + off_y
-    
-    return x, y
-
-def pixel_to_axial(px: float, py: float, camera: CameraState) -> tuple[int, int]:
-    """Converts a mouse pixel click location to the nearest axial hex grid location with camera support."""
-    zoom = camera.zoom
-    off_x = camera.offset_x
-    off_y = camera.offset_y
-    
-    # Reverse offset and zoom
-    px -= (GridMath.ORIGIN_X + off_x)
-    py -= (GridMath.ORIGIN_Y + off_y)
-    
-    px /= zoom
-    py /= zoom
-    
-    q_f = (math.sqrt(3) / 3 * px - 1 / 3 * py) / GridMath.HEX_SIZE
-    r_f = (2 / 3 * py) / GridMath.HEX_SIZE
-    
-    return _hex_round(q_f, r_f)
-
-def _hex_round(q_f: float, r_f: float) -> tuple[int, int]:
-    s_f = -q_f - r_f
-    q, r, s = round(q_f), round(r_f), round(s_f)
-    dq, dr, ds = abs(q - q_f), abs(r - r_f), abs(s - s_f)
-    if dq > dr and dq > ds: 
-        q = -r - s
-    elif dr > ds:            
-        r = -q - s
-    return q, r
-
 # VALID_HEX_COORDS is defined at the top of the file via EngineAdapter
+# axial_to_pixel, pixel_to_axial, hex_distance → v2.ui.hex_math
 
 HEX_DIRECTION_MAP = {i: d for i, d in enumerate(ENGINE_HEX_DIRS)}
 

@@ -31,6 +31,8 @@ class BoardSurfaceCache:
         "_camera_dirty",
         "_last_board_key",
         "_last_cam_key",
+        "_last_synergy_board_key",
+        "_last_synergy_cam_key",
         "_surf_w",
         "_surf_h",
     )
@@ -52,6 +54,9 @@ class BoardSurfaceCache:
         self._camera_dirty = True
         self._last_board_key: Optional[frozenset[Coord]] = None
         self._last_cam_key: Optional[Tuple[float, float, float]] = None
+        # Separate keys for synergy geometry cache
+        self._last_synergy_board_key: Optional[frozenset[Coord]] = None
+        self._last_synergy_cam_key: Optional[Tuple[float, float, float]] = None
 
     # ── Dirty markers ────────────────────────────────────────────────────────
 
@@ -113,16 +118,18 @@ class BoardSurfaceCache:
         board_key = frozenset(board_cards.keys())
 
         if (
-            cam_key != self._last_cam_key
-            or board_key != self._last_board_key
+            cam_key != self._last_synergy_cam_key
+            or board_key != self._last_synergy_board_key
             or self._board_dirty
             or self._camera_dirty
         ):
             self._rebuild_synergy_geom(adjacency_pairs, camera)
-            # geom rebuild, ama grid'i mutlaka rebuild etmek zorunda değiliz;
-            # yine de key'leri güncel tutalım ki bir sonraki çağrıda thrash olmasın.
-            self._last_cam_key = cam_key
-            self._last_board_key = board_key
+            # Update synergy-specific cache keys
+            self._last_synergy_cam_key = cam_key
+            self._last_synergy_board_key = board_key
+            # Clear dirty flags after rebuild
+            self._board_dirty = False
+            self._camera_dirty = False
 
         return self._synergy_geom
 

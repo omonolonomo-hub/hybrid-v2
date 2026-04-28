@@ -47,7 +47,7 @@ class SceneManager:
         self._current: Scene | None = None
         self._pending: Scene | None = None
         self._fade_surface: pygame.Surface | None = None
-        self._fade_duration_ms: float = 200.0
+        self._fade_duration_ms: float = 100.0
         self._fade_elapsed_ms: float = 0.0
         self._alpha: int = 0                     # 0 = şeffaf, 255 = siyah
         # "idle" | "fade_out" | "fade_in"
@@ -91,7 +91,7 @@ class SceneManager:
         self._state = "idle"
         self._alpha = 0
 
-    def transition_to(self, scene: Scene, fade_ms: int = 200) -> None:
+    def transition_to(self, scene: Scene, fade_ms: int = 100) -> None:
         """
         Fade-out → sahne değiş → fade-in geçişini başlatır.
         Geçiş devam ediyorsa yeni geçiş yoksayılır.
@@ -152,12 +152,16 @@ class SceneManager:
             elif hasattr(self._current, 'render'):
                 self._current.render(surface)
 
-        # Fade overlay
+        # Fade overlay - only create/update when needed
         if self._alpha > 0:
+            # Create fade surface once or recreate if screen size changed
             if (self._fade_surface is None
                     or self._fade_surface.get_size() != surface.get_size()):
-                self._fade_surface = pygame.Surface(surface.get_size(), pygame.SRCALPHA)
-            self._fade_surface.fill((0, 0, 0, self._alpha))
+                self._fade_surface = pygame.Surface(surface.get_size())
+                self._fade_surface.fill((0, 0, 0))
+            
+            # Set alpha and blit (much faster than recreating surface every frame)
+            self._fade_surface.set_alpha(self._alpha)
             surface.blit(self._fade_surface, (0, 0))
 
     # ── Read-only props ───────────────────────────────────────────────────────

@@ -154,11 +154,16 @@ class TestGetHandSlotPreservation:
         assert result == ["A", None, None, "D", None, "F"]
 
     def test_invalid_player_index(self):
-        """Geçersiz player_index → 6 None slot."""
+        """Geçersiz player_index → PlayerNotFoundError."""
         from v2.core.engine_adapter import EngineAdapter
+        from v2.core.exceptions import PlayerNotFoundError
+        import pytest
+        
         adapter = MagicMock(spec=EngineAdapter)
         adapter._engine = MagicMock()
         adapter._engine.players = []
         real = EngineAdapter(adapter._engine)
-        result = real.get_hand(0)
-        assert result == [None] * 6
+        
+        # get_hand now raises exception for invalid player
+        with pytest.raises(PlayerNotFoundError):
+            real.get_hand(0)

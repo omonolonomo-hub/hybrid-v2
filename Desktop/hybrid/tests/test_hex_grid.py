@@ -1,5 +1,6 @@
 import pytest
-from v2.ui.hex_grid import axial_to_pixel, pixel_to_axial, VALID_HEX_COORDS, HEX_DIRECTION_MAP, _hex_round
+from v2.ui.hex_grid import VALID_HEX_COORDS, HEX_DIRECTION_MAP
+from v2.ui.hex_math import axial_to_pixel, pixel_to_axial, _hex_round
 from v2.constants import GridMath, CameraState
 
 # Default camera for tests (no zoom, no offset)

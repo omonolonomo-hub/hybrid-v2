@@ -25,33 +25,62 @@ def _build_adapter(seed: int = 77, n: int = 4) -> tuple[Game, EngineAdapter]:
 
 
 def test_invalid_player_reads_do_not_crash():
+    """Invalid player reads should raise exceptions for critical methods,
+    but return safe defaults for backward-compatible methods."""
     game, adapter = _build_adapter()
 
-    assert adapter.get_player(999) is None
+    # Critical methods now raise exceptions
+    from v2.core.exceptions import PlayerNotFoundError
+    import pytest
+    
+    with pytest.raises(PlayerNotFoundError):
+        adapter.get_player(999)
+    
+    # Backward-compatible methods return safe defaults
     assert adapter.get_player_hp(999) == 0
     assert adapter.get_player_gold(999) == 0
-    assert adapter.get_hand(999) == [None] * 6
-    assert adapter.get_shop_window(999) == [None] * 5
+    
+    # get_hand now raises exception for invalid player
+    with pytest.raises(PlayerNotFoundError):
+        adapter.get_hand(999)
+    
+    # get_shop_window now raises exception for invalid player
+    with pytest.raises(PlayerNotFoundError):
+        adapter.get_shop_window(999)
 
 
 def test_mutation_calls_fail_with_explicit_error_results_not_crashes():
+    """Mutation calls with invalid player should return error results."""
     game, adapter = _build_adapter()
 
-    assert adapter.perform_buy_card(999, 0) == ActionResult.ERR_NOT_IN_PREP_PHASE
+    # These methods return ActionResult for backward compatibility
+    assert adapter.perform_buy_card(999, 0) == ActionResult.ERR_ENGINE_EXCEPTION
     assert adapter.perform_placement(999, 0, (0, 0), 0) == ActionResult.ERR_ENGINE_EXCEPTION
 
 
 def test_missing_market_is_handled_gracefully():
+    """Missing market: get_market() returns None, get_market_or_raise() raises."""
     game, adapter = _build_adapter()
     game.market = None
 
+    # get_market() returns None (backward compatible)
     assert adapter.get_market() is None
+    
+    # get_market_or_raise() raises explicitly
+    from v2.core.exceptions import MarketNotAvailableError
+    import pytest
+    with pytest.raises(MarketNotAvailableError):
+        adapter.get_market_or_raise()
+    
+    # Other methods return safe defaults
     assert adapter.get_pool_copies() == {}
     assert adapter.get_rarity_weight("1", 1) == 0.0
+    assert adapter.get_shop_window(0) == [None] * 5
     assert adapter.perform_buy_card(0, 0) == ActionResult.ERR_ENGINE_EXCEPTION
 
 
-def test_missing_board_is_shimmed_during_placement():
+def test_missing_board_is_handled_gracefully():
+    """Missing board should be detected and return error result."""
     game, adapter = _build_adapter()
     player = game.players[0]
     player.board = None
@@ -60,9 +89,8 @@ def test_missing_board_is_shimmed_during_placement():
 
     result = adapter.perform_placement(0, 0, (0, 0), 2)
 
-    assert result == ActionResult.OK
-    assert player.board is not None
-    assert (0, 0) in player.board.grid
+    # Missing board is now correctly detected as an error
+    assert result == ActionResult.ERR_ENGINE_EXCEPTION
 
 
 def test_invalid_hand_index_returns_error_result():

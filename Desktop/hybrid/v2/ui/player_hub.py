@@ -21,6 +21,31 @@ class PlayerHubData:
     next_gold:   int
     board_used:  int = 0
 
+
+def build_hub_data(state) -> PlayerHubData:
+    """Pure function: state → PlayerHubData dönüşümü.
+    
+    GameState'den PlayerHub için gerekli verileri çıkarır.
+    Hiç state tutmaz, sadece dönüşüm yapar.
+    
+    Args:
+        state: PublicState snapshot (active_player, turn, vb. içerir)
+        
+    Returns:
+        PlayerHubData: PlayerHub paneli için veri sözleşmesi
+    """
+    hud = state.active_player.hud
+    return PlayerHubData(
+        hp=hud.hp,
+        gold=hud.gold,
+        win_streak=hud.win_streak,
+        total_pts=hud.total_pts,
+        turn=state.turn,
+        next_gold=hud.next_gold,
+        board_used=len(state.active_player.board_cards),
+    )
+
+
 class PlayerHub:
     """SOL PANEL: DCI-REFIT (Digital Combat Interface) Oyuncu Merkezi."""
 

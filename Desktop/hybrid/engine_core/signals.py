@@ -33,3 +33,4 @@ class SignalBus:
         self.inventory_changed = Signal()
         self.turn_started = Signal()
         self.combat_finished = Signal()
+        self.milestone_reached = Signal()
