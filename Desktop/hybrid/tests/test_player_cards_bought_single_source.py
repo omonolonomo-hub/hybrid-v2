@@ -26,16 +26,16 @@ def test_cards_bought_counter_uses_single_source_on_buy_and_reset():
     p.buy_card(_make_card("B", "1"))
 
     assert p.cards_bought_this_turn == 2
-    assert p.stats["cards_bought_this_turn"] == 2
+    assert "cards_bought_this_turn" not in p.stats
 
     p.reset_turn_state()
     assert p.cards_bought_this_turn == 0
-    assert p.stats["cards_bought_this_turn"] == 0
+    assert "cards_bought_this_turn" not in p.stats
 
 
-def test_cards_bought_property_setter_keeps_stats_in_sync():
+def test_cards_bought_this_turn_not_duplicated_in_stats_dict():
     p = Player(pid=1, strategy="random")
     p.cards_bought_this_turn = 3
 
     assert p.cards_bought_this_turn == 3
-    assert p.stats["cards_bought_this_turn"] == 3
+    assert "cards_bought_this_turn" not in p.stats

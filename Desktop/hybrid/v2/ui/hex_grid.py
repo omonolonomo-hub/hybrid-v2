@@ -1,4 +1,6 @@
 import math
+from collections.abc import Mapping
+
 import pygame
 import pygame.gfxdraw
 from typing import Any
@@ -235,7 +237,7 @@ def render_synergy_preview(
         item = board_cards[nb]
         if hasattr(item, "stats"): # CardData object
             nb_data = item
-        elif isinstance(item, dict): # ViewState dict
+        elif isinstance(item, Mapping):  # ViewState dict or MappingProxyType
             nb_card_name = item.get("name")
             nb_data = db.lookup(nb_card_name) if nb_card_name else None
         else: # Just a string name
@@ -534,3 +536,195 @@ def _hex_round(q_f: float, r_f: float) -> tuple[int, int]:
 # VALID_HEX_COORDS is defined at the top of the file via EngineAdapter
 
 HEX_DIRECTION_MAP = {i: d for i, d in enumerate(ENGINE_HEX_DIRS)}
+
+
+# ──────────────────────────────────────────────────────────────────────────────
+# Cache-aware render (backward compatible helpers)
+# ──────────────────────────────────────────────────────────────────────────────
+
+def render_hex_grid_cached(
+    surface: pygame.Surface,
+    board_surface_cache: Any,  # BoardSurfaceCache
+    board_cards: dict,
+    hover_coord: tuple[int, int] | None,
+    camera: CameraState,
+    config: HexGridConfig = None,
+) -> None:
+    """
+    Cache-aware hex grid render.
+
+    Statik grid surface cache'den blit edilir.
+    Hover overlay (tek hex) her frame üstüne çizilir.
+    """
+    if config is None:
+        config = get_default_config()
+
+    grid_surf = board_surface_cache.get_grid(board_cards, camera, config.valid_coords)
+    surface.blit(grid_surf, (0, 0))
+
+    # Cheap breathing/pulse overlays: reuse cached polygon points, only alpha/scale changes per frame.
+    _render_breath_fill_overlay(surface, board_surface_cache, board_cards, camera, config)
+    _render_pulse_borders(surface, board_surface_cache, board_cards, camera, config)
+
+    if hover_coord is not None and hover_coord in config.valid_coords:
+        _render_hover_hex(surface, hover_coord, camera)
+
+
+def render_synergy_lines_cached(
+    surface: pygame.Surface,
+    board_surface_cache: Any,  # BoardSurfaceCache
+    adjacency_pairs: list,
+    board_cards: dict,
+    camera: CameraState,
+) -> None:
+    """
+    Cache-aware synergy line render.
+
+    Geometry (pixel coords) cache'ten gelir; pulse/alpha her frame hesaplanır.
+    """
+    geom = board_surface_cache.get_synergy_geom(adjacency_pairs, camera, board_cards)
+    if not geom:
+        return
+
+    t = pygame.time.get_ticks() / 1000.0
+    pulse_slow = 0.55 + 0.45 * math.sin(t * 1.8)
+    pulse_fast = 0.70 + 0.30 * math.sin(t * 5.0)
+
+    clip_rect = pygame.Rect(
+        Layout.CENTER_ORIGIN_X,
+        Layout.SHOP_PANEL_Y + Layout.SHOP_PANEL_H + 5,
+        Layout.CENTER_W,
+        Layout.HAND_PANEL_Y - (Layout.SHOP_PANEL_Y + Layout.SHOP_PANEL_H) - 10,
+    )
+    old_clip = surface.get_clip()
+    surface.set_clip(clip_rect)
+
+    for x1, y1, x2, y2, r, g, b, max_conn in geom:
+        chain = 1.0 + 0.35 * min(max_conn - 1, 3)
+
+        a0 = int(35 * pulse_slow * chain)
+        w0 = max(12, int(18 * chain))
+        _draw_line_alpha(surface, (r, g, b, min(a0, 90)), (x1, y1), (x2, y2), w0)
+
+        a1 = int(130 * pulse_slow * chain)
+        w1 = max(5, int(7 * chain))
+        _draw_line_alpha(surface, (r, g, b, min(a1, 200)), (x1, y1), (x2, y2), w1)
+
+        a2 = int(230 * pulse_fast)
+        _draw_line_alpha(surface, (r, g, b, min(a2, 255)), (x1, y1), (x2, y2), 2)
+
+        dot_r = max(4, int(6 * chain))
+        dot_a = int(180 * pulse_fast)
+        bright = (min(255, int(r * 1.4)), min(255, int(g * 1.4)), min(255, int(b * 1.4)))
+        _draw_circle_alpha(surface, (*bright, dot_a), (x1, y1), dot_r)
+        _draw_circle_alpha(surface, (*bright, dot_a), (x2, y2), dot_r)
+
+    surface.set_clip(old_clip)
+
+
+def _render_hover_hex(surface: pygame.Surface, coord: tuple[int, int], camera: CameraState) -> None:
+    """
+    Tek hex için hover efekti: statik grid üstüne per-frame overlay.
+    """
+    cx, cy = axial_to_pixel(coord[0], coord[1], camera)
+    zoom = camera.zoom
+    r = GridMath.HEX_SIZE * zoom
+
+    outer = [
+        (int(cx + r * math.cos(math.radians(60 * i - 30))), int(cy + r * math.sin(math.radians(60 * i - 30))))
+        for i in range(6)
+    ]
+    inner = [
+        (
+            int(cx + r * 0.85 * math.cos(math.radians(60 * i - 30))),
+            int(cy + r * 0.85 * math.sin(math.radians(60 * i - 30))),
+        )
+        for i in range(6)
+    ]
+
+    border_w = max(1, int(2 * zoom))
+    pygame.draw.polygon(surface, (105, 78, 135, 180), outer, border_w)
+    pygame.draw.polygon(surface, (145, 120, 175, 100), inner, 1)
+
+
+def _render_pulse_borders(
+    surface: pygame.Surface,
+    board_surface_cache: Any,  # BoardSurfaceCache
+    board_cards: dict,
+    camera: CameraState,
+    config: HexGridConfig,
+) -> None:
+    """
+    Restore the "alive" feeling without rebuilding geometry:
+    - Uses cached hex points from BoardSurfaceCache (no per-hex trig)
+    - Draws only border overlay (single polygon stroke per visible hex)
+    """
+    # Clip to board area (match render_hex_grid)
+    center_rect = pygame.Rect(
+        Layout.CENTER_ORIGIN_X,
+        Layout.SHOP_PANEL_Y + Layout.SHOP_PANEL_H + 5,
+        Layout.CENTER_W,
+        Layout.HAND_PANEL_Y - (Layout.SHOP_PANEL_Y + Layout.SHOP_PANEL_H) - 10,
+    )
+    old_clip = surface.get_clip()
+    surface.set_clip(center_rect)
+
+    t = pygame.time.get_ticks() / 1000.0
+    zoom = camera.zoom
+    border_w = max(1, int(2 * zoom))
+
+    pts_cache = board_surface_cache.get_hex_points_cache(board_cards, camera, config.valid_coords)
+    if pts_cache:
+        for (q, r), (cx, cy, outer, _inner) in pts_cache.items():
+            # Match old feel: per-hex phase, but only alpha (radius stays static)
+            breath = 0.85 + 0.15 * math.sin(t * 1.6 + q * 0.4 + r * 0.4)
+            is_filled = (q, r) in board_cards
+            # Filled hex borders: calmer; empty hex borders: more alive
+            a = int((85 if is_filled else 145) * breath)
+            w = border_w + (1 if (not is_filled and breath > 0.98 and border_w <= 2) else 0)
+            col = (50, 41, 61, max(45, min(a, 200)))
+            pygame.draw.polygon(surface, col, outer, w)
+
+    surface.set_clip(old_clip)
+
+
+def _render_breath_fill_overlay(
+    surface: pygame.Surface,
+    board_surface_cache: Any,  # BoardSurfaceCache
+    board_cards: dict,
+    camera: CameraState,
+    config: HexGridConfig,
+) -> None:
+    """
+    Zemin hissini geri getirmek için boş hex'lere çok hafif breathing fill overlay.
+    Statik grid'i bozmaz; sadece empty hex'lere 2 filled polygon (outer+inner) çizer.
+    """
+    center_rect = pygame.Rect(
+        Layout.CENTER_ORIGIN_X,
+        Layout.SHOP_PANEL_Y + Layout.SHOP_PANEL_H + 5,
+        Layout.CENTER_W,
+        Layout.HAND_PANEL_Y - (Layout.SHOP_PANEL_Y + Layout.SHOP_PANEL_H) - 10,
+    )
+    old_clip = surface.get_clip()
+    surface.set_clip(center_rect)
+
+    t = pygame.time.get_ticks() / 1000.0
+    pts_cache = board_surface_cache.get_hex_points_cache(board_cards, camera, config.valid_coords)
+    if pts_cache:
+        for (q, r), (cx, cy, outer, inner) in pts_cache.items():
+            if (q, r) in board_cards:
+                continue  # filled hex'ler statik layer'da yeterince okunuyor
+
+            # Slight scale pulse (old behavior: empties breathe)
+            s = 0.97 + 0.03 * math.sin(t * 1.5 + q * 0.4 + r * 0.4)
+
+            outer_s = [(int(cx + (px - cx) * s), int(cy + (py - cy) * s)) for (px, py) in outer]
+            inner_s = [(int(cx + (px - cx) * s), int(cy + (py - cy) * s)) for (px, py) in inner]
+
+            # Slight alpha modulation to reintroduce "ground" depth
+            a0 = int(26 + 10 * (s - 0.97) / 0.03)  # ~26..36
+            a1 = int(16 + 8 * (s - 0.97) / 0.03)   # ~16..24
+            pygame.draw.polygon(surface, (16, 13, 20, max(18, min(a0, 48))), outer_s)
+            pygame.draw.polygon(surface, (25, 21, 31, max(10, min(a1, 34))), inner_s)
+
+    surface.set_clip(old_clip)

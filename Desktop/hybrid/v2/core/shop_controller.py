@@ -38,33 +38,82 @@ class ShopController:
         return int(self.refresh_public_state().turn)
 
     def handle_phase_change(self, new_phase: str) -> ShopControllerResult:
-        self._game_state._mirror_phase(new_phase)
+        """Handle phase transition and trigger associated actions.
+        
+        Phase setting and action triggering are now decoupled:
+        - mirror_phase() sets the phase state
+        - Specific actions (combat, turn start) are called explicitly
+        
+        This allows dry-runs, previews, or deferred execution patterns.
+        
+        Phase transitions are atomic: if any step in the sequence fails,
+        the phase is rolled back to its previous value to prevent inconsistent state.
+        """
+        # Store previous phase for rollback on exception
+        # Use get_phase() instead of get_public_state().phase to avoid expensive computation
+        # (get_public_state() triggers full UIAdapter BFS + DB + triple-iteration)
+        previous_phase = self._game_state.get_phase()
+        
+        try:
+            self._game_state.mirror_phase(new_phase)
 
-        if new_phase == "STATE_PREPARATION":
-            cleanup = self.cleanup_dead_cards()
-            self._game_state.start_turn()
-            self._game_state.reset_turn()
-            return ShopControllerResult(
-                state=self.refresh_public_state(),
-                removed_coords=cleanup.removed_coords,
-            )
+            if new_phase == "STATE_PREPARATION":
+                cleanup = self.cleanup_dead_cards()
+                self._game_state.start_turn()
+                self._game_state.reset_turn()
+                return ShopControllerResult(
+                    state=self.refresh_public_state(),
+                    removed_coords=cleanup.removed_coords,
+                )
 
-        if new_phase == "STATE_COMBAT":
-            self._game_state.run_combat_phase()
+            if new_phase == "STATE_COMBAT":
+                self.trigger_combat()
+                state = self.refresh_public_state()
+                return ShopControllerResult(
+                    state=state,
+                    combat_logs=tuple(state.active_player.combat.logs),
+                )
+
             state = self.refresh_public_state()
-            return ShopControllerResult(
-                state=state,
-                combat_logs=tuple(state.active_player.combat.logs),
-            )
+            if new_phase == "STATE_ENDGAME":
+                return ShopControllerResult(
+                    state=state,
+                    endgame_stats=tuple(state.endgame_stats),
+                )
 
-        state = self.refresh_public_state()
-        if new_phase == "STATE_ENDGAME":
-            return ShopControllerResult(
-                state=state,
-                endgame_stats=tuple(state.endgame_stats),
-            )
+            return ShopControllerResult(state=state)
+            
+        except Exception as e:
+            # Rollback: restore phase to previous value to prevent inconsistent state
+            # 
+            # ROLLBACK SCOPE:
+            # - Only StateStore._phase is rolled back
+            # - Engine-level mutations (board changes, market updates) are NOT undone
+            # - This is intentional: they are idempotent or logged
+            # 
+            # RATIONALE:
+            # Phase inconsistency is the critical bug - if mirror_phase() succeeds but
+            # start_turn() fails, the phase is "PREPARATION" but the turn hasn't started.
+            # Rolling back the phase prevents this inconsistent state.
+            # 
+            # Engine mutations (board/market) are either:
+            # 1. Idempotent (can be safely repeated)
+            # 2. Logged (can be debugged)
+            # So partial execution is acceptable for engine state, but not for phase state.
+            self._game_state.mirror_phase(previous_phase)
+            
+            # Re-raise exception for logging/debugging
+            raise
 
-        return ShopControllerResult(state=state)
+    def trigger_combat(self) -> None:
+        """Trigger combat execution independently of phase change.
+        
+        Separated from handle_phase_change() to allow:
+        - Dry-run phase transitions without combat
+        - Deferred combat execution
+        - Combat preview/simulation
+        """
+        self._game_state.run_combat_phase()
 
     def handle_shop_action(self, action: ShopUIAction) -> ShopControllerResult:
         if action.kind == "ready":

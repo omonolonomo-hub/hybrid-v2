@@ -156,3 +156,161 @@ def test_draw_falls_back_to_legacy_render_method():
     manager.draw(surface)
 
     assert legacy.render_count == 1
+
+
+# ══════════════════════════════════════════════════════════════════════════════
+# BUG 3 PRESERVATION TESTS - Scene Lifecycle (Requirements 3.7, 3.8, 3.9)
+# These tests capture baseline behavior on UNFIXED code that must be preserved
+# after implementing the memory leak fix.
+# ══════════════════════════════════════════════════════════════════════════════
+
+
+def test_preservation_set_scene_calls_on_exit_on_old_scene():
+    """
+    PRESERVATION TEST (Requirement 3.7)
+    WHEN set_scene() transitions to a new scene
+    THEN the system SHALL CONTINUE TO call on_exit() on the old scene
+    
+    This test captures the baseline behavior that must be preserved after fix.
+    """
+    manager = SceneManager.get()
+    old_scene = TrackingScene("old")
+    new_scene = TrackingScene("new")
+    
+    # Set initial scene
+    manager.set_scene(old_scene)
+    assert old_scene.enter_count == 1
+    assert old_scene.exit_count == 0
+    
+    # Transition to new scene
+    manager.set_scene(new_scene)
+    
+    # Verify old scene's on_exit() was called
+    assert old_scene.exit_count == 1, "Old scene's on_exit() must be called"
+    assert new_scene.enter_count == 1, "New scene's on_enter() must be called"
+    assert manager._current is new_scene, "Current scene must be updated"
+
+
+def test_preservation_scenes_render_and_update_correctly_after_transition():
+    """
+    PRESERVATION TEST (Requirement 3.8)
+    WHEN scenes are active
+    THEN the system SHALL CONTINUE TO render and update correctly
+    
+    This test verifies that scene rendering and updating work correctly
+    after transitions, which must be preserved after the memory leak fix.
+    """
+    manager = SceneManager.get()
+    scene1 = TrackingScene("scene1")
+    scene2 = TrackingScene("scene2")
+    surface = pygame.Surface((160, 90))
+    
+    # Set first scene and verify it updates/renders
+    manager.set_scene(scene1)
+    manager.update(16.0)
+    manager.draw(surface)
+    
+    assert len(scene1.update_calls) == 1
+    assert scene1.update_calls[0] == 16.0
+    assert scene1.draw_count == 1
+    
+    # Transition to second scene
+    manager.set_scene(scene2)
+    
+    # Verify second scene updates/renders correctly
+    manager.update(32.0)
+    manager.draw(surface)
+    
+    assert len(scene2.update_calls) == 1
+    assert scene2.update_calls[0] == 32.0
+    assert scene2.draw_count == 1
+    
+    # Verify first scene is no longer updated/rendered
+    assert len(scene1.update_calls) == 1, "Old scene should not receive updates"
+    assert scene1.draw_count == 1, "Old scene should not be drawn"
+
+
+def test_preservation_scene_lifecycle_methods_work_correctly():
+    """
+    PRESERVATION TEST (Requirement 3.9)
+    WHEN scene lifecycle methods (on_enter, on_exit, update, render) are called
+    THEN the system SHALL CONTINUE TO function as currently implemented
+    
+    This test verifies the complete lifecycle flow through multiple transitions.
+    """
+    manager = SceneManager.get()
+    scene_a = TrackingScene("A")
+    scene_b = TrackingScene("B")
+    scene_c = TrackingScene("C")
+    surface = pygame.Surface((100, 100))
+    
+    # Lifecycle: A enters
+    manager.set_scene(scene_a)
+    assert scene_a.enter_count == 1
+    assert scene_a.exit_count == 0
+    
+    # A is active - update and draw work
+    manager.update(10.0)
+    manager.draw(surface)
+    assert len(scene_a.update_calls) == 1
+    assert scene_a.draw_count == 1
+    
+    # Lifecycle: A exits, B enters
+    manager.set_scene(scene_b)
+    assert scene_a.exit_count == 1
+    assert scene_b.enter_count == 1
+    assert scene_b.exit_count == 0
+    
+    # B is active - update and draw work
+    manager.update(20.0)
+    manager.draw(surface)
+    assert len(scene_b.update_calls) == 1
+    assert scene_b.draw_count == 1
+    
+    # Lifecycle: B exits, C enters
+    manager.set_scene(scene_c)
+    assert scene_b.exit_count == 1
+    assert scene_c.enter_count == 1
+    assert scene_c.exit_count == 0
+    
+    # C is active - update and draw work
+    manager.update(30.0)
+    manager.draw(surface)
+    assert len(scene_c.update_calls) == 1
+    assert scene_c.draw_count == 1
+    
+    # Verify previous scenes are not updated after transition
+    assert len(scene_a.update_calls) == 1
+    assert len(scene_b.update_calls) == 1
+
+
+def test_preservation_first_set_scene_with_no_old_scene_works_correctly():
+    """
+    PRESERVATION TEST (Requirement 3.9 - Edge Case)
+    WHEN first set_scene() call has no old scene
+    THEN the system SHALL work correctly (no cleanup needed)
+    
+    This test verifies that the first scene transition doesn't attempt
+    to cleanup a non-existent old scene. This edge case must be preserved.
+    """
+    manager = SceneManager.get()
+    first_scene = TrackingScene("first")
+    
+    # Verify no current scene exists
+    assert manager._current is None
+    
+    # First set_scene() call should work without errors
+    manager.set_scene(first_scene)
+    
+    # Verify scene was set correctly
+    assert manager._current is first_scene
+    assert first_scene.enter_count == 1
+    assert first_scene.exit_count == 0
+    
+    # Verify scene is functional
+    surface = pygame.Surface((100, 100))
+    manager.update(16.0)
+    manager.draw(surface)
+    
+    assert len(first_scene.update_calls) == 1
+    assert first_scene.draw_count == 1

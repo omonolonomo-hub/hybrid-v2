@@ -12,10 +12,16 @@ from engine_core.card import evolve_card
 
 class ProgressionSystem:
     @staticmethod
-    def check_copy_strengthening(player: Any, turn: int, trigger_passive_fn=None):
+    def check_copy_strengthening(player: Any, turn: int, trigger_passive_fn=None, game_ref=None):
         """
         Checks if any cards in player's inventory copies meet the thresholds 
         for strengthening on the board.
+        
+        Args:
+            player: Player instance
+            turn: Current turn number
+            trigger_passive_fn: Passive trigger callback
+            game_ref: Game instance reference (replaces player.game)
         """
         board = player.board
         inventory = player.inventory
@@ -24,7 +30,7 @@ class ProgressionSystem:
         grid_vals = list(board.grid.values())
         _ctx = {
             "turn": turn, 
-            "game": player.game,
+            "game": game_ref,  # Explicit context injection
             "market_window": getattr(player, "market", []) # Compatibility
         }
 
@@ -50,12 +56,36 @@ class ProgressionSystem:
                     player.stats["copies_created"] += 1
 
     @staticmethod
-    def check_evolution(player: Any, market=None, card_by_name=None) -> List[str]:
+    def check_evolution(player: Any, market=None, card_by_name=None, next_uid_fn=None) -> List[str]:
         """
         Handles card evolution logic for players with the 'evolver' strategy.
+        
+        ATOMIC GUARANTEE: Evolved card is fully created and validated BEFORE 
+        base cards are removed. If evolution fails, no state corruption occurs.
+        
+        Args:
+            player: Player instance
+            market: Market instance (for pool management)
+            card_by_name: Dict mapping card names to Card templates
+            next_uid_fn: Function to generate unique card IDs (replaces player.game.next_card_uid)
+        
+        Returns:
+            List of base card names that were evolved
         """
+        # Early exit: avoid unnecessary work for 7/8 players every turn
         if player.strategy != "evolver":
             return []
+        
+        # Early exit: missing dependencies
+        if card_by_name is None:
+            return []
+        
+        # Fallback UID generator for backward compatibility
+        if next_uid_fn is None:
+            _uid_counter = [0]
+            def next_uid_fn():
+                _uid_counter[0] += 1
+                return f"evo_{_uid_counter[0]}"
             
         inventory = player.inventory
         board = player.board
@@ -67,69 +97,94 @@ class ProgressionSystem:
                 continue
             if inventory.copies.get(f"Evolved {base_name}", 0) > 0:
                 continue
-            if card_by_name is None:
-                continue
                 
             base_template = card_by_name.get(base_name)
             if base_template is None:
                 continue
 
-            removed = 0
-            # Remove from hand
-            for i in range(len(inventory.hand)):
-                if removed >= 2:
-                    break
-                card = inventory.hand[i]
-                if card is not None and card.name == base_name:
-                    inventory.hand[i] = None
-                    removed += 1
-                    if market:
-                        market.pool_copies[base_name] = market.pool_copies.get(base_name, 0) + 1
-
-            # Remove from board if needed
-            if removed < 2:
-                for coord, card in list(board.grid.items()):
-                    if removed >= 2:
-                        break
-                    if card.name == base_name:
-                        board.remove(coord)
-                        removed += 1
-                        if market:
-                            market.pool_copies[base_name] = market.pool_copies.get(base_name, 0) + 1
-
-            inventory.copies[base_name] = max(0, inventory.copies.get(base_name, 0) - 2)
-            evolved = evolve_card(base_template)
-            if player.game:
-                evolved.uid = player.game.next_card_uid()
-
-            # Evolution bonus
+            # ═══════════════════════════════════════════════════════════════
+            # ATOMIC PHASE 1: Create evolved card FIRST (no state mutation)
+            # ═══════════════════════════════════════════════════════════════
             try:
-                rarity_int = int(base_template.rarity)
-                if 3 <= rarity_int <= 5:
-                    bonus_pct = 0.04 * rarity_int
-                    evolved.strengthen(int(round(evolved.total_power() * bonus_pct)))
-            except (ValueError, TypeError):
-                pass
+                evolved = evolve_card(base_template)
+                evolved.uid = next_uid_fn()
+                
+                # Evolution bonus
+                try:
+                    rarity_int = int(base_template.rarity)
+                    if 3 <= rarity_int <= 5:
+                        bonus_pct = 0.04 * rarity_int
+                        evolved.strengthen(int(round(evolved.total_power() * bonus_pct)))
+                except (ValueError, TypeError):
+                    pass
+                    
+            except Exception as e:
+                # Evolution failed — no state was mutated, safe to continue
+                print(f"[ProgressionSystem] Evolution failed for {base_name}: {e}")
+                continue
 
-            # Replace on board or hand
-            replaced = False
-            for coord, card in list(board.grid.items()):
-                if card.name == base_name:
-                    board.place(coord, evolved)
-                    replaced = True
-                    break
-            if not replaced:
-                for i, card in enumerate(inventory.hand):
-                    if card is not None and card.name == base_name:
-                        inventory.hand[i] = evolved
-                        replaced = True
-                        break
-                if not replaced:
-                    inventory.add_to_hand(evolved)
+            # ═══════════════════════════════════════════════════════════════
+            # ATOMIC PHASE 2: Remove base cards (state mutation begins)
+            # ═══════════════════════════════════════════════════════════════
+            _remove_base_cards(player, base_name, count=2, market=market)
 
-            inventory.copies[f"Evolved {base_name}"] = inventory.copies.get(f"Evolved {base_name}", 0) + 1
+            # ═══════════════════════════════════════════════════════════════
+            # ATOMIC PHASE 3: Place evolved card
+            # ═══════════════════════════════════════════════════════════════
+            # Place evolved card in first available slot (fills None slots first via add_to_hand)
+            # Note: add_to_hand() automatically increments copies[evolved.name]
+            inventory.add_to_hand(evolved)
+            
+            # Compact hand: remove trailing None slots for cleaner state
+            while inventory.hand and inventory.hand[-1] is None:
+                inventory.hand.pop()
+
+            # Update tracking (copies already updated by add_to_hand)
             player.stats["evolutions"] = player.stats.get("evolutions", 0) + 1
             evolved_names.append(base_name)
             progression.record_evolution(base_name, player.turns_played if player.turns_played > 0 else 1)
             
         return evolved_names
+
+
+def _remove_base_cards(player: Any, card_name: str, count: int, market=None):
+    """
+    Atomically removes 'count' copies of 'card_name' from player's hand/board.
+    
+    This is a separate function to ensure removal logic is isolated and testable.
+    Used by check_evolution to maintain atomic guarantees.
+    
+    Args:
+        player: Player instance
+        card_name: Name of card to remove
+        count: Number of copies to remove
+        market: Optional market instance for pool management
+    """
+    inventory = player.inventory
+    board = player.board
+    removed = 0
+    
+    # Remove from hand first
+    for i in range(len(inventory.hand)):
+        if removed >= count:
+            break
+        card = inventory.hand[i]
+        if card is not None and card.name == card_name:
+            inventory.clear_slot(i)
+            removed += 1
+            if market:
+                market.pool_copies[card_name] = market.pool_copies.get(card_name, 0) + 1
+
+    # Remove from board if needed
+    if removed < count:
+        for coord, card in list(board.grid.items()):
+            if removed >= count:
+                break
+            if card.name == card_name:
+                board.remove(coord)
+                removed += 1
+                if market:
+                    market.pool_copies[card_name] = market.pool_copies.get(card_name, 0) + 1
+
+    # Update copy count
+    inventory.copies[card_name] = max(0, inventory.copies.get(card_name, 0) - count)

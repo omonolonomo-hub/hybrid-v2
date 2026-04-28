@@ -1,5 +1,7 @@
 import pygame
 import math
+from collections.abc import Mapping
+
 from v2.constants import Screen, Colors, Layout
 from v2.ui import font_cache
 from v2.ui.hex_grid_config import HexGridConfig
@@ -109,7 +111,8 @@ class MinimapHUD:
             return
         
         for coord, info in board_cards.items():
-            name = info.get("name") if isinstance(info, dict) else info
+            # board_cards values may be dict or MappingProxyType (frozen PublicState)
+            name = info.get("name") if isinstance(info, Mapping) else info
             card = db.lookup(name)
             if card:
                 raw_cat = card.category

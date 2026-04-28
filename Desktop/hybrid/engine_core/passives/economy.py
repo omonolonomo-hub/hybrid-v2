@@ -62,7 +62,7 @@ def _passive_midas(card: "Card", trigger: str, owner: "Player", opponent: "Playe
 def _passive_silk_road(card: "Card", trigger: str, owner: "Player", opponent: "Player", ctx: dict) -> int:
     """Silk Road: Gain +1 gold during income phase if bought 2+ cards this turn."""
     if trigger == "income" and owner is not None:
-        if owner.stats.get("cards_bought_this_turn", 0) >= 2:
+        if owner.cards_bought_this_turn >= 2:
             owner.gold += 1
             owner.stats["gold_earned"] = owner.stats.get("gold_earned", 0) + 1
     return 0

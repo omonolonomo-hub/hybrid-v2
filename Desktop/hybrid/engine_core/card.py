@@ -245,14 +245,16 @@ class CardPool:
     @classmethod
     def instance(cls) -> List[Card]:
         """
-        Get the cached card pool instance.
-        Creates and buffs cards on first call, returns cached copy thereafter.
+        Get a fresh copy of the card pool.
+        Creates and buffs template cards on first call, returns cloned copies thereafter.
+        
+        Returns clones to prevent cross-game contamination from in-place mutations.
         """
         if cls._instance is None:
             pool = build_card_pool()
             apply_micro_buff_to_weak_cards(pool)
-            cls._instance = pool
-        return cls._instance
+            cls._instance = pool  # Store as immutable template
+        return [c.clone() for c in cls._instance]  # Return fresh copies
     
     @classmethod
     def reset(cls) -> None:

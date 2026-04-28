@@ -8,6 +8,7 @@ import pygame
 from v2.constants import Screen
 from v2.core.game_state import GameState
 from v2.core.scene_manager import SceneManager
+from v2.scenes.menu import MenuScene
 from v2.scenes.shop import ShopScene
 
 
@@ -27,7 +28,7 @@ def _bootstrap() -> GameState:
 
     # Motoru İnşa Et (Human ve 7 AI stratejisi)
     strategies = ["human", "random", "warrior", "builder",
-                  "defender", "economist", "synergist", "aggressive"]
+                  "evolver", "economist", "balancer", "rare_hunter"]
     game = build_game(strategies=strategies)
     
     # Motoru UI Köprüsüne (GameState) bağla
@@ -42,11 +43,9 @@ def main():
     pygame.display.set_caption("AUTOCHESS HYBRID V2")
     clock = pygame.time.Clock()
 
-    gs = _bootstrap()
-
-    # SceneManager'ı başlat — ilk sahne ShopScene (LobbyScene hazır olana kadar)
+    # SceneManager'ı başlat — ilk sahne MenuScene
     sm = SceneManager.get()
-    sm.set_scene(ShopScene(gs))
+    sm.set_scene(MenuScene())
 
     print("[SceneManager] İlk sahne yüklendi:", sm.current_scene_name)
     print("Pencereyi kapatmak için X tuşuna basın.")

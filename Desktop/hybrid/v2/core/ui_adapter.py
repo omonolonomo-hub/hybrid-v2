@@ -36,6 +36,41 @@ class UIAdapter:
         self._synergy_calculator = SynergyCalculator()
         # Cache engine constants to avoid repeated calls
         self._constants = EngineAdapter.get_constants()
+        
+        # Granular cache tracking (Bug 1 fix)
+        self._cached_public_state: Optional[PublicState] = None
+        # Invalidation flags - track which components need recomputation
+        self._synergy_stale: bool = True  # Force initial computation
+        self._board_stale: bool = True
+        self._shop_stale: bool = True
+        self._hand_stale: bool = True
+        self._hud_stale: bool = True
+
+    def _on_board_mutated(self, **kwargs) -> None:
+        """Signal handler for board mutations - invalidate synergy and board caches only."""
+        self._synergy_stale = True
+        self._board_stale = True
+
+    def _on_economy_changed(self, **kwargs) -> None:
+        """Signal handler for economy changes - invalidate HUD cache only."""
+        self._hud_stale = True
+
+    def _on_inventory_changed(self, **kwargs) -> None:
+        """Signal handler for inventory changes - invalidate hand cache only."""
+        self._hand_stale = True
+
+    def _on_turn_started(self, **kwargs) -> None:
+        """Signal handler for turn start - invalidate shop cache only."""
+        self._shop_stale = True
+
+    def invalidate_all(self) -> None:
+        """Invalidate all caches - used for full cache invalidation."""
+        self._cached_public_state = None
+        self._synergy_stale = True
+        self._board_stale = True
+        self._shop_stale = True
+        self._hand_stale = True
+        self._hud_stale = True
 
     @staticmethod
     def _iter_board_items(player):
@@ -88,7 +123,7 @@ class UIAdapter:
         active_player = self._build_active_player(adapter, formatter, player, view_index, turn)
         # H3-5: store.update_board() kaldırıldı — board verisi artık PublicState.active_player üzerinden erişiliyor
 
-        return PublicState(
+        result = PublicState(
             phase=phase,
             turn=turn,
             view_index=view_index,
@@ -99,6 +134,11 @@ class UIAdapter:
             lobby_players=tuple(self._build_lobby_players(adapter)),
             endgame_stats=tuple(self._build_endgame_stats(adapter)),
         )
+        
+        # Store result in cache for selective recomputation
+        self._cached_public_state = result
+        
+        return result
 
     def _empty_state(self, store) -> PublicState:
         empty_shop = ShopViewState(slots=tuple([None] * 5), is_locked=False, rarity_probabilities={"1": 100.0})
@@ -187,59 +227,118 @@ class UIAdapter:
                 prefix_bonus=0,
             )
 
-        board_cards = self._build_board_cards(player)
-        board_rotations = {coord: item["rotation"] for coord, item in board_cards.items()}
-
-        # Synergy TEK yerde hesaplanır — SynergyCalculator tek kaynak
-        try:
-            db = CardDatabase.get()
-            syn_result = self._synergy_calculator.compute(board_cards, db)
-        except AutochessException:
-            # CardDatabase başlatılmadıysa ya da hesaplama hatası: boş synergy dön
-            syn_result = SynergyComputeResult.empty()
-        shop_slots = adapter.get_shop_window(view_index)
-        hand_slots = adapter.get_hand(view_index)
-        passive_feed = adapter.get_passive_buff_log(view_index)
-        last_results = list(adapter.get_last_results())
-        board = getattr(player, "board", None)
-        board_grid = getattr(board, "grid", {}) if board is not None else {}
-
-        shop_view = ShopViewState(
-            slots=tuple(shop_slots),
-            is_locked=adapter.is_shop_locked(view_index),
-            rarity_probabilities=formatter.format_rarity_probs(
-                lambda rarity, current_turn: adapter.get_rarity_weight(rarity, current_turn),
-                turn,
-            ),
-        )
-        hand_view = HandViewState(slots=tuple(hand_slots[:6]))
-        hp = adapter.get_player_hp(view_index)
-        gold = adapter.get_player_gold(view_index)
-        win_streak = self._safe_int(getattr(player, "win_streak", 0))
-        total_pts = self._safe_int(getattr(player, "total_pts", 0))
-        interest_multiplier = self._safe_float(getattr(player, "interest_multiplier", 1.0), default=1.0)
+        # Selective recomputation based on stale flags (Bug 1 fix)
+        # Check if we can reuse cached data
+        cached = self._cached_public_state
         
-        econ = getattr(player, "economy", None)
-        next_gold = econ.calculate_total_next_income(win_streak, hp) if econ else 3
+        # Board and synergy computation (only if stale)
+        if self._board_stale or self._synergy_stale or cached is None:
+            board_cards = self._build_board_cards(player)
+            board_rotations = {coord: item["rotation"] for coord, item in board_cards.items()}
+            board = getattr(player, "board", None)
+            board_grid = getattr(board, "grid", {}) if board is not None else {}
+            
+            # Synergy computation (only if stale)
+            if self._synergy_stale or cached is None:
+                try:
+                    db = CardDatabase.get()
+                    syn_result = self._synergy_calculator.compute(board_cards, db)
+                except AutochessException:
+                    syn_result = SynergyComputeResult.empty()
+                
+                passive_feed = adapter.get_passive_buff_log(view_index)
+                synergy_view = self._synergy_view_from_result(syn_result, passive_feed)
+                adjacency_pairs = tuple(tuple(pair) for pair in syn_result.adjacency_pairs)
+            else:
+                # Reuse cached synergy data
+                synergy_view = cached.active_player.synergy
+                adjacency_pairs = cached.active_player.adjacency_pairs
+                passive_feed = adapter.get_passive_buff_log(view_index)
+            
+            # Board card info (only if board stale)
+            if self._board_stale or cached is None:
+                board_card_info = self._build_board_card_info(formatter, player)
+                prefix_bonus = sum(
+                    self._safe_int(card.get_combat_bonus_total())
+                    for card in board_grid.values()
+                    if hasattr(card, "get_combat_bonus_total")
+                )
+            else:
+                board_card_info = cached.active_player.board_card_info
+                prefix_bonus = cached.active_player.prefix_bonus
+        else:
+            # Reuse all cached board data
+            board_cards = cached.active_player.board_cards
+            board_rotations = cached.active_player.board_rotations
+            synergy_view = cached.active_player.synergy
+            adjacency_pairs = cached.active_player.adjacency_pairs
+            board_card_info = cached.active_player.board_card_info
+            prefix_bonus = cached.active_player.prefix_bonus
+            passive_feed = adapter.get_passive_buff_log(view_index)
+        
+        # Shop computation (only if stale)
+        if self._shop_stale or cached is None:
+            shop_slots = adapter.get_shop_window(view_index)
+            shop_view = ShopViewState(
+                slots=tuple(shop_slots),
+                is_locked=adapter.is_shop_locked(view_index),
+                rarity_probabilities=formatter.format_rarity_probs(
+                    lambda rarity, current_turn: adapter.get_rarity_weight(rarity, current_turn),
+                    turn,
+                ),
+            )
+            shop_card_info = self._build_shop_card_info(adapter, formatter, player)
+        else:
+            shop_view = cached.active_player.shop
+            shop_card_info = cached.active_player.shop_card_info
+        
+        # Hand computation (only if stale)
+        if self._hand_stale or cached is None:
+            hand_slots = adapter.get_hand(view_index)
+            hand_view = HandViewState(slots=tuple(hand_slots[:6]))
+            hand_card_info = self._build_hand_card_info(formatter, player)
+        else:
+            hand_view = cached.active_player.hand
+            hand_card_info = cached.active_player.hand_card_info
+        
+        # HUD computation (only if stale)
+        if self._hud_stale or cached is None:
+            hp = adapter.get_player_hp(view_index)
+            gold = adapter.get_player_gold(view_index)
+            win_streak = self._safe_int(getattr(player, "win_streak", 0))
+            total_pts = self._safe_int(getattr(player, "total_pts", 0))
+            interest_multiplier = self._safe_float(getattr(player, "interest_multiplier", 1.0), default=1.0)
+            
+            econ = getattr(player, "economy", None)
+            next_gold = econ.calculate_total_next_income(win_streak, hp) if econ else 3
 
-        hud_view = PlayerHudViewState(
-            hp=hp,
-            gold=gold,
-            win_streak=win_streak,
-            total_pts=total_pts,
-            turn=turn,
-            next_gold=next_gold,
-            interest_multiplier=interest_multiplier,
-        )
+            hud_view = PlayerHudViewState(
+                hp=hp,
+                gold=gold,
+                win_streak=win_streak,
+                total_pts=total_pts,
+                turn=turn,
+                next_gold=next_gold,
+                interest_multiplier=interest_multiplier,
+            )
+        else:
+            hud_view = cached.active_player.hud
+            hp = cached.active_player.hp
+            gold = cached.active_player.gold
+        
+        # Combat view (always recompute - depends on passive_feed which is always fetched)
+        last_results = list(adapter.get_last_results())
         combat_view = CombatViewState(
             last_results=tuple(last_results),
             logs=tuple(formatter.format_combat_logs(last_results, view_index, turn, passive_feed)),
             passive_feed=tuple(passive_feed),
         )
-        # syn_result zaten yukarıda hesaplandı — _build_synergy_view çağrılmaz
-        synergy_view = self._synergy_view_from_result(syn_result, passive_feed)
+        
+        # Get board reference for catalyst/eclipse checks
+        board = getattr(player, "board", None)
 
-        return ActivePlayerViewState(
+        # Build final ActivePlayerViewState with mix of cached and fresh data
+        result = ActivePlayerViewState(
             index=view_index,
             pid=self._safe_int(getattr(player, "pid", view_index), default=view_index),
             display_name=f"P{self._safe_int(getattr(player, 'pid', view_index), default=view_index)}",
@@ -253,7 +352,7 @@ class UIAdapter:
             has_eclipse=bool(getattr(board, "has_eclipse", False)),
             board_cards=board_cards,
             board_rotations=board_rotations,
-            adjacency_pairs=tuple(tuple(pair) for pair in syn_result.adjacency_pairs),
+            adjacency_pairs=adjacency_pairs,
             eliminated_coords=tuple(adapter.get_eliminated_coords(view_index)),
             shop=shop_view,
             hand=hand_view,
@@ -262,15 +361,20 @@ class UIAdapter:
             synergy=synergy_view,
             copies_by_name=dict(getattr(player, "copies", {})),
             copy_milestones=tuple(self._build_copy_milestones(player, turn, board_cards)),
-            prefix_bonus=sum(
-                self._safe_int(card.get_combat_bonus_total())
-                for card in board_grid.values()
-                if hasattr(card, "get_combat_bonus_total")
-            ),
-            shop_card_info=self._build_shop_card_info(adapter, formatter, player),
-            hand_card_info=self._build_hand_card_info(formatter, player),
-            board_card_info=self._build_board_card_info(formatter, player),
+            prefix_bonus=prefix_bonus,
+            shop_card_info=shop_card_info,
+            hand_card_info=hand_card_info,
+            board_card_info=board_card_info,
         )
+        
+        # Reset stale flags after recomputation
+        self._synergy_stale = False
+        self._board_stale = False
+        self._shop_stale = False
+        self._hand_stale = False
+        self._hud_stale = False
+        
+        return result
 
     def _synergy_view_from_result(
         self,

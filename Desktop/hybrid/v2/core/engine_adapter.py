@@ -112,6 +112,7 @@ class EngineAdapter:
                 market=market,
                 uid=self._engine.next_card_uid(),
                 trigger_passive_fn=getattr(self._engine, "trigger_passive_fn", None),
+                game_ref=self._engine,
             )
             market.clear_slot(player.pid, slot_index)
             

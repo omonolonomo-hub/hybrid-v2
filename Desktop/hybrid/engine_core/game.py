@@ -58,7 +58,9 @@ class Game:
         self.signals = SignalBus()
 
         for p in self.players:
-            p.game = self
+            # REMOVED: p.game = self (circular reference fix)
+            # Game reference now passed via context dict in trigger_passive calls
+            
             # Connect components to signals with captured PID (Yaklaşım B)
             _pid = p.pid
             p.board._mutation_callback = lambda pid=_pid: self.signals.board_mutated.emit(pid=pid)
@@ -108,6 +110,7 @@ class Game:
             combat_phase_fn=self.combat_phase_fn,
             next_card_uid_fn=self.next_card_uid,
             verbose=self.verbose,
+            game_ref=self,  # Pass self for weakref
         )
 
     # ── turn property: TurnManager tek gerçek kaynak ─────────────────────────
@@ -140,28 +143,6 @@ class Game:
 
     def alive_players(self) -> List[Player]:
         return [p for p in self.players if p.alive]
-
-    def _iter_board_cards(self, players: List[Player]):
-        """Backward-compat — delegates to board_utils.iter_board_cards()."""
-        warnings.warn(
-            "_iter_board_cards is deprecated; use board_utils.iter_board_cards() directly.",
-            DeprecationWarning, stacklevel=2
-        )
-        return iter_board_cards(players)
-
-    def _clear_transient_board_state(
-        self,
-        players: List[Player],
-        *,
-        current_turn: int,
-        clear_combat_meta: bool,
-    ) -> None:
-        """Backward-compat — delegates to board_utils.clear_transient_board_state()."""
-        warnings.warn(
-            "_clear_transient_board_state is deprecated; use board_utils.clear_transient_board_state() directly.",
-            DeprecationWarning, stacklevel=2
-        )
-        clear_transient_board_state(players, current_turn=current_turn, clear_combat_meta=clear_combat_meta)
 
     # ── Swiss pairing (TurnManager'a delege) ─────────────────────────────────
 

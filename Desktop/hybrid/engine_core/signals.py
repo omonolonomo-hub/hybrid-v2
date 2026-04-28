@@ -22,17 +22,14 @@ class Signal:
             self._observers.remove(observer)
 
     def emit(self, **kwargs):
-        for observer in self._observers:
+        for observer in list(self._observers):
             observer(**kwargs)
 
 class SignalBus:
     def __init__(self):
-        # Global engine signals
+        # Per-game signal bus
         self.board_mutated = Signal()
         self.economy_changed = Signal()
         self.inventory_changed = Signal()
         self.turn_started = Signal()
         self.combat_finished = Signal()
-
-# Global bus instance for the engine
-engine_signals = SignalBus()

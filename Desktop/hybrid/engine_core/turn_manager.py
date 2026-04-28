@@ -10,7 +10,6 @@ game.py'den ayrıştırılan tur yönetim mantığı.  Sorumlulukları:
   • preparation_phase()  — start_turn + finish_turn zinciri (AI sim. yolu)
   • swiss_pairs()         — canlı oyuncu eşleştirmesi
   • _deal_starting_hands() — başlangıç kartı dağıtımı (init'te çağrılır)
-  • _clear_transient_board_state() — combat öncesi/sonrası kart temizleme
 
 game.py bu sınıfı oluşturur ve start/finish/preparation/swiss
 çağrılarını buraya delege eder.
@@ -110,33 +109,6 @@ class TurnManager:
     def alive_players(self):
         return [p for p in self._players if p.alive]
 
-    # ── Yardımcı: board kart iteratörü ──────────────────────────────────────
-
-    @staticmethod
-    def _iter_board_cards(players):
-        """Backward-compat — delegates to board_utils.iter_board_cards()."""
-        warnings.warn(
-            "_iter_board_cards is deprecated; use board_utils.iter_board_cards() directly.",
-            DeprecationWarning, stacklevel=2
-        )
-        return iter_board_cards(players)
-
-    # ── Yardımcı: geçici board state temizleme ───────────────────────────────
-
-    def _clear_transient_board_state(
-        self,
-        players,
-        *,
-        current_turn: int,
-        clear_combat_meta: bool,
-    ) -> None:
-        """Backward-compat — delegates to board_utils.clear_transient_board_state()."""
-        warnings.warn(
-            "_clear_transient_board_state is deprecated; use board_utils.clear_transient_board_state() directly.",
-            DeprecationWarning, stacklevel=2
-        )
-        clear_transient_board_state(players, current_turn=current_turn, clear_combat_meta=clear_combat_meta)
-
     # ── Başlangıç kartı dağıtımı ─────────────────────────────────────────────
 
     def _deal_starting_hands(self) -> None:
@@ -210,7 +182,7 @@ class TurnManager:
         _log(f"\n{'-'*50}\n  TURN {_turn} — PREPARATION START\n{'-'*50}")
 
         alive = self.alive_players()
-        self._clear_transient_board_state(alive, current_turn=_turn, clear_combat_meta=True)
+        clear_transient_board_state(alive, current_turn=_turn, clear_combat_meta=True)
 
         # Market pencerelerini aç (shop_locked olanları atla)
         self._current_player_markets = {}
@@ -290,12 +262,14 @@ class TurnManager:
                 newly_bought = None
             else:
                 hand_before  = len(player.hand)
+                game = self._game_ref() if self._game_ref is not None else None
                 _ai.buy_cards(
                     player, player_market,
                     market_obj=_market,
                     next_uid_fn=_next_uid,
                     rng=_rng,
                     trigger_passive_fn=_trigger_passive,
+                    game_ref=game
                 )
                 newly_bought = player.hand[hand_before:]
 
@@ -309,7 +283,12 @@ class TurnManager:
             # ── Ekonomi ───────────────────────────────────────────────────────
             player.apply_interest()
 
-            evos = ProgressionSystem.check_evolution(player, market=_market, card_by_name=_card_by_name)
+            evos = ProgressionSystem.check_evolution(
+                player, 
+                market=_market, 
+                card_by_name=_card_by_name,
+                next_uid_fn=_next_uid
+            )
             if evos and _verbose:
                 for base_name in evos:
                     _log(
@@ -323,7 +302,13 @@ class TurnManager:
 
             # ── Copy güçlendirme ──────────────────────────────────────────────
             if _trigger_passive:
-                ProgressionSystem.check_copy_strengthening(player, _turn, trigger_passive_fn=_trigger_passive)
+                game = self._game_ref() if self._game_ref is not None else None
+                ProgressionSystem.check_copy_strengthening(
+                    player, 
+                    _turn, 
+                    trigger_passive_fn=_trigger_passive,
+                    game_ref=game
+                )
 
             # ── Tur sonu istatistikleri ───────────────────────────────────────
             for _c in player.board.grid.values():

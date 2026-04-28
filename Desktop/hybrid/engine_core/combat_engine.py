@@ -6,7 +6,6 @@ Faz 2 — CombatEngine Ayrımı
 game.py'den ayrıştırılan combat mantığı. Sorumlulukları:
   • run_combat(pairs)         — tur için tüm eşleşmeleri çözer
   • _return_cards_to_pool()  — elenen oyuncunun kartlarını pool'a iade eder
-  • _clear_transient_board_state() — combat öncesi/sonrası kart durumu temizleme
 
 game.py bu sınıfı oluşturur ve combat_phase()'de run_combat()'ı çağırır.
 TurnManager (Faz 3) inject edilene kadar self.turn, Game tarafından her
@@ -34,6 +33,7 @@ class CombatEngine:
         combat_phase_fn: Optional[Callable],
         next_card_uid_fn: Optional[Callable] = None,
         verbose: bool = False,
+        game_ref=None,
     ):
         self._players        = players
         self._market         = market
@@ -43,6 +43,9 @@ class CombatEngine:
         self._next_card_uid_fn = next_card_uid_fn
         self._verbose        = verbose
         self._log_buf: List[str] = []
+        # Use weakref to prevent circular references
+        import weakref
+        self._game_ref = weakref.ref(game_ref) if game_ref is not None else None
 
         # Game.combat_phase() bu değeri run_combat() çağrısından önce senkronize eder
         self.turn: int = 0
@@ -53,31 +56,6 @@ class CombatEngine:
         if self._verbose:
             print(msg)
         self._log_buf.append(msg)
-
-    # ── Board state helpers ───────────────────────────────────────────────────
-
-    @staticmethod
-    def _iter_board_cards(players):
-        """Backward-compat — delegates to board_utils.iter_board_cards()."""
-        warnings.warn(
-            "_iter_board_cards is deprecated; use board_utils.iter_board_cards() directly.",
-            DeprecationWarning, stacklevel=2
-        )
-        return iter_board_cards(players)
-
-    def _clear_transient_board_state(
-        self,
-        players,
-        *,
-        current_turn: int,
-        clear_combat_meta: bool,
-    ) -> None:
-        """Backward-compat — delegates to board_utils.clear_transient_board_state()."""
-        warnings.warn(
-            "_clear_transient_board_state is deprecated; use board_utils.clear_transient_board_state() directly.",
-            DeprecationWarning, stacklevel=2
-        )
-        clear_transient_board_state(players, current_turn=current_turn, clear_combat_meta=clear_combat_meta)
 
     # ── Combat phase resolution (moved from board.py — P1-1 Phase 3) ──────────
 
@@ -106,6 +84,9 @@ class CombatEngine:
         - Evolved kartlar 1 base kopya olarak iade edilir
         - pool_copies asla 3'ü geçmez
         - board.grid, player.hand, player.copies, player.copy_turns temizlenir
+        
+        CRITICAL: Uses Inventory.clear_all() and Board.clear_all() to ensure
+        signals are emitted, preventing UI cache desync for eliminated players.
         """
         _pool_copies = self._market.pool_copies
 
@@ -115,18 +96,20 @@ class CombatEngine:
             if base in _pool_copies:
                 _pool_copies[base] = min(_pool_copies[base] + 1, 3)
 
+        # Return board cards
         for card in list(player.board.grid.values()):
             _return_one(card)
-        player.board.grid.clear()
-        if hasattr(player.board, "has_catalyst"):
-            player.board.has_catalyst = False
+        
+        # Atomic clear with mutation callback
+        player.board.clear_all()
 
-        for card in list(player.hand):
-            _return_one(card)
-        player.hand.clear()
-
-        player.copies.clear()
-        player.copy_turns.clear()
+        # Return hand cards
+        for card in list(player.inventory.hand):
+            if card is not None:
+                _return_one(card)
+        
+        # Atomic clear with signal emission
+        player.inventory.clear_all()
 
     # ── Ana combat çözücü ─────────────────────────────────────────────────────
 
@@ -147,8 +130,10 @@ class CombatEngine:
         _trigger_passive = self._trigger_passive
         _combat_phase_fn = self._combat_phase_fn
 
+        # Dereference weakref once for ActionLog and context
+        game_ref = self._game_ref() if self._game_ref is not None else None
+        
         # ActionLog entry
-        game_ref = getattr(self._players[0], "game", None)
         if game_ref and hasattr(game_ref, "action_log"):
             game_ref.action_log.record("combat_start", {"turn": _turn, "pair_count": len(pairs)}, turn=_turn)
 
@@ -160,21 +145,17 @@ class CombatEngine:
                 f" vs P{p_b.pid}({p_b.strategy}, {p_b.hp}HP)"
             )
 
-            # Passive trigger'lar game referansına ihtiyaç duyabilir;
-            # player.game üstünden sağlanır (Game.__init__'te set edilir).
-            game_ref = getattr(p_a, "game", None)
-            
             # H3-2: Support independent context without game ref
             _ctx = {
                 "turn": _turn, 
-                "game": game_ref,
+                "game": game_ref,  # Explicit context injection
                 "market": self._market,
                 "market_window": getattr(p_a, "market", []) # Compatibility
             }
 
             board_a = p_a.board
             board_b = p_b.board
-            self._clear_transient_board_state(
+            clear_transient_board_state(
                 [p_a, p_b], current_turn=_turn, clear_combat_meta=True
             )
 
@@ -309,7 +290,7 @@ class CombatEngine:
                 self._return_cards_to_pool(p_b)
                 _log(f"    ELIMINATED: P{p_b.pid} (HP=0) — cards returned to pool")
 
-            self._clear_transient_board_state(
+            clear_transient_board_state(
                 [p_a, p_b], current_turn=_turn + 1, clear_combat_meta=True
             )
 

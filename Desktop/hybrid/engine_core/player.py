@@ -40,7 +40,7 @@ class Player:
         self.total_pts = 0
         self._cards_bought_this_turn = 0
         self.passive_buff_log: List[dict] = []
-        self.game = None # Assigned by Game instance
+        # REMOVED: self.game = None (circular reference fix)
         
         # Legacy compatibility (for attributes directly accessed)
         self._window_bought: List[str] = []
@@ -56,7 +56,6 @@ class Player:
             "kills": 0, "damage_dealt": 0, "damage_taken": 0,
             "synergy_sum": 0, "synergy_turns": 0,
             "gold_spent": 0, "gold_earned": 0,
-            "cards_bought_this_turn": 0,
             "opponent_board_checks": 0,
             "board_power": 0,
             "unit_count": 0,
@@ -104,9 +103,7 @@ class Player:
 
     @cards_bought_this_turn.setter
     def cards_bought_this_turn(self, value: int):
-        normalized = max(0, int(value))
-        self._cards_bought_this_turn = normalized
-        self.stats["cards_bought_this_turn"] = normalized
+        self._cards_bought_this_turn = max(0, int(value))
 
     def reset_turn_state(self):
         self.cards_bought_this_turn = 0
@@ -123,11 +120,29 @@ class Player:
         self.economy.add_gold(interest)
         self.stats["gold_earned"] += interest
 
-    def buy_card(self, card: Card, market=None, trigger_passive_fn=None, uid=0):
+    def buy_card(self, card: Card, market=None, trigger_passive_fn=None, uid=0, game_ref=None):
+        """Purchase a card from the market.
+        
+        Args:
+            card: Card to purchase
+            market: Market instance (for pool management)
+            trigger_passive_fn: Passive trigger callback
+            uid: Card UID (0 = auto-generate)
+            game_ref: Game instance reference (replaces self.game)
+        
+        Returns:
+            bool: True if purchase succeeded, False otherwise
+        """
         cost = CARD_COSTS[card.rarity]
-        if self.economy.spend_gold(cost):
+        if not self.economy.spend_gold(cost):
+            return False
+        
+        # Atomic transaction: if any step fails, rollback is needed
+        # TODO: Implement proper transaction context manager
+        try:
             self.stats["gold_spent"] += cost
-            cloned = card.clone(); cloned.uid = uid if uid > 0 else card.uid
+            cloned = card.clone()
+            cloned.uid = uid if uid > 0 else card.uid
             
             dropped = self.inventory.add_to_hand(cloned)
             if dropped:
@@ -140,13 +155,23 @@ class Player:
 
             if trigger_passive_fn is not None:
                 turn = self.turns_played if self.turns_played > 0 else 1
+                _ctx = {
+                    "turn": turn,
+                    "bought_card": cloned,
+                    "game": game_ref,  # Explicit context injection
+                    "market": market,
+                    "market_window": getattr(self, "market", [])
+                }
                 for board_card in self.board.alive_cards():
-                    trigger_passive_fn(board_card, "card_buy", self, None, {
-                        "turn": turn, 
-                        "bought_card": cloned, 
-                        "game": self.game,
-                        "market_window": getattr(self, "market", []) # Compatibility
-                    }, verbose=False)
+                    trigger_passive_fn(board_card, "card_buy", self, None, _ctx, verbose=False)
+            
+            return True
+            
+        except Exception as e:
+            # Rollback: return gold (basic safety)
+            self.economy.add_gold(cost)
+            self.stats["gold_spent"] -= cost
+            raise RuntimeError(f"buy_card transaction failed: {e}") from e
 
     def place_cards(self, rng=None):
         free = self.board.free_coords()
@@ -172,19 +197,19 @@ class Player:
         if cleared_indices:
             self.inventory.clear_slots_batch(cleared_indices)
 
-    def check_copy_strengthening(self, turn: int, trigger_passive_fn=None):
+    def check_copy_strengthening(self, turn: int, trigger_passive_fn=None, game_ref=None):
         warnings.warn(
             "Player.check_copy_strengthening is deprecated; use ProgressionSystem.check_copy_strengthening(player, ...) instead.",
             DeprecationWarning, stacklevel=2
         )
-        ProgressionSystem.check_copy_strengthening(self, turn, trigger_passive_fn)
+        ProgressionSystem.check_copy_strengthening(self, turn, trigger_passive_fn, game_ref)
 
-    def check_evolution(self, market=None, card_by_name=None):
+    def check_evolution(self, market=None, card_by_name=None, next_uid_fn=None):
         warnings.warn(
             "Player.check_evolution is deprecated; use ProgressionSystem.check_evolution(player, ...) instead.",
             DeprecationWarning, stacklevel=2
         )
-        return ProgressionSystem.check_evolution(self, market, card_by_name)
+        return ProgressionSystem.check_evolution(self, market, card_by_name, next_uid_fn)
 
     def take_damage(self, amount: int):
         self.hp = max(0, self.hp - amount)

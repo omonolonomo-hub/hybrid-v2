@@ -17,6 +17,25 @@ _CAT_COLORS = {
     "HISTORY":   (255, 120, 40),
 }
 
+# ── Rank Badge İkonları ve Renkleri ─────────────────────────────────────────
+RANK_ICON_NAMES = {
+    1: "CROWN",   # Font Awesome taç ikonu
+    2: "MEDAL",   # Font Awesome madalya ikonu
+    3: "AWARD",   # Font Awesome ödül ikonu
+}
+
+RANK_BG_COLORS = {
+    1: (65, 45, 5, 220),    # Altın arka plan
+    2: (50, 50, 60, 220),   # Gümüş arka plan
+    3: (55, 28, 8, 220),    # Bronz arka plan
+}
+
+RANK_TEXT_COLORS = {
+    1: (255, 215, 0),       # Altın text
+    2: (192, 192, 192),     # Gümüş text
+    3: (205, 127, 50),      # Bronz text
+}
+
 class LobbyPanel:
     def __init__(self, player_count: int = 8):
         self.rect = pygame.Rect(Layout.SIDEBAR_RIGHT_X, 0, Layout.SIDEBAR_RIGHT_W, Screen.H)
@@ -24,9 +43,8 @@ class LobbyPanel:
         # ── Altın Oran ile Oyuncu Satırları ────────────────────────────────────
         self.player_count = player_count
         
-        # Altın oran ile satır yüksekliği ve boşluk hesaplama
-        # Row height: φ tabanlı oran (70 → ~72 için yuvarlanmış)
-        self.row_h = int(Layout.LOBBY_ROW_H * 1.03)  # Hafif artış
+        # Row height: 70px (tam değer, çarpan yok)
+        self.row_h = Layout.LOBBY_ROW_H  # 70px
         
         # Spacing: row_h / φ² ≈ row_h * 0.382
         row_spacing = int(self.row_h * 0.382)
@@ -53,11 +71,11 @@ class LobbyPanel:
             row_spacing = max(8, (available_h - player_count * self.row_h) // (player_count - 1))
             self.total_h = player_count * (self.row_h + row_spacing) - row_spacing
         
-        # Margin: panel genişliğinin φ⁻¹'i (altın oran ile kenar boşluğu)
-        # DÜZELTME: Margin'i panel içinde tutmak için daha küçük oran kullan
-        margin_offset = int(self.rect.w * 0.05)  # %5 margin (daha güvenli)
+        # Margin: Maksimum genişlik için margin'i minimize et
+        # AAA Style için çok daha geniş row (%10-12 artış)
+        margin_offset = int(self.rect.w * 0.005)  # %0.5 margin (neredeyse yok)
         self.margin_x = self.rect.x + margin_offset
-        self.row_w    = self.rect.w - 2 * margin_offset  # Panel içinde kal
+        self.row_w    = self.rect.w - 2 * margin_offset  # Maksimum genişlik
 
         self.player_rects: list[pygame.Rect] = []
         for i in range(player_count):
@@ -152,111 +170,256 @@ class LobbyPanel:
                 pygame.draw.rect(surface, (0, 255, 255), draw_rect, width=2, border_radius=self.border_radius)
 
             # ── 4. ALTIN ORAN İÇERİK YERLEŞİMİ ─────────────────────────
-            # Kutu içini altın oran ile 3 yatay bölgeye ayır:
-            # Sol: Rank badge (φ⁻²)
-            # Orta: İçerik (φ⁻¹) 
-            # Sağ: HP sayı (φ⁻²)
-            
-            content_padding = int(draw_rect.w * 0.04)  # %4 iç padding
+            # AAA Kalite Layout - Altın oran ile dengeli yerleşim
+            content_padding = int(draw_rect.w * 0.012)  # %1.2 iç padding
             usable_w = draw_rect.w - 2 * content_padding
             
-            # Altın oran bölümleme
-            rank_zone_w = int(usable_w * 0.12)  # Rank badge için
-            hp_num_zone_w = int(usable_w * 0.15)  # HP sayı için
-            content_zone_w = usable_w - rank_zone_w - hp_num_zone_w
+            # Sol: Avatar (yuvarlak badge) - 70px row için
+            avatar_size = int(self.row_h * 0.66)  # %66 (70px için ~46px) - biraz küçültüldü
+            avatar_left_pad = int(self.row_h * 0.06)  # Sol padding
+            avatar_x = draw_rect.x + content_padding + avatar_left_pad
             
-            rank_x = draw_rect.x + content_padding
-            content_x = rank_x + rank_zone_w
-            hp_num_x = content_x + content_zone_w
+            # Orta: İçerik (isim + HP bar + categories)
+            # Avatar'dan sonra altın oran ile gap
+            content_left_margin = avatar_x + avatar_size + int(self.row_h * 0.14)  # %14 gap
             
-            # ── 5. Rank Badge (Sol) ────────────────────────────────────
-            rank_col = (255, 255, 255)
-            if rank == 1: rank_col = (255, 215, 0)
-            elif rank == 2: rank_col = (192, 192, 192)
-            elif rank == 3: rank_col = (205, 127, 50)
+            # Sağ: HP sayısı - dengeli alan
+            hp_num_w = int(usable_w * 0.18)  # %18 (123/150 için yeterli)
+            hp_right_pad = int(self.row_h * 0.08)  # Sağ padding
+            content_w = draw_rect.right - content_padding - hp_num_w - hp_right_pad - content_left_margin
+            hp_num_x = content_left_margin + content_w + int(self.row_h * 0.06)  # HP'den gap
             
-            rank_y = draw_rect.y + int(self.row_h * 0.18)
-            font_cache.render_text(surface, f"#{rank}", font_cache.bold(12), rank_col, 
-                                   pygame.Rect(rank_x, rank_y, rank_zone_w, 20), 
-                                   align="center")
+            # ── 5. Avatar Badge (Yuvarlak) - AAA Style ────────────────────
+            # Yüksek çözünürlükte çiz, sonra scale et (keskin görünüm için)
+            scale_factor = 2  # 2x çözünürlük
+            avatar_size_hd = avatar_size * scale_factor
+            avatar_surf_hd = pygame.Surface((avatar_size_hd, avatar_size_hd), pygame.SRCALPHA)
+            center_hd = avatar_size_hd // 2
             
-            # ── 6. İçerik Bölgesi (Orta) ───────────────────────────────
-            # Dikey olarak altın oran ile 3 katmana ayır:
-            # Üst: İsim (φ⁻¹)
-            # Orta: HP Bar (φ⁻²)
-            # Alt: Category strips (φ⁻³)
+            # Outer glow (rank renginde)
+            rank_col = RANK_TEXT_COLORS.get(rank, (200, 200, 210))
+            for i in range(2, 0, -1):
+                glow_alpha = 50 * i
+                glow_color = (*rank_col, glow_alpha)
+                pygame.draw.circle(avatar_surf_hd, glow_color, (center_hd, center_hd), center_hd + i * 4)
             
-            content_h = self.row_h - 2 * int(self.row_h * 0.08)  # Üst-alt padding
+            # Ana daire (rank rengine göre gradient background)
+            bg_color = RANK_BG_COLORS.get(rank, (30, 30, 40, 255))
+            pygame.draw.circle(avatar_surf_hd, bg_color, (center_hd, center_hd), center_hd)
             
-            name_h = int(content_h * PHI_INV)  # ~0.618
-            bar_h = int(content_h * (1 - PHI_INV) * PHI_INV)  # ~0.236
-            cat_h = content_h - name_h - bar_h  # Kalan
+            # Border (2 katmanlı - depth için) - daha kalın HD'de
+            border_color = RANK_TEXT_COLORS.get(rank, (80, 80, 90))
+            pygame.draw.circle(avatar_surf_hd, border_color, (center_hd, center_hd), center_hd, width=4)
+            pygame.draw.circle(avatar_surf_hd, (*border_color[:3], 100), (center_hd, center_hd), center_hd - 4, width=2)
             
-            name_y = draw_rect.y + int(self.row_h * 0.08)
-            bar_y = name_y + name_h
-            cat_y = bar_y + bar_h
+            # İçerik: Top 3 için ikon + numara, diğerleri için sadece numara
+            if rank in RANK_ICON_NAMES:
+                # İkon (üstte) - HD boyutta
+                icon_name = RANK_ICON_NAMES[rank]
+                icon_char = font_cache.ICONS.get(icon_name, "?")
+                icon_size_hd = int(avatar_size_hd * 0.32)
+                icon_font = font_cache.icons(icon_size_hd)
+                icon_surf = icon_font.render(icon_char, True, rank_col)
+                icon_rect = icon_surf.get_rect(center=(center_hd, int(center_hd * 0.68)))
+                avatar_surf_hd.blit(icon_surf, icon_rect)
+                
+                # Numara (altta) - HD boyutta
+                num_font = font_cache.bold(int(avatar_size_hd * 0.26))
+                num_surf = num_font.render(str(rank), True, rank_col)
+                num_rect = num_surf.get_rect(center=(center_hd, int(center_hd * 1.38)))
+                avatar_surf_hd.blit(num_surf, num_rect)
+            else:
+                # Sadece numara (ortalanmış) - HD boyutta
+                num_font = font_cache.bold(int(avatar_size_hd * 0.42))
+                num_surf = num_font.render(f"#{rank}", True, rank_col)
+                num_rect = num_surf.get_rect(center=(center_hd, center_hd))
+                avatar_surf_hd.blit(num_surf, num_rect)
             
-            # İsim
-            name_color = (0, 242, 255) if is_self else (220, 230, 255)
+            # HD'den normal boyuta scale et (smoothscale = anti-aliasing)
+            avatar_surf = pygame.transform.smoothscale(avatar_surf_hd, (avatar_size, avatar_size))
+            
+            # Avatar'ı yerleştir (dikey ortalanmış)
+            avatar_y = draw_rect.centery - avatar_size // 2
+            surface.blit(avatar_surf, (avatar_x, avatar_y))
+            
+            # ── 6. İçerik Bölgesi - AAA Style ─────────────────────────────
+            # Dikey yerleşim: İsim + HP Bar + Category Strips
+            # Altın oran ile dengeli spacing
+            content_top = draw_rect.y + int(self.row_h * 0.10)  # Üst padding
+            content_bottom = draw_rect.bottom - int(self.row_h * 0.08)  # Alt padding
+            content_h = content_bottom - content_top
+            
+            # Altın oran ile katmanlar (φ⁻¹ ≈ 0.618)
+            # İsim: %24, HP Bar: %42, Gap: %8, Category: %26
+            name_h = int(content_h * 0.24)
+            bar_h_allocation = int(content_h * 0.42)
+            gap_after_bar = int(content_h * 0.08)
+            cat_h_allocation = content_h - name_h - bar_h_allocation - gap_after_bar
+            
+            # İsim (üstte)
+            name_y = content_top
+            name_color = (0, 242, 255) if is_self else (240, 245, 255)
+            name_font_size = 13 if is_self else 12
             font_cache.render_text(surface, player.get("name", "---"), 
-                                   font_cache.bold(13), name_color, 
-                                   pygame.Rect(content_x, name_y, content_zone_w, name_h),
+                                   font_cache.bold(name_font_size), name_color, 
+                                   pygame.Rect(content_left_margin, name_y, content_w, name_h),
                                    v_align="center")
             
-            # HP Bar
-            bar_w = content_zone_w - 4
-            bar_h_px = max(8, int(bar_h * 0.6))  # Bar yüksekliği
-            bar_y_centered = bar_y + (bar_h - bar_h_px) // 2
+            # HP Bar (ortada, kalın ve segmentli)
+            bar_y = name_y + name_h
+            bar_h_px = int(self.row_h * 0.24)  # Bar yüksekliği (%24 of row)
+            bar_w = content_w
             
-            # HP Pulse & Glow
+            # HP Bar Background (koyu, depth için)
+            bar_bg_rect = pygame.Rect(content_left_margin, bar_y, bar_w, bar_h_px)
+            pygame.draw.rect(surface, (10, 12, 18), bar_bg_rect, border_radius=int(bar_h_px * 0.25))
+            
+            # HP Bar Fill (renkli, gradient)
+            if hp > 0:
+                fill_w = int(bar_w * ratio)
+                if fill_w > 0:
+                    # HP rengine göre gradient
+                    if ratio > 0.6:
+                        fill_start = (0, 255, 120)
+                        fill_end = (0, 200, 90)
+                    elif ratio > 0.35:
+                        fill_start = (255, 200, 60)
+                        fill_end = (220, 160, 40)
+                    else:
+                        fill_start = (255, 60, 60)
+                        fill_end = (200, 30, 30)
+                    
+                    # Gradient fill
+                    fill_surf = pygame.Surface((fill_w, bar_h_px), pygame.SRCALPHA)
+                    for i in range(bar_h_px):
+                        t = i / bar_h_px
+                        color = (
+                            int(fill_start[0] * (1 - t) + fill_end[0] * t),
+                            int(fill_start[1] * (1 - t) + fill_end[1] * t),
+                            int(fill_start[2] * (1 - t) + fill_end[2] * t)
+                        )
+                        pygame.draw.line(fill_surf, color, (0, i), (fill_w, i))
+                    
+                    # Clip to rounded rect
+                    fill_rect = pygame.Rect(content_left_margin, bar_y, fill_w, bar_h_px)
+                    pygame.draw.rect(surface, (255, 255, 255), fill_rect, border_radius=int(bar_h_px * 0.25))
+                    surface.blit(fill_surf, (content_left_margin, bar_y), special_flags=pygame.BLEND_RGBA_MIN)
+                    pygame.draw.rect(surface, fill_start, fill_rect, border_radius=int(bar_h_px * 0.25))
+                    
+                    # Top highlight (shine effect)
+                    shine_h = max(2, bar_h_px // 4)
+                    shine_rect = pygame.Rect(content_left_margin, bar_y, fill_w, shine_h)
+                    shine_surf = pygame.Surface((fill_w, shine_h), pygame.SRCALPHA)
+                    shine_surf.fill((255, 255, 255, 60))
+                    surface.blit(shine_surf, shine_rect.topleft)
+                    
+                    # Segmentation lines (her 10 HP'de bir)
+                    segment_size = max_hp // 10
+                    if segment_size > 0:
+                        segments = max_hp // segment_size
+                        for i in range(1, segments):
+                            seg_x = content_left_margin + int((i * segment_size / max_hp) * bar_w)
+                            if seg_x < content_left_margin + fill_w:
+                                pygame.draw.line(surface, (0, 0, 0, 120), 
+                                               (seg_x, bar_y), (seg_x, bar_y + bar_h_px), 2)
+            
+            # HP Bar Border (ince, parlak)
+            pygame.draw.rect(surface, (60, 70, 90, 180), bar_bg_rect, width=1, border_radius=int(bar_h_px * 0.25))
+            
+            # Low HP pulse effect
             if ratio < 0.35 and hp > 0:
                 pulse_intensity = 0.5 + 0.5 * math.sin(time_ms * 0.008)
-                pulse_alpha = int(60 + 80 * pulse_intensity)
-                glow_size = int(4 * pulse_intensity)
-                glow_col = (255, 50, 50, pulse_alpha)
-                glow_rect = (content_x - glow_size, bar_y_centered - glow_size, 
-                            bar_w + glow_size * 2, bar_h_px + glow_size * 2)
-                pygame.draw.rect(surface, glow_col, glow_rect, border_radius=5)
+                pulse_alpha = int(40 + 60 * pulse_intensity)
+                glow_rect = bar_bg_rect.inflate(6, 6)
+                pygame.draw.rect(surface, (255, 50, 50, pulse_alpha), glow_rect, 
+                               width=2, border_radius=int(bar_h_px * 0.25))
             
-            self._draw_enhanced_health_bar(surface, content_x, bar_y_centered, 
-                                          bar_w, bar_h_px, hp, max_hp, ratio, time_ms)
-            
-            # Category Strips
+            # Category Strips (altta, renkli çizgiler)
+            cat_y = bar_y + bar_h_px + gap_after_bar
             cat_stats = player.get("categories", {})
             if cat_stats:
                 total_units = sum(cat_stats.values())
                 if total_units > 0:
+                    # Category strip yüksekliği - allocation içinde ortalanmış
+                    strip_h = max(5, int(self.row_h * 0.11))
+                    strip_y = cat_y + (cat_h_allocation - strip_h) // 2  # Dikey ortalama
                     gap = 2
-                    strip_h = max(3, int(cat_h * 0.5))
-                    strip_y = cat_y + (cat_h - strip_h) // 2
                     usable_cat_w = bar_w - (len(cat_stats) - 1) * gap
-                    curr_x = content_x
+                    curr_x = content_left_margin
                     
                     for cat, count in cat_stats.items():
                         color = _CAT_COLORS.get(cat, (150, 150, 150))
                         seg_w = (count / total_units) * usable_cat_w
                         if seg_w > 0:
-                            pygame.draw.rect(surface, color, 
-                                           (int(curr_x), strip_y, int(seg_w), strip_h), 
-                                           border_radius=1)
+                            cat_rect = pygame.Rect(int(curr_x), strip_y, int(seg_w), strip_h)
+                            pygame.draw.rect(surface, color, cat_rect, border_radius=2)
+                            # Glow effect
+                            glow_color = (*color, 80)
+                            pygame.draw.rect(surface, glow_color, cat_rect.inflate(2, 2), 
+                                           width=1, border_radius=2)
                             curr_x += seg_w + gap
             
-            # ── 7. HP Sayı (Sağ) ───────────────────────────────────────
-            hp_text = f"{hp}"
+            # ── 7. HP Sayı (Sağ) - AAA Style ──────────────────────────────
+            # HP sayısı + max HP (123/150 formatında) - dengeli yerleşim
             hp_color = self._get_hp_color(ratio)
-            hp_y = draw_rect.y + int(self.row_h * 0.5) - 8
-            font_cache.render_text(surface, hp_text, font_cache.bold(14), hp_color, 
-                                   pygame.Rect(hp_num_x, hp_y, hp_num_zone_w, 16), 
-                                   align="center", v_align="center")
+            hp_main_font = font_cache.bold(14)
+            hp_max_font = font_cache.regular(9)
+            
+            # Ana HP sayısı
+            hp_text = f"{hp}"
+            hp_surf = hp_main_font.render(hp_text, True, hp_color)
+            
+            # Max HP (gri, küçük)
+            max_text = f"/{max_hp}"
+            max_surf = hp_max_font.render(max_text, True, (120, 130, 140))
+            
+            # Toplam genişlik hesapla
+            total_w = hp_surf.get_width() + max_surf.get_width() + 2
+            
+            # Sağa hizala - hp_num_w alanı içinde ortalanmış
+            hp_area_x = draw_rect.right - content_padding - hp_num_w - hp_right_pad
+            hp_x = hp_area_x + (hp_num_w - total_w) // 2  # Ortalanmış
+            hp_y = draw_rect.centery - hp_surf.get_height() // 2
+            
+            # Glow effect (düşük HP'de)
+            if ratio < 0.35 and hp > 0:
+                pulse_intensity = 0.5 + 0.5 * math.sin(time_ms * 0.008)
+                glow_alpha = int(60 + 80 * pulse_intensity)
+                glow_surf = hp_main_font.render(hp_text, True, (*hp_color, glow_alpha))
+                for dx, dy in [(-1, -1), (1, -1), (-1, 1), (1, 1)]:
+                    surface.blit(glow_surf, (hp_x + dx, hp_y + dy))
+            
+            # Ana HP
+            surface.blit(hp_surf, (hp_x, hp_y))
+            
+            # Max HP (sağda, biraz aşağıda)
+            max_x = hp_x + hp_surf.get_width() + 2
+            max_y = hp_y + hp_surf.get_height() - max_surf.get_height()
+            surface.blit(max_surf, (max_x, max_y))
 
-            # ── 8. Dead State ──────────────────────────────────────────
+            # ── 8. Dead State - AAA Style ──────────────────────────────
             if hp <= 0:
+                # Koyu overlay
                 dead_overlay = pygame.Surface(draw_rect.size, pygame.SRCALPHA)
-                dead_overlay.fill((30, 5, 5, 220))
+                dead_overlay.fill((15, 5, 10, 235))
                 surface.blit(dead_overlay, draw_rect.topleft)
-                font_cache.render_text(surface, "ELIMINATED", font_cache.bold(14), 
-                                      (255, 60, 60), draw_rect, 
-                                      align="center", v_align="center")
+                
+                # "ELIMINATED" text (büyük, kırmızı, glow ile)
+                elim_font = font_cache.bold(16)
+                elim_text = "ELIMINATED"
+                elim_color = (255, 60, 60)
+                
+                # Glow effect
+                for offset in range(3, 0, -1):
+                    glow_alpha = 40 * offset
+                    glow_surf = elim_font.render(elim_text, True, (*elim_color, glow_alpha))
+                    glow_rect = glow_surf.get_rect(center=draw_rect.center)
+                    for dx, dy in [(-offset, -offset), (offset, -offset), (-offset, offset), (offset, offset)]:
+                        surface.blit(glow_surf, (glow_rect.x + dx, glow_rect.y + dy))
+                
+                # Ana text
+                font_cache.render_text(surface, elim_text, elim_font, elim_color, 
+                                      draw_rect, align="center", v_align="center")
         
         # Clipping'i geri yükle
         surface.set_clip(original_clip)

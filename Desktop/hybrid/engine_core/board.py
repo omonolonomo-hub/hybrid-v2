@@ -104,6 +104,20 @@ class Board:
         for card in self.grid.values():
             bonus += RARITY_DMG_BONUS.get(card.rarity, 0)
         return bonus
+    
+    def clear_all(self) -> None:
+        """Atomically clears the entire board grid and triggers mutation callback.
+        
+        Used during player elimination to ensure UI cache invalidation.
+        Guarantees that board_changed signal is emitted exactly once
+        after all state is cleared, preventing race conditions in UI updates.
+        """
+        self.grid.clear()
+        self.coord_index.clear()
+        self.has_catalyst = False
+        self.has_eclipse = False
+        if self._mutation_callback is not None:
+            self._mutation_callback()
 
 
 # ===================================================================

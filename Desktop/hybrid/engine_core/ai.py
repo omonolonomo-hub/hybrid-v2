@@ -250,7 +250,7 @@ class BaseStrategy:
     """Interface for AI strategies."""
     def buy_cards(self, player: Player, market: List[Card], max_cards: int,
                   market_obj=None, rng=None, trigger_passive_fn=None,
-                  ai_instance=None, next_uid_fn=None):
+                  ai_instance=None, next_uid_fn=None, game_ref=None):
         raise NotImplementedError
 
     def place_cards(self, player: Player, rng=None, **kwargs):
@@ -258,64 +258,64 @@ class BaseStrategy:
 
 
 class RandomStrategy(BaseStrategy):
-    def buy_cards(self, player, market, max_cards, market_obj, rng, trigger_passive_fn, ai_instance, next_uid_fn):
-        AI._buy_random(player, market, max_cards, market_obj, rng, trigger_passive_fn, ai_instance, next_uid_fn)
+    def buy_cards(self, player, market, max_cards, market_obj, rng, trigger_passive_fn, ai_instance, next_uid_fn, game_ref=None):
+        AI._buy_random(player, market, max_cards, market_obj, rng, trigger_passive_fn, ai_instance, next_uid_fn, game_ref)
     
     def place_cards(self, player, rng=None, **kwargs):
         AI._place_smart_default(player, rng)
 
 
 class WarriorStrategy(BaseStrategy):
-    def buy_cards(self, player, market, max_cards, market_obj, rng, trigger_passive_fn, ai_instance, next_uid_fn):
-        AI._buy_warrior(player, market, max_cards, market_obj, rng, trigger_passive_fn, ai_instance, next_uid_fn)
+    def buy_cards(self, player, market, max_cards, market_obj, rng, trigger_passive_fn, ai_instance, next_uid_fn, game_ref=None):
+        AI._buy_warrior(player, market, max_cards, market_obj, rng, trigger_passive_fn, ai_instance, next_uid_fn, game_ref)
     
     def place_cards(self, player, rng=None, **kwargs):
         AI._place_smart_default(player, rng)
 
 
 class BuilderStrategy(BaseStrategy):
-    def buy_cards(self, player, market, max_cards, market_obj, rng, trigger_passive_fn, ai_instance, next_uid_fn):
-        AI._buy_builder(player, market, max_cards, market_obj, rng, trigger_passive_fn, ai_instance, next_uid_fn)
+    def buy_cards(self, player, market, max_cards, market_obj, rng, trigger_passive_fn, ai_instance, next_uid_fn, game_ref=None):
+        AI._buy_builder(player, market, max_cards, market_obj, rng, trigger_passive_fn, ai_instance, next_uid_fn, game_ref)
     
     def place_cards(self, player, rng=None, **kwargs):
         AI._place_fast_synergy(player)
 
 
 class EvolverStrategy(BaseStrategy):
-    def buy_cards(self, player, market, max_cards, market_obj, rng, trigger_passive_fn, ai_instance, next_uid_fn):
-        AI._buy_evolver(player, market, max_cards, market_obj, rng, trigger_passive_fn, ai_instance, next_uid_fn)
+    def buy_cards(self, player, market, max_cards, market_obj, rng, trigger_passive_fn, ai_instance, next_uid_fn, game_ref=None):
+        AI._buy_evolver(player, market, max_cards, market_obj, rng, trigger_passive_fn, ai_instance, next_uid_fn, game_ref)
     
     def place_cards(self, player, rng=None, **kwargs):
         AI._place_smart_default(player, rng)
 
 
 class EconomistStrategy(BaseStrategy):
-    def buy_cards(self, player, market, max_cards, market_obj, rng, trigger_passive_fn, ai_instance, next_uid_fn):
-        AI._buy_economist(player, market, max_cards, market_obj, rng, trigger_passive_fn, ai_instance, next_uid_fn)
+    def buy_cards(self, player, market, max_cards, market_obj, rng, trigger_passive_fn, ai_instance, next_uid_fn, game_ref=None):
+        AI._buy_economist(player, market, max_cards, market_obj, rng, trigger_passive_fn, ai_instance, next_uid_fn, game_ref)
     
     def place_cards(self, player, rng=None, **kwargs):
         AI._place_smart_default(player, rng)
 
 
 class BalancerStrategy(BaseStrategy):
-    def buy_cards(self, player, market, max_cards, market_obj, rng, trigger_passive_fn, ai_instance, next_uid_fn):
-        AI._buy_balancer(player, market, max_cards, market_obj, rng, trigger_passive_fn, ai_instance, next_uid_fn)
+    def buy_cards(self, player, market, max_cards, market_obj, rng, trigger_passive_fn, ai_instance, next_uid_fn, game_ref=None):
+        AI._buy_balancer(player, market, max_cards, market_obj, rng, trigger_passive_fn, ai_instance, next_uid_fn, game_ref)
     
     def place_cards(self, player, rng=None, **kwargs):
         AI._place_smart_default(player, rng)
 
 
 class RareHunterStrategy(BaseStrategy):
-    def buy_cards(self, player, market, max_cards, market_obj, rng, trigger_passive_fn, ai_instance, next_uid_fn):
-        AI._buy_rare_hunter(player, market, max_cards, market_obj, rng, trigger_passive_fn, ai_instance, next_uid_fn)
+    def buy_cards(self, player, market, max_cards, market_obj, rng, trigger_passive_fn, ai_instance, next_uid_fn, game_ref=None):
+        AI._buy_rare_hunter(player, market, max_cards, market_obj, rng, trigger_passive_fn, ai_instance, next_uid_fn, game_ref)
     
     def place_cards(self, player, rng=None, **kwargs):
         AI._place_smart_default(player, rng)
 
 
 class TempoStrategy(BaseStrategy):
-    def buy_cards(self, player, market, max_cards, market_obj, rng, trigger_passive_fn, ai_instance, next_uid_fn):
-        AI._buy_warrior(player, market, max_cards, market_obj, rng, trigger_passive_fn, ai_instance, next_uid_fn)
+    def buy_cards(self, player, market, max_cards, market_obj, rng, trigger_passive_fn, ai_instance, next_uid_fn, game_ref=None):
+        AI._buy_warrior(player, market, max_cards, market_obj, rng, trigger_passive_fn, ai_instance, next_uid_fn, game_ref)
     
     def place_cards(self, player, rng=None, **kwargs):
         AI._place_aggressive(player, **kwargs)
@@ -476,12 +476,13 @@ class AI:
     @staticmethod
     def buy_cards(player: Player, market: List[Card], max_cards: int = 1, next_uid_fn=None,
                   market_obj=None, rng=None, trigger_passive_fn=None,
-                  ai_instance=None):
+                  ai_instance=None, game_ref=None):
         """Buy from market according to player.strategy.
         market_obj: Market instance for hand-overflow pool returns (optional).
         trigger_passive_fn: Function to trigger passive abilities (injected dependency).
         ai_instance: ParameterizedAI instance for parameter access (optional).
                      Phase 1: tüm stratejiler ai_instance alır.
+        game_ref: Game instance reference for context injection (replaces player.game).
         """
         strat_name = player.strategy
         strat_obj = STRATEGY_MAP.get(strat_name, STRATEGY_MAP["random"])
@@ -492,25 +493,26 @@ class AI:
             rng=rng,
             trigger_passive_fn=trigger_passive_fn,
             ai_instance=ai_instance,
-            next_uid_fn=next_uid_fn
+            next_uid_fn=next_uid_fn,
+            game_ref=game_ref
         )
 
     @staticmethod
     def _buy_random(player: Player, market: List[Card], max_cards: int,
                     market_obj=None, rng=None, trigger_passive_fn=None,
-                    ai_instance=None, next_uid_fn=None):
+                    ai_instance=None, next_uid_fn=None, game_ref=None):
         if rng is None:
             rng = random.Random()
         budget = player.gold
         affordable = [c for c in market if CARD_COSTS[c.rarity] <= budget]
         rng.shuffle(affordable)
         for card in affordable[:max_cards]:
-            player.buy_card(card, market=market_obj, trigger_passive_fn=trigger_passive_fn, uid=next_uid_fn() if next_uid_fn else 0)
+            player.buy_card(card, market=market_obj, trigger_passive_fn=trigger_passive_fn, uid=next_uid_fn() if next_uid_fn else 0, game_ref=game_ref)
 
     @staticmethod
     def _buy_warrior(player: Player, market: List[Card], max_cards: int,
                     market_obj=None, rng=None, trigger_passive_fn=None,
-                    ai_instance=None, next_uid_fn=None):
+                    ai_instance=None, next_uid_fn=None, game_ref=None):
         """Prefers cards with high total_power.
         Phase 1: power_weight ve rarity_weight parametreleri ai_instance'tan alınır.
         """
@@ -526,12 +528,12 @@ class AI:
             reverse=True
         )
         for card in affordable[:max_cards]:
-            player.buy_card(card, market=market_obj, trigger_passive_fn=trigger_passive_fn, uid=next_uid_fn() if next_uid_fn else 0)
+            player.buy_card(card, market=market_obj, trigger_passive_fn=trigger_passive_fn, uid=next_uid_fn() if next_uid_fn else 0, game_ref=game_ref)
 
     @staticmethod
     def _buy_builder(player: Player, market: List[Card], max_cards: int,
                     market_obj=None, rng=None, trigger_passive_fn=None,
-                    ai_instance=None, next_uid_fn=None):
+                    ai_instance=None, next_uid_fn=None, game_ref=None):
         """Builder v4: combo-first card scoring + economist economy controls.
 
         Builder now reuses economist's phase economy model so spending/hoarding
@@ -633,12 +635,12 @@ class AI:
             ]
 
         for card in affordable[:econ["buy_count"]]:
-            player.buy_card(card, market=market_obj, trigger_passive_fn=trigger_passive_fn, uid=next_uid_fn() if next_uid_fn else 0)
+            player.buy_card(card, market=market_obj, trigger_passive_fn=trigger_passive_fn, uid=next_uid_fn() if next_uid_fn else 0, game_ref=game_ref)
 
     @staticmethod
     def _buy_evolver(player: Player, market: List[Card], max_cards: int,
                     market_obj=None, rng=None, trigger_passive_fn=None,
-                    ai_instance=None, next_uid_fn=None):
+                    ai_instance=None, next_uid_fn=None, game_ref=None):
         """v0.7 Evolution-aware buying strategy.
         Priority: cards with 2 copies (one away from evolving) >
         cards with 1 copy > new cards (highest rarity first).
@@ -678,7 +680,7 @@ class AI:
         best = max(market_base, key=focus_score)
         if focus_score(best) < 0:
             best = max(market_base, key=lambda c: c.total_power())
-        player.buy_card(best, market=market_obj, trigger_passive_fn=trigger_passive_fn, uid=next_uid_fn() if next_uid_fn else 0)
+        player.buy_card(best, market=market_obj, trigger_passive_fn=trigger_passive_fn, uid=next_uid_fn() if next_uid_fn else 0, game_ref=game_ref)
 
         if max_cards > 1 and player.gold >= 4:
             remaining = [c for c in market if affordable(c) and c.name != best.name]
@@ -687,12 +689,12 @@ class AI:
                                  and not owned.get(f"Evolved {c.name}", 0)]
             if second_candidates:
                 second = max(second_candidates, key=focus_score)
-                player.buy_card(second, market=market_obj, trigger_passive_fn=trigger_passive_fn, uid=next_uid_fn() if next_uid_fn else 0)
+                player.buy_card(second, market=market_obj, trigger_passive_fn=trigger_passive_fn, uid=next_uid_fn() if next_uid_fn else 0, game_ref=game_ref)
 
     @staticmethod
     def _buy_economist(player: Player, market: List[Card], max_cards: int,
                     market_obj=None, rng=None, trigger_passive_fn=None,
-                    ai_instance=None, next_uid_fn=None):
+                    ai_instance=None, next_uid_fn=None, game_ref=None):
         """
         Phase-aware economist strategy: GREED → SPIKE → CONVERT
 
@@ -729,12 +731,12 @@ class AI:
             ]
 
         for card in affordable[:econ["buy_count"]]:
-            player.buy_card(card, market=market_obj, trigger_passive_fn=trigger_passive_fn, uid=next_uid_fn() if next_uid_fn else 0)
+            player.buy_card(card, market=market_obj, trigger_passive_fn=trigger_passive_fn, uid=next_uid_fn() if next_uid_fn else 0, game_ref=game_ref)
 
     @staticmethod
     def _buy_balancer(player: Player, market: List[Card], max_cards: int,
                     market_obj=None, rng=None, trigger_passive_fn=None,
-                    ai_instance=None, next_uid_fn=None):
+                    ai_instance=None, next_uid_fn=None, game_ref=None):
         """Balances power and distinct group coverage.
         Phase 1: group_bonus, group_thresh, power_weight parametreleri ai_instance'tan alınır.
         """
@@ -757,12 +759,12 @@ class AI:
             key=score, reverse=True
         )
         for card in affordable[:max_cards]:
-            player.buy_card(card, market=market_obj, trigger_passive_fn=trigger_passive_fn, uid=next_uid_fn() if next_uid_fn else 0)
+            player.buy_card(card, market=market_obj, trigger_passive_fn=trigger_passive_fn, uid=next_uid_fn() if next_uid_fn else 0, game_ref=game_ref)
 
     @staticmethod
     def _buy_rare_hunter(player: Player, market: List[Card], max_cards: int,
                     market_obj=None, rng=None, trigger_passive_fn=None,
-                    ai_instance=None, next_uid_fn=None):
+                    ai_instance=None, next_uid_fn=None, game_ref=None):
         """
         Chases high-rarity cards (4+ pip).
         BUG FIX: rarity-3 fallback until 8 gold fixes early-game stall.
@@ -779,7 +781,7 @@ class AI:
         if gold >= CARD_COSTS["5"]:
             rare5 = [c for c in market if c.rarity == "5"]
             if rare5:
-                player.buy_card(max(rare5, key=lambda c: c.total_power()), market=market_obj, trigger_passive_fn=trigger_passive_fn, uid=next_uid_fn() if next_uid_fn else 0)
+                player.buy_card(max(rare5, key=lambda c: c.total_power()), market=market_obj, trigger_passive_fn=trigger_passive_fn, uid=next_uid_fn() if next_uid_fn else 0, game_ref=game_ref)
                 return
 
         # Then 4-pip
@@ -789,7 +791,7 @@ class AI:
                 key=lambda c: c.total_power(), reverse=True
             )
             for card in rare4[:max_cards]:
-                player.buy_card(card, market=market_obj, trigger_passive_fn=trigger_passive_fn, uid=next_uid_fn() if next_uid_fn else 0)
+                player.buy_card(card, market=market_obj, trigger_passive_fn=trigger_passive_fn, uid=next_uid_fn() if next_uid_fn else 0, game_ref=game_ref)
             if rare4:
                 return
 
@@ -799,7 +801,7 @@ class AI:
             key=lambda c: c.total_power(), reverse=True
         )
         for card in rfb[:1]:
-            player.buy_card(card, market=market_obj, trigger_passive_fn=trigger_passive_fn, uid=next_uid_fn() if next_uid_fn else 0)
+            player.buy_card(card, market=market_obj, trigger_passive_fn=trigger_passive_fn, uid=next_uid_fn() if next_uid_fn else 0, game_ref=game_ref)
 
     @staticmethod
     def place_cards(player: Player, rng=None, **kwargs):

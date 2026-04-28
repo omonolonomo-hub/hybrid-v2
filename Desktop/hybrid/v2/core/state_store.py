@@ -1,5 +1,7 @@
 from typing import Dict, List, Tuple, Any, Optional
 
+_VALID_PHASES = frozenset({"STATE_PREPARATION", "STATE_VERSUS", "STATE_COMBAT", "STATE_ENDGAME"})
+
 class StateStore:
     """
     Reactive-style store for UI-facing state.
@@ -16,7 +18,12 @@ class StateStore:
     @property
     def phase(self) -> str: return self._phase
     @phase.setter
-    def phase(self, value: str): self._phase = value
+    def phase(self, value: str):
+        if value not in _VALID_PHASES:
+            raise ValueError(
+                f"Invalid phase: '{value}'. Valid phases: STATE_PREPARATION, STATE_VERSUS, STATE_COMBAT, STATE_ENDGAME"
+            )
+        self._phase = value
 
     @property
     def view_index(self) -> int: return self._view_index

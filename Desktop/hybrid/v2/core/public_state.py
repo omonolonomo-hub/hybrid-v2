@@ -1,7 +1,17 @@
+import copy
 from dataclasses import dataclass, field
+from types import MappingProxyType
 from typing import Any, Dict, List, Optional, Tuple
 
 from v2.core.card_database import CardData
+
+
+def _deepcopy_mapping_proxy(proxy: MappingProxyType, memo: dict) -> dict:
+    """Flatten MappingProxyType for dataclasses.asdict / copy.deepcopy."""
+    return copy.deepcopy(dict(proxy), memo)
+
+
+copy._deepcopy_dispatch[MappingProxyType] = _deepcopy_mapping_proxy  # noqa: SLF001
 
 
 Coord = Tuple[int, int]
@@ -103,6 +113,21 @@ class ActivePlayerViewState:
     shop_card_info: Dict[int, Optional[CardData]] = field(default_factory=dict)
     hand_card_info: Dict[int, Optional[CardData]] = field(default_factory=dict)
     board_card_info: Dict[Coord, Optional[CardData]] = field(default_factory=dict)
+
+    def __post_init__(self) -> None:
+        """Seal dict-backed fields so frozen=True cannot be bypassed via in-place mutation."""
+        object.__setattr__(self, "stats", MappingProxyType(self.stats))
+        object.__setattr__(self, "copies_by_name", MappingProxyType(self.copies_by_name))
+        object.__setattr__(
+            self,
+            "board_cards",
+            MappingProxyType(
+                {k: MappingProxyType(v) for k, v in self.board_cards.items()}
+            ),
+        )
+        object.__setattr__(self, "shop_card_info", MappingProxyType(self.shop_card_info))
+        object.__setattr__(self, "hand_card_info", MappingProxyType(self.hand_card_info))
+        object.__setattr__(self, "board_card_info", MappingProxyType(self.board_card_info))
 
     def get_card_info(self, source: str, key: Any) -> Optional[CardData]:
         if source == "shop":

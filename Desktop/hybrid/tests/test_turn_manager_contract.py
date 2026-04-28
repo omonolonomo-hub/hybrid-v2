@@ -107,10 +107,6 @@ class TestTurnManagerInstantiation:
         tm, _, _ = _build_turn_manager(seed=6)
         assert callable(getattr(tm, "_deal_starting_hands", None))
 
-    def test_turn_manager_has_clear_transient_board_state(self):
-        tm, _, _ = _build_turn_manager(seed=7)
-        assert callable(getattr(tm, "_clear_transient_board_state", None))
-
     def test_turn_manager_turn_starts_at_zero(self):
         """Yeni TurnManager'ın tur sayacı 0 olmalı."""
         tm, _, _ = _build_turn_manager(seed=8)

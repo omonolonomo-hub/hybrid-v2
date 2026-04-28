@@ -113,12 +113,12 @@ def test_c4_legacy_assignment_and_income_reset_keep_single_source_sync():
     p = Player(pid=0, strategy="random")
     p.gold = 10
     p.cards_bought_this_turn = 7
-    assert p.stats["cards_bought_this_turn"] == 7
+    assert "cards_bought_this_turn" not in p.stats
 
     p.buy_card(get_card_pool()[0])
     assert p.cards_bought_this_turn == 8
-    assert p.stats["cards_bought_this_turn"] == 8
+    assert "cards_bought_this_turn" not in p.stats
 
     p.income()
     assert p.cards_bought_this_turn == 0
-    assert p.stats["cards_bought_this_turn"] == 0
+    assert "cards_bought_this_turn" not in p.stats

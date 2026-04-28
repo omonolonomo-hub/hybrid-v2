@@ -59,13 +59,32 @@ class SceneManager:
             cls._instance = SceneManager()
         return cls._instance
 
+    @classmethod
+    def dispose(cls) -> None:
+        """Dispose of singleton instance for testing. Replaces monkey-patching."""
+        if cls._instance is not None:
+            if cls._instance._current is not None:
+                cls._instance._current.on_exit()
+            cls._instance = None
+
     # ── Public API ────────────────────────────────────────────────────────────
 
     def set_scene(self, scene: Scene) -> None:
         """İlk sahneyi fade olmadan yükler. Yalnızca başlangıçta çağır."""
+        # Only cleanup if current scene exists (first set_scene() has no scene to dispose)
         if self._current is not None:
             if hasattr(self._current, 'on_exit'):
                 self._current.on_exit()
+            
+            # Null out reference to allow GC
+            self._current = None
+            
+            # Delete fade surface if it exists
+            if hasattr(self, '_fade_surface') and self._fade_surface is not None:
+                del self._fade_surface
+                self._fade_surface = None
+        
+        # Set new scene
         self._current = scene
         if hasattr(self._current, 'on_enter'):
             self._current.on_enter()

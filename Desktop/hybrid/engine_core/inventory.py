@@ -85,3 +85,17 @@ class Inventory:
         # Single signal emission after all clears
         if indices:
             self._emit_change()
+    
+    def clear_all(self) -> None:
+        """Atomically clears all hand slots and copy tracking, emits ONE signal.
+        
+        Used during player elimination to ensure UI cache invalidation.
+        Guarantees that inventory_changed signal is emitted exactly once
+        after all state is cleared, preventing race conditions in UI updates.
+        """
+        for i in range(len(self.hand)):
+            self.hand[i] = None
+        self.copies.clear()
+        self.copy_turns.clear()
+        self.copy_applied.clear()
+        self._emit_change()

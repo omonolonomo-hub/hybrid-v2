@@ -71,6 +71,10 @@ ICONS = {
     "SEEDLING":"\uf4d8",# Doğa / Filiz
     "PLANET": "\ue0e8", # Kozmos / Satürn
     "LANDMARK":"\uf66f",# Tarih / Anıt
+    # Rank İkonları
+    "CROWN":  "\uf521", # 1. sıra - Taç
+    "MEDAL":  "\uf5a2", # 2. sıra - Madalya
+    "AWARD":  "\uf559", # 3. sıra - Ödül
 }
 
 def render_icon(
