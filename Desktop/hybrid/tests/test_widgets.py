@@ -10,11 +10,11 @@ from v2.constants import Timing, Screen
 
 @pytest.fixture(autouse=True)
 def init_pygame():
-    pygame.init()
+    # pygame.init() is handled by session-scoped conftest.py fixture
     yield
     from v2.ui import font_cache
     font_cache.clear_cache()
-    pygame.quit()
+    # Don't call pygame.quit() - let session fixture handle it
 
 
 # ══════════════════════════════════════════════════════════════════════════

@@ -8,10 +8,11 @@ from v2.scenes.shop import ShopScene
 
 @pytest.fixture(autouse=True)
 def init_pygame():
-    pygame.init()
+    # pygame.init() is handled by session-scoped conftest.py fixture
+    # Re-initialize display for this test's needs
     pygame.display.set_mode((Screen.W, Screen.H))
     yield
-    pygame.quit()
+    # Don't call pygame.quit() - let session fixture handle it
 
 @pytest.fixture
 def mock_engine_and_state():

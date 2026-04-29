@@ -15,7 +15,7 @@ def renderer():
 @pytest.fixture
 def surface():
     """Create a test surface."""
-    pygame.init()
+    # pygame.init() is handled by session-scoped conftest.py fixture
     return pygame.Surface((800, 600))
 
 

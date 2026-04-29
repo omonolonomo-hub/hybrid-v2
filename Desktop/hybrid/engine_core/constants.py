@@ -10,16 +10,8 @@ Extracted from autochess_sim_v06.py for better organization.
 
 from typing import Dict, List, Tuple
 
-# ===================================================================
-# STAT GROUPS & MAPPINGS
-# ===================================================================
-
-STAT_GROUPS: Dict[str, List[str]] = {
-    "EXISTENCE":  ["Power", "Durability", "Size", "Speed"],
-    "MIND":       ["Meaning", "Secret", "Intelligence", "Trace"],
-    "CONNECTION": ["Gravity", "Harmony", "Spread", "Prestige"],
-}
-STAT_TO_GROUP = {s: g for g, ss in STAT_GROUPS.items() for s in ss}
+# Group-related constants imported from group_registry (single source of truth)
+from engine_core.group_registry import STAT_GROUPS, STAT_TO_GROUP, GROUP_BEATS
 
 # ===================================================================
 # RARITY CONSTANTS
@@ -34,13 +26,6 @@ _LEGACY_RARITY_TO_ID: Dict[str, str] = {
     _RARITY_DIAMOND * 4: "4",
     _RARITY_DIAMOND * 5: "5",
 }
-
-# ===================================================================
-# GROUP ADVANTAGE SYSTEM
-# ===================================================================
-
-# Group advantage matrix: EXISTENCE beats CONNECTION (+1 combat bonus)
-GROUP_BEATS = {"EXISTENCE": "CONNECTION", "MIND": "EXISTENCE", "CONNECTION": "MIND"}
 
 # ===================================================================
 # RARITY POWER TARGETS
@@ -148,12 +133,13 @@ STRATEGIES = ["random", "warrior", "builder", "evolver", "economist", "balancer"
 # DAMAGE & BALANCE CONSTANTS (P1-5 — extracted from damage_calculator.py)
 # ===================================================================
 
-# Turn-based damage multiplier (BAL 5 — early game protection)
+# Turn-based damage scaling (BAL 5 — early game protection)
+# NOTE: Uses integer percentages for deterministic cross-platform behavior
 EARLY_GAME_TURNS       = 5     # Turn 1-5: reduced damage
 SCALING_END_TURN       = 15    # Turn 6-15: linear scaling to full
-EARLY_DAMAGE_MULTIPLIER = 0.5  # Turn 1-5 multiplier
-LATE_DAMAGE_MULTIPLIER  = 1.0  # Turn 16+ multiplier
-SCALING_STEP            = 0.05 # Per-turn scaling increment (0.5 + (turn-5)*0.05)
+EARLY_DAMAGE_PERCENT   = 50    # Turn 1-5: 50% damage
+LATE_DAMAGE_PERCENT    = 100   # Turn 16+: 100% damage
+SCALING_PERCENT_STEP   = 5     # Per-turn scaling increment (+5% per turn)
 
 # Early game damage cap
 EARLY_CAP_TURNS = 10    # Hard cap applies turn 1-10

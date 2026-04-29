@@ -2,11 +2,7 @@ import pytest
 import pygame
 from v2.ui.card_flip import CardFlip
 
-@pytest.fixture(autouse=True)
-def init_pygame():
-    pygame.init()
-    yield
-    pygame.quit()
+# pygame.init() is handled by session-scoped conftest.py fixture
 
 def _make_surfaces():
     back  = pygame.Surface((120, 160), pygame.SRCALPHA)

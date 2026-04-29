@@ -3,11 +3,7 @@ import pygame
 from v2.ui.player_hub import PlayerHub
 from v2.constants import Layout, Screen
 
-@pytest.fixture(autouse=True)
-def init_pygame():
-    pygame.init()
-    yield
-    pygame.quit()
+# pygame.init() is handled by session-scoped conftest.py fixture
 
 def test_playerhub_initializes_with_correct_dimensions():
     hub = PlayerHub()

@@ -3,11 +3,7 @@ import pygame
 from v2.ui.timer_bar import TimerBar
 from v2.constants import Layout
 
-@pytest.fixture(autouse=True)
-def init_pygame():
-    pygame.init()
-    yield
-    pygame.quit()
+# pygame.init() is handled by session-scoped conftest.py fixture
 
 def test_timerbar_dimensions_and_position():
     """TimerBar, ShopPanel'in hemen altinda ve merkez canvas uzerinde yer almalidir."""

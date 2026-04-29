@@ -1,7 +1,7 @@
 """
-Regression test: sync_view/_add_board_flip should not do N DB lookups.
+Regression test: BoardRenderer._add_board_flip should not do N DB lookups.
 
-ShopScene._add_board_flip historically called EngineAdapter.get_card_info(card_name)
+BoardRenderer._add_board_flip historically called EngineAdapter.get_card_info(card_name)
 for every board card. PublicState already includes active_player.board_card_info,
 so we should use that cached data and only fallback to EngineAdapter on cache miss.
 """
@@ -14,7 +14,7 @@ import pytest
 
 from v2.core.card_database import CardData
 from v2.constants import CameraState
-from v2.scenes.shop import ShopScene
+from v2.ui.board_renderer import BoardRenderer
 
 
 def _make_card_data(name: str, rarity: str) -> CardData:
@@ -50,18 +50,18 @@ def test_add_board_flip_uses_cached_board_card_info_no_db_call():
         )
     )
 
-    scene = SimpleNamespace(
-        camera=CameraState(),
-        _board_flips={},
-    )
+    board_cards = {coord: {"name": card_name}}
+    cam_state = CameraState()
+    
+    renderer = BoardRenderer()
 
     with (
-        patch("v2.scenes.shop.AssetLoader.get", return_value=_DummyAssetLoader()),
+        patch("v2.ui.board_renderer.AssetLoader.get", return_value=_DummyAssetLoader()),
         patch("v2.core.engine_adapter.EngineAdapter.get_card_info") as get_card_info,
     ):
-        ShopScene._add_board_flip(scene, coord, state, card_data=cached)
+        renderer._add_board_flip(coord, board_cards, state, cam_state)
 
         assert get_card_info.call_count == 0
-        assert coord in scene._board_flips
-        assert scene._board_flips[coord].evolved is True
+        assert coord in renderer._flips
+        assert renderer._flips[coord].evolved is True
 

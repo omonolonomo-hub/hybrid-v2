@@ -174,7 +174,7 @@ class TestPreservationMilestoneDisplay:
         
         # Capture floating text spawns
         spawned_texts = []
-        original_spawn = scene.ft_manager.spawn
+        original_spawn = scene._feedback.ft_manager.spawn
         
         def capture_spawn(text, x, y, color, font_size=12, coord_key=None):
             spawned_texts.append({
@@ -187,7 +187,7 @@ class TestPreservationMilestoneDisplay:
             })
             return original_spawn(text, x, y, color, font_size, coord_key)
         
-        scene.ft_manager.spawn = capture_spawn
+        scene._feedback.ft_manager.spawn = capture_spawn
         
         # Execute: Emit milestone_reached signal (new signal-based approach)
         tier_short = {"MIND": "MIND", "CONNECTION": "CONN", "EXISTENCE": "EXST"}
@@ -245,7 +245,7 @@ class TestPreservationMilestoneDisplay:
         
         # Capture floating text spawns
         spawned_texts = []
-        original_spawn = scene.ft_manager.spawn
+        original_spawn = scene._feedback.ft_manager.spawn
         
         def capture_spawn(text, x, y, color, font_size=12, coord_key=None):
             spawned_texts.append({
@@ -258,7 +258,7 @@ class TestPreservationMilestoneDisplay:
             })
             return original_spawn(text, x, y, color, font_size, coord_key)
         
-        scene.ft_manager.spawn = capture_spawn
+        scene._feedback.ft_manager.spawn = capture_spawn
         
         # Execute: Emit milestone_reached signal (new signal-based approach)
         game_state._adapter._engine.signals.milestone_reached.emit(
@@ -317,7 +317,7 @@ class TestPreservationMilestoneDisplay:
         
         # Capture floating text spawns
         spawned_texts = []
-        original_spawn = scene.ft_manager.spawn
+        original_spawn = scene._feedback.ft_manager.spawn
         
         def capture_spawn(text, x, y, color, font_size=12, coord_key=None):
             spawned_texts.append({
@@ -330,7 +330,7 @@ class TestPreservationMilestoneDisplay:
             })
             return original_spawn(text, x, y, color, font_size, coord_key)
         
-        scene.ft_manager.spawn = capture_spawn
+        scene._feedback.ft_manager.spawn = capture_spawn
         
         # Execute: Emit milestone_reached signal
         tier_short = {"MIND": "MIND", "CONNECTION": "CONN", "EXISTENCE": "EXST"}
@@ -402,7 +402,7 @@ class TestPreservationMilestoneDisplay:
         
         # Capture floating text spawns
         spawned_texts = []
-        original_spawn = scene.ft_manager.spawn
+        original_spawn = scene._feedback.ft_manager.spawn
         
         def capture_spawn(text, x, y, color, font_size=12, coord_key=None):
             spawned_texts.append({
@@ -415,7 +415,7 @@ class TestPreservationMilestoneDisplay:
             })
             return original_spawn(text, x, y, color, font_size, coord_key)
         
-        scene.ft_manager.spawn = capture_spawn
+        scene._feedback.ft_manager.spawn = capture_spawn
         
         # Execute: Emit milestone_reached signal
         tier_short = {"MIND": "MIND", "CONNECTION": "CONN", "EXISTENCE": "EXST"}
@@ -478,7 +478,7 @@ class TestPreservationMilestoneDisplay:
         
         # Capture floating text spawns
         spawned_texts = []
-        original_spawn = scene.ft_manager.spawn
+        original_spawn = scene._feedback.ft_manager.spawn
         
         def capture_spawn(text, x, y, color, font_size=12, coord_key=None):
             spawned_texts.append({
@@ -491,7 +491,7 @@ class TestPreservationMilestoneDisplay:
             })
             return original_spawn(text, x, y, color, font_size, coord_key)
         
-        scene.ft_manager.spawn = capture_spawn
+        scene._feedback.ft_manager.spawn = capture_spawn
         
         # Execute: Emit milestone_reached signal
         game_state._adapter._engine.signals.milestone_reached.emit(
@@ -543,7 +543,7 @@ class TestPreservationMilestoneDisplay:
         
         # Capture floating text spawns
         spawned_texts = []
-        original_spawn = scene.ft_manager.spawn
+        original_spawn = scene._feedback.ft_manager.spawn
         
         def capture_spawn(text, x, y, color, font_size=12, coord_key=None):
             spawned_texts.append({
@@ -556,7 +556,7 @@ class TestPreservationMilestoneDisplay:
             })
             return original_spawn(text, x, y, color, font_size, coord_key)
         
-        scene.ft_manager.spawn = capture_spawn
+        scene._feedback.ft_manager.spawn = capture_spawn
         
         # Execute: Emit milestone_reached signal
         tier_short = {"MIND": "MIND", "CONNECTION": "CONN", "EXISTENCE": "EXST"}
@@ -613,7 +613,7 @@ class TestPreservationMilestoneDisplay:
         
         # Capture floating text spawns
         spawned_texts = []
-        original_spawn = scene.ft_manager.spawn
+        original_spawn = scene._feedback.ft_manager.spawn
         
         def capture_spawn(text, x, y, color, font_size=12, coord_key=None):
             spawned_texts.append({
@@ -626,7 +626,7 @@ class TestPreservationMilestoneDisplay:
             })
             return original_spawn(text, x, y, color, font_size, coord_key)
         
-        scene.ft_manager.spawn = capture_spawn
+        scene._feedback.ft_manager.spawn = capture_spawn
         
         # Execute: Emit milestone_reached signal
         game_state._adapter._engine.signals.milestone_reached.emit(
@@ -675,7 +675,7 @@ class TestPreservationMilestoneDisplay:
         
         # Capture floating text spawns
         spawned_texts = []
-        original_spawn = scene.ft_manager.spawn
+        original_spawn = scene._feedback.ft_manager.spawn
         
         def capture_spawn(text, x, y, color, font_size=12, coord_key=None):
             spawned_texts.append({
@@ -688,7 +688,7 @@ class TestPreservationMilestoneDisplay:
             })
             return original_spawn(text, x, y, color, font_size, coord_key)
         
-        scene.ft_manager.spawn = capture_spawn
+        scene._feedback.ft_manager.spawn = capture_spawn
         
         # Execute: Emit the same tier milestone signal twice
         game_state._adapter._engine.signals.milestone_reached.emit(
@@ -753,3 +753,4 @@ class TestPreservationMilestoneDisplay:
 
 if __name__ == "__main__":
     pytest.main([__file__, "-v", "-s"])
+

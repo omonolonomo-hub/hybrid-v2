@@ -60,13 +60,13 @@ class TestCalculateDamage:
 
     def test_damage_formula_base_plus_alive_div2_plus_rarity(self):
         """
-        DAMAGE = max(1, |Wpts - Lpts| + floor(alive/2) + rarity//2) * turn_mult
-        Tur 16+ için tur çarpanı 1.0'dır.
+        DAMAGE = max(1, |Wpts - Lpts| + floor(alive/2) + rarity//2) * damage_percent // 100
+        Tur 16+ için damage_percent 100'dür (tam hasar).
         """
         board = Board()
         # Board boş → alive=0, rarity=0
         dmg = calculate_damage(winner_pts=10, loser_pts=3, winner_board=board, turn=20)
-        # base = |10-3| = 7, alive=0//2=0, rarity=0, raw=max(1,7)=7, mult=1.0
+        # base = |10-3| = 7, alive=0//2=0, rarity=0, raw=max(1,7)=7, percent=100, scaled=(7*100)//100=7
         assert dmg == 7
 
     def test_damage_minimum_is_always_1(self):
@@ -77,9 +77,9 @@ class TestCalculateDamage:
         assert dmg >= 1
 
     def test_damage_halved_in_early_turns(self):
-        """Tur 1-5 → hasar 0.50x çarpanla ölçeklenir ve tur 1-10 hard cap 15."""
+        """Tur 1-5 → hasar 50% ölçeklenir ve tur 1-10 hard cap 15."""
         board = Board()
-        # raw_damage = 20, turn=3 → mult=0.5 → scaled=10, cap=min(10,15)=10
+        # raw_damage = 20, turn=3 → percent=50 → scaled=(20*50)//100=10, cap=min(10,15)=10
         dmg_early = calculate_damage(winner_pts=25, loser_pts=5, winner_board=board, turn=3)
         dmg_late  = calculate_damage(winner_pts=25, loser_pts=5, winner_board=board, turn=20)
         assert dmg_early < dmg_late
@@ -94,7 +94,7 @@ class TestCalculateDamage:
     def test_damage_no_cap_after_turn_10(self):
         """Tur 11+'dan itibaren hard cap kalkar."""
         board = Board()
-        # raw=1000 → turn=20 → mult=1.0 → scaled=1000
+        # raw=1000 → turn=20 → percent=100 → scaled=(1000*100)//100=1000
         dmg = calculate_damage(winner_pts=1000, loser_pts=0, winner_board=board, turn=20)
         assert dmg > 15
 

@@ -5,10 +5,11 @@ from v2.constants import Screen
 
 @pytest.fixture(autouse=True)
 def init_pygame():
-    pygame.init()
+    # pygame.init() is handled by session-scoped conftest.py fixture
+    # Re-initialize display for this test's needs
     pygame.display.set_mode((Screen.W, Screen.H))
     yield
-    pygame.quit()
+    # Don't call pygame.quit() - let session fixture handle it
 
 def test_versusoverlay_renders_matched_opponents_behaviorally(monkeypatch):
     """VersusOverlay render edildiğinde ekrana sahte eşleşme isimlerini bastığını doğrular."""

@@ -98,7 +98,7 @@ class HeavyScene(Scene):
 @pytest.fixture(autouse=True)
 def setup_pygame_and_reset_singleton():
     """Initialize pygame and reset SceneManager singleton before each test."""
-    pygame.init()
+    # pygame.init() is handled by session-scoped conftest.py fixture
     pygame.display.set_mode((1, 1), pygame.HIDDEN)
     
     # Reset singleton using monkey-patching (current approach)
@@ -109,7 +109,7 @@ def setup_pygame_and_reset_singleton():
     
     # Cleanup
     SceneManager._instance = None
-    pygame.quit()
+    # Don't call pygame.quit() - let session fixture handle it
 
 
 def test_single_scene_transition_prevents_gc():

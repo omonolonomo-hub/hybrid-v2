@@ -8,7 +8,12 @@ and prevents mutation leakage across test runs.
 import pytest
 from engine_core.card import CardPool, get_card_pool, Card
 
+# Disable conftest.py's automatic CardPool.reset() for these tests
+# since we're explicitly testing singleton behavior
+pytestmark = pytest.mark.no_cardpool_reset
 
+
+@pytest.mark.no_cardpool_reset
 class TestCardPoolIsolation:
     """Test CardPool singleton behavior and reset mechanism."""
     
@@ -114,6 +119,7 @@ class TestCardPoolIsolation:
         assert len(pool) > 0, "Buffed pool should exist"
 
 
+@pytest.mark.no_cardpool_reset
 class TestCardPoolConcurrency:
     """Test CardPool behavior in scenarios that might cause race conditions."""
     
@@ -133,6 +139,7 @@ class TestCardPoolConcurrency:
             assert pool is first_pool, "All calls should return same instance"
 
 
+@pytest.mark.no_cardpool_reset
 class TestBackwardCompatibility:
     """Ensure the refactor maintains backward compatibility."""
     

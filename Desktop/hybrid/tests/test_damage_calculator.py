@@ -14,8 +14,8 @@ from engine_core.damage_calculator import (
     CombatResult, resolve_single_combat, calculate_damage,
 )
 from engine_core.constants import (
-    EARLY_GAME_TURNS, SCALING_END_TURN, EARLY_DAMAGE_MULTIPLIER,
-    LATE_DAMAGE_MULTIPLIER, EARLY_CAP_TURNS, EARLY_DAMAGE_CAP,
+    EARLY_GAME_TURNS, SCALING_END_TURN, EARLY_DAMAGE_PERCENT,
+    LATE_DAMAGE_PERCENT, EARLY_CAP_TURNS, EARLY_DAMAGE_CAP,
 )
 
 
@@ -68,8 +68,8 @@ class TestDamageCalculatorExtraction:
         """Verify damage constants match the expected behavior."""
         assert EARLY_GAME_TURNS == 5
         assert SCALING_END_TURN == 15
-        assert EARLY_DAMAGE_MULTIPLIER == 0.5
-        assert LATE_DAMAGE_MULTIPLIER == 1.0
+        assert EARLY_DAMAGE_PERCENT == 50
+        assert LATE_DAMAGE_PERCENT == 100
         assert EARLY_CAP_TURNS == 10
         assert EARLY_DAMAGE_CAP == 15
 

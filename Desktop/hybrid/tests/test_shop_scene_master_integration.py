@@ -26,19 +26,16 @@ def _reset_singletons() -> None:
     AssetLoader._instance = None
     CardDatabase.reset()
     font_cache.clear_cache()
-    GridMath.camera.offset_x = 0.0
-    GridMath.camera.offset_y = 0.0
-    GridMath.camera.zoom = 1.0
 
 
 @pytest.fixture(autouse=True)
 def reset_shop_scene_state():
-    pygame.init()
+    # pygame.init() is handled by session-scoped conftest.py fixture
     pygame.font.init()
     _reset_singletons()
     yield
     _reset_singletons()
-    pygame.quit()
+    # Don't call pygame.quit() - let session fixture handle it
 
 
 def _build_scene():
@@ -85,7 +82,7 @@ def test_valid_hand_drop_places_card_and_syncs_panels(monkeypatch):
     card_name = scene.hand_panel.get_card_name(slot_idx)
     target_coord = (0, 0)
     target_pos = (Layout.CENTER_ORIGIN_X + 220, Layout.SHOP_PANEL_Y + 260)
-    initial_float_count = scene.ft_manager.active_count
+    initial_float_count = scene._feedback.ft_manager.active_count
 
     assert target_coord in VALID_HEX_COORDS
 
@@ -111,8 +108,8 @@ def test_valid_hand_drop_places_card_and_syncs_panels(monkeypatch):
     assert game.players[0].hand[slot_idx] is None
     assert scene.hand_panel.get_card_name(slot_idx) is None
     assert scene.player_hub._board_used == 1
-    assert target_coord in scene._board_flips
-    assert scene.ft_manager.active_count == initial_float_count + 1
+    assert target_coord in scene.board_renderer._flips
+    assert scene._feedback.ft_manager.active_count == initial_float_count + 1
     assert scene.drag_state["is_dragging"] is False
     assert scene.drag_state["source_panel"] is None
     assert scene.drag_state["source_index"] == -1

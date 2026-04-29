@@ -3,11 +3,7 @@ import pygame
 from v2.ui.lobby_panel import LobbyPanel
 from v2.constants import Layout, Screen
 
-@pytest.fixture(autouse=True)
-def init_pygame():
-    pygame.init()
-    yield
-    pygame.quit()
+# pygame.init() is handled by session-scoped conftest.py fixture
 
 def test_lobbypanel_initializes_with_correct_dimensions():
     """LobbyPanel (Right HUD) ekranın en sağına bitişik şekilde tam boy oturmalıdır."""

@@ -46,15 +46,12 @@ def _reset_singletons():
     BackgroundManager._instance = None
     AssetLoader._instance = None
     CardDatabase.reset()
-    GridMath.camera.offset_x = 0.0
-    GridMath.camera.offset_y = 0.0
-    GridMath.camera.zoom = 1.0
 
 
 @pytest.fixture(autouse=True)
 def clean_state():
     _reset_singletons()
-    pygame.init()
+    # pygame.init() is handled by session-scoped conftest.py fixture
     try:
         from v2.ui import font_cache
         font_cache.clear_cache()
@@ -63,7 +60,7 @@ def clean_state():
     pygame.display.set_mode((Screen.W, Screen.H), pygame.NOFRAME)
     yield
     _reset_singletons()
-    pygame.quit()
+    # Don't call pygame.quit() - let session fixture handle it
 
 
 def _build_scene():

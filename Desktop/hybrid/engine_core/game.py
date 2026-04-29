@@ -36,7 +36,7 @@ from engine_core.signals import SignalBus
 # ===================================================================
 
 class Game:
-    def __init__(self, players: List[Player], verbose: bool = False, rng=None,
+    def __init__(self, players: List[Player], verbose: bool = False, rng=None, seed: int = None,
                  trigger_passive_fn: Callable = None, combat_phase_fn: Callable = None,
                  card_pool: list = None, ai_override=None):
         """Initialize game with players and optional dependencies.
@@ -44,7 +44,8 @@ class Game:
         Args:
             players: List of Player instances
             verbose: Whether to print detailed logs
-            rng: Random number generator (optional)
+            rng: Random number generator (optional, mutually exclusive with seed)
+            seed: Random seed for deterministic games (optional, mutually exclusive with rng)
             trigger_passive_fn: Function to trigger passive abilities (injected dependency)
             combat_phase_fn: Function to resolve combat phase (injected dependency)
             card_pool: Card pool to use for market (injected dependency)
@@ -52,6 +53,10 @@ class Game:
                          Must expose buy_cards(player, market, ...) and
                          place_cards(player, rng=...) with the same signatures as AI.
                          Used by train_strategies.py for parameterized training.
+        
+        Note:
+            For network games, prefer passing 'seed' parameter instead of 'rng' to ensure
+            the seed can be transmitted to clients for deterministic replay.
         """
         self.players  = players
         self.action_log = ActionLog()
@@ -69,10 +74,48 @@ class Game:
         
         self.card_pool = card_pool if card_pool is not None else []
         self.card_by_name = {c.name: c for c in self.card_pool}  # built once
-        self.market   = Market(self.card_pool, rng=rng)
+        
+        # ── RNG initialization with seed tracking ─────────────────────────────
+        # CRITICAL: _rng_seed must be set for multiplayer determinism to work!
+        # NetworkServer._send_game_start() reads this to sync clients.
+        
+        if seed is not None and rng is not None:
+            raise ValueError("Cannot specify both 'seed' and 'rng' parameters")
+        
+        if seed is not None:
+            # Explicit seed provided - create RNG and store seed
+            self._rng_seed = seed
+            self.rng = random.Random(seed)
+        elif rng is not None:
+            # DEPRECATED: rng= parameter cannot reliably extract seed for multiplayer sync.
+            # For network games, ALWAYS use Game(seed=N) instead of Game(rng=rng).
+            # This path exists only for backward compatibility with local/test code.
+            self.rng = rng
+            
+            # Attempt to extract seed (UNRELIABLE - state[1][0] is NOT the original seed!)
+            try:
+                state = rng.getstate()
+                # WARNING: This is Mersenne Twister internal state, not the original seed.
+                # Two machines using this value will produce DIFFERENT sequences!
+                self._rng_seed = state[1][0] if len(state) > 1 and len(state[1]) > 0 else None
+            except (AttributeError, IndexError, TypeError):
+                self._rng_seed = random.randint(0, 2**32 - 1)
+            
+            warnings.warn(
+                "Game(rng=...) is deprecated for multiplayer. Use Game(seed=N) instead. "
+                "The rng= parameter cannot extract the original seed, breaking multiplayer sync.",
+                DeprecationWarning,
+                stacklevel=2
+            )
+        else:
+            # No seed or RNG provided - generate both
+            self._rng_seed = random.randint(0, 2**32 - 1)
+            self.rng = random.Random(self._rng_seed)
+        
+        self.market   = Market(self.card_pool, rng=self.rng)
         self.verbose  = verbose
         self.log: deque = deque(maxlen=10000)
-        self.rng = rng if rng is not None else random.Random()
+        
         self.trigger_passive_fn = trigger_passive_fn
         self.combat_phase_fn = combat_phase_fn
         # ai_override: ParameterizedAI instance or None (→ default AI class)

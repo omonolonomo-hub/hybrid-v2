@@ -29,11 +29,11 @@ def test_shop_scene_assets_loaded():
     assert hasattr(shop, 'hand_panel')
     assert hasattr(shop, 'player_hub')
     assert hasattr(shop, 'synergy_hud')
-    assert hasattr(shop, 'ft_manager')  # FloatingTextManager
+    assert hasattr(shop, '_feedback')  # FeedbackController
     
     # Verify FloatingTextManager active
-    assert shop.ft_manager is not None
-    assert shop.ft_manager.active_count >= 0
+    assert shop._feedback.ft_manager is not None
+    assert shop._feedback.ft_manager.active_count >= 0
 
 
 def test_floating_text_spawn_on_placement():
@@ -46,8 +46,8 @@ def test_floating_text_spawn_on_placement():
     shop = ShopScene(gs)
     
     # Manually trigger milestone float (as would happen on card place)
-    initial_count = shop.ft_manager.active_count
-    shop.ft_manager.spawn(
+    initial_count = shop._feedback.ft_manager.active_count
+    shop._feedback.ft_manager.spawn(
         text="+5 SYNERGY",
         x=960,
         y=400,
@@ -56,7 +56,7 @@ def test_floating_text_spawn_on_placement():
         coord_key=("test", 0),
     )
     
-    assert shop.ft_manager.active_count > initial_count
+    assert shop._feedback.ft_manager.active_count > initial_count
 
 
 def test_evolved_card_glow_rendering():
@@ -156,7 +156,7 @@ def test_shop_scene_visual_demo():
         shop.render(screen)
         pygame.display.flip()
     
-    pygame.quit()
+    # Don't call pygame.quit() - let session fixture handle it
     
     # If we got here without crash, test passes
     assert frame_count > 0

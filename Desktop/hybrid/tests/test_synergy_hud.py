@@ -6,11 +6,7 @@ from v2.core.public_state import EffectViewState, PassiveFeedEntryViewState, Syn
 from v2.ui.synergy_hud import SynergyHud
 
 
-@pytest.fixture(autouse=True)
-def init_pygame():
-    pygame.init()
-    yield
-    pygame.quit()
+# pygame.init() is handled by session-scoped conftest.py fixture
 
 
 def _sample_view_model() -> SynergyViewState:

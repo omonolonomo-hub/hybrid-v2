@@ -5,10 +5,11 @@ from v2.constants import Screen
 
 @pytest.fixture(autouse=True)
 def init_pygame():
-    pygame.init()
+    # pygame.init() is handled by session-scoped conftest.py fixture
+    # Re-initialize display for this test's needs
     pygame.display.set_mode((Screen.W, Screen.H))
     yield
-    pygame.quit()
+    # Don't call pygame.quit() - let session fixture handle it
 
 @pytest.mark.xfail(reason="H3-7: EndgameOverlay Türkçe lokalizasyon — WINS/KAZANDI beklenen metin bulunamadi", strict=False)
 def test_endgameoverlay_renders_scoreboard_behaviorally(monkeypatch):

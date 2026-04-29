@@ -13,10 +13,10 @@ from typing import Dict, Optional, Tuple
 
 from engine_core.card import Card
 from engine_core.constants import (
-    STAT_TO_GROUP, GROUP_BEATS,
-    EARLY_GAME_TURNS, SCALING_END_TURN, EARLY_DAMAGE_MULTIPLIER,
-    LATE_DAMAGE_MULTIPLIER, SCALING_STEP, EARLY_CAP_TURNS, EARLY_DAMAGE_CAP,
+    EARLY_GAME_TURNS, SCALING_END_TURN, EARLY_DAMAGE_PERCENT,
+    LATE_DAMAGE_PERCENT, SCALING_PERCENT_STEP, EARLY_CAP_TURNS, EARLY_DAMAGE_CAP,
 )
+from engine_core.group_registry import GroupRegistry, STAT_TO_GROUP
 
 
 # ===================================================================
@@ -72,9 +72,9 @@ def resolve_single_combat(card_a: Card, card_b: Card,
             ga = STAT_TO_GROUP.get(edges_a[d][0]) if d < len(edges_a) else None
             gb = STAT_TO_GROUP.get(edges_b[d][0]) if d < len(edges_b) else None
             if ga and gb:
-                if GROUP_BEATS.get(ga) == gb:
+                if GroupRegistry.beats(ga, gb):
                     va += 1
-                elif GROUP_BEATS.get(gb) == ga:
+                elif GroupRegistry.beats(gb, ga):
                     vb += 1
 
         if va > vb:
@@ -93,11 +93,14 @@ def calculate_damage(winner_pts: int, loser_pts: int, winner_board, turn: int = 
     DAMAGE = |W_pts - L_pts| + floor(living_cards/2) + rarity term (dampened)
     FIX 8: halved alive_count contribution and rarity to reduce snowball; score gap matters more.
     
-    BAL 5 - Early Game Damage Cap & Turn Multiplier:
-    - Turn 1-5: Damage multiplier starts at 0.5x
-    - Turn 6-15: Multiplier scales linearly from 0.5x to 1.0x
-    - Turn 16+: Full damage (1.0x multiplier)
+    BAL 5 - Early Game Damage Cap & Turn Scaling:
+    - Turn 1-5: Damage scaled to 50%
+    - Turn 6-15: Damage scales linearly from 50% to 100% (+5% per turn)
+    - Turn 16+: Full damage (100%)
     - Turn 1-10: Hard cap at 15 damage maximum (prevents early eliminations)
+    
+    NOTE: Uses integer-only arithmetic for deterministic cross-platform behavior.
+          No float operations to ensure identical results across all CPUs/compilers.
     
     Args:
         winner_pts: Winner's total points
@@ -113,20 +116,22 @@ def calculate_damage(winner_pts: int, loser_pts: int, winner_board, turn: int = 
     rarity = winner_board.rarity_bonus() // 2          # dampened
     raw_damage = max(1, base + alive + rarity)
     
-    # BAL 5: Turn-based damage multiplier (early game protection)
+    # BAL 5: Turn-based damage scaling (early game protection)
+    # Uses integer percentages (0-100) for deterministic behavior
     if turn <= EARLY_GAME_TURNS:
-        # Turns 1-5: reduced damage
-        turn_multiplier = EARLY_DAMAGE_MULTIPLIER
+        # Turns 1-5: 50% damage
+        damage_percent = EARLY_DAMAGE_PERCENT
     elif turn <= SCALING_END_TURN:
-        # Turns 6-15: Linear scaling from 0.5x to 1.0x
-        # Formula: 0.5 + (turn - 5) * 0.05
-        turn_multiplier = EARLY_DAMAGE_MULTIPLIER + ((turn - EARLY_GAME_TURNS) * SCALING_STEP)
+        # Turns 6-15: Linear scaling from 50% to 100%
+        # Formula: 50 + (turn - 5) * 5
+        damage_percent = EARLY_DAMAGE_PERCENT + ((turn - EARLY_GAME_TURNS) * SCALING_PERCENT_STEP)
     else:
         # Turn 16+: Full damage
-        turn_multiplier = LATE_DAMAGE_MULTIPLIER
+        damage_percent = LATE_DAMAGE_PERCENT
     
-    # Apply turn multiplier
-    scaled_damage = int(raw_damage * turn_multiplier)
+    # Apply damage scaling using integer-only arithmetic
+    # (raw_damage * percent) // 100 ensures deterministic behavior
+    scaled_damage = (raw_damage * damage_percent) // 100
     final_damage = max(1, scaled_damage)  # Minimum 1 damage
     
     # BAL 5: Hard cap for early game

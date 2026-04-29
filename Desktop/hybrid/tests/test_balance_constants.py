@@ -8,8 +8,8 @@ and used by damage_calculator.py and synergy.py.
 """
 
 from engine_core.constants import (
-    EARLY_GAME_TURNS, SCALING_END_TURN, EARLY_DAMAGE_MULTIPLIER,
-    LATE_DAMAGE_MULTIPLIER, SCALING_STEP, EARLY_CAP_TURNS, EARLY_DAMAGE_CAP,
+    EARLY_GAME_TURNS, SCALING_END_TURN, EARLY_DAMAGE_PERCENT,
+    LATE_DAMAGE_PERCENT, SCALING_PERCENT_STEP, EARLY_CAP_TURNS, EARLY_DAMAGE_CAP,
     SYNERGY_TIER_SMALL, SYNERGY_TIER_MED, SYNERGY_TIER_LARGE,
     SYNERGY_TIER_HUGE, SYNERGY_TIER_INCREMENT,
 )
@@ -27,11 +27,14 @@ class TestDamageBalanceConstants:
     def test_scaling_end_turn(self):
         assert SCALING_END_TURN == 15
 
-    def test_early_damage_multiplier(self):
-        assert EARLY_DAMAGE_MULTIPLIER == 0.5
+    def test_early_damage_percent(self):
+        assert EARLY_DAMAGE_PERCENT == 50
 
-    def test_late_damage_multiplier(self):
-        assert LATE_DAMAGE_MULTIPLIER == 1.0
+    def test_late_damage_percent(self):
+        assert LATE_DAMAGE_PERCENT == 100
+
+    def test_scaling_percent_step(self):
+        assert SCALING_PERCENT_STEP == 5
 
     def test_early_cap_turns(self):
         assert EARLY_CAP_TURNS == 10

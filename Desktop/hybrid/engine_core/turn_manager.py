@@ -135,10 +135,20 @@ class TurnManager:
     # ── Swiss eşleştirme ─────────────────────────────────────────────────────
 
     def swiss_pairs(self) -> List[Tuple]:
-        """Canlı oyuncuları HP'ye göre sırala, en yakın rakipleri eşleştir."""
+        """Canlı oyuncuları HP'ye göre sırala, en yakın rakipleri eşleştir.
+        
+        MULTIPLAYER DETERMINISM FIX:
+            Eski implementasyon RNG jitter kullanıyordu (p.hp + rng.random() * 0.5).
+            Bu, aynı seed ile başlatılan iki makinede farklı eşleşmelere yol açıyordu
+            çünkü swiss_pairs() her çağrıldığında RNG state'i tüketiyordu.
+            
+            Yeni implementasyon: HP tie-break için pid kullanır (deterministik).
+            Aynı HP'ye sahip oyuncular her zaman aynı sırada eşleşir.
+        """
         alive = self.alive_players()
-        # Aynı HP bandında varyasyon için hafif jitter
-        alive.sort(key=lambda p: p.hp + self._rng.random() * 0.5, reverse=True)
+        # Deterministik sıralama: HP tie-break için pid kullan
+        # (p.hp, p.pid) tuple'ı önce HP'ye göre, sonra pid'ye göre sıralar
+        alive.sort(key=lambda p: (p.hp, p.pid), reverse=True)
         pairs: List[Tuple] = []
         used: set = set()
         for i, p1 in enumerate(alive):

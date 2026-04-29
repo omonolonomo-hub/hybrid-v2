@@ -33,12 +33,11 @@ def _get_visible_footer(terminal):
 
 @pytest.fixture(autouse=True)
 def init_pygame():
-    pygame.init()
+    # pygame.init() is handled by session-scoped conftest.py fixture
     pygame.font.init()
     pygame.display.set_mode((1, 1), pygame.HIDDEN)
     yield
-    pygame.font.quit()
-    pygame.quit()
+    # Don't call pygame.font.quit() or pygame.quit() - let session fixture handle it
 
 
 @pytest.mark.xfail(reason="CombatTerminal widget is still a stub.")

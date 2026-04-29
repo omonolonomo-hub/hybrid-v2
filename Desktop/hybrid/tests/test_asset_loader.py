@@ -12,11 +12,11 @@ SPRITES_DIR = os.path.join(
 def reset_singleton():
     """Her testten önce singleton'ı sıfırla."""
     AssetLoader._instance = None
-    pygame.init()
+    # pygame.init() is handled by session-scoped conftest.py fixture
     pygame.display.set_mode((320, 240))   # convert_alpha() için display context gerekli
     yield
     AssetLoader._instance = None
-    pygame.quit()
+    # Don't call pygame.quit() - let session fixture handle it
 
 def test_loader_raises_before_initialize():
     """initialize() çağrılmadan get() çağrısı AssetLoadError fırlatmalı."""

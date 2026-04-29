@@ -6,11 +6,7 @@ from v2.constants import Layout
 from v2.core.game_state import GameState
 from v2.mock.engine_mock import MockGame
 
-@pytest.fixture(autouse=True)
-def init_pygame():
-    pygame.init()
-    yield
-    pygame.quit()
+# pygame.init() is handled by session-scoped conftest.py fixture
 
 def _build_scene():
     gs = GameState()

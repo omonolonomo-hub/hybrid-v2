@@ -10,7 +10,8 @@ Board class no longer owns combo detection logic.
 
 from typing import Dict, Tuple
 
-from engine_core.constants import OPP_DIR, STAT_TO_GROUP
+from engine_core.constants import OPP_DIR
+from engine_core.group_registry import STAT_TO_GROUP
 
 
 def find_combos(board) -> Tuple[int, Dict[Tuple[int, int], Dict[int, int]]]:

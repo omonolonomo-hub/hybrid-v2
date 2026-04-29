@@ -20,15 +20,16 @@ from __future__ import annotations
 from typing import Callable, Dict, List, Optional, Set, Tuple
 
 from engine_core.constants import (
-    HEX_DIRS, OPP_DIR, STAT_TO_GROUP,
+    HEX_DIRS, OPP_DIR,
     SYNERGY_TIER_SMALL, SYNERGY_TIER_MED, SYNERGY_TIER_LARGE,
     SYNERGY_TIER_HUGE, SYNERGY_TIER_INCREMENT,
 )
+from engine_core.group_registry import GroupRegistry, STAT_TO_GROUP
 
 Coord = Tuple[int, int]
 
-# Grup sabitleri
-GROUPS: Tuple[str, ...] = ("MIND", "CONNECTION", "EXISTENCE")
+# Grup sabitleri — imported from GroupRegistry
+GROUPS: Tuple[str, ...] = GroupRegistry.all_groups()
 
 
 # ──────────────────────────────────────────────────────────────────

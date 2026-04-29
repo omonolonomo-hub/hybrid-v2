@@ -9,6 +9,7 @@ along with card pool management functions.
 """
 
 import json
+import math
 import os
 from collections import defaultdict
 from dataclasses import InitVar, dataclass, field
@@ -321,6 +322,12 @@ def apply_micro_buff_to_weak_cards(cards: List[Card]) -> int:
 
 
 def evolve_card(base_card: Card) -> Card:
+    """
+    Evolve a card by scaling its stats to the evolved rarity target total.
+    
+    Uses math.floor(x+0.5) for deterministic ROUND_HALF_UP behavior across 
+    all platforms (ARM/x86 IEEE 754 edge cases).
+    """
     base_stats = base_card.get_base_stats()
     base_total = sum(base_stats.values())
     target_total = EVOLVED_TAVAN.get(base_card.rarity, RARITY_TAVAN["E"])
@@ -328,7 +335,7 @@ def evolve_card(base_card: Card) -> Card:
 
     new_stats: Dict[str, int] = {}
     for stat_name, value in base_stats.items():
-        new_stats[stat_name] = max(1, round(value * scale))
+        new_stats[stat_name] = max(1, math.floor(value * scale + 0.5))
 
     actual_total = sum(new_stats.values())
     diff = target_total - actual_total

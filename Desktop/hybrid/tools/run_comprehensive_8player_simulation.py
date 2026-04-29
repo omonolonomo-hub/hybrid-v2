@@ -162,8 +162,7 @@ class Comprehensive8PlayerSimulation:
         
         # Oyun oluştur (deterministic seed)
         game_seed = self.seed + game_num
-        game_rng = random.Random(game_seed)
-        game = Game(players=players, verbose=False, rng=game_rng)
+        game = Game(players=players, verbose=False, seed=game_seed)
         
         # Oyunu tur tur çalıştır ve logla
         turn = 0

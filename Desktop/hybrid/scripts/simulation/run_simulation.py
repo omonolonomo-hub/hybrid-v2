@@ -37,15 +37,17 @@ def run_determinism_check(seed=42):
     results_2 = []
     
     for run_num in range(2):
-        random.seed(seed)
-        rng = random.Random(seed)
+        # Use master RNG only for strategy shuffling
+        master_rng = random.Random(seed)
         
         for game_num in range(10):
             shuffled = sim.STRATEGIES[:]
-            rng.shuffle(shuffled)
+            master_rng.shuffle(shuffled)
             players = [sim.Player(pid=i, strategy=shuffled[i % len(shuffled)]) for i in range(4)]
             
-            game = sim.Game(players, verbose=False, rng=rng)
+            # Each game gets its own deterministic seed
+            game_seed = seed + game_num
+            game = sim.Game(players, verbose=False, seed=game_seed)
             winner = game.run()
             
             if run_num == 0:
@@ -77,9 +79,8 @@ def run_500_games(seed=42):
     
     errors = []
     
-    # Set seed for reproducibility
-    random.seed(seed)
-    rng = random.Random(seed)
+    # Master RNG for strategy shuffling only
+    master_rng = random.Random(seed)
     
     start_time = time.time()
     
@@ -91,11 +92,12 @@ def run_500_games(seed=42):
             
             # Create players with shuffled strategies
             shuffled = sim.STRATEGIES[:]
-            rng.shuffle(shuffled)
+            master_rng.shuffle(shuffled)
             players = [sim.Player(pid=i, strategy=shuffled[i % len(shuffled)]) for i in range(4)]
             
-            # Run game
-            game = sim.Game(players, verbose=False, rng=rng)
+            # Each game gets its own deterministic seed
+            game_seed = seed + game_num
+            game = sim.Game(players, verbose=False, seed=game_seed)
             winner = game.run()
             
             # Collect per-game metrics

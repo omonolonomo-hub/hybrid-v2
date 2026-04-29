@@ -100,13 +100,17 @@ class UIAdapter:
     def _safe_float(value: Any, default: float = 0.0) -> float:
         return float(value) if isinstance(value, (int, float)) else default
 
-    def _next_tier(self, count: int) -> tuple[int | None, int | None]:
+    @staticmethod
+    def _next_tier(count: int) -> tuple[int | None, int | None]:
         """Bir sonraki tier eşik değerini ve bonusunu döndür.
 
+        Static olarak test edilebilir. Instance metodu değil.
         Bonus hesaplaması EngineAdapter.tier_bonus()'a delegate eder.
         Böylece UI ile engine arasındaki tier bonus değerleri her zaman eşleşir.
         """
-        for threshold in self._constants.SYNERGY_THRESHOLDS:
+        from v2.core.engine_adapter import EngineAdapter
+        constants = EngineAdapter.get_constants()
+        for threshold in constants.SYNERGY_THRESHOLDS:
             if count < threshold:
                 return threshold, EngineAdapter.tier_bonus(threshold)
         return None, None
@@ -390,7 +394,7 @@ class UIAdapter:
         for key, label, short_label, color in self._SYNERGY_GROUPS:
             count = result.group_counts.get(key, 0)
             bonus = result.group_bonuses.get(key, 0)
-            next_tier_count, next_tier_bonus = self._next_tier(count)
+            next_tier_count, next_tier_bonus = UIAdapter._next_tier(count)
             groups.append(SynergyGroupViewState(
                 key=key, label=label, short_label=short_label, color=color,
                 count=count, bonus=bonus,

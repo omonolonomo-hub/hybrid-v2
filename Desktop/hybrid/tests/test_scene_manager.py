@@ -64,12 +64,12 @@ class LegacyRenderScene:
 
 @pytest.fixture(autouse=True)
 def init_scene_manager():
-    pygame.init()
+    # pygame.init() is handled by session-scoped conftest.py fixture
     pygame.display.set_mode((1, 1), pygame.HIDDEN)
     SceneManager._instance = None
     yield
     SceneManager._instance = None
-    pygame.quit()
+    # Don't call pygame.quit() - let session fixture handle it
 
 
 def test_set_scene_calls_enter_and_replaces_previous_scene():

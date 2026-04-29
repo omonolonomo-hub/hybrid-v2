@@ -8,15 +8,13 @@ from v2.ui.shop_panel import ShopPanel, ShopPanelAction
 
 @pytest.fixture(autouse=True)
 def init_pygame():
-    pygame.init()
+    # pygame.init() is handled by session-scoped conftest.py fixture
     pygame.font.init()
     pygame.display.set_mode((Screen.W, Screen.H))
     yield
     from v2.ui import font_cache
-
     font_cache.clear_cache()
-    pygame.font.quit()
-    pygame.quit()
+    # Don't call pygame.font.quit() or pygame.quit() - let session fixture handle it
 
 
 def test_shoppanel_initializes_with_correct_dimensions():

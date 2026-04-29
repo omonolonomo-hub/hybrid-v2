@@ -27,7 +27,7 @@ def pygame_mock_init():
 
 
 @pytest.fixture(autouse=True)
-def reset_class_state():
+def reset_class_state(request):
     """Her test öncesi/sonrası class-level mutable state'leri sıfırla.
 
     H3-6: GameState._instance gibi singleton/mutable class değişkenleri 
@@ -35,7 +35,14 @@ def reset_class_state():
     
     Note: SynergyCalculator artık instance-level cache kullanıyor, 
     bu yüzden global temizlik gerektirmiyor.
+    
+    Special handling: Tests that explicitly test CardPool singleton behavior
+    (like test_card_pool_isolation.py) can disable CardPool reset by using
+    the 'no_cardpool_reset' marker.
     """
+    # Check if this test should skip CardPool reset
+    skip_cardpool = request.node.get_closest_marker('no_cardpool_reset') is not None
+    
     # Test öncesi temizlik
     try:
         from v2.core.game_state import GameState
@@ -43,11 +50,12 @@ def reset_class_state():
     except ImportError:
         pass
     
-    try:
-        from engine_core.card import CardPool
-        CardPool.reset()
-    except ImportError:
-        pass
+    if not skip_cardpool:
+        try:
+            from engine_core.card import CardPool
+            CardPool.reset()
+        except ImportError:
+            pass
     
     try:
         from v2.ui.hex_grid_config import reset_default_config
@@ -64,11 +72,12 @@ def reset_class_state():
     except ImportError:
         pass
     
-    try:
-        from engine_core.card import CardPool
-        CardPool.reset()
-    except ImportError:
-        pass
+    if not skip_cardpool:
+        try:
+            from engine_core.card import CardPool
+            CardPool.reset()
+        except ImportError:
+            pass
     
     try:
         from v2.ui.hex_grid_config import reset_default_config

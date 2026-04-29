@@ -3,6 +3,7 @@ from typing import Any, Dict, List, Optional, Tuple
 
 from v2.core.action_result import ActionResult
 from v2.core.engine_adapter import EngineAdapter
+from v2.core.local_dispatcher import LocalCommandDispatcher  # CommandDispatcher integration
 from v2.core.public_state import PublicState
 from v2.core.state_store import StateStore
 from v2.core.ui_adapter import UIAdapter
@@ -27,6 +28,7 @@ class GameState:
 
     def __init__(self):
         self._adapter: Optional[EngineAdapter] = None
+        self._dispatcher: Optional[LocalCommandDispatcher] = None  # CommandDispatcher for mutations
         self._store = StateStore()
         self._formatter = UIFormatter()
         self._ui_adapter = UIAdapter()
@@ -36,6 +38,7 @@ class GameState:
 
     def hook_engine(self, engine):
         self._adapter = EngineAdapter(engine)
+        self._dispatcher = LocalCommandDispatcher(self._adapter)  # Initialize dispatcher with adapter
         self._attach_engine_signals()
         self._attach_board_mutation_callbacks()
 
@@ -47,6 +50,7 @@ class GameState:
         self._detach_board_mutation_callbacks()
         self._detach_engine_signals()
         self._cached_public_state = None
+        self._dispatcher = None  # Clear dispatcher reference
         self._adapter = None
     
     def _detach_board_mutation_callbacks(self) -> None:
@@ -260,9 +264,9 @@ class GameState:
             return ActionResult.ERR_NOT_OWNER
         if self._store.phase != "STATE_PREPARATION":
             return ActionResult.ERR_NOT_IN_PREP_PHASE
-        if not self._adapter:
+        if not self._dispatcher:  # Use dispatcher instead of adapter
             return ActionResult.ERR_ENGINE_EXCEPTION
-        result = self._adapter.perform_buy_card(player_index, slot_index)
+        result = self._dispatcher.perform_buy_card(player_index, slot_index)  # Dispatch through interface
         self._invalidate_cache()
         return result
 
@@ -272,9 +276,9 @@ class GameState:
     def reroll_market(self, player_index: int = 0) -> ActionResult:
         if player_index != 0:
             return ActionResult.ERR_NOT_OWNER
-        if not self._adapter:
+        if not self._dispatcher:  # Use dispatcher instead of adapter
             return ActionResult.ERR_ENGINE_EXCEPTION
-        ok = self._adapter.perform_reroll(player_index)
+        ok = self._dispatcher.perform_reroll(player_index)  # Dispatch through interface
         self._invalidate_cache()
         return ActionResult.OK if ok else ActionResult.ERR_INSUFFICIENT_GOLD
 
@@ -294,10 +298,10 @@ class GameState:
             return ActionResult.ERR_NOT_OWNER
         if self.place_locked:
             return ActionResult.ERR_PLACE_LOCKED
-        if not self._adapter:
+        if not self._dispatcher:  # Use dispatcher instead of adapter
             return ActionResult.ERR_ENGINE_EXCEPTION
 
-        result = self._adapter.perform_placement(player_index, hand_index, coord, rotation)
+        result = self._dispatcher.perform_placement(player_index, hand_index, coord, rotation)  # Dispatch through interface
         self._invalidate_cache()
         # H3-5: store.update_board() kaldırıldı — board verisi PublicState üzerinden erişiliyor
         return result

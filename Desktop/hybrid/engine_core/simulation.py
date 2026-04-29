@@ -165,7 +165,7 @@ def run_simulation(n_games: int = 100, n_players: int = 4,
             strat = shuffled[i % len(shuffled)]
             players.append(Player(pid=i, strategy=strat))
 
-        game = Game(players, verbose=(verbose and game_num == 0), rng=rng,
+        game = Game(players, verbose=(verbose and game_num == 0), seed=rng.getrandbits(32),
                     trigger_passive_fn=trigger_passive, 
                     combat_phase_fn=combat_phase_fn,
                     card_pool=get_card_pool())
