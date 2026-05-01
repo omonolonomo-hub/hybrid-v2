@@ -10,7 +10,7 @@ from v2.core.phase_machine import PhaseMachine
 from v2.core.scene_manager import Scene
 from v2.core.shop_controller import ShopController, ShopUIAction
 from v2.ui.hand_panel import HandPanel
-from v2.ui.info_box import InfoBox
+from v2.ui.info_box_new1 import InfoBox
 from v2.ui.lobby_panel import LobbyPanel
 from v2.ui.minimap_hud import MinimapHUD
 from v2.ui.player_hub import PlayerHub, PlayerHubData, build_hub_data
@@ -71,8 +71,11 @@ class ShopScene(Scene):
         self._rendered_lobby_players = []
         self._income_data = (10, 150, 0, 1.0)
 
-        self._shop_info = InfoBox(self.shop_panel.info_rect)
-        self._hand_info = InfoBox(self.hand_panel.info_rect)
+        # InfoBox'lar mouse takipli tooltip olarak kullanılıyor
+        # Başlangıç rect'i sadece boyut için — konum set_anchor_at_mouse ile dinamik
+        tooltip_rect = pygame.Rect(0, 0, 320, 440)
+        self._shop_info = InfoBox(tooltip_rect)
+        self._hand_info = InfoBox(tooltip_rect)
         
         # Refactored components
         self._hover_control = HoverControl(delay_ms=self._HOVER_DELAY_MS)
@@ -522,9 +525,15 @@ class ShopScene(Scene):
             source = self._hover_control.get_panel()
             key = self._hover_control.get_item()
             card_info = active_player.get_card_info(source, key)
+            
+            # Mouse pozisyonunu al ve tooltip'i konumlandır
+            mx, my = pygame.mouse.get_pos()
+            
             if source == "shop":
+                self._shop_info.set_anchor_at_mouse(mx, my, Screen.W, Screen.H)
                 self._shop_info.set_card(card_info)
             else:
+                self._hand_info.set_anchor_at_mouse(mx, my, Screen.W, Screen.H)
                 self._hand_info.set_card(card_info)
 
     def _cleanup_dead_cards(self):
@@ -537,6 +546,12 @@ class ShopScene(Scene):
         state = state or self._refresh_public_state()
         self._public_state = state
         active_player = state.active_player
+        
+        # Debug: Gold değerini logla
+        import logging
+        logger = logging.getLogger(__name__)
+        logger.info(f"SYNC_VIEW: active_player.gold={active_player.gold} | hud.gold={active_player.hud.gold}")
+        
         self.shop_panel.sync(active_player.shop, gold=active_player.gold, phase=state.phase)
         self.hand_panel.set_hand(active_player.hand.slots)
         self.player_hub.update_view(build_hub_data(state))
@@ -611,9 +626,6 @@ class ShopScene(Scene):
             self.shop_panel.get_card_names() + self.hand_panel.get_card_names(),
             copies_by_name
         )
-        
-        self._shop_info.render(surface)
-        self._hand_info.render(surface)
 
         surface.blit(self._sidebar_bg, (0, 0))
         pygame.draw.line(surface, (50, 41, 61, 100), (Layout.SIDEBAR_LEFT_W - 1, 0), (Layout.SIDEBAR_LEFT_W - 1, Screen.H), 1)  # Karbon-mor
@@ -636,6 +648,12 @@ class ShopScene(Scene):
                 flip.dest_rect.center = pos
                 flip.render(surface)
                 flip.dest_rect.center = old_center
+
+        # InfoBox'lar en üstte (tooltip olarak) - overlay'lerden hemen önce
+        # Drag işlemi sırasında gizle (board görünümünü engelliyor)
+        if not self._drag_handler.is_active:
+            self._shop_info.render(surface)
+            self._hand_info.render(surface)
 
         if self.phase == "STATE_VERSUS" and self.versus_overlay:
             self.versus_overlay.render(surface)

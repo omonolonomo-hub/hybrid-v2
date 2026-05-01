@@ -75,3 +75,42 @@ def _passive_yggdrasil(card: "Card", trigger: str, owner: "Player", opponent: "P
             for neighbor_card in _neighbor_cards(owner.board, coord):
                 neighbor_card.inc_meta("_yggdrasil_bonus")
     return 0
+
+
+@passive("Event Horizon")
+def _passive_event_horizon(card: "Card", trigger: str, owner: "Player", opponent: "Player", ctx: dict) -> int:
+    """Event Horizon: Copy counter advances +1 extra per turn (copies Catalyst effect)."""
+    if trigger in ("copy_2", "copy_3"):
+        # Boost copy evolution effect
+        if card.edges:
+            idx = max(range(len(card.edges)), key=lambda i: card.edges[i][1])
+            stat_name, _ = card.edges[idx]
+            card.add_base_stat(stat_name, 2)  # +2 instead of default +1
+    return 0
+
+
+@passive("Charles Darwin")
+def _passive_charles_darwin(card: "Card", trigger: str, owner: "Player", opponent: "Player", ctx: dict) -> int:
+    """Charles Darwin: In each copy strengthening, next threshold comes 1 turn early."""
+    if trigger in ("copy_2", "copy_3"):
+        # Standard copy buff
+        if card.edges:
+            idx = max(range(len(card.edges)), key=lambda i: card.edges[i][1])
+            stat_name, _ = card.edges[idx]
+            card.add_base_stat(stat_name, 1)
+        # Note: Threshold reduction would need to be implemented in copy system
+        # For now, just apply standard buff
+    return 0
+
+
+@passive("DNA")
+def _passive_dna(card: "Card", trigger: str, owner: "Player", opponent: "Player", ctx: dict) -> int:
+    """DNA: At copy strengthening, +1 Durability permanently to all copies."""
+    if trigger in ("copy_2", "copy_3") and owner is not None:
+        # Find all cards with same name (copies)
+        card_name = card.name.replace("Evolved ", "")
+        for board_card in owner.board.alive_cards():
+            check_name = board_card.name.replace("Evolved ", "")
+            if check_name == card_name and board_card.has_stat("Durability"):
+                board_card.add_base_stat("Durability", 1)
+    return 0

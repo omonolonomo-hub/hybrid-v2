@@ -31,6 +31,11 @@ META_SPECS: Dict[str, MetaSpec] = {
     "_yggdrasil_bonus": MetaSpec(int),
     "phoenix_used": MetaSpec(bool, scope="combat"),
     "revived_this_combat": MetaSpec(bool, scope="combat"),
+    # Yeni eklenen handler meta key'leri
+    "_sparta_total": MetaSpec(int),
+    "_jazz_turn": MetaSpec(int),
+    "_jazz_count": MetaSpec(int),
+    "_tardigrade_uses": MetaSpec(int),
 }
 
 

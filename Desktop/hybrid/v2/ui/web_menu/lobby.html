@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AUTOCHESS HYBRID - Lobby</title>
+  <style>
+    html,
+    body {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      overflow: hidden;
+      background: linear-gradient(to bottom, #141928 0%, #230F2D 100%);
+    }
+
+    .lobby-boot {
+      position: fixed;
+      inset: 0;
+      z-index: 40;
+      display: grid;
+      place-items: center;
+      color: #FFFFFF;
+      background: linear-gradient(to bottom, #141928 0%, #230F2D 100%);
+      font-family: Consolas, monospace;
+      transition: opacity 160ms ease;
+    }
+
+    body.lobby-ready .lobby-boot {
+      opacity: 0;
+      pointer-events: none;
+    }
+  </style>
+  <link rel="preload" href="../../assets/fonts/Ghore.ttf" as="font" type="font/ttf" crossorigin>
+  <link rel="preload" href="../../assets/fonts/Butler-Free-SBd-St.otf" as="font" type="font/otf" crossorigin>
+  <link rel="stylesheet" href="shared/base.css">
+  <link rel="stylesheet" href="lobby.css">
+</head>
+<body>
+  <div class="lobby-boot" aria-hidden="true">
+    <div class="lobby-boot__inner">
+      <div class="lobby-boot__title">LOBBY</div>
+      <div class="lobby-boot__label">SYNCING PLAYERS</div>
+    </div>
+  </div>
+
+  <canvas id="lobby-canvas"></canvas>
+
+  <main class="lobby-shell">
+    <header class="lobby-header">
+      <div>
+        <p class="kicker">AUTOCHESS HYBRID</p>
+        <h1>LOBBY</h1>
+      </div>
+      <div class="player-counter" aria-label="Player count">
+        <span id="counter-value">0</span>
+        <span>PLAYERS</span>
+      </div>
+    </header>
+
+    <section class="player-panel" aria-label="Strategy selection">
+      <div class="panel-head">
+        <span>PLAYER</span>
+        <span>STRATEGY</span>
+        <span>PROFILE</span>
+      </div>
+      <div id="player-list" class="player-list"></div>
+    </section>
+
+    <footer class="lobby-footer">
+      <button id="btn-back" class="btn-secondary" type="button">BACK</button>
+      <button id="btn-start-match" class="btn-start" type="button">
+        <span class="btn-label">START MATCH</span>
+        <span class="btn-status">INITIALIZING</span>
+      </button>
+    </footer>
+  </main>
+
+  <div id="strategy-layer" class="strategy-layer" role="listbox" tabindex="-1" aria-hidden="true"></div>
+
+  <script src="shared/canvas-utils.js"></script>
+  <script src="lobby.js"></script>
+</body>
+</html>

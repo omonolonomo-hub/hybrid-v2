@@ -1,0 +1,549 @@
+{
+  "summary": {
+    "total_cards": 101,
+    "total_with_passive": 82,
+    "total_handlers": 86,
+    "cards_with_handlers": 82,
+    "cards_without_handlers": 0,
+    "coverage_percentage": 100.0
+  },
+  "by_passive_type": {
+    "synergy_field": {
+      "total": 26,
+      "with_handler": 26,
+      "without_handler": 0,
+      "cards": [
+        {
+          "name": "Odin",
+          "has_handler": true,
+          "effect": "While on board, spreads +1 Meaning to neighboring Mythology cards."
+        },
+        {
+          "name": "Olympus",
+          "has_handler": true,
+          "effect": "When 3+ Mythology cards on board, +1 Prestige to all Mythology cards."
+        },
+        {
+          "name": "Medusa",
+          "has_handler": true,
+          "effect": "Opponent cards initiating combat against this card take -1 Speed field effect that turn."
+        },
+        {
+          "name": "Kraken",
+          "has_handler": true,
+          "effect": "While on board, neighboring enemy cards' Connection edges take -1 field effect."
+        },
+        {
+          "name": "Opera",
+          "has_handler": true,
+          "effect": "When 2+ Art cards on board, +1 Prestige to all Art cards."
+        },
+        {
+          "name": "Baroque",
+          "has_handler": true,
+          "effect": "When 2+ Art cards on board, +1 to Prestige edges."
+        },
+        {
+          "name": "Kabuki",
+          "has_handler": true,
+          "effect": "When Eclipse active, spreads +1 Secret to neighboring ally cards."
+        },
+        {
+          "name": "Blue Whale",
+          "has_handler": true,
+          "effect": "When 3+ Nature cards on board, +1 Harmony to all ally cards."
+        },
+        {
+          "name": "Coral Reef",
+          "has_handler": true,
+          "effect": "Spreads +1 Harmony to neighboring ally Nature cards per turn."
+        },
+        {
+          "name": "Rainforest",
+          "has_handler": true,
+          "effect": "When 4+ Nature cards on board, +1 Spread to all Nature cards."
+        },
+        {
+          "name": "Cordyceps",
+          "has_handler": true,
+          "effect": "While on board, opponent's neighboring cards take -1 Trace per turn."
+        },
+        {
+          "name": "Milky Way",
+          "has_handler": true,
+          "effect": "When 3+ Cosmos cards on board, +1 Gravity to all Cosmos cards."
+        },
+        {
+          "name": "Andromeda Galaxy",
+          "has_handler": true,
+          "effect": "When 4+ Cosmos cards on board, Gravity edges +2."
+        },
+        {
+          "name": "Europa",
+          "has_handler": true,
+          "effect": "Spreads +1 Harmony to neighboring ally Cosmos cards."
+        },
+        {
+          "name": "Black Hole",
+          "has_handler": true,
+          "effect": "While on board, pulls -1 Gravity from opponent's center card per turn."
+        },
+        {
+          "name": "Quasar",
+          "has_handler": true,
+          "effect": "When 3+ Cosmos cards on board, +1 Spread to all cards."
+        },
+        {
+          "name": "Gravity",
+          "has_handler": true,
+          "effect": "Neighboring all cards (ally/enemy) take -1 Speed field effect per turn."
+        },
+        {
+          "name": "Isaac Newton",
+          "has_handler": true,
+          "effect": "When 3+ Science cards on board, +1 Intelligence to all Science cards."
+        },
+        {
+          "name": "Nikola Tesla",
+          "has_handler": true,
+          "effect": "Spreads +1 Intelligence to neighboring ally Science cards, electric chain."
+        },
+        {
+          "name": "Entropy",
+          "has_handler": true,
+          "effect": "While on board, all cards' highest edge decreases by -1 every 3 turns."
+        },
+        {
+          "name": "Periodic Table",
+          "has_handler": true,
+          "effect": "When 4+ Science cards on board, +1 Intelligence +1 Meaning to all Science cards."
+        },
+        {
+          "name": "Higgs Boson",
+          "has_handler": true,
+          "effect": "While on board, all cards' Gravity edges +1."
+        },
+        {
+          "name": "French Revolution",
+          "has_handler": true,
+          "effect": "When 3+ History cards on board, -1 field effect to opponent's highest stat."
+        },
+        {
+          "name": "Renaissance",
+          "has_handler": true,
+          "effect": "When 3+ cards from different categories on board, +1 Meaning to all cards."
+        },
+        {
+          "name": "Roman Empire",
+          "has_handler": true,
+          "effect": "When 4+ History cards on board, +1 Durability to all ally cards."
+        },
+        {
+          "name": "Black Death",
+          "has_handler": true,
+          "effect": "While on board, all enemy cards' Spread edges take -1 per turn."
+        }
+      ]
+    },
+    "combat": {
+      "total": 21,
+      "with_handler": 21,
+      "without_handler": 0,
+      "cards": [
+        {
+          "name": "Anubis",
+          "has_handler": true,
+          "effect": "Accumulates +1 Secret for each destroyed card (max +2). Resets at turn end."
+        },
+        {
+          "name": "Quetzalcoatl",
+          "has_handler": true,
+          "effect": "If combat is won, grants +1 Speed to 1 neighboring ally card for that turn."
+        },
+        {
+          "name": "Loki",
+          "has_handler": true,
+          "effect": "If combat is won, -1 Meaning to opponent's highest-edged card for that turn."
+        },
+        {
+          "name": "Ragnarök",
+          "has_handler": true,
+          "effect": "If combat is won, -1 to opponent's random card's highest edge."
+        },
+        {
+          "name": "Minotaur",
+          "has_handler": true,
+          "effect": "When combat lost, accumulates +1 Power per lost edge (max +2, resets at turn end)."
+        },
+        {
+          "name": "Cerberus",
+          "has_handler": true,
+          "effect": "If combat won from 3 directions simultaneously, +3 extra points."
+        },
+        {
+          "name": "Guernica",
+          "has_handler": true,
+          "effect": "Accumulates +1 point per combat loss (max +3/turn)."
+        },
+        {
+          "name": "Cubism",
+          "has_handler": true,
+          "effect": "If combat is won, opponent's Size edge -1 for that turn."
+        },
+        {
+          "name": "Flamenco",
+          "has_handler": true,
+          "effect": "If combat is won, +1 Speed to all ally cards that turn."
+        },
+        {
+          "name": "Komodo Dragon",
+          "has_handler": true,
+          "effect": "If combat is won, opponent's lowest stat edge -2 for that turn."
+        },
+        {
+          "name": "Narwhal",
+          "has_handler": true,
+          "effect": "Combat kazanılırsa +1 Güç kalıcı birikir (maks +3 oyun boyunca)."
+        },
+        {
+          "name": "Venus Flytrap",
+          "has_handler": true,
+          "effect": "If combat is won, opponent's Gravity edge permanently -1 (max -2)."
+        },
+        {
+          "name": "Sirius",
+          "has_handler": true,
+          "effect": "If combat is won, accumulates +1 Speed permanently (max +2)."
+        },
+        {
+          "name": "Asteroid Belt",
+          "has_handler": true,
+          "effect": "If combat is won, spreads -1 Size field effect to opponent's board (to neighbors)."
+        },
+        {
+          "name": "Pulsar",
+          "has_handler": true,
+          "effect": "First combat win per turn grants +2 extra points."
+        },
+        {
+          "name": "Quantum Mechanics",
+          "has_handler": true,
+          "effect": "When combat won, opponent's random 2 edges swap."
+        },
+        {
+          "name": "Fibonacci Sequence",
+          "has_handler": true,
+          "effect": "Combat kazanıldığında kazanma serisine göre bonus puan (Fibonacci dizisi: 1,1,2,3,5...)."
+        },
+        {
+          "name": "World War II",
+          "has_handler": true,
+          "effect": "Combat kazanılırsa rakibin boardundaki tüm kartlara -1 en yüksek kenar."
+        },
+        {
+          "name": "Mongol Empire",
+          "has_handler": true,
+          "effect": "If combat is won, -1 Speed to 2 neighboring cards on opponent's board."
+        },
+        {
+          "name": "Sparta",
+          "has_handler": true,
+          "effect": "If combat is won, accumulates +2 Power permanently (max +4 throughout game)."
+        },
+        {
+          "name": "Code of Hammurabi",
+          "has_handler": true,
+          "effect": "If combat lost, that direction's edge +2 next turn."
+        }
+      ]
+    },
+    "combo": {
+      "total": 8,
+      "with_handler": 8,
+      "without_handler": 0,
+      "cards": [
+        {
+          "name": "Athena",
+          "has_handler": true,
+          "effect": "Produces +1 extra combo point in Mind group matches."
+        },
+        {
+          "name": "Ballet",
+          "has_handler": true,
+          "effect": "In Connection group matches, +1 extra combat bonus."
+        },
+        {
+          "name": "Impressionism",
+          "has_handler": true,
+          "effect": "If 2+ combo matches in same turn, +1 extra point."
+        },
+        {
+          "name": "Jazz",
+          "has_handler": true,
+          "effect": "When combo match occurs, gain +1 gold (max 2/turn)."
+        },
+        {
+          "name": "Bioluminescence",
+          "has_handler": true,
+          "effect": "When combo match occurs, +1 Harmony to neighboring ally cards that turn."
+        },
+        {
+          "name": "Nebula",
+          "has_handler": true,
+          "effect": "Kozmos kartlarıyla combo kurulduğunda +2 ekstra puan."
+        },
+        {
+          "name": "Albert Einstein",
+          "has_handler": true,
+          "effect": "Produces +2 extra points in MIND group combo matches."
+        },
+        {
+          "name": "Golden Ratio",
+          "has_handler": true,
+          "effect": "If golden ratio placement (center + 6 neighbors full) on board, +3 points."
+        }
+      ]
+    },
+    "copy": {
+      "total": 8,
+      "with_handler": 8,
+      "without_handler": 0,
+      "cards": [
+        {
+          "name": "Yggdrasil",
+          "has_handler": true,
+          "effect": "Neighboring ally cards' copy counters advance +1 extra per turn."
+        },
+        {
+          "name": "Fungus",
+          "has_handler": true,
+          "effect": "When copy strengthening occurs, apply same strengthening to neighboring ally card."
+        },
+        {
+          "name": "Coelacanth",
+          "has_handler": true,
+          "effect": "In each copy strengthening, gains +2 instead of +1."
+        },
+        {
+          "name": "Event Horizon",
+          "has_handler": true,
+          "effect": "Copy counter advances +1 extra per turn (copies Catalyst effect)."
+        },
+        {
+          "name": "Space-Time",
+          "has_handler": true,
+          "effect": "At copy strengthening, all ally cards on board +1 to all edges that turn."
+        },
+        {
+          "name": "Marie Curie",
+          "has_handler": true,
+          "effect": "Kopya güçlenme gerçekleştiğinde +2 altın kazanılır."
+        },
+        {
+          "name": "Charles Darwin",
+          "has_handler": true,
+          "effect": "In each copy strengthening, next threshold comes 1 turn early."
+        },
+        {
+          "name": "DNA",
+          "has_handler": true,
+          "effect": "At copy strengthening, +1 Durability permanently to all copies."
+        }
+      ]
+    },
+    "survival": {
+      "total": 9,
+      "with_handler": 9,
+      "without_handler": 0,
+      "cards": [
+        {
+          "name": "Valhalla",
+          "has_handler": true,
+          "effect": "If this card is destroyed, gain +3 gold next turn (once)."
+        },
+        {
+          "name": "Phoenix",
+          "has_handler": true,
+          "effect": "When destroyed, all edges reset to 1 and stay on board (once)."
+        },
+        {
+          "name": "Frida Kahlo",
+          "has_handler": true,
+          "effect": "When losing combat and an edge, regain +1 to that edge next turn."
+        },
+        {
+          "name": "Gothic Architecture",
+          "has_handler": true,
+          "effect": "Before destruction, grants +1 Durability to neighboring ally cards."
+        },
+        {
+          "name": "Axolotl",
+          "has_handler": true,
+          "effect": "First time destroyed, stays on board with all edges reset to 2 (once)."
+        },
+        {
+          "name": "Tardigrade",
+          "has_handler": true,
+          "effect": "When about to be destroyed, reset Durability group edges to 3, stay on board (twice)."
+        },
+        {
+          "name": "Baobab",
+          "has_handler": true,
+          "effect": "Before destruction, grants +2 Durability to all neighboring ally cards."
+        },
+        {
+          "name": "Betelgeuse",
+          "has_handler": true,
+          "effect": "When about to be destroyed, explosion: -1 to highest edge of all neighboring cards (ally/enemy)."
+        },
+        {
+          "name": "Supernova",
+          "has_handler": true,
+          "effect": "When destroyed, deals -2 to highest edge of 3 neighboring enemy cards."
+        }
+      ]
+    },
+    "economy": {
+      "total": 10,
+      "with_handler": 10,
+      "without_handler": 0,
+      "cards": [
+        {
+          "name": "Midas Dokunuşu",
+          "has_handler": true,
+          "effect": "If win streak 2+, gain +1 gold in income phase."
+        },
+        {
+          "name": "Exoplanet",
+          "has_handler": true,
+          "effect": "If ◆◆◆◆ or ◆◆◆◆◆ cards in market per turn, +1 gold."
+        },
+        {
+          "name": "Algorithm",
+          "has_handler": true,
+          "effect": "Gain +1 gold whenever market refreshes per turn."
+        },
+        {
+          "name": "Industrial Revolution",
+          "has_handler": true,
+          "effect": "Gain +1 extra gold income per turn (fixed bonus)."
+        },
+        {
+          "name": "Age of Discovery",
+          "has_handler": true,
+          "effect": "When new card type first seen in market, +2 gold."
+        },
+        {
+          "name": "Silk Road",
+          "has_handler": true,
+          "effect": "If 2+ cards bought per turn, +1 extra gold."
+        },
+        {
+          "name": "Ottoman Empire",
+          "has_handler": true,
+          "effect": "Market refresh 1 gold discounted per turn."
+        },
+        {
+          "name": "Babylon",
+          "has_handler": true,
+          "effect": "Interest income +1 extra (added to normal interest calculation)."
+        },
+        {
+          "name": "Printing Press",
+          "has_handler": true,
+          "effect": "When buying card from market, 25% chance to refund 1 gold."
+        },
+        {
+          "name": "Moon Landing",
+          "has_handler": true,
+          "effect": "First ◆◆◆◆◆ card bought throughout game grants +5 gold bonus."
+        }
+      ]
+    }
+  },
+  "cards_with_handlers": [
+    "Age of Discovery",
+    "Albert Einstein",
+    "Algorithm",
+    "Andromeda Galaxy",
+    "Anubis",
+    "Asteroid Belt",
+    "Athena",
+    "Axolotl",
+    "Babylon",
+    "Ballet",
+    "Baobab",
+    "Baroque",
+    "Betelgeuse",
+    "Bioluminescence",
+    "Black Death",
+    "Black Hole",
+    "Blue Whale",
+    "Cerberus",
+    "Charles Darwin",
+    "Code of Hammurabi",
+    "Coelacanth",
+    "Coral Reef",
+    "Cordyceps",
+    "Cubism",
+    "DNA",
+    "Entropy",
+    "Europa",
+    "Event Horizon",
+    "Exoplanet",
+    "Fibonacci Sequence",
+    "Flamenco",
+    "French Revolution",
+    "Frida Kahlo",
+    "Fungus",
+    "Golden Ratio",
+    "Gothic Architecture",
+    "Gravity",
+    "Guernica",
+    "Higgs Boson",
+    "Impressionism",
+    "Industrial Revolution",
+    "Isaac Newton",
+    "Jazz",
+    "Kabuki",
+    "Komodo Dragon",
+    "Kraken",
+    "Loki",
+    "Marie Curie",
+    "Medusa",
+    "Midas Dokunuşu",
+    "Milky Way",
+    "Minotaur",
+    "Mongol Empire",
+    "Moon Landing",
+    "Narwhal",
+    "Nebula",
+    "Nikola Tesla",
+    "Odin",
+    "Olympus",
+    "Opera",
+    "Ottoman Empire",
+    "Periodic Table",
+    "Phoenix",
+    "Printing Press",
+    "Pulsar",
+    "Quantum Mechanics",
+    "Quasar",
+    "Quetzalcoatl",
+    "Ragnarök",
+    "Rainforest",
+    "Renaissance",
+    "Roman Empire",
+    "Silk Road",
+    "Sirius",
+    "Space-Time",
+    "Sparta",
+    "Supernova",
+    "Tardigrade",
+    "Valhalla",
+    "Venus Flytrap",
+    "World War II",
+    "Yggdrasil"
+  ],
+  "cards_without_handlers": []
+}

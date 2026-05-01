@@ -71,6 +71,15 @@ class Card:
     @property
     def edges(self) -> List[Tuple[str, int]]:
         return list(self._pipeline.get_current_stats().items())
+    
+    @property
+    def rarity_level(self) -> int | str:
+        """Rarity'yi sayısal seviyeye çevir (◆◆◆ -> 3, E -> "E")"""
+        if self.rarity.upper() == "E":
+            return "E"
+        if self.rarity.isdigit():
+            return int(self.rarity)
+        return self.rarity.count("◆")
 
     def get_base_stats(self) -> Dict[str, int]:
         return self._pipeline.get_base_stats()

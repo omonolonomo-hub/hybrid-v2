@@ -23,7 +23,7 @@ class ShopPanelAction:
     card_name: str | None = None
 
 
-def _make_fallback_surface(color: tuple, w: int, h: h) -> pygame.Surface:
+def _make_fallback_surface(color: tuple, w: int, h: int) -> pygame.Surface:
     surf = pygame.Surface((w, h), pygame.SRCALPHA)
     cx, cy = w // 2, h // 2
     radius = h / 2

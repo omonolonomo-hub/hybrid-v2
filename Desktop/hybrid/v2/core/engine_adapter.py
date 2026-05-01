@@ -160,7 +160,13 @@ class EngineAdapter:
                 return ActionResult.ERR_POOL_EMPTY
 
             card = window[slot_index]
-            cost = CARD_COSTS.get(card.rarity, 2)
+            # Rarity level'ı string'e çevir (◆◆◆ -> "3")
+            rarity_key = str(card.rarity_level) if hasattr(card, 'rarity_level') else card.rarity
+            cost = CARD_COSTS.get(rarity_key, 2)
+            
+            # Debug log
+            logger.info(f"BUY_CARD: {card.name} | rarity={card.rarity} | rarity_level={getattr(card, 'rarity_level', 'N/A')} | rarity_key={rarity_key} | cost={cost} | player_gold={player.gold}")
+            
             if player.gold < cost:
                 return ActionResult.ERR_INSUFFICIENT_GOLD
 

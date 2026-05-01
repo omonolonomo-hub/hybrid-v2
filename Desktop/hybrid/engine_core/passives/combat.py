@@ -10,6 +10,8 @@ This module contains passive handlers that trigger during combat phases:
 from typing import TYPE_CHECKING
 
 from engine_core.passives.base import passive
+from engine_core.board import _find_coord, _neighbor_cards
+from engine_core.effects import Effect, EffectPriority
 
 if TYPE_CHECKING:
     from engine_core.card import Card
@@ -22,7 +24,7 @@ def _reduce_stat(card: "Card", stat_name: str, amount: int) -> None:
         card.set_base_stat(stat_name, max(0, current - amount))
 
 
-@passive("Ragnarok", "Ragnark", "RagnarÃ¶k")
+@passive("Ragnarok", "Ragnarök", "Ragnark", "RagnarÃ¶k")
 def _passive_ragnarok(card: "Card", trigger: str, owner: "Player", opponent: "Player", ctx: dict) -> int:
     """Ragnarok: On combat win, strongest enemy card loses its highest edge."""
     if trigger == "combat_win" and opponent and opponent.board.alive_cards():
@@ -222,4 +224,123 @@ def _passive_anubis(card: "Card", trigger: str, owner: "Player", opponent: "Play
         if buff < 2 and card.has_stat("Secret"):
             card.set_meta("_anubis_buff", buff + 1)
             card.add_base_stat("Secret", 1)
+    return 0
+
+
+@passive("Quetzalcoatl")
+def _passive_quetzalcoatl(card: "Card", trigger: str, owner: "Player", opponent: "Player", ctx: dict) -> int:
+    """Quetzalcoatl: If combat is won, grants +1 Speed to 1 neighboring ally card for that turn."""
+    if trigger == "combat_win" and owner is not None:
+        coord = _find_coord(owner.board, card)
+        if coord:
+            neighbors = _neighbor_cards(owner.board, coord)
+            if neighbors:
+                turn = ctx.get("turn", 1)
+                target = neighbors[0]
+                if target.has_stat("Speed"):
+                    target.add_effect(
+                        Effect(
+                            source="combat_buff",
+                            stat_name="Speed",
+                            delta=1,
+                            duration=1,
+                            applied_turn=turn,
+                            priority=int(EffectPriority.COMBAT_BUFF),
+                        )
+                    )
+    return 0
+
+
+@passive("Flamenco")
+def _passive_flamenco(card: "Card", trigger: str, owner: "Player", opponent: "Player", ctx: dict) -> int:
+    """Flamenco: If combat is won, +1 Speed to all ally cards that turn."""
+    if trigger == "combat_win" and owner is not None:
+        turn = ctx.get("turn", 1)
+        for ally_card in owner.board.alive_cards():
+            if ally_card.has_stat("Speed"):
+                ally_card.add_effect(
+                    Effect(
+                        source="combat_buff",
+                        stat_name="Speed",
+                        delta=1,
+                        duration=1,
+                        applied_turn=turn,
+                        priority=int(EffectPriority.COMBAT_BUFF),
+                    )
+                )
+    return 0
+
+
+@passive("Asteroid Belt")
+def _passive_asteroid_belt(card: "Card", trigger: str, owner: "Player", opponent: "Player", ctx: dict) -> int:
+    """Asteroid Belt: If combat is won, spreads -1 Size field effect to opponent's board (to neighbors)."""
+    if trigger == "combat_win" and opponent:
+        turn = ctx.get("turn", 1)
+        for enemy_card in opponent.board.alive_cards():
+            if enemy_card.has_stat("Size"):
+                enemy_card.add_effect(
+                    Effect(
+                        source="combat_debuff",
+                        stat_name="Size",
+                        delta=-1,
+                        duration=1,
+                        applied_turn=turn,
+                        priority=int(EffectPriority.COMBAT_DEBUFF),
+                    )
+                )
+    return 0
+
+
+@passive("Quantum Mechanics")
+def _passive_quantum_mechanics(card: "Card", trigger: str, owner: "Player", opponent: "Player", ctx: dict) -> int:
+    """Quantum Mechanics: When combat won, opponent's random 2 edges swap."""
+    if trigger == "combat_win" and opponent and opponent.board.alive_cards():
+        import random
+        target = random.choice(opponent.board.alive_cards())
+        if len(target.edges) >= 2:
+            # Swap two random edges
+            edges_list = list(target.edges)
+            idx1, idx2 = random.sample(range(len(edges_list)), 2)
+            stat1, val1 = edges_list[idx1]
+            stat2, val2 = edges_list[idx2]
+            target.set_base_stat(stat1, val2)
+            target.set_base_stat(stat2, val1)
+    return 0
+
+
+@passive("Mongol Empire")
+def _passive_mongol_empire(card: "Card", trigger: str, owner: "Player", opponent: "Player", ctx: dict) -> int:
+    """Mongol Empire: If combat is won, -1 Speed to 2 neighboring cards on opponent's board."""
+    if trigger == "combat_win" and opponent:
+        turn = ctx.get("turn", 1)
+        enemy_cards = opponent.board.alive_cards()
+        if enemy_cards:
+            import random
+            targets = random.sample(enemy_cards, min(2, len(enemy_cards)))
+            for target in targets:
+                if target.has_stat("Speed"):
+                    target.add_effect(
+                        Effect(
+                            source="combat_debuff",
+                            stat_name="Speed",
+                            delta=-1,
+                            duration=1,
+                            applied_turn=turn,
+                            priority=int(EffectPriority.COMBAT_DEBUFF),
+                        )
+                    )
+    return 0
+
+
+@passive("Sparta")
+def _passive_sparta(card: "Card", trigger: str, owner: "Player", opponent: "Player", ctx: dict) -> int:
+    """Sparta: If combat is won, accumulates +2 Power permanently (max +4 throughout game)."""
+    if trigger == "combat_win":
+        total_buff = card.get_meta("_sparta_total", 0)
+        if total_buff >= 4:
+            return 0
+        
+        if card.has_stat("Power"):
+            card.add_base_stat("Power", 2)
+            card.set_meta("_sparta_total", total_buff + 2)
     return 0

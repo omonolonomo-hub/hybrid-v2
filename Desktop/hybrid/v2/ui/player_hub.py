@@ -107,6 +107,11 @@ class PlayerHub:
         if data.gold < self._gold:
             self._trigger_flash("gold", (220, 60, 60))
 
+        # Büyük gold değişimlerinde animasyonu atla (ilk yükleme, tur başlangıcı)
+        gold_diff = abs(data.gold - self._gold)
+        if gold_diff > 5:
+            self._display_gold = float(data.gold)
+
         self._hp        = data.hp
         self._gold      = data.gold
         self._streak    = data.win_streak
@@ -134,7 +139,9 @@ class PlayerHub:
         self._display_hp += (self._hp - self._display_hp) * 15 * dt
         self._ghost_hp += (self._display_hp - self._ghost_hp) * 3 * dt
         
-        self._display_gold += (self._gold - self._display_gold) * 12 * dt
+        # Gold Animasyonu - ÇOK HIZLI (neredeyse anında güncelleme)
+        gold_alpha = min(1.0, 50.0 * dt)
+        self._display_gold += (self._gold - self._display_gold) * gold_alpha  # 12 -> 50
         self._display_pts += (self._total_pts - self._display_pts) * 10 * dt
         
         # 🧪 [NEW] Kritik HP Titreme Efekti (Tactical Glitch)
@@ -238,6 +245,12 @@ class PlayerHub:
 
         # 🧪 [ICON] Gold (Para)
         font_cache.render_icon(surf, "GOLD", 14, Colors.GOLD_TEXT, (g_r.x + 8, g_r.y + 6), shadow=True)
+        
+        # Debug: Gerçek gold vs display gold
+        import logging
+        logger = logging.getLogger(__name__)
+        if abs(self._gold - self._display_gold) > 5.0:
+            logger.warning(f"GOLD_MISMATCH: real={self._gold} | display={int(self._display_gold)}")
         
         font_cache.render_text(surf, f"{int(self._display_gold)}", font_cache.bold(13), Colors.GOLD_TEXT, g_r, align="center", v_align="center")
 

@@ -20,15 +20,26 @@ BG_GRADIENT_BOTTOM = (15, 25, 40)
 # Altın Oran (Golden Ratio)
 GOLDEN_RATIO = 1.618
 
-# AI stratejilerine özel renkler (synergy gruplarından)
+# AI stratejilerine özel renkler (oyundaki diğer renklerle çakışmayan özel palet)
 STRATEGY_COLORS = {
-    "random": (150, 150, 150),      # Gri - nötr
-    "warrior": Colors.EXISTENCE,     # Kırmızı - saldırgan
-    "builder": Colors.CONNECTION,    # Yeşil - bağlantı kurucu
-    "evolver": (180, 100, 255),     # Mor - evrimleşen
-    "economist": Colors.GOLD_TEXT,   # Altın - ekonomi
-    "balancer": Colors.MIND,         # Mavi - dengeli
-    "rare_hunter": Colors.PLATINUM,  # Platin - nadir avcısı
+    "random": (140, 140, 140),      # Açık gri - nötr
+    "warrior": (220, 60, 60),       # Parlak kırmızı - saldırgan
+    "builder": (80, 180, 100),      # Açık yeşil - bağlantı kurucu
+    "evolver": (160, 90, 220),      # Parlak mor - evrimleşen
+    "economist": (255, 200, 50),    # Parlak altın - ekonomi
+    "balancer": (100, 150, 255),    # Açık mavi - dengeli
+    "rare_hunter": (200, 160, 255), # Açık mor/pembe - nadir avcısı
+}
+
+# Strateji açıklamaları (tooltip için)
+STRATEGY_DESCRIPTIONS = {
+    "random": "Random card purchases",
+    "warrior": "Aggressive combat focus",
+    "builder": "Synergy building strategy",
+    "evolver": "Evolution-focused gameplay",
+    "economist": "Gold optimization",
+    "balancer": "Balanced approach",
+    "rare_hunter": "Targets rare cards"
 }
 
 
@@ -51,10 +62,21 @@ class LobbyScene(Scene):
         - Button rect initialized as None (lazy init)
         - Audio loader kept for compatibility with existing cleanup logic
         """
-        # AI strategies list (7 players)
-        self._strategies = [
+        # AI strategies list (7 players) - each AI's selected strategy
+        self._ai_strategies = [
             "random",
             "warrior", 
+            "builder",
+            "evolver",
+            "economist",
+            "balancer",
+            "rare_hunter"
+        ]
+        
+        # All available strategies for dropdown
+        self._available_strategies = [
+            "random",
+            "warrior",
             "builder",
             "evolver",
             "economist",
@@ -69,9 +91,17 @@ class LobbyScene(Scene):
         self._font_title = None
         self._font_row = None
         self._font_button = None
+        self._font_dropdown = None  # Dropdown font
         
         # Button rect - lazy initialization
         self._btn_rect = None
+        
+        # Dropdown state
+        self._active_dropdown = None  # Which AI's dropdown is open (0-6 or None)
+        self._dropdown_rects = []     # Rect for each strategy button (clickable area)
+        self._dropdown_item_rects = []  # Rects for dropdown items
+        self._hovered_strategy_btn = None  # Which strategy button is hovered (0-6 or None)
+        self._hovered_dropdown_item = None  # Which dropdown item is hovered (index or None)
         
         # Audio loader - kept for compatibility with existing audio cleanup logic
         self._audio_loader = None
@@ -85,13 +115,30 @@ class LobbyScene(Scene):
         self._btn_scale = 1.0  # Scale animation
     
     def update(self, dt_ms: float) -> None:
-        """Update button animations."""
-        # Check mouse position for hover effect
+        """Update button animations and hover states."""
+        # Check mouse position for hover effects
         mouse_pos = pygame.mouse.get_pos()
+        
+        # Update start button hover
         if self._btn_rect is not None:
             self._btn_hovered = self._btn_rect.collidepoint(mouse_pos)
         
-        # Smooth scale animation
+        # Update strategy button hover
+        self._hovered_strategy_btn = None
+        for i, rect in enumerate(self._dropdown_rects):
+            if rect.collidepoint(mouse_pos):
+                self._hovered_strategy_btn = i
+                break
+        
+        # Update dropdown item hover
+        self._hovered_dropdown_item = None
+        if self._active_dropdown is not None:
+            for i, rect in enumerate(self._dropdown_item_rects):
+                if rect.collidepoint(mouse_pos):
+                    self._hovered_dropdown_item = i
+                    break
+        
+        # Smooth scale animation for start button
         target_scale = 1.06 if self._btn_hovered else 1.0
         if self._btn_pressed:
             target_scale = 0.96
@@ -107,9 +154,10 @@ class LobbyScene(Scene):
         created yet. This ensures fonts are only initialized after pygame is ready.
         
         Font sizes:
-        - Title font: 48pt (for "LOBİ" heading)
-        - Row font: 28pt (for player list rows)
-        - Button font: 32pt (for "OYUNA BAŞLA" button)
+        - Title font: 48pt (for "LOBBY" heading) - BitcountGridDoubleInk
+        - Row font: 24pt (for player list rows) - broken-strings.regular
+        - Button font: 32pt (for "OYUNA BAŞLA" button) - minimap_category_names
+        - Dropdown font: 20pt (for dropdown items) - broken-strings.regular
         
         Validates: Requirements 7.2, 7.3
         """
@@ -117,10 +165,12 @@ class LobbyScene(Scene):
             # Ana başlık: BitcountGridDoubleInk
             font_dir = Path("v2/assets/fonts")
             self._font_title = pygame.font.Font(str(font_dir / "BitcountGridDoubleInk.ttf"), 48)
-            # Oyuncu listesi: BitcountGridDoubleInk
-            self._font_row = pygame.font.Font(str(font_dir / "BitcountGridDoubleInk.ttf"), 28)
+            # Oyuncu listesi: broken-strings.regular (biraz daha büyük)
+            self._font_row = pygame.font.Font(str(font_dir / "broken-strings.regular.ttf"), 26)
             # Buton yazısı: minimap_category_names
             self._font_button = pygame.font.Font(str(font_dir / "minimap_category_names.ttf"), 32)
+            # Dropdown yazısı: broken-strings.regular
+            self._font_dropdown = pygame.font.Font(str(font_dir / "broken-strings.regular.ttf"), 22)
     
     def on_exit(self) -> None:
         """Cleanup resources when exiting the scene.
@@ -129,6 +179,71 @@ class LobbyScene(Scene):
         Validates: Requirement 9.1
         """
         self._audio_loader = None
+    
+    def _draw_dropdown(self, surface: pygame.Surface, content_padding: int, content_width: int, y_start: int, row_height: int) -> None:
+        """Draw the strategy dropdown menu for the active AI.
+        
+        Args:
+            surface: Surface to draw on
+            content_padding: Left padding for content
+            content_width: Width of content area
+            y_start: Y position of first AI row
+            row_height: Height of each row
+        """
+        ai_index = self._active_dropdown
+        if ai_index is None or ai_index < 0 or ai_index >= len(self._ai_strategies):
+            return
+        
+        # Calculate dropdown position (below the strategy button)
+        row_y = y_start + ai_index * row_height
+        dropdown_x = content_padding + 160 - 6  # 150 → 160 (strateji pozisyonuyla aynı)
+        dropdown_y = row_y + 38  # 35 → 38 (biraz daha aşağı)
+        
+        # Dropdown dimensions - broken-strings fontu için ayarlandı
+        dropdown_w = 250  # 240 → 250 (biraz daha geniş)
+        item_h = 36  # 34 → 36 (biraz daha yüksek)
+        dropdown_h = len(self._available_strategies) * item_h + 8  # 8px padding
+        
+        # Draw dropdown shadow (multiple layers for depth - yumuşak köşeler)
+        for i in range(3):
+            shadow_offset = 4 + i * 2
+            shadow_alpha = 50 - i * 12
+            shadow_surf = pygame.Surface((dropdown_w + shadow_offset, dropdown_h + shadow_offset), pygame.SRCALPHA)
+            pygame.draw.rect(shadow_surf, (0, 0, 0, shadow_alpha), shadow_surf.get_rect(), border_radius=16)  # 16px yumuşak köşe
+            surface.blit(shadow_surf, (dropdown_x + i * 2, dropdown_y + i * 2))
+        
+        # Draw dropdown background (yumuşak köşeler)
+        dropdown_rect = pygame.Rect(dropdown_x, dropdown_y, dropdown_w, dropdown_h)
+        pygame.draw.rect(surface, (25, 30, 45), dropdown_rect, border_radius=14)  # 14px yumuşak köşe
+        pygame.draw.rect(surface, (100, 150, 255), dropdown_rect, width=2, border_radius=14)  # 14px yumuşak köşe  # Açık mavi border
+        
+        # Draw dropdown items
+        self._dropdown_item_rects = []
+        current_strategy = self._ai_strategies[ai_index]
+        
+        for i, strategy in enumerate(self._available_strategies):
+            item_y = dropdown_y + 4 + i * item_h
+            item_rect = pygame.Rect(dropdown_x + 4, item_y, dropdown_w - 8, item_h)
+            self._dropdown_item_rects.append(item_rect)
+            
+            # Hover effect (yumuşak köşeler)
+            if self._hovered_dropdown_item == i:
+                hover_surf = pygame.Surface((item_rect.width, item_rect.height), pygame.SRCALPHA)
+                strategy_color = STRATEGY_COLORS.get(strategy, GRAY)
+                pygame.draw.rect(hover_surf, (*strategy_color, 50), hover_surf.get_rect(), border_radius=10)  # 10px yumuşak köşe
+                surface.blit(hover_surf, item_rect.topleft)
+            
+            # Selected indicator (checkmark)
+            if strategy == current_strategy:
+                check_surf = self._font_dropdown.render("✓", True, (100, 255, 150))  # Açık yeşil check
+                surface.blit(check_surf, (item_rect.x + 10, item_rect.y + 6))  # 5 → 6 (biraz daha aşağı)
+            
+            # Strategy name
+            strategy_color = STRATEGY_COLORS.get(strategy, GRAY)
+            strategy_text = strategy.upper()
+            strategy_surf = self._font_dropdown.render(strategy_text, True, strategy_color)
+            text_x = item_rect.x + 38 if strategy == current_strategy else item_rect.x + 16  # 35/15 → 38/16
+            surface.blit(strategy_surf, (text_x, item_rect.y + 8))  # 7 → 8 (biraz daha aşağı)
     
     def _render_background(self) -> pygame.Surface:
         """Render background once and cache it for performance."""
@@ -205,11 +320,16 @@ class LobbyScene(Scene):
         # Blit cached background (much faster than redrawing)
         surface.blit(self._background_cache, (0, 0))
         
-        # Draw title "LOBİ" at Golden Ratio position with glow
-        title_text = "LOBİ"
-        # Golden Ratio: başlık ekranın üst kısmına φ ile konumlandırıl
-        title_x = int(Screen.W * (1 - 1 / GOLDEN_RATIO))  # Sağdan φ mesafesi
-        title_y = int(Screen.H / GOLDEN_RATIO * 0.15)  # Üstten φ'nin 15%'i
+        # Draw 7 AI player rows with strategy-specific colors
+        # Merkezi layout: satırlar ekranın ortasında, simetrik padding
+        content_padding = int(W * 0.08)  # Soldan ve sağdan %8 padding
+        content_width = W - 2 * content_padding  # Kullanılabilir genişlik
+        row_start_x = content_padding  # Satırların başlangıç x'i
+        
+        # Draw title "LOBBY" - satırlarla aynı hizada (sol tarafta)
+        title_text = "LOBBY"
+        title_x = row_start_x + 20  # Satırlarla aynı hizalama (AI numarası ile aynı)
+        title_y = 50  # Üstten 50px
         # Glow efekti (ShopScene tarzı çok katmanlı)
         for offset in [4, 2, 0]:
             alpha = 100 if offset > 0 else 255
@@ -219,89 +339,106 @@ class LobbyScene(Scene):
                 title_surf.set_alpha(alpha)
             surface.blit(title_surf, (title_x + offset, title_y + offset))
         
-        # Alt başlık - oyuncu sayısı
-        # Golden Ratio ile konumlandırıl (başlığın altında)
-        subtitle_font = pygame.font.Font(str(Path("v2/assets/fonts") / "BitcountGridDoubleInk.ttf"), 18)
+        # Alt başlık - oyuncu sayısı (başlığın altında, aynı hizada)
+        subtitle_font = pygame.font.Font(str(Path("v2/assets/fonts") / "broken-strings.regular.ttf"), 16)
         subtitle_text = "8 Players • 7 AI Strategies"
         subtitle_surf = subtitle_font.render(subtitle_text, True, (150, 150, 170))
-        surface.blit(subtitle_surf, (title_x, int(title_y + Screen.H / GOLDEN_RATIO * 0.08)))
-        
-        # Draw 7 AI player rows with strategy-specific colors
-        # Merkezi layout: satırlar ekranın ortasında, simetrik padding
-        content_padding = int(W * 0.08)  # Soldan ve sağdan %8 padding
-        content_width = W - 2 * content_padding  # Kullanılabilir genişlik
-        row_start_x = content_padding  # Satırların başlangıç x'i
+        surface.blit(subtitle_surf, (title_x, title_y + 55))  # Başlıktan 55px aşağı
         
         # Satır konumları ve aralıkları
-        y_start = int(title_y + Screen.H * 0.08)  # Başlığın %8 altında
-        row_height = int(Screen.H / 11)  # Her satır için aşağı doğru alan
+        y_start = title_y + 100  # Başlıktan 100px aşağı (alt başlıktan 45px sonra)
+        row_height = 55  # Her satır için sabit yükseklik (daha geniş aralık)
         
-        for i, strategy in enumerate(self._strategies):
+        # Clear dropdown rects for this frame
+        self._dropdown_rects = []
+        
+        for i, strategy in enumerate(self._ai_strategies):
             # Format: "AI {i+1} — {strategy}"
             ai_num = f"AI {i+1}"
             strategy_name = strategy.upper()
             row_y = y_start + i * row_height
             
-            # Satır arka planı (hover efekti için hazır)
-            row_rect = pygame.Rect(row_start_x, row_y, content_width, int(row_height * 0.6))
-            pygame.draw.rect(surface, (20, 25, 35, 80), row_rect, border_radius=6)
+            # Satır arka planı - broken-strings fontu için ayarlandı (yumuşak köşeler)
+            row_bg_height = 44  # Biraz daha yüksek (font daha büyük)
+            row_bg_y = row_y - 6  # Yazıların biraz daha üstünden başla
+            row_rect = pygame.Rect(row_start_x, row_bg_y, content_width, row_bg_height)
+            pygame.draw.rect(surface, (20, 25, 35, 80), row_rect, border_radius=12)  # 12px yumuşak köşe
             
-            # AI numarası (gri)
+            # AI numarası (gri) - daha sola hizalı
             num_surf = self._font_row.render(ai_num, True, GRAY)
-            surface.blit(num_surf, (row_start_x + int(content_width * 0.05), row_y))
+            surface.blit(num_surf, (row_start_x + 20, row_y))
             
-            # Ayırıcı
+            # Ayırıcı - AI numarasından sonra
             sep_surf = self._font_row.render("—", True, GRAY)
-            surface.blit(sep_surf, (row_start_x + int(content_width * 0.15), row_y))
+            surface.blit(sep_surf, (row_start_x + 105, row_y))  # 100 → 105 (biraz daha sağda)
             
-            # Strateji adı (renkli)
+            # Strateji butonu (tıklanabilir dropdown trigger)
             strategy_color = STRATEGY_COLORS.get(strategy, GRAY)
             strategy_surf = self._font_row.render(strategy_name, True, strategy_color)
-            surface.blit(strategy_surf, (row_start_x + int(content_width * 0.25), row_y))
+            strategy_x = row_start_x + 160  # 150 → 160 (biraz daha sağda)
+            strategy_y = row_y
             
-            # Strateji ikonları (küçük renkli kareler, ShopScene tarzı)
-            icon_x = row_start_x + int(content_width * 0.85)
-            icon_y = row_y + int(row_height * 0.12)
-            # Outer glow
-            glow_rect = pygame.Rect(icon_x - 2, icon_y - 2, 16, 16)
-            pygame.draw.rect(surface, (*strategy_color, 60), glow_rect, border_radius=3)
-            # Inner square
-            pygame.draw.rect(surface, strategy_color, (icon_x, icon_y, 12, 12), border_radius=2)
+            # Dropdown button rect (clickable area) - font boyutuna göre ayarlandı
+            dropdown_btn_w = strategy_surf.get_width() + 45  # 40 → 45 (biraz daha geniş)
+            dropdown_btn_h = strategy_surf.get_height() + 6  # 4 → 6 (biraz daha yüksek)
+            dropdown_btn_rect = pygame.Rect(strategy_x - 6, strategy_y - 3, dropdown_btn_w, dropdown_btn_h)
+            self._dropdown_rects.append(dropdown_btn_rect)
+            
+            # Hover effect on strategy button (yumuşak köşeler) - broken-strings fontu için
+            if self._hovered_strategy_btn == i:
+                hover_surf = pygame.Surface((dropdown_btn_w, dropdown_btn_h), pygame.SRCALPHA)
+                pygame.draw.rect(hover_surf, (*strategy_color, 35), hover_surf.get_rect(), border_radius=10)  # 30 → 35 alpha, 8 → 10 radius
+                surface.blit(hover_surf, dropdown_btn_rect.topleft)
+            
+            # Draw strategy name
+            surface.blit(strategy_surf, (strategy_x, strategy_y))
+            
+            # Draw dropdown arrow (▼)
+            arrow_color = strategy_color if self._hovered_strategy_btn == i else GRAY
+            arrow_surf = self._font_row.render("▼", True, arrow_color)
+            arrow_surf = pygame.transform.scale(arrow_surf, (int(arrow_surf.get_width() * 0.6), int(arrow_surf.get_height() * 0.6)))
+            surface.blit(arrow_surf, (strategy_x + strategy_surf.get_width() + 8, strategy_y + 4))
         
-        # Draw human player row (8th row) with special styling
+        # Draw human player row (8th row) with special styling - BEFORE dropdown
         human_y = y_start + 7 * row_height
         
-        # Oyuncu satırı için arka plan highlight (ShopScene tarzı çok katmanlı)
-        highlight_rect = pygame.Rect(row_start_x, human_y, content_width, int(row_height * 0.6))
+        # Oyuncu satırı için arka plan highlight - broken-strings fontu için ayarlandı
+        human_bg_height = 48  # 44 → 48 (biraz daha yüksek)
+        human_bg_y = human_y - 8  # 6 → 8 (biraz daha üstten)
+        highlight_rect = pygame.Rect(row_start_x, human_bg_y, content_width, human_bg_height)
         
-        # Glow katmanları
+        # Glow katmanları (yumuşak köşeler)
         for i in range(2):
             glow_inflate = 6 - i * 3
             glow_rect = highlight_rect.inflate(glow_inflate, glow_inflate)
             glow_alpha = 30 + i * 20
             glow_surf = pygame.Surface((glow_rect.width, glow_rect.height), pygame.SRCALPHA)
             pygame.draw.rect(glow_surf, (*CYAN, glow_alpha), 
-                           glow_surf.get_rect(), border_radius=10)
+                           glow_surf.get_rect(), border_radius=16)  # 16px yumuşak köşe
             surface.blit(glow_surf, glow_rect.topleft)
         
-        # Ana arka plan
-        pygame.draw.rect(surface, (30, 40, 60), highlight_rect, border_radius=8)
-        pygame.draw.rect(surface, CYAN, highlight_rect, width=2, border_radius=8)
+        # Ana arka plan (yumuşak köşeler)
+        pygame.draw.rect(surface, (30, 40, 60), highlight_rect, border_radius=14)  # 14px yumuşak köşe
+        pygame.draw.rect(surface, CYAN, highlight_rect, width=2, border_radius=14)  # 14px yumuşak köşe
         
-        # "► SEN" kısmı
+        # "► SEN — HUMAN" kısmı - broken-strings fontu için ayarlandı
         arrow_surf = self._font_row.render("►", True, CYAN)
-        surface.blit(arrow_surf, (row_start_x + int(content_width * 0.05), human_y))
+        surface.blit(arrow_surf, (row_start_x + 20, human_y))
         
         sen_surf = self._font_row.render("SEN", True, CYAN)
-        surface.blit(sen_surf, (row_start_x + int(content_width * 0.12), human_y))
+        surface.blit(sen_surf, (row_start_x + 60, human_y))  # 55 → 60 (biraz daha sağda)
         
         # Ayırıcı
-        sep_surf = self._font_row.render("—", True, CYAN)
-        surface.blit(sep_surf, (row_start_x + int(content_width * 0.15), human_y))
+        sep_surf = self._font_row.render("—", True, GRAY)  # CYAN → GRAY (daha az vurgulu)
+        surface.blit(sep_surf, (row_start_x + 125, human_y))  # 115 → 125 (biraz daha sağda)
         
         # İnsan oyuncu adı
         human_surf = self._font_row.render(self._human_name, True, WHITE)
-        surface.blit(human_surf, (row_start_x + int(content_width * 0.25), human_y))
+        surface.blit(human_surf, (row_start_x + 175, human_y))  # 160 → 175 (biraz daha sağda)
+        
+        # Draw active dropdown AFTER human row (so it appears on top)
+        if self._active_dropdown is not None:
+            self._draw_dropdown(surface, content_padding, content_width, y_start, row_height)
         
         # Draw "OYUNA BAŞLA" button at bottom with centered layout
         # Buton merkeze ve simetrik layout ile konumlandırıl (satırlardan sonra)
@@ -323,7 +460,7 @@ class LobbyScene(Scene):
             scaled_h
         )
         
-        # Buton glow efekti (daha güçlü hover'da)
+        # Buton glow efekti (daha güçlü hover'da - yumuşak köşeler)
         glow_intensity = 1.6 if self._btn_hovered else 1.0
         for i in range(3):
             glow_inflate = int((12 - i * 4) * glow_intensity)
@@ -331,7 +468,7 @@ class LobbyScene(Scene):
             glow_alpha = int((40 + i * 20) * glow_intensity)
             glow_surf = pygame.Surface((glow_rect.width, glow_rect.height), pygame.SRCALPHA)
             pygame.draw.rect(glow_surf, (*Colors.CONNECTION, min(glow_alpha, 255)), 
-                           glow_surf.get_rect(), border_radius=12)
+                           glow_surf.get_rect(), border_radius=18)  # 18px yumuşak köşe
             surface.blit(glow_surf, glow_rect.topleft)
         
         # Buton arka planı (gradient - daha parlak hover'da)
@@ -344,10 +481,10 @@ class LobbyScene(Scene):
             b = int(Colors.CONNECTION[2] * (1 - ratio * 0.3) * brightness_boost)
             pygame.draw.line(btn_surf, (min(r, 255), min(g, 255), min(b, 255)), (0, y), (scaled_w, y))
         
-        # Buton border (hover'da daha kalın)
+        # Buton border (hover'da daha kalın - yumuşak köşeler)
         border_width = 4 if self._btn_hovered else 3
         border_color = (255, 255, 255) if self._btn_hovered else WHITE
-        pygame.draw.rect(btn_surf, border_color, btn_surf.get_rect(), width=border_width, border_radius=10)
+        pygame.draw.rect(btn_surf, border_color, btn_surf.get_rect(), width=border_width, border_radius=16)  # 16px yumuşak köşe
         surface.blit(btn_surf, scaled_rect.topleft)
         
         # Buton metni (beyaz, kalın)
@@ -357,7 +494,7 @@ class LobbyScene(Scene):
         
         # Alt bilgi metni (ShopScene tarzı küçük detay)
         # Golden Ratio ile konumlandırıl (ekranın en altında)
-        info_font = pygame.font.Font(str(Path("v2/assets/fonts") / "BitcountGridDoubleInk.ttf"), 14)
+        info_font = pygame.font.Font(str(Path("v2/assets/fonts") / "broken-strings.regular.ttf"), 13)
         info_parts = [
             ("Click ", (120, 120, 140)),
             ("OYUNA BAŞLA", Colors.CONNECTION),
@@ -374,6 +511,10 @@ class LobbyScene(Scene):
     def handle_event(self, event: pygame.event.Event) -> None:
         """Handle user input events for the lobby screen.
         
+        Handles:
+        - Strategy dropdown clicks (open/close dropdown, select strategy)
+        - Start button clicks (initialize game and transition to ShopScene)
+        
         When the user clicks the "OYUNA BAŞLA" button with the left mouse button:
         1. Calls _bootstrap() to initialize the game engine and create GameState
         2. Transitions to ShopScene with the GameState
@@ -386,8 +527,34 @@ class LobbyScene(Scene):
         """
         # Mouse button down - start press animation
         if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+            # Check if start button was clicked
             if self._btn_rect is not None and self._btn_rect.collidepoint(event.pos):
                 self._btn_pressed = True
+                return
+            
+            # PRIORITY 1: Check if a dropdown item was clicked (highest priority)
+            if self._active_dropdown is not None:
+                for i, rect in enumerate(self._dropdown_item_rects):
+                    if rect.collidepoint(event.pos):
+                        # Update the AI's strategy
+                        self._ai_strategies[self._active_dropdown] = self._available_strategies[i]
+                        # Close dropdown
+                        self._active_dropdown = None
+                        return
+                
+                # Click outside dropdown - close it
+                self._active_dropdown = None
+                return
+            
+            # PRIORITY 2: Check if a strategy button was clicked (toggle dropdown)
+            for i, rect in enumerate(self._dropdown_rects):
+                if rect.collidepoint(event.pos):
+                    # Toggle dropdown for this AI
+                    if self._active_dropdown == i:
+                        self._active_dropdown = None  # Close if already open
+                    else:
+                        self._active_dropdown = i  # Open dropdown
+                    return
         
         # Mouse button up - trigger transition
         elif event.type == pygame.MOUSEBUTTONUP and event.button == 1:
@@ -398,7 +565,8 @@ class LobbyScene(Scene):
                 from v2.main import _bootstrap
                 
                 # Initialize game engine and create GameState
-                gs = _bootstrap()
+                # Pass the selected AI strategies to bootstrap
+                gs = _bootstrap(ai_strategies=self._ai_strategies)
                 
                 # Lazy import ShopScene
                 from v2.scenes.shop import ShopScene

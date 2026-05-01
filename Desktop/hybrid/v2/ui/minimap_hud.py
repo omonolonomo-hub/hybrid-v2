@@ -3,7 +3,7 @@ import math
 from collections.abc import Mapping
 
 from v2.constants import Screen, Colors, Layout
-from v2.ui import font_cache
+from v2.ui import font_cache, icon_loader
 from v2.ui.hex_grid_config import HexGridConfig
 
 # ── Kategori Verileri (Minimap Taktik Renk Paleti & İkonlar) ───────────────────
@@ -237,8 +237,8 @@ class MinimapHUD:
         row_h = available_h // 3  # 3 satır
         
         idx = 0
-        for cat, data in _CAT_DATA.items():
-            count = self.category_stats.get(cat, 0)
+        for cat_key, data in _CAT_DATA.items():
+            count = self.category_stats.get(cat_key, 0)
             color = data["color"]
             abbr  = data["abbr"]
             icon_key = data["icon"]
@@ -249,19 +249,24 @@ class MinimapHUD:
             px = self.cat_panel_rect.x + padding + col * (col_w + padding)
             py = section_start_y + row * (row_h + padding)
             
-            # ─ Bant Arkaplanı (Karbon-mor glass) ─
-            b_alpha = 90 if count > 0 else 40
+            # ─ Bant Arkaplanı (Karbon-mor glass) - Daha belirgin ─
+            b_alpha = 140 if count > 0 else 70  # Opaklık artırıldı (90->140, 40->70)
             bg_rect = pygame.Rect(px, py, col_w, row_h)
-            pygame.draw.rect(surface, (18, 16, 22, b_alpha), bg_rect, border_radius=5)  # Koyu mor-karbon
-            
-            # Aktif kenarlık
+            # Arka plan rengi daha belirgin - kategori rengine hafif ton
             if count > 0:
-                pygame.draw.rect(surface, (*color, 120), bg_rect, width=1, border_radius=5)
+                bg_color = tuple(int(c * 0.15 + 18 * 0.85) for c in color) + (b_alpha,)
+            else:
+                bg_color = (18, 16, 22, b_alpha)
+            pygame.draw.rect(surface, bg_color, bg_rect, border_radius=5)
+            
+            # Aktif kenarlık - daha kalın ve parlak
+            if count > 0:
+                pygame.draw.rect(surface, (*color, 180), bg_rect, width=2, border_radius=5)  # width 1->2, alpha 120->180
             
             # ─ İçerik Yerleşimi (Dikey ortalanmış) ─
-            icon_size = 18
+            icon_size = 28  # İkon büyütüldü (24->28)
             icon_padding = 8
-            text_gap = 8
+            text_gap = 6  # Boşluk azaltıldı (8->6)
             
             # Dikey merkez
             vertical_center = py + (row_h // 2)
@@ -270,21 +275,49 @@ class MinimapHUD:
             t_alpha = 255 if count > 0 else 110
             icon_x = px + icon_padding
             icon_y = vertical_center - (icon_size // 2)
-            font_cache.render_icon(surface, icon_key, icon_size, (*color, t_alpha), (icon_x, icon_y))
+            
+            # PNG ikon çiz (kategori için)
+            # Kategori adını tam formatta al
+            full_cat_name = {
+                "MYTHOLOGY": "Mythology & Gods",
+                "ART": "Art & Culture",
+                "NATURE": "Nature & Creatures",
+                "COSMOS": "Cosmos",
+                "SCIENCE": "Science",
+                "HISTORY": "History & Civilizations",
+            }.get(cat_key, cat_key)
+            
+            icon_surf = icon_loader.get_icon(full_cat_name, icon_size, is_category=True)
+            if icon_surf:
+                icon_surf = icon_surf.copy()
+                icon_surf.set_alpha(t_alpha)
+                surface.blit(icon_surf, (icon_x, icon_y))
+            else:
+                # Fallback: Font Awesome ikonu
+                font_cache.render_icon(surface, icon_key, icon_size, (*color, t_alpha), (icon_x, icon_y))
             
             # ─ Kısaltma (İkonun yanında) ─
-            abbr_font = font_cache.minimap_cat(13)
+            abbr_font = font_cache.minimap_cat(16)  # Font büyütüldü (13->16)
             abbr_x = icon_x + icon_size + text_gap
             abbr_w = col_w - (abbr_x - px) - 30  # Sayı için yer bırak
             
             abbr_rect = pygame.Rect(abbr_x, py, abbr_w, row_h)
+            # Gölge ekle - daha okunabilir
+            shadow_color = (0, 0, 0, int(t_alpha * 0.6))
+            shadow_rect = pygame.Rect(abbr_x + 1, py + 1, abbr_w, row_h)
+            font_cache.render_text(surface, abbr, abbr_font, shadow_color, 
+                                   shadow_rect, align="left", v_align="center")
             font_cache.render_text(surface, abbr, abbr_font, (*color, t_alpha), 
                                    abbr_rect, align="left", v_align="center")
             
             # ─ Sayı (Sağ taraf, dikey ortalanmış) ─
             if count > 0:
                 count_rect = pygame.Rect(px, py, col_w - 8, row_h)
-                font_cache.render_text(surface, str(count), font_cache.bold(18), color, 
-                                       count_rect, align="right", v_align="center")
+                # Gölge ekle
+                shadow_rect = pygame.Rect(px + 1, py + 1, col_w - 8, row_h)
+                font_cache.render_text(surface, str(count), font_cache.bold(22), (0, 0, 0, 150), 
+                                       shadow_rect, align="right", v_align="center")
+                font_cache.render_text(surface, str(count), font_cache.bold(22), color, 
+                                       count_rect, align="right", v_align="center")  # Font büyütüldü (18->22)
             
             idx += 1

@@ -1,0 +1,430 @@
+:root {
+  --color-bg-top: #141928;
+  --color-bg-bottom: #230f2d;
+  --color-white: #ffffff;
+  --color-stripe-1: #f8de22;
+  --color-stripe-2: #d12052;
+  --color-stripe-3: #237227;
+  --color-stripe-4: #3232b4;
+  --color-stripe-5: #03aed2;
+  --color-stripe-6: #f45b26;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html,
+body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: var(--color-bg-top);
+}
+
+body {
+  background: linear-gradient(to bottom, var(--color-bg-top) 0%, var(--color-bg-bottom) 100%);
+  font-family: "Ghora", monospace;
+  user-select: none;
+}
+
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  background:
+    repeating-linear-gradient(
+      to bottom,
+      rgba(255, 255, 255, 0.025) 0,
+      rgba(255, 255, 255, 0.025) 1px,
+      transparent 1px,
+      transparent 5px
+    ),
+    linear-gradient(
+      120deg,
+      transparent 0%,
+      rgba(80, 140, 255, 0.055) 45%,
+      rgba(60, 200, 100, 0.045) 52%,
+      transparent 62%
+    );
+  opacity: 0.62;
+}
+
+body.input-hot::after {
+  opacity: 0.38;
+}
+
+#bg-canvas {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 0;
+  pointer-events: none;
+}
+
+body.input-hot #bg-canvas {
+  opacity: 0.6;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 4px;
+  background: linear-gradient(
+    to right,
+    var(--color-stripe-1) 0% 16.66%,
+    var(--color-stripe-2) 16.66% 33.33%,
+    var(--color-stripe-3) 33.33% 50%,
+    var(--color-stripe-4) 50% 66.66%,
+    var(--color-stripe-5) 66.66% 83.33%,
+    var(--color-stripe-6) 83.33% 100%
+  );
+  z-index: 10;
+}
+
+.menu-container {
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  z-index: 5;
+  width: 1920px;
+  height: 1080px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  transform: translate(-50%, -50%) scale(var(--ui-scale, 1));
+  transform-origin: center center;
+  opacity: 0;
+  transition: opacity 120ms ease;
+}
+
+body.fonts-ready .menu-container {
+  opacity: 1;
+}
+
+.title-group {
+  position: absolute;
+  left: 50%;
+  top: 590px;
+  transform: translateX(-50%);
+  width: 100%;
+}
+
+.title-main {
+  position: relative;
+  font-family: "Ghora", monospace;
+  font-size: 72px;
+  color: var(--color-white);
+  letter-spacing: 0;
+  text-align: center;
+  -webkit-text-stroke: 1px rgba(255, 255, 255, 0.42);
+  text-shadow:
+    0 0 4px rgba(255, 255, 255, 0.86),
+    -4px 0 10px rgba(80, 140, 255, 0.88),
+    4px 0 10px rgba(60, 200, 100, 0.78),
+    0 0 26px rgba(220, 60, 60, 0.52),
+    0 0 42px rgba(80, 140, 255, 0.28);
+  animation: title-pulse 3.14s ease-in-out infinite;
+}
+
+.title-main::before,
+.title-main::after {
+  content: attr(data-text);
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.38;
+}
+
+.title-main::before {
+  color: var(--color-connection);
+  transform: translate(-2px, 0);
+  clip-path: inset(0 0 56% 0);
+  animation: title-scan-a 2.8s steps(2, end) infinite;
+}
+
+.title-main::after {
+  color: var(--color-existence);
+  transform: translate(2px, 0);
+  clip-path: inset(54% 0 0 0);
+  animation: title-scan-b 3.6s steps(2, end) infinite;
+}
+
+@keyframes title-pulse {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(1.05);
+  }
+}
+
+@keyframes title-scan-a {
+  0%,
+  88%,
+  100% {
+    transform: translate(-2px, 0);
+    opacity: 0.16;
+  }
+
+  90% {
+    transform: translate(-8px, -2px);
+    opacity: 0.36;
+  }
+
+  94% {
+    transform: translate(5px, 1px);
+    opacity: 0.24;
+  }
+}
+
+@keyframes title-scan-b {
+  0%,
+  82%,
+  100% {
+    transform: translate(2px, 0);
+    opacity: 0.12;
+  }
+
+  86% {
+    transform: translate(7px, 2px);
+    opacity: 0.34;
+  }
+
+  91% {
+    transform: translate(-5px, -1px);
+    opacity: 0.22;
+  }
+}
+
+.title-sub {
+  font-family: "MinimapCat", sans-serif;
+  font-size: 24px;
+  margin-top: calc(1080px * 0.025);
+  letter-spacing: 0;
+  text-align: center;
+}
+
+.title-sub .mind {
+  color: var(--color-mind);
+}
+
+.title-sub .connection {
+  color: var(--color-connection);
+}
+
+.title-sub .existence {
+  color: var(--color-existence);
+}
+
+.title-sub .sep {
+  color: var(--color-white);
+  opacity: 0.7;
+}
+
+.button-group {
+  position: absolute;
+  left: 50%;
+  top: 772px;
+  transform: translateX(-50%);
+  display: grid;
+  justify-items: center;
+  gap: 18px;
+}
+
+.btn-primary {
+  position: relative;
+  width: 240px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-white);
+  border: 2px solid var(--color-mind);
+  border-radius: 8px;
+  font-family: "Ghora", monospace;
+  font-size: 28px;
+  color: var(--color-mind);
+  cursor: pointer;
+  overflow: hidden;
+  transition:
+    transform 55ms linear,
+    box-shadow 55ms linear,
+    border-color 55ms linear,
+    background-color 55ms linear;
+  box-shadow:
+    0 0 8px rgba(80, 140, 255, 0.3),
+    0 0 16px rgba(80, 140, 255, 0.2);
+}
+
+.btn-primary::before {
+  content: "";
+  position: absolute;
+  top: -40%;
+  left: -70%;
+  width: 58%;
+  height: 180%;
+  z-index: 1;
+  background: linear-gradient(
+    100deg,
+    transparent 0%,
+    rgba(80, 140, 255, 0) 20%,
+    rgba(80, 140, 255, 0.24) 50%,
+    rgba(60, 200, 100, 0.18) 70%,
+    transparent 100%
+  );
+  transform: skewX(-18deg);
+  animation: button-sheen 3.2s ease-in-out infinite;
+}
+
+.btn-primary:hover {
+  transform: scale(1.035);
+  background: #f0f5ff;
+  border-color: #a05adc;
+  color: #a05adc;
+  box-shadow:
+    0 0 10px rgba(160, 90, 220, 0.45),
+    0 0 18px rgba(160, 90, 220, 0.25);
+}
+
+.btn-primary:active {
+  transform: scale(0.95);
+  transition-duration: 80ms;
+}
+
+.btn-primary:disabled {
+  cursor: default;
+  opacity: 0.85;
+}
+
+.menu-secondary-row {
+  display: flex;
+  gap: 14px;
+}
+
+.btn-secondary-menu {
+  position: relative;
+  min-width: 112px;
+  height: 38px;
+  padding: 0 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(255, 255, 255, 0.24);
+  border-radius: 8px;
+  color: rgba(255, 255, 255, 0.82);
+  background: rgba(255, 255, 255, 0.065);
+  font-family: "Ghora", monospace;
+  font-size: 18px;
+  cursor: pointer;
+  transition:
+    border-color 55ms linear,
+    background-color 55ms linear,
+    color 55ms linear;
+}
+
+.btn-secondary-menu:hover,
+.btn-secondary-menu:focus-visible {
+  border-color: rgba(80, 140, 255, 0.72);
+  color: var(--color-white);
+  background: rgba(80, 140, 255, 0.16);
+  outline: none;
+}
+
+.btn-text {
+  position: relative;
+  z-index: 2;
+}
+
+.btn-ripple-container {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.btn-primary .ripple {
+  position: absolute;
+  border-radius: 50%;
+  transform: scale(0);
+  animation: ripple-expand 1s linear;
+  background: rgba(80, 140, 255, 0.35);
+  pointer-events: none;
+}
+
+@keyframes ripple-expand {
+  to {
+    transform: scale(4);
+    opacity: 0;
+  }
+}
+
+.hint-text {
+  position: absolute;
+  bottom: 54px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: "Ghora", monospace;
+  font-size: 16px;
+  color: rgba(210, 220, 245, 0.76);
+  text-shadow: 0 0 8px rgba(80, 140, 255, 0.24);
+  z-index: 5;
+}
+
+.credits-panel {
+  position: fixed;
+  inset: 0;
+  z-index: 30;
+  display: grid;
+  place-items: center;
+  background: rgba(5, 8, 16, 0.58);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 90ms linear;
+}
+
+.credits-panel.open {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.credits-dialog {
+  width: 520px;
+  padding: 28px;
+  border: 1px solid rgba(80, 140, 255, 0.48);
+  border-radius: 8px;
+  color: var(--color-white);
+  background: rgba(15, 20, 34, 0.96);
+  box-shadow: 0 0 26px rgba(80, 140, 255, 0.22);
+  text-align: center;
+}
+
+.credits-dialog h2 {
+  margin: 0 0 18px;
+  color: var(--color-mind);
+  font-size: 34px;
+}
+
+.credits-dialog p {
+  margin: 10px 0;
+  color: rgba(220, 228, 245, 0.82);
+  font-size: 16px;
+}
+
+.credits-dialog button {
+  margin-top: 18px;
+}

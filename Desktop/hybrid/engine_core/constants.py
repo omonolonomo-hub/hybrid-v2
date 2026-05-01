@@ -117,7 +117,10 @@ SYNERGY_THRESHOLDS = [2, 3, 4, 5, 6]  # Number of units needed for each tier
 #   • Better cost/power balance across all rarities
 #   • Shop roll odds unchanged (only costs adjusted)
 #
-CARD_COSTS = {"1": 1, "2": 2, "3": 3, "4": 5, "5": 7, "E": 0}  # E rarity costs 0 (earned via evolution)
+CARD_COSTS = {
+    "1": 1, "2": 2, "3": 3, "4": 5, "5": 7, "E": 0,  # Sayı string'leri
+    "◆": 1, "◆◆": 2, "◆◆◆": 3, "◆◆◆◆": 5, "◆◆◆◆◆": 7,  # Elmas sembolleri (backward compatibility)
+}
 EVOLVE_COPIES_REQUIRED = 3   # copies needed to trigger evolution
 # Note: Unlimited gold economy - no gold cap enforced
 HAND_LIMIT    = 6   # v0.6: hand size - 7th buy drops oldest card

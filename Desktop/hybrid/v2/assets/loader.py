@@ -50,11 +50,21 @@ class AssetLoader:
         return surface
 
     def get_card_front(self, card_name: str) -> pygame.Surface:
-        file_name = _CARD_NAME_OVERRIDES.get(card_name, card_name)
+        # Evolved kartlar için base kartın ön yüzünü kullan
+        if card_name.startswith("Evolved "):
+            base_name = card_name[8:]  # "Evolved " prefix'ini kaldır
+            file_name = _CARD_NAME_OVERRIDES.get(base_name, base_name)
+        else:
+            file_name = _CARD_NAME_OVERRIDES.get(card_name, card_name)
         return self.get_sprite(f"cards/{file_name}_front.png")
 
     def get_card_back(self, card_name: str) -> pygame.Surface:
-        file_name = _CARD_NAME_OVERRIDES.get(card_name, card_name)
+        # Evolved kartlar için base kartın arka yüzünü kullan
+        if card_name.startswith("Evolved "):
+            base_name = card_name[8:]  # "Evolved " prefix'ini kaldır
+            file_name = _CARD_NAME_OVERRIDES.get(base_name, base_name)
+        else:
+            file_name = _CARD_NAME_OVERRIDES.get(card_name, card_name)
         return self.get_sprite(f"cards/{file_name}_back.png")
 
     def get_font(self, name: str, size: int) -> pygame.font.Font:

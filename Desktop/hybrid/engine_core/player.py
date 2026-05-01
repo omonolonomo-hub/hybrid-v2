@@ -133,7 +133,10 @@ class Player:
         Returns:
             bool: True if purchase succeeded, False otherwise
         """
-        cost = CARD_COSTS[card.rarity]
+        # Rarity level'ı string'e çevir (◆◆◆ -> "3")
+        rarity_key = str(card.rarity_level) if hasattr(card, 'rarity_level') else card.rarity
+        cost = CARD_COSTS.get(rarity_key, 2)
+        
         if not self.economy.spend_gold(cost):
             return False
         

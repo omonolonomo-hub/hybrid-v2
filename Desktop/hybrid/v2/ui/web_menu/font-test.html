@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Font Test</title>
+  <style>
+    @font-face {
+      font-family: "Ghora";
+      src: url("../../assets/fonts/Ghore.ttf") format("truetype");
+      font-weight: normal;
+      font-style: normal;
+      font-display: swap;
+    }
+
+    body {
+      margin: 40px;
+      background: #0A0E14;
+      color: white;
+      font-size: 24px;
+    }
+
+    .test-ghora {
+      font-family: "Ghora", monospace;
+      font-size: 72px;
+      margin: 20px 0;
+    }
+
+    .test-fallback {
+      font-family: monospace;
+      font-size: 72px;
+      margin: 20px 0;
+    }
+
+    .info {
+      font-family: monospace;
+      font-size: 14px;
+      color: #8C96A0;
+      margin: 10px 0;
+    }
+  </style>
+</head>
+<body>
+  <h1>Font Loading Test</h1>
+  
+  <div class="info">Font with Ghora:</div>
+  <div class="test-ghora">AUTOCHESS HYBRID</div>
+  
+  <div class="info">Font with fallback (monospace):</div>
+  <div class="test-fallback">AUTOCHESS HYBRID</div>
+  
+  <div class="info" id="status">Checking font status...</div>
+
+  <script>
+    if (document.fonts) {
+      document.fonts.load('72px "Ghora"').then(() => {
+        const loaded = document.fonts.check('72px "Ghora"');
+        document.getElementById('status').textContent = 
+          `Ghora font loaded: ${loaded}`;
+        
+        if (!loaded) {
+          document.getElementById('status').textContent += 
+            ' - Font file may not be accessible or path is incorrect';
+        }
+      }).catch(err => {
+        document.getElementById('status').textContent = 
+          `Error loading font: ${err.message}`;
+      });
+    } else {
+      document.getElementById('status').textContent = 
+        'document.fonts API not available';
+    }
+  </script>
+</body>
+</html>

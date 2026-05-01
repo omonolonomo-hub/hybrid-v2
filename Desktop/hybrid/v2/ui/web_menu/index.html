@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AUTOCHESS HYBRID</title>
+  <style>
+    html,
+    body {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      overflow: hidden;
+      background: linear-gradient(to bottom, #141928 0%, #230F2D 100%);
+    }
+
+    .boot-loader {
+      position: fixed;
+      inset: 0;
+      z-index: 20;
+      display: grid;
+      place-items: center;
+      color: #FFFFFF;
+      background:
+        linear-gradient(to bottom, #141928 0%, #230F2D 100%),
+        #000000;
+      font-family: Consolas, monospace;
+      transition: opacity 180ms ease;
+    }
+
+    .boot-loader__inner {
+      text-align: center;
+    }
+
+    .boot-loader__title {
+      font-size: 64px;
+      letter-spacing: 0;
+      color: #FFFFFF;
+      -webkit-text-stroke: 1px rgba(255, 255, 255, 0.38);
+      text-shadow:
+        0 0 4px rgba(255, 255, 255, 0.9),
+        -4px 0 10px rgba(80, 140, 255, 0.9),
+        4px 0 10px rgba(60, 200, 100, 0.78),
+        0 0 26px rgba(220, 60, 60, 0.52),
+        0 0 42px rgba(80, 140, 255, 0.3);
+    }
+
+    .boot-loader__label {
+      margin-top: 24px;
+      color: #508CFF;
+      font-size: 18px;
+    }
+
+    body.fonts-ready .boot-loader {
+      opacity: 0;
+      pointer-events: none;
+    }
+  </style>
+  <link rel="preload" href="../../assets/fonts/Ghore.ttf" as="font" type="font/ttf" crossorigin>
+  <link rel="preload" href="../../assets/fonts/minimap_category_names.ttf" as="font" type="font/ttf" crossorigin>
+  <link rel="stylesheet" href="shared/base.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="boot-loader" aria-hidden="true">
+    <div class="boot-loader__inner">
+      <div class="boot-loader__title">AUTOCHESS HYBRID</div>
+      <div class="boot-loader__label">LOADING MENU</div>
+    </div>
+  </div>
+
+  <canvas id="bg-canvas"></canvas>
+
+  <main class="menu-container">
+    <div class="title-group">
+      <h1 class="title-main" data-text="AUTOCHESS HYBRID">AUTOCHESS HYBRID</h1>
+      <p class="title-sub">
+        <span class="mind">MIND</span>
+        <span class="sep"> &bull; </span>
+        <span class="connection">CONNECTION</span>
+        <span class="sep"> &bull; </span>
+        <span class="existence">EXISTENCE</span>
+      </p>
+    </div>
+
+    <div class="button-group">
+      <button id="btn-new-game" class="btn-primary" onclick="startGame()">
+        <span class="btn-text">NEW GAME</span>
+        <span class="btn-ripple-container"></span>
+      </button>
+
+      <div class="menu-secondary-row" aria-label="Menu actions">
+        <button id="btn-credits" class="btn-secondary-menu" type="button">CREDITS</button>
+        <button id="btn-exit" class="btn-secondary-menu" type="button">EXIT</button>
+      </div>
+    </div>
+
+    <p class="hint-text">Press ESC to exit</p>
+  </main>
+
+  <section id="credits-panel" class="credits-panel" aria-hidden="true" aria-label="Credits">
+    <div class="credits-dialog">
+      <h2>CREDITS</h2>
+      <p>AUTOCHESS HYBRID v2</p>
+      <p>Design, code and game systems by the Hybrid project.</p>
+      <button id="btn-close-credits" class="btn-secondary-menu" type="button">CLOSE</button>
+    </div>
+  </section>
+
+  <script src="shared/canvas-utils.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>

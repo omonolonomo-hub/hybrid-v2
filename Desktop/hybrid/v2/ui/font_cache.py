@@ -46,6 +46,7 @@ def icons(size: int)  -> pygame.font.Font: return get(Typography.FONT_ICONS,    
 def card_name(size: int) -> pygame.font.Font: return get(Typography.FONT_CARD_NAME, size)
 def other_texts(size: int) -> pygame.font.Font: return get(Typography.FONT_OTHER_TEXTS, size)
 def minimap_cat(size: int) -> pygame.font.Font: return get(Typography.FONT_MINIMAP_CAT, size)
+def stat_passive(size: int) -> pygame.font.Font: return get(Typography.FONT_STAT_PASSIVE, size)
 
 # Sık kullanacağımız ikonların Unicode kodları (Font Awesome 7 Free için)
 ICONS = {
@@ -75,6 +76,14 @@ ICONS = {
     "CROWN":  "\uf521", # 1. sıra - Taç
     "MEDAL":  "\uf5a2", # 2. sıra - Madalya
     "AWARD":  "\uf559", # 3. sıra - Ödül
+    # Stat İkonları
+    "FIST":   "\uf255", # Power - Yumruk
+    "EXPAND": "\uf424", # Size - Genişleme
+    "FOOTPRINT":"\uf54b", # Trace - Ayak izi
+    "MAGNET": "\uf076", # Gravity - Mıknatıs
+    "MUSIC":  "\uf001", # Harmony - Müzik notu
+    "BROADCAST":"\uf519", # Spread - Yayın
+    "GEM":    "\uf3a5", # Prestige - Mücevher
 }
 
 def render_icon(

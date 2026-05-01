@@ -1,0 +1,15 @@
+# Dependencies
+node_modules/
+.kilo/
+
+# Build outputs
+dist/
+build/
+*.pyc
+__pycache__/
+
+# Hypothesis test data
+.hypothesis/
+
+# Git
+.git/

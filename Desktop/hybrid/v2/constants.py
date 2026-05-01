@@ -86,9 +86,10 @@ class Typography:
     FONT_MONO: str       = "JetBrainsMono-Regular.ttf"
     FONT_ICONS: str      = "fa-solid.otf"
     # 🆕 Yeni Eklenen Fontlar
-    FONT_CARD_NAME: str  = "hover_box_card_name.ttf"
+    FONT_CARD_NAME: str  = "Commodore Angled v1.2.ttf"  # Kart isimleri için Commodore Angled
     FONT_OTHER_TEXTS: str = "hover_box_other_texts.ttf"
     FONT_MINIMAP_CAT: str = "minimap_category_names.ttf"
+    FONT_STAT_PASSIVE: str = "99_percent_OCCUPY.ttf"  # Stat ve passive bölümü için
     SIZE_BODY: int       = 15
     SIZE_LABEL: int      = 13
     SIZE_HEADER: int     = 20

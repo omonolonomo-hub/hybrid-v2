@@ -1,0 +1,40 @@
+/**
+ * Shared base styles
+ * Used by both main menu (style.css) and lobby (lobby.css)
+ */
+
+@font-face {
+  font-family: "Ghora";
+  src: url("../../../assets/fonts/Ghore.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "MinimapCat";
+  src: url("../../../assets/fonts/minimap_category_names.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Butler";
+  src: url("../../../assets/fonts/Butler-Free-SBd-St.otf") format("opentype");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+  --color-mind: #508CFF;
+  --color-connection: #3CC864;
+  --color-existence: #DC3C3C;
+  --color-neutral: #8C8C8C;
+  --color-bg: #0A0E14;
+  --color-panel: #141922;
+  --color-border: rgba(255, 255, 255, 0.08);
+  --color-text: #E6EDF3;
+  --color-text-dim: #8C96A0;
+}

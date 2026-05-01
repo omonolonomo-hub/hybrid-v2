@@ -2,6 +2,7 @@
 
 # UI / Rendering
 pygame-ce>=2.5.0
+pywebview>=4.4.1
 
 # Testing Framework
 pytest>=9.0.0
