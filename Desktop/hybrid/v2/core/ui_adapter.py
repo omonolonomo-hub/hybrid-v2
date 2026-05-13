@@ -463,9 +463,21 @@ class UIAdapter:
         players = []
         for player in adapter.get_alive_players():
             pid = self._safe_int(getattr(player, "pid", 0))
+            strategy = getattr(player, "strategy", "random")
+            
+            # Oyuncu 0 (human) için "YOU", diğerleri için strateji adı
+            if pid == 0:
+                display_name = "YOU"
+                ai_strategy = ""
+            else:
+                # Mevcut strateji isimlerini kullan (aggressive, defensive, balanced, builder, evolver, random)
+                display_name = strategy
+                ai_strategy = strategy
+            
             players.append(
                 {
-                    "name": f"P{pid}",
+                    "name": display_name,
+                    "ai_strategy": ai_strategy,
                     "hp": adapter.get_player_hp(pid),
                     "max_hp": self._constants.STARTING_HP,
                     "gold": adapter.get_player_gold(pid),

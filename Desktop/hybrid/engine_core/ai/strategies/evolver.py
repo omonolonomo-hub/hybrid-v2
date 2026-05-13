@@ -70,4 +70,9 @@ class EvolverStrategy(BaseStrategy):
         _buy_evolver(player, market, max_cards, market_obj, rng, trigger_passive_fn, ai_instance, next_uid_fn, game_ref)
     
     def place_cards(self, player, rng=None, **kwargs):
-        _place_smart_default(player, rng)
+        # Evolver stratejisi için sinerji-delta tabanlı yerleştirme
+        # Orta-yüksek ağırlıklar (3.0) — evrim zincirleri için
+        # Yüksek lookahead (0.7) — evrim grupları planlaması
+        from engine_core.ai.synergy_placement import place_cards_synergy_aware, schedule_for
+        schedule = schedule_for("evolver")
+        place_cards_synergy_aware(player, schedule=schedule, lookahead_weight=0.7)

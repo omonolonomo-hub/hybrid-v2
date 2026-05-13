@@ -125,4 +125,8 @@ class TempoStrategy(BaseStrategy):
         _buy_warrior(player, market, max_cards, market_obj, rng, trigger_passive_fn, ai_instance, next_uid_fn, game_ref)
     
     def place_cards(self, player, rng=None, **kwargs):
-        _place_aggressive(player, **kwargs)
+        # Tempo stratejisi için sinerji-delta tabanlı yerleştirme
+        # Erken agresif, geç dengeli (1.0 → 2.8)
+        from engine_core.ai.synergy_placement import place_cards_synergy_aware, schedule_for
+        schedule = schedule_for("tempo")
+        place_cards_synergy_aware(player, schedule=schedule)

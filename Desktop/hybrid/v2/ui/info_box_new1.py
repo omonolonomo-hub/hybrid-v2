@@ -317,7 +317,7 @@ class InfoBox:
         W, H = rw * s, rh * s
         draw_rect = pygame.Rect(0, 0, W, H)
         a = self._alpha
-        base_rgb = (12, 14, 20)
+        base_rgb = (32, 35, 48)  # Açık mor-karbon base
         br = max(8, int(10 * s))
 
         # Arka plan - opaklık artırıldı
@@ -521,7 +521,8 @@ class InfoBox:
         
         pygame.draw.rect(surface, passive_bg_tint, passive_bg_rect, border_radius=max(4, int(6 * s)))
 
-        p_font = font_cache.stat_passive(max(15, int(17 * s)))  # Passive text büyütüldü (11->15, 13.5->17)
+        # Pasif açıklamalar için Philosopher-Italic fontu - daha zarif ve okunabilir
+        p_font = font_cache.passive_description(max(16, int(18 * s)))  # Philosopher-Italic için optimize edilmiş punto
         text_indent = int(8 * s)
         text_width = inner.w - text_indent
         
@@ -529,24 +530,24 @@ class InfoBox:
         max_lines = 6 if rh >= 350 else 4
         lines = lines[:max_lines]
 
-        line_gap = max(13 * s, int(14 * s))
-        label_h = max(16 * s, int(18 * s))
-        content_h = label_h + len(lines) * line_gap
+        # Philosopher-Italic için daha geniş satır aralığı - daha iyi okunabilirlik
+        line_gap = max(15 * s, int(17 * s))  # 13->15, 14->17 (daha geniş aralık)
+        # Label kaldırıldı - sadece açıklama metni
+        content_h = len(lines) * line_gap
         avail_h = max(0, bottom_divider_y - passive_top)
         # Ortalamak yerine üstten başlat — orta alan “tok” dolar; taşarsa yukarı yapışır
         mid_start_y = passive_top + min(int(2 * s), max(0, (avail_h - content_h) // 4))
 
-        passive_lbl_r = pygame.Rect(inner.x, mid_start_y, inner.w, label_h)
-        label = f"◈ {card.passive_label}"
-        lbl_fs = max(16, int(18 * s))  # Passive label büyütüldü (12->16, 14.5->18)
-        font_cache.render_text(surface, label, font_cache.stat_passive(lbl_fs), passive_color, passive_lbl_r)
-
-        text_y = mid_start_y + label_h + int(1.5 * s)
+        text_y = mid_start_y
+        
+        # Kategori rengine göre pasif açıklama rengi - okunabilir açık ton
+        passive_text_color = _get_passive_text_color(cat_color)
         
         for line in lines:
-            # Satırlar indent ile başlar
+            # Satırlar indent ile başlar - Philosopher-Italic ile daha zarif görünüm
             lr = pygame.Rect(inner.x + text_indent, text_y, inner.w - text_indent, line_gap)
-            font_cache.render_text(surface, line, p_font, (228, 230, 242), lr)
+            # Kategori renginin açık tonunda - hem uyumlu hem okunabilir
+            font_cache.render_text(surface, line, p_font, passive_text_color, lr)
             text_y += line_gap
 
         stat_sep_a = min(255, int(200 * self._alpha))
@@ -741,3 +742,43 @@ def _get_cat_color(category: str) -> tuple[int, int, int]:
         return (255, 120, 40)
 
     return (120, 160, 200)
+
+
+def _get_passive_text_color(cat_color: tuple[int, int, int]) -> tuple[int, int, int]:
+    """Kategori renginden okunabilir pasif açıklama rengi üret.
+    
+    Kategori rengini beyaza doğru blend ederek hem uyumlu hem okunabilir bir ton elde eder.
+    Koyu renkler daha fazla aydınlatılır, açık renkler hafifçe ayarlanır.
+    """
+    r, g, b = cat_color
+    
+    # Rengin parlaklığını hesapla (perceived brightness)
+    brightness = (r * 0.299 + g * 0.587 + b * 0.114) / 255.0
+    
+    # Koyu renkler için daha fazla beyaz karıştır
+    if brightness < 0.4:
+        # Çok koyu - %70 beyaz karıştır
+        blend_factor = 0.70
+    elif brightness < 0.6:
+        # Orta ton - %55 beyaz karıştır
+        blend_factor = 0.55
+    else:
+        # Açık renk - %40 beyaz karıştır
+        blend_factor = 0.40
+    
+    # Beyaz ile blend et (240, 245, 250) - hafif mavi tonlu beyaz
+    white = (240, 245, 250)
+    result_r = int(r * (1 - blend_factor) + white[0] * blend_factor)
+    result_g = int(g * (1 - blend_factor) + white[1] * blend_factor)
+    result_b = int(b * (1 - blend_factor) + white[2] * blend_factor)
+    
+    # Minimum parlaklık garantisi - çok koyu olmasın
+    final_brightness = (result_r * 0.299 + result_g * 0.587 + result_b * 0.114) / 255.0
+    if final_brightness < 0.65:
+        # Hala çok koyu, daha fazla aydınlat
+        boost = (0.65 - final_brightness) * 255
+        result_r = min(255, int(result_r + boost))
+        result_g = min(255, int(result_g + boost))
+        result_b = min(255, int(result_b + boost))
+    
+    return (result_r, result_g, result_b)

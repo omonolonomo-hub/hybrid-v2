@@ -45,4 +45,9 @@ class BalancerStrategy(BaseStrategy):
         _buy_balancer(player, market, max_cards, market_obj, rng, trigger_passive_fn, ai_instance, next_uid_fn, game_ref)
     
     def place_cards(self, player, rng=None, **kwargs):
-        _place_smart_default(player, rng)
+        # Balancer stratejisi için sinerji-delta tabanlı yerleştirme
+        # Agresif geç oyun ağırlıkları ile (4.0)
+        # Orta lookahead (0.6) — dengeli planlama
+        from engine_core.ai.synergy_placement import place_cards_synergy_aware, schedule_for
+        schedule = schedule_for("balancer")
+        place_cards_synergy_aware(player, schedule=schedule, lookahead_weight=0.6)

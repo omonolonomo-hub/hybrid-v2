@@ -44,7 +44,7 @@ class Layout:
     HAND_CARD_H: int     = 186
     HAND_CARD_GAP: int   = 20
     HAND_MAX_CARDS: int  = 6
-    HAND_INFO_W: int     = 340
+    HAND_INFO_W: int     = 240  # 340 -> 240 (100px azaltıldı, gereksiz alan)
     HAND_INFO_X: int     = Screen.W - HAND_INFO_W - 10
     SHOP_PANEL_H: int    = 210
     SHOP_PANEL_Y: int    = 0
@@ -52,7 +52,7 @@ class Layout:
     SHOP_CARD_H: int     = 186
     SHOP_CARD_GAP: int   = 20
     SHOP_SLOTS: int      = 5
-    SHOP_INFO_W: int     = 340
+    SHOP_INFO_W: int     = 240  # 340 -> 240 (100px azaltıldı, gereksiz alan)
     SHOP_INFO_X: int     = Screen.W - SHOP_INFO_W - 10
     SHOP_BTN_W: int      = 140
     SHOP_BTN_H: int      = 42
@@ -90,6 +90,7 @@ class Typography:
     FONT_OTHER_TEXTS: str = "hover_box_other_texts.ttf"
     FONT_MINIMAP_CAT: str = "minimap_category_names.ttf"
     FONT_STAT_PASSIVE: str = "99_percent_OCCUPY.ttf"  # Stat ve passive bölümü için
+    FONT_PASSIVE_DESC: str = "Philosopher-Italic.ttf"  # Pasif açıklamaları için Philosopher-Italic
     SIZE_BODY: int       = 15
     SIZE_LABEL: int      = 13
     SIZE_HEADER: int     = 20

@@ -50,10 +50,10 @@ class MinimapHUD:
         # ── SynergyHud Stili: Gradient Panel Önbellekleri ──────────────────────
         from v2.ui.ui_utils import UIUtils
         
-        # Renk paleti (Karbon-mor tonları - hex grid ile uyumlu)
-        self._C_PANEL_TOP = (28, 24, 35, 255)  # Koyu mor-karbon
-        self._C_PANEL_BOT = (16, 13, 20, 255)  # Daha koyu mor-karbon
-        self._C_BORDER = (50, 41, 61, 180)  # Karbon-mor border
+        # Renk paleti (Açık mor-karbon tonları - hex grid ile uyumlu)
+        self._C_PANEL_TOP = (58, 52, 75, 255)  # Açık mor-karbon gradient üst
+        self._C_PANEL_BOT = (42, 38, 55, 255)  # Açık mor-karbon gradient alt
+        self._C_BORDER = (95, 85, 115, 200)  # Açık mor-karbon border
         
         # Grid section için gradient panel (üst padding azaltıldı)
         pad_top = 3  # Üst padding çok azaltıldı (Passives ile boşluk daraldı)

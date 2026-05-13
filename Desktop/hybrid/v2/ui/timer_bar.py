@@ -32,5 +32,5 @@ class TimerBar:
             pygame.draw.rect(surface, (255, 200, 80), glow_rect)
 
         # 3. Ust ve Alt ince Cyber Sınır Cizgileri (Karbon-mor)
-        pygame.draw.line(surface, (50, 41, 61), (self.rect.x, self.rect.y), (self.rect.right, self.rect.y), 1)
-        pygame.draw.line(surface, (50, 41, 61), (self.rect.x, self.rect.bottom), (self.rect.right, self.rect.bottom), 1)
+        pygame.draw.line(surface, (95, 85, 115), (self.rect.x, self.rect.y), (self.rect.right, self.rect.y), 1)  # Açık mor-karbon
+        pygame.draw.line(surface, (95, 85, 115), (self.rect.x, self.rect.bottom), (self.rect.right, self.rect.bottom), 1)  # Açık mor-karbon

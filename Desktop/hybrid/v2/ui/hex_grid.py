@@ -429,12 +429,7 @@ def render_ghost_preview(
 def render_hex_grid(surface: pygame.Surface, board_cards: dict | None = None, camera: CameraState = None, config: HexGridConfig = None):
     """
     Board üzerindeki aktif (board) hücreleri "DCI Premium" stiliyle çizer.
-    Glow, Depth ve Breathing efektleri içerir.
-    İyileştirilmiş izometrik render kalitesi:
-    - Çoklu katman derinlik efekti
-    - Gelişmiş anti-aliasing
-    - İzometrik gölge ve highlight
-    - Yumuşak gradient geçişleri
+    OPTIMIZED VERSION: Daha az katman, daha az anti-aliasing, daha iyi FPS.
     config: HexGridConfig instance (defaults to engine config)
     """
     if board_cards is None:
@@ -461,7 +456,10 @@ def render_hex_grid(surface: pygame.Surface, board_cards: dict | None = None, ca
     zoom = camera.zoom
     base_radius = GridMath.HEX_SIZE * zoom
     
-    # ── 3. Hex Grid Çizimi ───────────────────────────────────────────
+    # Global breathing - tek sinüs hesabı
+    global_breath = 0.97 + 0.03 * math.sin(t * 1.5)
+    
+    # ── 3. Hex Grid Çizimi (Optimized - Daha Az Katman) ──────────────
     for q, r in config.valid_coords:
         cx, cy = axial_to_pixel(q, r, camera)
         
@@ -474,16 +472,12 @@ def render_hex_grid(surface: pygame.Surface, board_cards: dict | None = None, ca
         is_hover  = (q, r) == (mouse_q, mouse_r)
         is_filled = (q, r) in board_cards
         
-        # Mikro-Animasyon: Breathing (Nefes Alma)
-        # Sadece boş hücreler veya hover olanlar hafifçe nefes alır
-        breath_val = 0.97 + 0.03 * math.sin(t * 1.5 + q*0.4 + r*0.4)
-        radius = base_radius * breath_val if not is_filled else base_radius
+        # Breathing animasyonu - global değer kullan
+        radius = base_radius * global_breath if not is_filled else base_radius
         
-        # 4. Geometri Hazırlığı - Çoklu Katman
+        # 4. Geometri Hazırlığı - Sadece Gerekli Katmanlar
         points = []
         inner_points = []
-        shadow_points = []
-        highlight_points = []
         
         for i in range(6):
             angle = math.radians(60 * i - 30)
@@ -495,74 +489,27 @@ def render_hex_grid(surface: pygame.Surface, board_cards: dict | None = None, ca
             py = cy + radius * sin_a
             points.append((int(px), int(py)))
             
-            # İç Sınır (Highlight için)
+            # İç Sınır
             ix = cx + (radius * 0.85) * cos_a
             iy = cy + (radius * 0.85) * sin_a
             inner_points.append((int(ix), int(iy)))
-            
-            # Gölge katmanı (izometrik derinlik için)
-            sx = cx + (radius * 0.95) * cos_a
-            sy = cy + (radius * 0.95) * sin_a + (2 * zoom)  # Hafif aşağı kaydırma
-            shadow_points.append((int(sx), int(sy)))
-            
-            # Üst highlight (ışık kaynağı sol-üst)
-            hx = cx + (radius * 0.92) * cos_a
-            hy = cy + (radius * 0.92) * sin_a - (1 * zoom)  # Hafif yukarı
-            highlight_points.append((int(hx), int(hy)))
 
-        # 5. [LAYER 1] İzometrik Gölge (Derinlik hissi)
-        shadow_alpha = 60 if is_filled else 15
-        shadow_col = (8, 6, 10, shadow_alpha)
-        pygame.gfxdraw.filled_polygon(surface, shadow_points, shadow_col)
-        pygame.gfxdraw.aapolygon(surface, shadow_points, shadow_col)
-        
-        # 6. [LAYER 2] Ana Gövde - Gradient Simülasyonu
-        # Karbon ve mor arası dengeli ton
+        # 5. [LAYER 1] Ana Gövde - Tek Katman (Gölge kaldırıldı - FPS boost)
         base_alpha = 140 if is_filled else 30
-        body_col = (16, 13, 20, base_alpha)  # Karbon-mor dengeli
+        body_col = (42, 38, 55, base_alpha)
         
-        # Ana dolgu
-        pygame.gfxdraw.filled_polygon(surface, points, body_col)
-        pygame.gfxdraw.aapolygon(surface, points, body_col)
+        # Ana dolgu - AA kaldırıldı (FPS boost)
+        pygame.draw.polygon(surface, body_col, points)
         
-        # Orta katman (gradient efekti için)
+        # İç katman (gradient efekti)
         mid_alpha = 95 if is_filled else 22
-        mid_col = (20, 17, 25, mid_alpha)
-        pygame.gfxdraw.filled_polygon(surface, inner_points, mid_col)
-        pygame.gfxdraw.aapolygon(surface, inner_points, mid_col)
+        mid_col = (52, 48, 68, mid_alpha)
+        pygame.draw.polygon(surface, mid_col, inner_points)
         
-        # 7. [LAYER 3] Üst Highlight (İzometrik ışık)
-        if is_filled or is_hover:
-            highlight_alpha = 45 if is_filled else 25
-            highlight_col = (35, 28, 42, highlight_alpha)
-            pygame.gfxdraw.filled_polygon(surface, highlight_points, highlight_col)
-            pygame.gfxdraw.aapolygon(surface, highlight_points, highlight_col)
-
-        # 8. [LAYER 4] Tactical Borders - Çift Katman
-        # Dış kenarlık (ana)
-        border_col = (105, 78, 135, 180) if is_hover else (50, 41, 61, 100)  # Orta ton
+        # 6. [LAYER 2] Border - Tek Çizgi (Çift katman kaldırıldı)
+        border_col = (105, 78, 135, 180) if is_hover else (95, 85, 115, 120)
         border_w = max(1, int(2 * zoom))
-        
-        # Anti-aliased polygon border
-        pygame.gfxdraw.aapolygon(surface, points, border_col)
-        if border_w > 1:
-            pygame.draw.polygon(surface, border_col, points, border_w)
-        
-        # İç Rim Light (Dengeli)
-        if is_hover or is_filled:
-            rim_col = (145, 120, 175, 100)
-            pygame.gfxdraw.aapolygon(surface, inner_points, rim_col)
-            
-        # 9. [LAYER 5] Ekstra Detay - Köşe Vurguları (sadece filled için)
-        if is_filled:
-            for i in range(6):
-                angle = math.radians(60 * i - 30)
-                # Köşe noktalarında küçük highlight
-                corner_x = int(cx + radius * 0.88 * math.cos(angle))
-                corner_y = int(cy + radius * 0.88 * math.sin(angle) - 1)
-                corner_size = max(1, int(2 * zoom))
-                pygame.gfxdraw.filled_circle(surface, corner_x, corner_y, corner_size, (55, 45, 65, 80))
-                pygame.gfxdraw.aacircle(surface, corner_x, corner_y, corner_size, (55, 45, 65, 80))
+        pygame.draw.polygon(surface, border_col, points, border_w)
 
     surface.set_clip(old_clip)
 
@@ -692,6 +639,7 @@ def _render_pulse_borders(
     Restore the "alive" feeling without rebuilding geometry:
     - Uses cached hex points from BoardSurfaceCache (no per-hex trig)
     - Draws only border overlay (single polygon stroke per visible hex)
+    OPTIMIZED: Global pulse, daha az hesaplama.
     """
     # Clip to board area (match render_hex_grid)
     center_rect = pygame.Rect(
@@ -704,19 +652,20 @@ def _render_pulse_borders(
     surface.set_clip(center_rect)
 
     t = pygame.time.get_ticks() / 1000.0
+    # Global pulse - tek hesaplama
+    global_breath = 0.85 + 0.15 * math.sin(t * 1.6)
+    
     zoom = camera.zoom
     border_w = max(1, int(2 * zoom))
 
     pts_cache = board_surface_cache.get_hex_points_cache(board_cards, camera, config.valid_coords)
     if pts_cache:
         for (q, r), (cx, cy, outer, _inner) in pts_cache.items():
-            # Match old feel: per-hex phase, but only alpha (radius stays static)
-            breath = 0.85 + 0.15 * math.sin(t * 1.6 + q * 0.4 + r * 0.4)
             is_filled = (q, r) in board_cards
-            # Filled hex borders: calmer; empty hex borders: more alive
-            a = int((85 if is_filled else 145) * breath)
-            w = border_w + (1 if (not is_filled and breath > 0.98 and border_w <= 2) else 0)
-            col = (50, 41, 61, max(45, min(a, 200)))
+            # Basitleştirilmiş alpha - per-hex offset kaldırıldı
+            a = int((85 if is_filled else 145) * global_breath)
+            w = border_w
+            col = (95, 85, 115, max(60, min(a, 200)))  # Açık mor-karbon
             pygame.draw.polygon(surface, col, outer, w)
 
     surface.set_clip(old_clip)
@@ -732,6 +681,7 @@ def _render_breath_fill_overlay(
     """
     Zemin hissini geri getirmek için boş hex'lere çok hafif breathing fill overlay.
     Statik grid'i bozmaz; sadece empty hex'lere 2 filled polygon (outer+inner) çizer.
+    OPTIMIZED: Daha az alpha modülasyonu, daha basit hesaplama.
     """
     center_rect = pygame.Rect(
         Layout.CENTER_ORIGIN_X,
@@ -743,22 +693,23 @@ def _render_breath_fill_overlay(
     surface.set_clip(center_rect)
 
     t = pygame.time.get_ticks() / 1000.0
+    # Global breathing - tek sinüs hesabı tüm hex'ler için
+    global_breath = 0.97 + 0.03 * math.sin(t * 1.5)
+    
     pts_cache = board_surface_cache.get_hex_points_cache(board_cards, camera, config.valid_coords)
     if pts_cache:
         for (q, r), (cx, cy, outer, inner) in pts_cache.items():
             if (q, r) in board_cards:
                 continue  # filled hex'ler statik layer'da yeterince okunuyor
 
-            # Slight scale pulse (old behavior: empties breathe)
-            s = 0.97 + 0.03 * math.sin(t * 1.5 + q * 0.4 + r * 0.4)
+            # Basitleştirilmiş scale - per-hex offset kaldırıldı
+            s = global_breath
 
             outer_s = [(int(cx + (px - cx) * s), int(cy + (py - cy) * s)) for (px, py) in outer]
             inner_s = [(int(cx + (px - cx) * s), int(cy + (py - cy) * s)) for (px, py) in inner]
 
-            # Slight alpha modulation to reintroduce "ground" depth
-            a0 = int(26 + 10 * (s - 0.97) / 0.03)  # ~26..36
-            a1 = int(16 + 8 * (s - 0.97) / 0.03)   # ~16..24
-            pygame.draw.polygon(surface, (16, 13, 20, max(18, min(a0, 48))), outer_s)
-            pygame.draw.polygon(surface, (25, 21, 31, max(10, min(a1, 34))), inner_s)
+            # Sabit alpha - modülasyon kaldırıldı (FPS boost)
+            pygame.draw.polygon(surface, (42, 38, 55, 28), outer_s)
+            pygame.draw.polygon(surface, (52, 48, 68, 18), inner_s)
 
     surface.set_clip(old_clip)

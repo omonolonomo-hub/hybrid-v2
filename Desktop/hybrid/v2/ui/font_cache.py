@@ -47,6 +47,7 @@ def card_name(size: int) -> pygame.font.Font: return get(Typography.FONT_CARD_NA
 def other_texts(size: int) -> pygame.font.Font: return get(Typography.FONT_OTHER_TEXTS, size)
 def minimap_cat(size: int) -> pygame.font.Font: return get(Typography.FONT_MINIMAP_CAT, size)
 def stat_passive(size: int) -> pygame.font.Font: return get(Typography.FONT_STAT_PASSIVE, size)
+def passive_description(size: int) -> pygame.font.Font: return get(Typography.FONT_PASSIVE_DESC, size)
 
 # Sık kullanacağımız ikonların Unicode kodları (Font Awesome 7 Free için)
 ICONS = {

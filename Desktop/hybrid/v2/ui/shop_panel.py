@@ -12,7 +12,7 @@ from v2.ui.card_flip import CardFlip
 
 logger = logging.getLogger(__name__)
 
-_FALLBACK_BACK_COLOR = (12, 14, 20)
+_FALLBACK_BACK_COLOR = (35, 38, 52)  # Açık mor-karbon
 _FALLBACK_FRONT_COLOR = (20, 60, 100)
 
 
@@ -41,17 +41,16 @@ def _make_fallback_surface(color: tuple, w: int, h: int) -> pygame.Surface:
 
 class ShopPanel:
     def __init__(self):
-        self.rect = pygame.Rect(0, Layout.SHOP_PANEL_Y, Screen.W, Layout.SHOP_PANEL_H)
+        panel_w = Screen.W - Layout.SIDEBAR_RIGHT_W - 20
+        self.rect = pygame.Rect(0, Layout.SHOP_PANEL_Y, panel_w, Layout.SHOP_PANEL_H)
 
-        # ── Golden Ratio Layout ──────────────────────────────────────────────
-        # Görünür alanı ikiye bölüyoruz (Altın Oran = 1.618)
-        w_vis = Screen.W - Layout.SIDEBAR_LEFT_W
-        phi = 1.618034
+        w_vis = panel_w - Layout.SIDEBAR_LEFT_W
         
-        cards_zone_w = int(w_vis / phi)
+        # Sabit zone genişliği (eskisi gibi 976 hizası)
+        cards_zone_w = 976
         controls_zone_w = w_vis - cards_zone_w
         
-        # 1. Cards Placement (Golden Area'nın ortasına hizalı)
+        # 1. Cards Placement
         card_w = Layout.SHOP_CARD_W
         card_gap = 24 # Nefes payı 20'den 24'e çıkarıldı
         total_cards_w = (card_w * Layout.SHOP_SLOTS) + (card_gap * (Layout.SHOP_SLOTS - 1))
@@ -64,13 +63,12 @@ class ShopPanel:
             cx = start_x + (card_w + card_gap) * i
             self.card_rects.append(pygame.Rect(cx, start_y, card_w, Layout.SHOP_CARD_H))
 
-        # 2. Controls Placement (Stats -> Buttons -> InfoBox)
+        # 2. Controls Placement (Stats -> Buttons)
         ctrl_start_x = Layout.SIDEBAR_LEFT_W + cards_zone_w
         margin_right = 20
         gap = 16
-        info_w = 340
         
-        rem_w = controls_zone_w - margin_right - info_w - (gap * 2)
+        rem_w = controls_zone_w - margin_right - gap
         btn_w = 124
         stats_w = rem_w - btn_w
         
@@ -83,16 +81,12 @@ class ShopPanel:
         self.reroll_rect = pygame.Rect(btn_x, start_y, btn_w, btn_h)
         self.lock_rect   = pygame.Rect(btn_x, start_y + btn_h + btn_gap, btn_w, btn_h)
         self.ready_rect  = pygame.Rect(btn_x, start_y + 2 * (btn_h + btn_gap), btn_w, btn_h)
-        
-        info_x = self.reroll_rect.right + gap
-        self.info_rect = pygame.Rect(info_x, start_y, info_w, Layout.SHOP_CARD_H)
-        # ──────────────────────────────────────────────────────────────────
 
-        self.bg_surface = pygame.Surface((Screen.W, Layout.SHOP_PANEL_H), pygame.SRCALPHA).convert_alpha()
-        self.bg_surface.fill((16, 13, 20, 245))  # Karbon-mor ton (hex grid ile uyumlu)
+        self.bg_surface = pygame.Surface((panel_w, Layout.SHOP_PANEL_H), pygame.SRCALPHA).convert_alpha()
+        self.bg_surface.fill((42, 38, 55, 245))  # Açık mor-karbon ton (hex grid ile uyumlu)
         
         # Alt ayırıcı çizgi (Karbon-mor frameless border)
-        pygame.draw.line(self.bg_surface, (50, 41, 61, 100), (0, Layout.SHOP_PANEL_H - 1), (Screen.W, Layout.SHOP_PANEL_H - 1), 1)
+        pygame.draw.line(self.bg_surface, (95, 85, 115, 120), (0, Layout.SHOP_PANEL_H - 1), (panel_w, Layout.SHOP_PANEL_H - 1), 1)  # Açık mor-karbon
 
         self._locked_state = False
         self._gold = 0
@@ -137,7 +131,7 @@ class ShopPanel:
             pygame.draw.polygon(self.bg_surface, (10, 9, 14, 220), points)
             
             # Hexagon Çerçeve (Karbon-mor tactical çizgi)
-            pygame.draw.polygon(self.bg_surface, (50, 41, 61, 150), points, width=1)
+            pygame.draw.polygon(self.bg_surface, (95, 85, 115, 170), points, width=1)  # Açık mor-karbon
             
             # Siberpunk Vurgular (Karbon-mor veri portu)
             # points[2] = Bottom Center (90 deg), points[5] = Top Center (270 deg)

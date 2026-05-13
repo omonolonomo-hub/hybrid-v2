@@ -51,7 +51,7 @@ class PlayerHub:
 
     _MAX_HP: int      = 150
     # DCI Renk Paleti (Karbon-Mor Tonları)
-    _C_VOID_BG   = (16, 13, 20, 255)  # Koyu mor-karbon base
+    _C_VOID_BG   = (42, 38, 55, 255)  # Açık mor-karbon base
     _C_RIM_TOP   = (140, 120, 160, 180)  # Mor-gri cam parlaması
     _C_SCANLINE  = (255, 255, 255, 8)
     _C_TITLE     = (160, 140, 200)  # Mor-gri title
@@ -92,8 +92,8 @@ class PlayerHub:
         from v2.ui.ui_utils import UIUtils
         self._bg_surf = UIUtils.create_gradient_panel(
             self.inner_rect.w, self.inner_rect.h, 
-            (28, 24, 35, 255), (16, 13, 20, 255),  # Karbon-mor gradient
-            border_radius=8, border_color=(50, 41, 61, 180)  # Karbon-mor border
+            (58, 52, 75, 255), (42, 38, 55, 255),  # Açık mor-karbon gradient
+            border_radius=8, border_color=(95, 85, 115, 200)  # Açık mor-karbon border
         )
 
     def update_view(self, data: PlayerHubData) -> None:

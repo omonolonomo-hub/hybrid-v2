@@ -16,15 +16,15 @@ def _empty_view_model() -> SynergyViewState:
 class SynergyHud:
     _C_TITLE = (160, 140, 200)  # Mor-gri ton (mavi yerine)
     _C_WHITE = (220, 224, 240)
-    _C_DIM = (100, 95, 120)  # Mor-gri dim
-    _C_PANEL = (10, 12, 20, 235)
-    _C_BORDER = (50, 41, 61, 180)  # Karbon-mor border
-    _C_OFF = (50, 45, 60)  # Mor-karbon off state
+    _C_DIM = (135, 128, 160)  # Açık mor-gri dim
+    _C_PANEL = (32, 35, 48, 235)  # Açık mor-karbon base
+    _C_BORDER = (95, 85, 115, 200)  # Açık mor-karbon border
+    _C_OFF = (85, 78, 105)  # Açık mor-karbon off state
 
-    # Gradient panel renkleri (Karbon-mor tonları)
-    _C_PANEL_TOP = (28, 24, 35, 255)  # Koyu mor-karbon
-    _C_PANEL_BOT = (16, 13, 20, 255)  # Daha koyu mor-karbon
-    _C_BORDER    = (50, 41, 61, 180)  # Karbon-mor border
+    # Gradient panel renkleri (Açık mor-karbon tonları)
+    _C_PANEL_TOP = (58, 52, 75, 255)  # Açık mor-karbon gradient üst
+    _C_PANEL_BOT = (42, 38, 55, 255)  # Açık mor-karbon gradient alt
+    _C_BORDER    = (95, 85, 115, 200)  # Açık mor-karbon border
 
     def __init__(self):
         self.rect = pygame.Rect(

@@ -24,18 +24,10 @@ def _make_fallback_surface(color: tuple, w: int, h: int) -> pygame.Surface:
 
 class HandPanel:
     def __init__(self):
-        # ── Ana Panel Rect (Full Width Bar) ───────────────────────────
-        self.rect = pygame.Rect(0, Layout.HAND_PANEL_Y, Screen.W, Layout.HAND_PANEL_H)
+        # ── Ana Panel Rect (Full Width Bar -> Cropped for LobbyPanel) ─
+        panel_w = Screen.W - Layout.SIDEBAR_RIGHT_W - 20
+        self.rect = pygame.Rect(0, Layout.HAND_PANEL_Y, panel_w, Layout.HAND_PANEL_H)
 
-        # ── Golden Ratio Layout (Shop Panel ile hizalı) ───────────────────────
-        w_vis = Screen.W - Layout.SIDEBAR_LEFT_W
-        phi = 1.618034
-        
-        cards_zone_w = int(w_vis / phi)
-        
-        # Shop Panel'in start_x değerini simüle edelim:
-        # Shop_total_w = 5 * 160 + 4 * 24 = 896
-        # Shop_start_x = 340 + (976 - 896) // 2 = 380
         # Kartların sol hizalarını Shop Panel ile aynı hizada başlatıyoruz:
         start_x = 380
         
@@ -47,20 +39,12 @@ class HandPanel:
             cx = start_x + (Layout.HAND_CARD_W + Layout.HAND_CARD_GAP) * i
             self.card_rects.append(pygame.Rect(cx, start_y, Layout.HAND_CARD_W, Layout.HAND_CARD_H))
 
-        # ── Info / Hover Paneli (Shop Panel ile tam senkron) ──────────────
-        # Shop Panel info_x hesaplaması:
-        # ctrl_start_x = 340 + 976 = 1316
-        # info_x = ctrl_start_x + 88 + 16 + 124 + 16 = 1560
-        info_x = 1560
-        info_w = 340
-        self.info_rect = pygame.Rect(info_x, start_y, info_w, Layout.HAND_CARD_H)
-
         # ── DCI Tactical Shelf (Frameless / Seamless) ──────────────────────
-        self.bg_surface = pygame.Surface((Screen.W, Layout.HAND_PANEL_H), pygame.SRCALPHA).convert_alpha()
-        self.bg_surface.fill((16, 13, 20, 245))  # Karbon-mor ton (hex grid ile uyumlu)
+        self.bg_surface = pygame.Surface((panel_w, Layout.HAND_PANEL_H), pygame.SRCALPHA).convert_alpha()
+        self.bg_surface.fill((42, 38, 55, 245))  # Açık mor-karbon ton (hex grid ile uyumlu)
         
         # Üst ayırıcı çizgi (Karbon-mor frameless border)
-        pygame.draw.line(self.bg_surface, (50, 41, 61, 100), (0, 0), (Screen.W, 0), 1)
+        pygame.draw.line(self.bg_surface, (95, 85, 115, 120), (0, 0), (panel_w, 0), 1)  # Açık mor-karbon
 
         # Sci-fi Decal Yazısı (subtitle, sag hizalı)
         from v2.ui.font_cache import mono, render_text as _rt
@@ -90,7 +74,7 @@ class HandPanel:
             pygame.draw.polygon(self.bg_surface, (10, 9, 14, 220), points)
             
             # Hexagon Çerçeve (Karbon-mor tactical çizgi)
-            pygame.draw.polygon(self.bg_surface, (50, 41, 61, 150), points, width=1)
+            pygame.draw.polygon(self.bg_surface, (95, 85, 115, 170), points, width=1)  # Açık mor-karbon
             
             # Siberpunk Vurgular (Karbon-mor veri portu)
             # points[2] = Bottom Center (90 deg), points[5] = Top Center (270 deg)

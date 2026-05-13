@@ -37,4 +37,9 @@ class WarriorStrategy(BaseStrategy):
         _buy_warrior(player, market, max_cards, market_obj, rng, trigger_passive_fn, ai_instance, next_uid_fn, game_ref)
     
     def place_cards(self, player, rng=None, **kwargs):
-        _place_smart_default(player, rng)
+        # Warrior stratejisi için sinerji-delta tabanlı yerleştirme
+        # Düşük sinerji ağırlıkları (2.0) — bireysel güç odaklı
+        # Düşük lookahead (0.3) — anlık güç öncelikli
+        from engine_core.ai.synergy_placement import place_cards_synergy_aware, schedule_for
+        schedule = schedule_for("warrior")
+        place_cards_synergy_aware(player, schedule=schedule, lookahead_weight=0.3)

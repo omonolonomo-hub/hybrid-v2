@@ -141,4 +141,8 @@ class RandomStrategy(BaseStrategy):
         _buy_random(player, market, max_cards, market_obj, rng, trigger_passive_fn, ai_instance, next_uid_fn, game_ref)
     
     def place_cards(self, player, rng=None, **kwargs):
-        _place_smart_default(player, rng)
+        # Random stratejisi için sinerji-delta tabanlı yerleştirme
+        # Varsayılan ağırlıklar (3.0)
+        from engine_core.ai.synergy_placement import place_cards_synergy_aware, schedule_for
+        schedule = schedule_for("random")
+        place_cards_synergy_aware(player, schedule=schedule)

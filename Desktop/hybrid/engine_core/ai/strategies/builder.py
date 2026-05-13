@@ -460,4 +460,15 @@ class BuilderStrategy(BaseStrategy):
         _buy_builder(player, market, max_cards, market_obj, rng, trigger_passive_fn, ai_instance, next_uid_fn, game_ref)
     
     def place_cards(self, player, rng=None, **kwargs):
-        _place_fast_synergy(player)
+        # Builder stratejisi için sinerji-delta tabanlı yerleştirme
+        # En yüksek sinerji ağırlıkları (3.5) — combo odaklı
+        # Yüksek lookahead (0.8) — ikili/üçlü combo planlaması
+        from engine_core.ai.synergy_placement import place_cards_synergy_aware, schedule_for
+        schedule = schedule_for("builder")
+        place_cards_synergy_aware(player, schedule=schedule, lookahead_weight=0.8)
+        
+        # Synergy matrix güncelleme (Builder'a özel)
+        sm = getattr(player, "synergy_matrix", None)
+        if sm is not None:
+            sm.update_from_board(player.board)
+            sm.decay()

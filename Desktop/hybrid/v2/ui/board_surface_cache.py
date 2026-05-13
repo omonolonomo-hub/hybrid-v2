@@ -168,12 +168,12 @@ class BoardSurfaceCache:
             points_cache[coord] = (cx, cy, outer, inner)
 
             body_a = 140 if is_filled else 30
-            pygame.draw.polygon(surf, (16, 13, 20, body_a), outer)
+            pygame.draw.polygon(surf, (42, 38, 55, body_a), outer)
 
             inner_a = 80 if is_filled else 20
-            pygame.draw.polygon(surf, (25, 21, 31, inner_a), inner)
+            pygame.draw.polygon(surf, (52, 48, 68, inner_a), inner)
 
-            border_col = (50, 41, 61, 100)
+            border_col = (95, 85, 115, 120)  # Açık mor-karbon
             border_w = max(1, int(2 * zoom))
             pygame.draw.polygon(surf, border_col, outer, border_w)
 

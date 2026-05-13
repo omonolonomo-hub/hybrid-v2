@@ -94,7 +94,7 @@ class ShopScene(Scene):
 
         # Persistent surfaces to avoid per-frame allocations
         self._sidebar_bg = pygame.Surface((Layout.SIDEBAR_LEFT_W, Screen.H), pygame.SRCALPHA).convert_alpha()
-        self._sidebar_bg.fill((10, 12, 18, 235))
+        self._sidebar_bg.fill((32, 35, 48, 235))  # Açık mor-karbon sidebar
 
         self.sync_view()
 
@@ -628,7 +628,7 @@ class ShopScene(Scene):
         )
 
         surface.blit(self._sidebar_bg, (0, 0))
-        pygame.draw.line(surface, (50, 41, 61, 100), (Layout.SIDEBAR_LEFT_W - 1, 0), (Layout.SIDEBAR_LEFT_W - 1, Screen.H), 1)  # Karbon-mor
+        pygame.draw.line(surface, (95, 85, 115, 120), (Layout.SIDEBAR_LEFT_W - 1, 0), (Layout.SIDEBAR_LEFT_W - 1, Screen.H), 1)  # Açık mor-karbon
         self.player_hub.render(surface)
         self.synergy_hud.render(surface)
         self.minimap.render(surface)
